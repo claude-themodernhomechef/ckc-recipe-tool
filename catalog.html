@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CKC Catalog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f0f0d;--surface:#1a1a16;--surface2:#222220;--border:rgba(255,255,255,0.08);
+  --text-primary:#f5f3ee;--text-secondary:rgba(245,243,238,0.55);--text-muted:rgba(245,243,238,0.28);
+  --green:#7cb87a;--green-bg:rgba(124,184,122,0.12);
+  --red:#c96b6b;--red-bg:rgba(201,107,107,0.12);
+  --yellow:#d4a843;--yellow-bg:rgba(212,168,67,0.12);
+  --font-display:'Cormorant Garamond',Georgia,serif;--font-body:'DM Sans',system-ui,sans-serif;
+}
+html,body{min-height:100%;background:var(--bg);color:var(--text-primary);font-family:var(--font-body);font-size:14px}
+
+/* ── Login ── */
+#login-screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;padding:2rem;z-index:200;background:var(--bg)}
+.login-logo{font-family:var(--font-display);font-size:2.2rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase}
+.login-tagline{font-size:11px;color:var(--text-muted);letter-spacing:.12em;text-transform:uppercase;margin-top:-.8rem}
+.login-form{display:flex;flex-direction:column;gap:10px;width:100%;max-width:260px}
+.login-input{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text-primary);font-family:var(--font-body);font-size:14px;outline:none}
+.login-input:focus{border-color:rgba(255,255,255,.2)}
+.login-input::placeholder{color:var(--text-muted)}
+.login-btn{background:var(--text-primary);color:var(--bg);border:none;border-radius:100px;padding:12px;font-family:var(--font-body);font-size:14px;font-weight:500;cursor:pointer}
+.login-error{font-size:12px;color:var(--red);text-align:center;min-height:16px}
+
+/* ── Page shell ── */
+#page{display:none;padding:28px 32px 80px;max-width:1600px;margin:0 auto}
+
+/* ── Header ── */
+.page-header{display:flex;align-items:baseline;gap:20px;margin-bottom:24px}
+.page-logo{font-family:var(--font-display);font-size:1.4rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase}
+.page-title{font-size:12px;color:var(--text-muted);letter-spacing:.08em;text-transform:uppercase}
+.header-right{margin-left:auto;display:flex;gap:10px;align-items:center}
+.catalog-link{font-size:12px;color:var(--text-muted);text-decoration:none;border:1px solid var(--border);border-radius:100px;padding:6px 14px;transition:color .15s}
+.catalog-link:hover{color:var(--text-primary)}
+
+/* ── Toolbar ── */
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;align-items:center}
+.search-box{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 14px;color:var(--text-primary);font-family:var(--font-body);font-size:13px;outline:none;width:240px}
+.search-box:focus{border-color:rgba(255,255,255,.2)}
+.search-box::placeholder{color:var(--text-muted)}
+.filter-group{display:flex;gap:6px;flex-wrap:wrap}
+.chip{padding:6px 14px;border-radius:100px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid var(--border);color:var(--text-secondary);background:none;transition:all .15s;white-space:nowrap}
+.chip:hover{border-color:rgba(255,255,255,.2);color:var(--text-primary)}
+.chip.active-yes{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+.chip.active-no{background:var(--red-bg);border-color:var(--red);color:var(--red)}
+.chip.active-maybe{background:var(--yellow-bg);border-color:var(--yellow);color:var(--yellow)}
+.chip.active{background:var(--surface2);border-color:rgba(255,255,255,.25);color:var(--text-primary)}
+select.filter-select{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 10px;color:var(--text-secondary);font-family:var(--font-body);font-size:12px;outline:none;cursor:pointer}
+select.filter-select:focus{border-color:rgba(255,255,255,.2)}
+
+/* ── Stats bar ── */
+.stats-bar{display:flex;gap:20px;margin-bottom:20px;font-size:12px;color:var(--text-muted)}
+.stat-item b{color:var(--text-primary);font-weight:500}
+
+/* ── Table ── */
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px}
+table{width:100%;border-collapse:collapse;min-width:900px}
+thead th{padding:10px 14px;text-align:left;font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);background:var(--surface);position:sticky;top:0;z-index:10;white-space:nowrap;user-select:none;cursor:pointer;border-bottom:1px solid var(--border)}
+thead th:hover{color:var(--text-secondary)}
+thead th .sort-icon{margin-left:4px;opacity:.5}
+thead th.sorted .sort-icon{opacity:1;color:var(--text-primary)}
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:var(--surface)}
+tbody td{padding:10px 14px;vertical-align:middle;font-size:13px;color:var(--text-secondary)}
+tbody td.td-name{color:var(--text-primary);font-weight:400;max-width:260px}
+tbody td.td-img{width:56px;padding:6px 10px}
+.thumb{width:44px;height:44px;object-fit:cover;border-radius:6px;background:var(--surface2);display:block}
+.thumb-placeholder{width:44px;height:44px;border-radius:6px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.decision-badge{display:inline-block;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:500;letter-spacing:.05em;text-transform:uppercase}
+.badge-YES{background:var(--green-bg);color:var(--green);border:1px solid var(--green)}
+.badge-NO{background:var(--red-bg);color:var(--red);border:1px solid var(--red)}
+.badge-MAYBE{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow)}
+.score-pill{display:inline-block;padding:2px 8px;border-radius:100px;font-size:11px;font-weight:500;background:var(--surface2);color:var(--text-secondary)}
+.score-high{background:var(--green-bg);color:var(--green)}
+.score-mid{background:var(--yellow-bg);color:var(--yellow)}
+
+/* ── Diet tags ── */
+.diet-pills{display:flex;flex-wrap:wrap;gap:4px;cursor:pointer;min-width:80px;min-height:22px}
+.diet-pill{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:100px;font-size:10px;font-weight:600;letter-spacing:.04em;white-space:nowrap;border:1px solid}
+.diet-pill .mod-dot{width:4px;height:4px;border-radius:50%;background:currentColor;opacity:.7;flex-shrink:0}
+.diet-empty{font-size:11px;color:var(--text-muted);padding:2px 0}
+.dtag-V  {color:#7cb87a;border-color:rgba(124,184,122,.4);background:rgba(124,184,122,.1)}
+.dtag-Vg {color:#5bbfb5;border-color:rgba(91,191,181,.4);background:rgba(91,191,181,.1)}
+.dtag-GF {color:#d4943a;border-color:rgba(212,148,58,.4);background:rgba(212,148,58,.1)}
+.dtag-DF {color:#6aabda;border-color:rgba(106,171,218,.4);background:rgba(106,171,218,.1)}
+.dtag-LH {color:#c47fc4;border-color:rgba(196,127,196,.4);background:rgba(196,127,196,.1)}
+.dtag-LF {color:#d4a843;border-color:rgba(212,168,67,.4);background:rgba(212,168,67,.1)}
+.dtag-AIP{color:#e07878;border-color:rgba(224,120,120,.4);background:rgba(224,120,120,.1)}
+.dtag-K  {color:#9b8ee0;border-color:rgba(155,142,224,.4);background:rgba(155,142,224,.1)}
+
+/* ── Tag editor panel ── */
+#tag-editor{position:fixed;z-index:500;background:#1e1e1a;border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:16px;box-shadow:0 12px 40px rgba(0,0,0,.6);width:300px;display:none}
+#tag-editor.open{display:block}
+.te-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.te-title{font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
+.te-close{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;line-height:1;padding:2px 4px;border-radius:4px}
+.te-close:hover{color:var(--text-primary)}
+.te-tags{display:flex;flex-direction:column;gap:6px}
+.te-row{display:flex;flex-direction:column;gap:4px}
+.te-toggle{display:flex;align-items:center;gap:8px;cursor:pointer;padding:6px 8px;border-radius:8px;border:1px solid var(--border);transition:all .12s;user-select:none}
+.te-toggle:hover{background:var(--surface2)}
+.te-toggle.active{border-color:rgba(255,255,255,.2);background:var(--surface2)}
+.te-tag-pill{font-size:11px;font-weight:600;padding:2px 8px;border-radius:100px;border:1px solid;min-width:36px;text-align:center}
+.te-tag-name{font-size:12px;color:var(--text-secondary);flex:1}
+.te-check{width:14px;height:14px;border-radius:3px;border:1.5px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;transition:all .12s}
+.te-toggle.active .te-check{background:var(--text-primary);border-color:var(--text-primary);color:var(--bg)}
+.te-mod-input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:5px 10px;color:var(--text-secondary);font-family:var(--font-body);font-size:11px;outline:none;display:none;margin-left:22px}
+.te-mod-input.visible{display:block}
+.te-mod-input:focus{border-color:rgba(255,255,255,.2);color:var(--text-primary)}
+.te-mod-input::placeholder{color:var(--text-muted)}
+
+/* ── Editable cells ── */
+[contenteditable]{outline:none;border-radius:4px;padding:2px 4px;margin:-2px -4px;cursor:text;transition:background .15s}
+[contenteditable]:hover{background:var(--surface2)}
+[contenteditable]:focus{background:var(--surface2);box-shadow:0 0 0 1.5px rgba(255,255,255,.15)}
+.saving-indicator{font-size:10px;color:var(--text-muted);position:fixed;bottom:20px;right:20px;opacity:0;transition:opacity .2s;pointer-events:none}
+.saving-indicator.show{opacity:1}
+.decision-cell select{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:4px 8px;color:var(--text-primary);font-family:var(--font-body);font-size:12px;cursor:pointer;outline:none}
+
+/* ── Loading ── */
+#loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:200px;gap:12px}
+.dots{display:flex;gap:6px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--text-muted);animation:pulse 1.2s ease-in-out infinite}
+.dot:nth-child(2){animation-delay:.2s}.dot:nth-child(3){animation-delay:.4s}
+@keyframes pulse{0%,100%{opacity:.2;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
+.loading-text{font-size:12px;color:var(--text-muted)}
+.empty-state{text-align:center;padding:60px 20px;color:var(--text-muted);font-size:13px}
+
+/* ── Responsive ── */
+@media(max-width:700px){
+  #page{padding:16px 12px 60px}
+  .toolbar{flex-direction:column;align-items:stretch}
+  .search-box{width:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- Login -->
+<div id="login-screen">
+  <div class="login-logo">CKC</div>
+  <div class="login-tagline">Catalog</div>
+  <div class="login-form">
+    <input class="login-input" id="login-user" type="text" placeholder="Username" autocomplete="username">
+    <input class="login-input" id="login-pass" type="password" placeholder="Password" autocomplete="current-password">
+    <button class="login-btn" id="login-btn">Sign in</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<!-- Main page -->
+<div id="page">
+  <div class="page-header">
+    <div class="page-logo">CKC</div>
+    <div class="page-title">Recipe Catalog</div>
+    <div class="header-right">
+      <a class="catalog-link" href="/">← Swipe</a>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <input class="search-box" id="search" type="search" placeholder="Search recipes, blogger, cuisine…">
+    <div class="filter-group" id="decision-chips">
+      <button class="chip" data-decision="YES">Yes</button>
+      <button class="chip" data-decision="NO">No</button>
+      <button class="chip" data-decision="MAYBE">Maybe</button>
+    </div>
+    <select class="filter-select" id="filter-cuisine"><option value="">All cuisines</option></select>
+    <select class="filter-select" id="filter-course"><option value="">All meal types</option></select>
+    <select class="filter-select" id="filter-blogger"><option value="">All bloggers</option></select>
+    <select class="filter-select" id="filter-diet"><option value="">All diets</option><option value="V">V – Vegan</option><option value="Vg">Vg – Vegetarian</option><option value="GF">GF – Gluten-free</option><option value="DF">DF – Dairy-free</option><option value="LH">LH – Low-histamine</option><option value="LF">LF – Low-FODMAP</option><option value="AIP">AIP – Autoimmune Protocol</option><option value="K">K – Keto</option></select>
+  </div>
+
+  <div class="stats-bar" id="stats-bar"></div>
+
+  <div id="loading">
+    <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+    <div class="loading-text">Loading catalog…</div>
+  </div>
+
+  <div class="table-wrap" id="table-wrap" style="display:none">
+    <table id="catalog-table">
+      <thead>
+        <tr>
+          <th class="th-img" style="cursor:default"></th>
+          <th data-col="name">Recipe <span class="sort-icon">↕</span></th>
+          <th data-col="decision">Decision <span class="sort-icon">↕</span></th>
+          <th data-col="blogger">Blogger <span class="sort-icon">↕</span></th>
+          <th data-col="alignmentScore">Score <span class="sort-icon">↕</span></th>
+          <th data-col="mealType">Meal Type <span class="sort-icon">↕</span></th>
+          <th data-col="cuisineStyle">Cuisine <span class="sort-icon">↕</span></th>
+          <th data-col="rating">Rating <span class="sort-icon">↕</span></th>
+          <th data-col="notes" style="min-width:200px">Description <span class="sort-icon">↕</span></th>
+          <th data-col="chefNotes" style="min-width:220px">Chef's Notes <span class="sort-icon">↕</span></th>
+          <th style="min-width:140px;cursor:default">Diet Tags</th>
+          <th data-col="decidedAt">Date <span class="sort-icon">↕</span></th>
+        </tr>
+      </thead>
+      <tbody id="catalog-body"></tbody>
+    </table>
+  </div>
+  <div class="empty-state" id="empty-state" style="display:none">No matching recipes found.</div>
+</div>
+
+<div class="saving-indicator" id="saving-indicator">Saving…</div>
+
+<!-- Tag editor panel -->
+<div id="tag-editor">
+  <div class="te-header">
+    <span class="te-title">Dietary Tags</span>
+    <button class="te-close" id="te-close">✕</button>
+  </div>
+  <div class="te-tags" id="te-tags"></div>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+firebase.initializeApp({
+  apiKey:            'AIzaSyBoTyWKQZ3oaf4KjhDikxMOF7bfv5W7Z7U',
+  authDomain:        'ckc-recipe-swipe.firebaseapp.com',
+  projectId:         'ckc-recipe-swipe',
+  storageBucket:     'ckc-recipe-swipe.firebasestorage.app',
+  messagingSenderId: '217552239546',
+  appId:             '1:217552239546:web:bfd4121d6dccbd694a7b83',
+});
+const db = firebase.firestore();
+
+// ── Auth ────────────────────────────────────────────────────
+const LOGIN_KEY = 'ckc_auth';
+document.getElementById('login-btn').addEventListener('click', doLogin);
+document.getElementById('login-pass').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
+function doLogin(){
+  const u = document.getElementById('login-user').value.trim();
+  const p = document.getElementById('login-pass').value;
+  if(u==='admin' && p==='prince'){
+    localStorage.setItem(LOGIN_KEY,'1');
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('page').style.display='block';
+    loadCatalog();
+  } else {
+    document.getElementById('login-error').textContent='Incorrect username or password';
+    document.getElementById('login-pass').value='';
+  }
+}
+if(localStorage.getItem(LOGIN_KEY)==='1'){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('page').style.display='block';
+  loadCatalog();
+}
+
+// ── Diet tag definitions ─────────────────────────────────────
+const DIET_TAGS = [
+  {code:'V',   label:'Vegan'},
+  {code:'Vg',  label:'Vegetarian'},
+  {code:'GF',  label:'Gluten-free'},
+  {code:'DF',  label:'Dairy-free'},
+  {code:'LH',  label:'Low-histamine'},
+  {code:'LF',  label:'Low-FODMAP'},
+  {code:'AIP', label:'Autoimmune Protocol'},
+  {code:'K',   label:'Keto'},
+];
+
+// ── Data ────────────────────────────────────────────────────
+let allRows = [];      // {id, ...fields}
+let sortCol = 'decidedAt', sortDir = -1;
+let activeDecisions = new Set();
+let filterCuisine = '', filterCourse = '', filterBlogger = '', filterDiet = '';
+let searchQuery = '';
+
+async function loadCatalog(){
+  try{
+    const snap = await db.collection('decisions').orderBy('decidedAt','desc').get();
+    allRows = snap.docs.map(d=>({id:d.id, ...d.data()}));
+    populateFilters();
+    renderTable();
+    document.getElementById('loading').style.display='none';
+    document.getElementById('table-wrap').style.display='block';
+  }catch(e){
+    document.getElementById('loading').innerHTML='<div class="loading-text" style="color:#c96b6b">'+escHtml(e.message)+'</div>';
+  }
+}
+
+function populateFilters(){
+  const cuisines = [...new Set(allRows.map(r=>r.cuisineStyle).filter(Boolean))].sort();
+  const courses  = [...new Set(allRows.map(r=>r.mealType).filter(Boolean))].sort();
+  const bloggers = [...new Set(allRows.map(r=>r.blogger).filter(Boolean))].sort();
+  fillSelect('filter-cuisine', cuisines);
+  fillSelect('filter-course',  courses);
+  fillSelect('filter-blogger', bloggers);
+}
+function fillSelect(id, opts){
+  const sel = document.getElementById(id);
+  const first = sel.options[0];
+  sel.innerHTML='';sel.appendChild(first);
+  opts.forEach(o=>{ const op=document.createElement('option');op.value=o;op.textContent=o;sel.appendChild(op); });
+}
+
+// ── Filtering & sorting ─────────────────────────────────────
+function getFiltered(){
+  const q = searchQuery.toLowerCase();
+  return allRows.filter(r=>{
+    if(activeDecisions.size && !activeDecisions.has(r.decision)) return false;
+    if(filterCuisine && r.cuisineStyle !== filterCuisine) return false;
+    if(filterCourse  && r.mealType    !== filterCourse)   return false;
+    if(filterBlogger && r.blogger     !== filterBlogger)  return false;
+    if(filterDiet && !(r.dietTags && filterDiet in r.dietTags)) return false;
+    if(q && ![ r.name, r.blogger, r.cuisineStyle, r.mealType, r.notes, r.rating ]
+              .some(v=>(v||'').toLowerCase().includes(q))) return false;
+    return true;
+  });
+}
+
+function getSorted(rows){
+  return [...rows].sort((a,b)=>{
+    let va = a[sortCol], vb = b[sortCol];
+    if(va && va.toDate) va = va.toDate();
+    if(vb && vb.toDate) vb = vb.toDate();
+    if(va==null) va='';
+    if(vb==null) vb='';
+    if(typeof va==='number'&&typeof vb==='number') return (va-vb)*sortDir;
+    return String(va).localeCompare(String(vb))*sortDir;
+  });
+}
+
+// ── Render ──────────────────────────────────────────────────
+function renderTable(){
+  const filtered = getFiltered();
+  const sorted   = getSorted(filtered);
+  updateStats(filtered);
+
+  const tbody = document.getElementById('catalog-body');
+  tbody.innerHTML='';
+  if(!sorted.length){
+    document.getElementById('empty-state').style.display='block';
+    document.getElementById('table-wrap').style.display='none';
+    return;
+  }
+  document.getElementById('empty-state').style.display='none';
+  document.getElementById('table-wrap').style.display='block';
+
+  sorted.forEach(row=>{
+    const tr = document.createElement('tr');
+    tr.dataset.id = row.id;
+    const date = row.decidedAt ? (row.decidedAt.toDate ? row.decidedAt.toDate() : new Date(row.decidedAt)) : null;
+    const dateStr = date ? date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '—';
+    const score = row.alignmentScore;
+    const scoreClass = score>=90?'score-high':score>=70?'score-mid':'';
+
+    tr.innerHTML=`
+      <td class="td-img">
+        ${row.image
+          ? `<img class="thumb" src="${escHtml(row.image)}" alt="" onerror="this.outerHTML='<div class=&quot;thumb-placeholder&quot;>🍽️</div>'">`
+          : '<div class="thumb-placeholder">🍽️</div>'}
+      </td>
+      <td class="td-name">
+        ${row.url ? `<a href="${escHtml(row.url)}" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px solid var(--border)">${escHtml(row.name)}</a>` : escHtml(row.name)}
+      </td>
+      <td class="decision-cell">
+        <select data-field="decision" data-id="${row.id}" title="Change decision">
+          <option value="YES"  ${row.decision==='YES'  ?'selected':''}>YES</option>
+          <option value="NO"   ${row.decision==='NO'   ?'selected':''}>NO</option>
+          <option value="MAYBE"${row.decision==='MAYBE'?'selected':''}>MAYBE</option>
+        </select>
+      </td>
+      <td>${escHtml(row.blogger||'')}</td>
+      <td>${score!=null?`<span class="score-pill ${scoreClass}">${score}</span>`:'—'}</td>
+      <td>${escHtml(row.mealType||'')}</td>
+      <td>${escHtml(row.cuisineStyle||'')}</td>
+      <td>${escHtml(row.rating||'')}</td>
+      <td><span contenteditable="true" data-field="notes" data-id="${row.id}">${escHtml(row.notes||'')}</span></td>
+      <td><span contenteditable="true" data-field="chefNotes" data-id="${row.id}">${escHtml(row.chefNotes||'')}</span></td>
+      <td class="td-diet" data-id="${row.id}">${renderDietPills(row.dietTags||{})}</td>
+      <td style="white-space:nowrap;color:var(--text-muted);font-size:12px">${dateStr}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // Update sort header UI
+  document.querySelectorAll('thead th[data-col]').forEach(th=>{
+    th.classList.toggle('sorted', th.dataset.col===sortCol);
+    const icon = th.querySelector('.sort-icon');
+    if(icon) icon.textContent = th.dataset.col===sortCol ? (sortDir===1?'↑':'↓') : '↕';
+  });
+
+  attachEditListeners();
+  attachDietCellListeners();
+}
+
+function updateStats(filtered){
+  const yes   = filtered.filter(r=>r.decision==='YES').length;
+  const no    = filtered.filter(r=>r.decision==='NO').length;
+  const maybe = filtered.filter(r=>r.decision==='MAYBE').length;
+  document.getElementById('stats-bar').innerHTML=
+    `<span><b>${filtered.length}</b> recipes</span>
+     <span style="color:var(--green)"><b>${yes}</b> yes</span>
+     <span style="color:var(--yellow)"><b>${maybe}</b> maybe</span>
+     <span style="color:var(--red)"><b>${no}</b> no</span>`;
+}
+
+// ── Edit + save ─────────────────────────────────────────────
+let saveTimer;
+function flashSaving(){
+  const el = document.getElementById('saving-indicator');
+  el.classList.add('show');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(()=>el.classList.remove('show'), 1200);
+}
+
+function attachEditListeners(){
+  // contenteditable notes fields
+  document.querySelectorAll('[contenteditable][data-field]').forEach(el=>{
+    el.addEventListener('blur', ()=>{
+      const id    = el.dataset.id;
+      const field = el.dataset.field;
+      const val   = el.textContent.trim();
+      // Update local cache
+      const row = allRows.find(r=>r.id===id);
+      if(row) row[field]=val;
+      // Save to Firestore
+      db.collection('decisions').doc(id).update({[field]:val}).catch(()=>{});
+      flashSaving();
+    });
+    el.addEventListener('keydown', e=>{ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); el.blur(); } });
+  });
+
+  // Decision select dropdowns
+  document.querySelectorAll('select[data-field="decision"]').forEach(sel=>{
+    sel.addEventListener('change', ()=>{
+      const id  = sel.dataset.id;
+      const val = sel.value;
+      const row = allRows.find(r=>r.id===id);
+      if(row) row.decision=val;
+      db.collection('decisions').doc(id).update({decision:val}).catch(()=>{});
+      flashSaving();
+      // Re-render only if a decision filter is active
+      if(activeDecisions.size) renderTable();
+    });
+  });
+}
+
+// ── Diet tag rendering ───────────────────────────────────────
+function renderDietPills(dietTags){
+  const keys = Object.keys(dietTags||{});
+  if(!keys.length) return '<div class="diet-pills"><span class="diet-empty">+ add tags</span></div>';
+  const pills = keys.map(k=>{
+    const mod = dietTags[k];
+    const hasMod = mod && mod.trim();
+    const tooltip = hasMod ? ` title="${escHtml(mod)}"` : '';
+    return `<span class="diet-pill dtag-${k}"${tooltip}>${escHtml(k)}${hasMod?'<span class="mod-dot"></span>':''}</span>`;
+  }).join('');
+  return `<div class="diet-pills">${pills}</div>`;
+}
+
+// ── Tag editor ───────────────────────────────────────────────
+let teRowId = null;
+let teData  = {};   // working copy: {code: modString, ...}
+
+function openTagEditor(rowId, anchorEl){
+  const row = allRows.find(r=>r.id===rowId);
+  if(!row) return;
+  teRowId = rowId;
+  teData  = Object.assign({}, row.dietTags||{});
+
+  // Build editor rows
+  const container = document.getElementById('te-tags');
+  container.innerHTML = '';
+  DIET_TAGS.forEach(({code, label})=>{
+    const isActive = code in teData;
+    const modVal   = teData[code]||'';
+
+    const rowEl = document.createElement('div');
+    rowEl.className = 'te-row';
+    rowEl.innerHTML = `
+      <div class="te-toggle${isActive?' active':''}" data-code="${code}">
+        <span class="te-tag-pill dtag-${code}">${code}</span>
+        <span class="te-tag-name">${label}</span>
+        <span class="te-check">${isActive?'✓':''}</span>
+      </div>
+      <input class="te-mod-input${isActive?' visible':''}" data-code="${code}"
+             placeholder="modification note (optional)"
+             value="${escHtml(modVal)}">
+    `;
+    container.appendChild(rowEl);
+  });
+
+  // Position panel near anchor
+  const editor = document.getElementById('tag-editor');
+  editor.classList.add('open');
+  const rect = anchorEl.getBoundingClientRect();
+  const panelH = 420, panelW = 300;
+  let top  = rect.bottom + 8;
+  let left = rect.left;
+  if(top + panelH > window.innerHeight - 20) top = rect.top - panelH - 8;
+  if(left + panelW > window.innerWidth  - 16) left = window.innerWidth - panelW - 16;
+  editor.style.top  = Math.max(8, top)  + 'px';
+  editor.style.left = Math.max(8, left) + 'px';
+
+  // Toggle listener
+  container.querySelectorAll('.te-toggle').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const code  = btn.dataset.code;
+      const input = container.querySelector(`.te-mod-input[data-code="${code}"]`);
+      if(code in teData){
+        delete teData[code];
+        btn.classList.remove('active');
+        btn.querySelector('.te-check').textContent='';
+        input.classList.remove('visible');
+      } else {
+        teData[code]='';
+        btn.classList.add('active');
+        btn.querySelector('.te-check').textContent='✓';
+        input.classList.add('visible');
+        input.focus();
+      }
+    });
+  });
+
+  // Mod input listeners — update working copy live
+  container.querySelectorAll('.te-mod-input').forEach(input=>{
+    input.addEventListener('input', ()=>{ teData[input.dataset.code]=input.value; });
+    input.addEventListener('keydown', e=>{ if(e.key==='Enter') e.preventDefault(); });
+  });
+}
+
+function closeTagEditor(){
+  const editor = document.getElementById('tag-editor');
+  if(!editor.classList.contains('open')) return;
+  editor.classList.remove('open');
+  if(!teRowId) return;
+
+  // Flush mod input values into teData
+  document.querySelectorAll('#te-tags .te-mod-input.visible').forEach(inp=>{
+    teData[inp.dataset.code] = inp.value.trim();
+  });
+
+  // Save to Firestore + local cache
+  const row = allRows.find(r=>r.id===teRowId);
+  if(row) row.dietTags = {...teData};
+  db.collection('decisions').doc(teRowId).update({dietTags: {...teData}}).catch(()=>{});
+  flashSaving();
+
+  // Refresh just the diet cell (no full re-render needed)
+  const td = document.querySelector(`td.td-diet[data-id="${teRowId}"]`);
+  if(td) td.innerHTML = renderDietPills(teData);
+  attachDietCellListeners();
+
+  teRowId = null;
+  teData  = {};
+}
+
+function attachDietCellListeners(){
+  document.querySelectorAll('td.td-diet').forEach(td=>{
+    td.replaceWith(td.cloneNode(true)); // drop old listeners
+  });
+  document.querySelectorAll('td.td-diet').forEach(td=>{
+    td.addEventListener('click', ()=>{ openTagEditor(td.dataset.id, td); });
+  });
+}
+
+document.getElementById('te-close').addEventListener('click', closeTagEditor);
+document.addEventListener('mousedown', e=>{
+  const editor = document.getElementById('tag-editor');
+  if(editor.classList.contains('open') && !editor.contains(e.target) && !e.target.closest('td.td-diet')){
+    closeTagEditor();
+  }
+});
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeTagEditor(); });
+
+// ── Sort ────────────────────────────────────────────────────
+document.querySelectorAll('thead th[data-col]').forEach(th=>{
+  th.addEventListener('click', ()=>{
+    const col = th.dataset.col;
+    if(sortCol===col) sortDir*=-1; else { sortCol=col; sortDir=-1; }
+    renderTable();
+  });
+});
+
+// ── Decision chips ──────────────────────────────────────────
+document.querySelectorAll('#decision-chips .chip').forEach(chip=>{
+  chip.addEventListener('click', ()=>{
+    const d = chip.dataset.decision;
+    if(activeDecisions.has(d)){ activeDecisions.delete(d); chip.className='chip'; }
+    else{ activeDecisions.add(d); chip.className=`chip active-${d.toLowerCase()}`; }
+    renderTable();
+  });
+});
+
+// ── Dropdowns ───────────────────────────────────────────────
+document.getElementById('filter-cuisine').addEventListener('change', e=>{ filterCuisine=e.target.value; renderTable(); });
+document.getElementById('filter-course').addEventListener('change',  e=>{ filterCourse=e.target.value;  renderTable(); });
+document.getElementById('filter-blogger').addEventListener('change', e=>{ filterBlogger=e.target.value; renderTable(); });
+document.getElementById('filter-diet').addEventListener('change',   e=>{ filterDiet=e.target.value;    renderTable(); });
+
+// ── Search ──────────────────────────────────────────────────
+let searchTimer;
+document.getElementById('search').addEventListener('input', e=>{
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(()=>{ searchQuery=e.target.value; renderTable(); }, 180);
+});
+
+// ── Utils ────────────────────────────────────────────────────
+function escHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+</script>
+</body>
+</html>

@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="CKC Review">
 <meta name="theme-color" content="#0f0f0d">
@@ -15,15 +16,17 @@
 :root{--bg:#0f0f0d;--surface:#1a1a16;--border:rgba(255,255,255,0.08);--text-primary:#f5f3ee;--text-secondary:rgba(245,243,238,0.5);--text-muted:rgba(245,243,238,0.25);--green:#7cb87a;--green-glow:rgba(124,184,122,0.15);--red:#c96b6b;--red-glow:rgba(201,107,107,0.15);--yellow:#d4a843;--yellow-glow:rgba(212,168,67,0.15);--font-display:'Cormorant Garamond',Georgia,serif;--font-body:'DM Sans',system-ui,sans-serif}
 html,body{height:100%;width:100%;overflow:hidden;background:var(--bg);color:var(--text-primary);font-family:var(--font-body)}
 #app{height:100dvh;width:100%;display:flex;flex-direction:column;position:relative;overflow:hidden}
-#auth-screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;padding:2rem;z-index:100;background:var(--bg)}
-.auth-logo{font-family:var(--font-display);font-size:2.5rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase}
-.auth-tagline{font-size:12px;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;margin-top:-1.5rem}
-.auth-subtitle{font-size:13px;color:var(--text-secondary);text-align:center;line-height:1.6;max-width:260px}
-.google-btn{display:flex;align-items:center;gap:10px;background:var(--text-primary);color:var(--bg);border:none;border-radius:100px;padding:14px 28px;font-family:var(--font-body);font-size:14px;font-weight:500;cursor:pointer;transition:opacity .2s}
-.google-btn:active{opacity:.8}
-.google-btn svg{width:18px;height:18px;flex-shrink:0}
-.auth-note{font-size:11px;color:var(--text-muted);text-align:center;max-width:240px;line-height:1.5}
-#loading{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:80;background:var(--bg)}
+#login-screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;padding:2rem;z-index:200;background:var(--bg)}
+.login-logo{font-family:var(--font-display);font-size:2.5rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase}
+.login-tagline{font-size:11px;color:var(--text-muted);letter-spacing:.12em;text-transform:uppercase;margin-top:-1rem}
+.login-form{display:flex;flex-direction:column;gap:12px;width:100%;max-width:280px}
+.login-input{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;color:var(--text-primary);font-family:var(--font-body);font-size:14px;outline:none;transition:border-color .2s}
+.login-input:focus{border-color:rgba(255,255,255,0.2)}
+.login-input::placeholder{color:var(--text-muted)}
+.login-btn{background:var(--text-primary);color:var(--bg);border:none;border-radius:100px;padding:14px;font-family:var(--font-body);font-size:14px;font-weight:500;cursor:pointer;transition:opacity .2s}
+.login-btn:active{opacity:.8}
+.login-error{font-size:12px;color:var(--red);text-align:center;min-height:16px}
+#loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:80;background:var(--bg)}
 .loading-text{font-size:12px;color:var(--text-muted);letter-spacing:.08em}
 .dots{display:flex;gap:6px}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--text-muted);animation:pulse 1.2s ease-in-out infinite}
@@ -50,7 +53,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:var(--bg);color:var(
 .recipe-card.back-2{transform:scale(.90) translateY(32px);z-index:0;pointer-events:none}
 .recipe-card.top{z-index:2}
 .card-img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:var(--bg)}
-.card-img-placeholder{width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,#1e1e1a,#2a2a24);display:flex;align-items:center;justify-content:center;font-size:3rem;opacity:.2}
+.card-img-placeholder{width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,#1e1e1a,#2a2a24);display:flex;align-items:center;justify-content:center;font-size:3rem}
 .card-body{padding:20px 20px 16px}
 .card-cuisine{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;font-weight:500}
 .card-name{font-family:var(--font-display);font-size:1.7rem;font-weight:500;line-height:1.15;color:var(--text-primary);margin-bottom:10px}
@@ -78,7 +81,9 @@ html,body{height:100%;width:100%;overflow:hidden;background:var(--bg);color:var(
 .done-label{font-size:10px;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase}
 .done-stat.green .done-num{color:var(--green)}.done-stat.yellow .done-num{color:var(--yellow)}.done-stat.red .done-num{color:var(--red)}
 .done-note{font-size:11px;color:var(--text-muted);text-align:center;max-width:240px;line-height:1.6}
-.reset-btn{margin-top:8px;background:none;border:1px solid var(--border);border-radius:100px;padding:10px 24px;color:var(--text-secondary);font-family:var(--font-body);font-size:13px;cursor:pointer}
+.done-actions{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:8px;width:100%;max-width:260px}
+.export-btn{width:100%;background:var(--green-glow);border:1.5px solid var(--green);border-radius:100px;padding:12px 24px;color:var(--green);font-family:var(--font-body);font-size:13px;font-weight:500;cursor:pointer}
+.reset-btn{width:100%;background:none;border:1px solid var(--border);border-radius:100px;padding:10px 24px;color:var(--text-secondary);font-family:var(--font-body);font-size:13px;cursor:pointer}
 #toast{position:fixed;bottom:120px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:8px 18px;font-size:12px;color:var(--text-secondary);opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap;z-index:200}
 #toast.show{opacity:1}
 .exit-right{animation:exitRight .35s ease-in forwards}
@@ -90,69 +95,192 @@ html,body{height:100%;width:100%;overflow:hidden;background:var(--bg);color:var(
 </style>
 </head>
 <body>
-<div id="app">
-  <div id="auth-screen">
-    <div class="auth-logo">CKC</div>
-    <div class="auth-tagline">Recipe Review</div>
-    <p class="auth-subtitle">Sign in with the Google account that owns your CKC staging sheet.</p>
-    <button class="google-btn" id="google-btn">
-      <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-      Sign in with Google
-    </button>
-    <p class="auth-note">Your data stays private. The app reads your staging sheet and writes decisions only.</p>
+<div id="login-screen">
+  <div class="login-logo">CKC</div>
+  <div class="login-tagline">Recipe Review</div>
+  <div class="login-form">
+    <input class="login-input" id="login-user" type="text" placeholder="Username" autocomplete="username" />
+    <input class="login-input" id="login-pass" type="password" placeholder="Password" autocomplete="current-password" />
+    <button class="login-btn" id="login-btn">Sign in</button>
+    <div class="login-error" id="login-error"></div>
   </div>
+</div>
+<div id="app">
   <div id="loading"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><div class="loading-text" id="loading-text">Loading recipes...</div></div>
   <div id="error-screen"><div class="error-title">Something went wrong</div><div class="error-msg" id="error-msg"></div><button class="error-btn" id="error-retry">Try again</button></div>
   <div id="header"><div class="header-logo">CKC</div><div class="header-stats"><div class="stat-dot green" id="stat-yes">0</div><div class="stat-dot yellow" id="stat-maybe">0</div><div class="stat-dot red" id="stat-no">0</div></div><div class="header-progress" id="progress"></div></div>
   <div id="card-area"><div class="card-stack" id="card-stack"></div><div id="swipe-hint">swipe right yes &nbsp;·&nbsp; left no &nbsp;·&nbsp; up maybe</div></div>
   <div id="actions">
-    <button class="action-btn btn-red" id="btn-no"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <button class="action-btn btn-red"    id="btn-no">   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     <button class="action-btn btn-yellow" id="btn-maybe"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></button>
-    <button class="action-btn btn-green" id="btn-yes"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+    <button class="action-btn btn-green"  id="btn-yes">  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
   </div>
-  <div id="done-screen"><div class="done-title">All done.</div><p class="done-subtitle">Session complete.</p><div class="done-stats"><div class="done-stat green"><span class="done-num" id="final-yes">0</span><span class="done-label">Yes</span></div><div class="done-stat yellow"><span class="done-num" id="final-maybe">0</span><span class="done-label">Maybe</span></div><div class="done-stat red"><span class="done-num" id="final-no">0</span><span class="done-label">No</span></div></div><p class="done-note">All decisions saved to your CKC Recipe Decisions sheet.</p><button class="reset-btn" id="reset-btn">Back to start</button></div>
+  <div id="done-screen">
+    <div class="done-title">All done.</div>
+    <p class="done-subtitle">Session complete.</p>
+    <div class="done-stats">
+      <div class="done-stat green"><span class="done-num" id="final-yes">0</span><span class="done-label">Yes</span></div>
+      <div class="done-stat yellow"><span class="done-num" id="final-maybe">0</span><span class="done-label">Maybe</span></div>
+      <div class="done-stat red"><span class="done-num" id="final-no">0</span><span class="done-label">No</span></div>
+    </div>
+    <p class="done-note">Decisions synced. Export CSV to import into your sheet.</p>
+    <div class="done-actions">
+      <button class="export-btn" id="export-btn">Download Decisions CSV</button>
+      <button class="reset-btn"  id="reset-btn">Back to start</button>
+    </div>
+  </div>
   <div id="toast"></div>
 </div>
-<script src="https://accounts.google.com/gsi/client" async></script>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script>
-const CONFIG={CLIENT_ID:'113570992242-r0fk36g1jcqsh3uifj4t73ec4chgd842.apps.googleusercontent.com',SHEET_ID:'1T-TwBUKO9SjloycmhbAgTBD-NtOmsN8KDv-3fAZXAZo',STAGING_TAB:'staging sheet',DECISIONS_TAB:'ckc recipe decisions',SCOPES:'https://www.googleapis.com/auth/spreadsheets'};
-let accessToken=null,recipes=[],currentIndex=0,counts={yes:0,maybe:0,no:0},animating=false,isDragging=false,startX=0,startY=0,currentX=0,currentY=0,topCard=null;
-const $=id=>document.getElementById(id);
-$('google-btn').addEventListener('click',()=>{
-  const client=google.accounts.oauth2.initTokenClient({client_id:CONFIG.CLIENT_ID,scope:CONFIG.SCOPES,callback:async r=>{
-    if(r.error){showError('Sign in failed. Please try again.');return;}
-    accessToken=r.access_token;$('auth-screen').style.display='none';showLoading('Loading your recipes...');await loadRecipes();
-  }});client.requestAccessToken();
+// ── Firebase init ─────────────────────────────────────
+firebase.initializeApp({
+  apiKey:            'AIzaSyBoTyWKQZ3oaf4KjhDikxMOF7bfv5W7Z7U',
+  authDomain:        'ckc-recipe-swipe.firebaseapp.com',
+  projectId:         'ckc-recipe-swipe',
+  storageBucket:     'ckc-recipe-swipe.firebasestorage.app',
+  messagingSenderId: '217552239546',
+  appId:             '1:217552239546:web:bfd4121d6dccbd694a7b83',
 });
-async function loadRecipes(){
+const db = firebase.firestore();
+
+// ── State ─────────────────────────────────────────────
+let recipes = [], currentIndex = 0, counts = {yes:0, maybe:0, no:0};
+let animating = false, isDragging = false;
+let startX = 0, startY = 0, currentX = 0, currentY = 0, topCard = null;
+
+const $ = id => document.getElementById(id);
+
+// ── localStorage fallback helpers ─────────────────────
+const LS_REVIEWED  = 'ckc_reviewed';
+const LS_POSITION  = 'ckc_position';
+const LS_DECISIONS = 'ckc_decisions';
+
+function lsGetReviewed(){try{return new Set(JSON.parse(localStorage.getItem(LS_REVIEWED)||'[]'));}catch(e){return new Set();}}
+function lsAddReviewed(name){try{const s=lsGetReviewed();s.add(name);localStorage.setItem(LS_REVIEWED,JSON.stringify([...s]));}catch(e){}}
+function lsSavePosition(name){try{localStorage.setItem(LS_POSITION,name);}catch(e){}}
+function lsGetPosition(){try{return localStorage.getItem(LS_POSITION)||'';}catch(e){return '';}}
+function lsSaveDecision(recipe,action){
   try{
-    const range=encodeURIComponent("'"+CONFIG.STAGING_TAB+"'!A:F");
-    const res=await fetch('https://sheets.googleapis.com/v4/spreadsheets/'+CONFIG.SHEET_ID+'/values/'+range,{headers:{Authorization:'Bearer '+accessToken}});
-    if(!res.ok)throw new Error('Could not read sheet ('+res.status+'). Make sure you are signed into the right Google account.');
-    const data=await res.json();
-    const rows=(data.values||[]).slice(1);
-    recipes=rows.map((row,i)=>({rowIndex:i+2,name:row[0]||'',url:row[1]||'',cuisine:row[2]||'',course:row[3]||'',description:row[4]||'',status:row[5]||''})).filter(r=>!r.status&&r.name);
-    if(!recipes.length){showError('No unreviewed recipes found. Make sure column A has recipe names and column F is empty for unreviewed rows.');return;}
-    await ensureHeaders();hideLoading();showMain();renderCards();
-  }catch(e){showError(e.message||'Unknown error.');}
-}
-async function ensureHeaders(){
-  try{
-    const range=encodeURIComponent("'"+CONFIG.DECISIONS_TAB+"'!A1");
-    const res=await fetch('https://sheets.googleapis.com/v4/spreadsheets/'+CONFIG.SHEET_ID+'/values/'+range,{headers:{Authorization:'Bearer '+accessToken}});
-    const data=await res.json();
-    if(!data.values){await sheetPut("'"+CONFIG.DECISIONS_TAB+"'!A1:G1",[['Recipe Name','Decision','Cuisine','Course','Source URL','Timestamp','Staging Row']]);}
+    const all=JSON.parse(localStorage.getItem(LS_DECISIONS)||'[]');
+    all.push({
+      name:recipe.name, decision:action.toUpperCase(), url:recipe.url,
+      blogger:recipe.blogger||'', alignmentScore:recipe.alignmentScore||null,
+      mealType:recipe.course||'', cuisineStyle:recipe.cuisine||'',
+      rating:recipe.rating||'', notes:recipe.description||'', image:recipe.image||'',
+      decidedAt:new Date().toISOString(),
+    });
+    localStorage.setItem(LS_DECISIONS,JSON.stringify(all));
   }catch(e){}
 }
+
+// ── Firestore helpers ─────────────────────────────────
+const progressRef = db.collection('progress').doc('state');
+
+async function fsGetState(){
+  try{
+    const snap = await progressRef.get();
+    if(snap.exists){
+      const d = snap.data();
+      return {reviewed: new Set(d.reviewed||[]), position: d.position||''};
+    }
+  }catch(e){}
+  return {reviewed: new Set(), position: ''};
+}
+
+function fsWriteDecision(recipe, action){
+  db.collection('decisions').add({
+    name:           recipe.name,
+    decision:       action.toUpperCase(),
+    url:            recipe.url||'',
+    blogger:        recipe.blogger||'',
+    alignmentScore: recipe.alignmentScore||null,
+    mealType:       recipe.course||'',
+    cuisineStyle:   recipe.cuisine||'',
+    rating:         recipe.rating||'',
+    notes:          recipe.description||'',
+    image:          recipe.image||'',
+    tags:           [],
+    decidedAt:      firebase.firestore.FieldValue.serverTimestamp(),
+  }).catch(()=>{});
+}
+
+function fsUpdateProgress(name){
+  progressRef.set({
+    position: name,
+    reviewed: firebase.firestore.FieldValue.arrayUnion(name),
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  }, {merge: true}).catch(()=>{});
+}
+
+// ── Load recipes ──────────────────────────────────────
+let _allRecipes = [];  // full list kept for background reconcile
+
+async function loadRecipes(){
+  showLoading('Loading...');
+  try{
+    // 1. Fast path — recipes.json (browser-cached after first load) + localStorage
+    const all = await fetch('recipes.json').then(r=>{
+      if(!r.ok) throw new Error('recipes.json not found — run scrape.py first');
+      return r.json();
+    });
+    _allRecipes = all;
+
+    const lsReviewed = lsGetReviewed();
+    const lsPosition = lsGetPosition();
+
+    recipes = all.filter(r => r.name && !lsReviewed.has(r.name));
+    if(!recipes.length){ showDone(); return; }
+
+    if(lsPosition){
+      const idx = recipes.findIndex(r => r.name === lsPosition);
+      if(idx > 0) currentIndex = idx;
+    }
+
+    hideLoading();
+    showMain();
+    renderCards();
+    preloadImages();
+
+    // 2. Background — reconcile with Firestore without blocking cards
+    fsGetState().then(fsState=>{
+      const merged = new Set([...lsReviewed, ...fsState.reviewed]);
+      if(merged.size === lsReviewed.size) return; // nothing new
+
+      // Firestore knew about more reviewed recipes — update queue silently
+      localStorage.setItem(LS_REVIEWED, JSON.stringify([...merged]));
+      const newRecipes = _allRecipes.filter(r => r.name && !merged.has(r.name));
+
+      // Only re-render if it changes what the user sees ahead
+      const needsUpdate = newRecipes.length < recipes.length - currentIndex;
+      recipes = newRecipes;
+
+      // Advance past any newly-discovered reviewed items
+      if(fsState.position){
+        const idx = recipes.findIndex(r => r.name === fsState.position);
+        if(idx > currentIndex) currentIndex = idx;
+      }
+
+      if(needsUpdate){ renderCards(); preloadImages(); }
+    }).catch(()=>{});
+
+  }catch(e){ showError(e.message); }
+}
+
+// ── Card rendering ────────────────────────────────────
 function renderCards(){
   $('card-stack').innerHTML='';
   if(currentIndex>=recipes.length){showDone();return;}
   const slice=recipes.slice(currentIndex,currentIndex+3);
   [...slice].reverse().forEach((recipe,i)=>{
-    const ri=slice.length-1-i;const card=buildCard(recipe);
-    if(ri===0&&slice.length>=3)card.classList.add('back-2');
-    else if(ri===0)card.classList.add('back-1');
-    else if(ri===1)card.classList.add('back-1');
+    const ri=slice.length-1-i;
+    const card=buildCard(recipe);
+    if(ri===0&&slice.length>=3) card.classList.add('back-2');
+    else if(ri===0)             card.classList.add('back-1');
+    else if(ri===1)             card.classList.add('back-1');
     else{card.classList.add('top');setupDrag(card);}
     $('card-stack').appendChild(card);
   });
@@ -160,28 +288,50 @@ function renderCards(){
   topCard=$('card-stack').querySelector('.top');
   $('progress').textContent=(currentIndex+1)+' / '+recipes.length;
 }
+
+function preloadImages(){
+  // Silently preload images for cards beyond the visible 3-card stack
+  for(let i = currentIndex + 3; i < Math.min(currentIndex + 9, recipes.length); i++){
+    if(recipes[i]?.image){ new Image().src = recipes[i].image; }
+  }
+}
+
 function buildCard(r){
-  const card=document.createElement('div');card.className='recipe-card';
+  const card=document.createElement('div');
+  card.className='recipe-card';
   let domain='';try{domain=r.url?new URL(r.url).hostname.replace('www.',''):'';}catch(e){}
-  card.innerHTML='<div style="position:relative"><img class="card-img" src="" alt="'+r.name+'" onerror="this.outerHTML=\'<div class=\\'card-img-placeholder\\'>&#127859;</div>\'"><div class="swipe-label label-yes">Yes</div><div class="swipe-label label-no">No</div><div class="swipe-label label-maybe">Maybe</div></div><div class="card-body"><div class="card-cuisine">'+r.cuisine+(r.course?' &middot; '+r.course:'')+'</div><div class="card-name">'+r.name+'</div><div class="card-desc">'+r.description+'</div>'+(domain?'<div class="card-source"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><a href="'+r.url+'" target="_blank">'+domain+'</a></div>':'')+'</div>';
-  if(r.url)fetchOGImage(card.querySelector('.card-img'),r.url);
+  card.innerHTML=`
+    <div style="position:relative">
+      ${r.image
+        ? `<img class="card-img" src="${r.image}" alt="${escHtml(r.name)}" onerror="this.outerHTML='<div class=\\'card-img-placeholder\\'>🍽️</div>'">`
+        : '<div class="card-img-placeholder">🍽️</div>'}
+      <div class="swipe-label label-yes">Yes</div>
+      <div class="swipe-label label-no">No</div>
+      <div class="swipe-label label-maybe">Maybe</div>
+    </div>
+    <div class="card-body">
+      <div class="card-cuisine">${escHtml(r.cuisine)}${r.course?' &middot; '+escHtml(r.course):''}</div>
+      <div class="card-name">${escHtml(r.name)}</div>
+      <div class="card-desc">${escHtml(r.description)}</div>
+      ${domain?`<div class="card-source"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><a href="${escHtml(r.url)}" target="_blank">${escHtml(domain)}</a></div>`:''}
+    </div>`;
   return card;
 }
-async function fetchOGImage(img,url){
-  try{
-    const res=await fetch('https://api.allorigins.win/get?url='+encodeURIComponent(url));
-    const data=await res.json();
-    const m=data.contents.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i)||data.contents.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i);
-    if(m&&m[1])img.src=m[1];else img.outerHTML='<div class="card-img-placeholder">&#127859;</div>';
-  }catch(e){try{img.outerHTML='<div class="card-img-placeholder">&#127859;</div>';}catch(e2){}}
-}
+
+function escHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// ── Drag / swipe ──────────────────────────────────────
 function setupDrag(card){card.addEventListener('mousedown',onStart);card.addEventListener('touchstart',onStart,{passive:true});}
 function onStart(e){
-  if(animating)return;isDragging=true;const pt=e.touches?e.touches[0]:e;startX=pt.clientX;startY=pt.clientY;currentX=0;currentY=0;topCard=e.currentTarget;topCard.style.transition='none';
-  document.addEventListener('mousemove',onMove);document.addEventListener('touchmove',onMove,{passive:false});document.addEventListener('mouseup',onEnd);document.addEventListener('touchend',onEnd);
+  if(animating)return;isDragging=true;
+  const pt=e.touches?e.touches[0]:e;startX=pt.clientX;startY=pt.clientY;currentX=0;currentY=0;
+  topCard=e.currentTarget;topCard.style.transition='none';
+  document.addEventListener('mousemove',onMove);document.addEventListener('touchmove',onMove,{passive:false});
+  document.addEventListener('mouseup',onEnd);document.addEventListener('touchend',onEnd);
 }
 function onMove(e){
-  if(!isDragging)return;if(e.cancelable)e.preventDefault();const pt=e.touches?e.touches[0]:e;currentX=pt.clientX-startX;currentY=pt.clientY-startY;
+  if(!isDragging)return;if(e.cancelable)e.preventDefault();
+  const pt=e.touches?e.touches[0]:e;currentX=pt.clientX-startX;currentY=pt.clientY-startY;
   topCard.style.transform='translateX('+currentX+'px) translateY('+currentY+'px) rotate('+(currentX*0.06)+'deg)';
   const absX=Math.abs(currentX),absY=Math.abs(currentY),t=40;
   const ly=topCard.querySelector('.label-yes'),ln=topCard.querySelector('.label-no'),lm=topCard.querySelector('.label-maybe');
@@ -192,54 +342,119 @@ function onMove(e){
 }
 function onEnd(){
   if(!isDragging)return;isDragging=false;
-  document.removeEventListener('mousemove',onMove);document.removeEventListener('touchmove',onMove);document.removeEventListener('mouseup',onEnd);document.removeEventListener('touchend',onEnd);
+  document.removeEventListener('mousemove',onMove);document.removeEventListener('touchmove',onMove);
+  document.removeEventListener('mouseup',onEnd);document.removeEventListener('touchend',onEnd);
   const absX=Math.abs(currentX),absY=Math.abs(currentY),t=80;
-  if(currentY<-t&&absY>absX)decide('maybe');else if(currentX>t)decide('yes');else if(currentX<-t)decide('no');
-  else{topCard.style.transition='transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275)';topCard.style.transform='';topCard.querySelectorAll('.swipe-label').forEach(l=>l.style.opacity=0);}
+  if(currentY<-t&&absY>absX)      decide('maybe');
+  else if(currentX>t)             decide('yes');
+  else if(currentX<-t)            decide('no');
+  else{
+    topCard.style.transition='transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275)';
+    topCard.style.transform='';
+    topCard.querySelectorAll('.swipe-label').forEach(l=>l.style.opacity=0);
+  }
   currentX=0;currentY=0;
 }
-async function decide(action){
-  if(animating||currentIndex>=recipes.length)return;animating=true;const recipe=recipes[currentIndex];counts[action]++;
+
+// ── Decision ──────────────────────────────────────────
+function decide(action){
+  if(animating||currentIndex>=recipes.length)return;
+  animating=true;
+  const recipe=recipes[currentIndex];
+  counts[action]++;
   $('stat-yes').textContent=counts.yes;$('stat-maybe').textContent=counts.maybe;$('stat-no').textContent=counts.no;
   const card=$('card-stack').querySelector('.top');
-  if(card){card.style.transition='none';card.classList.add(action==='yes'?'exit-right':action==='no'?'exit-left':'exit-up');card.addEventListener('animationend',()=>{currentIndex++;animating=false;renderCards();},{once:true});}
-  showToast(action==='yes'?'Saved to Yes':action==='maybe'?'Saved to Maybe':'Skipped');
-  writeDecision(recipe,action);markReviewed(recipe.rowIndex,action);
+  if(card){
+    card.style.transition='none';
+    card.classList.add(action==='yes'?'exit-right':action==='no'?'exit-left':'exit-up');
+    card.addEventListener('animationend',()=>{currentIndex++;animating=false;renderCards();preloadImages();},{once:true});
+  }
+  showToast(action==='yes'?'Yes ✓':action==='maybe'?'Maybe':'No');
+
+  // Write to both localStorage and Firestore
+  lsAddReviewed(recipe.name);
+  lsSavePosition(recipe.name);
+  lsSaveDecision(recipe, action);
+  fsWriteDecision(recipe, action);
+  fsUpdateProgress(recipe.name);
 }
-async function writeDecision(r,action){
+
+// ── Export CSV ────────────────────────────────────────
+function exportCSV(){
   try{
-    const range=encodeURIComponent("'"+CONFIG.DECISIONS_TAB+"'!A:G");
-    await fetch('https://sheets.googleapis.com/v4/spreadsheets/'+CONFIG.SHEET_ID+'/values/'+range+':append?valueInputOption=RAW&insertDataOption=INSERT_ROWS',{method:'POST',headers:{Authorization:'Bearer '+accessToken,'Content-Type':'application/json'},body:JSON.stringify({values:[[r.name,action.toUpperCase(),r.cuisine,r.course,r.url,new Date().toLocaleString(),r.rowIndex]]})});
-  }catch(e){console.error(e);}
+    const decisions=JSON.parse(localStorage.getItem(LS_DECISIONS)||'[]');
+    if(!decisions.length){showToast('No decisions yet');return;}
+    const header=['Recipe Name','Decision','Cuisine','Course','URL','Timestamp'];
+    const rows=decisions.map(d=>[d.name,d.decision,d.cuisine,d.course,d.url,d.timestamp].map(v=>'"'+(v||'').replace(/"/g,'""')+'"').join(','));
+    const csv=[header.join(','),...rows].join('\n');
+    const blob=new Blob([csv],{type:'text/csv'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='ckc-decisions-'+new Date().toISOString().slice(0,10)+'.csv';
+    a.click();
+  }catch(e){showToast('Export failed');}
 }
-async function markReviewed(rowIndex,action){
-  try{
-    const range=encodeURIComponent("'"+CONFIG.STAGING_TAB+"'!F"+rowIndex);
-    await fetch('https://sheets.googleapis.com/v4/spreadsheets/'+CONFIG.SHEET_ID+'/values/'+range+'?valueInputOption=RAW',{method:'PUT',headers:{Authorization:'Bearer '+accessToken,'Content-Type':'application/json'},body:JSON.stringify({values:[[action.toUpperCase()]]})});
-  }catch(e){console.error(e);}
-}
-async function sheetPut(range,values){
-  const enc=encodeURIComponent(range);
-  await fetch('https://sheets.googleapis.com/v4/spreadsheets/'+CONFIG.SHEET_ID+'/values/'+enc+'?valueInputOption=RAW',{method:'PUT',headers:{Authorization:'Bearer '+accessToken,'Content-Type':'application/json'},body:JSON.stringify({values})});
-}
+
+// ── UI helpers ────────────────────────────────────────
 function showMain(){$('header').classList.add('visible');$('card-area').classList.add('visible');$('actions').classList.add('visible');}
 function hideMain(){$('header').classList.remove('visible');$('card-area').classList.remove('visible');$('actions').classList.remove('visible');}
 function showLoading(t){$('loading-text').textContent=t||'Loading...';$('loading').style.display='flex';}
 function hideLoading(){$('loading').style.display='none';}
 function showError(msg){hideLoading();$('error-msg').textContent=msg;$('error-screen').style.display='flex';}
-function showDone(){hideMain();$('final-yes').textContent=counts.yes;$('final-maybe').textContent=counts.maybe;$('final-no').textContent=counts.no;$('done-screen').classList.add('visible');}
+function showDone(){
+  hideMain();
+  $('final-yes').textContent=counts.yes;$('final-maybe').textContent=counts.maybe;$('final-no').textContent=counts.no;
+  $('done-screen').classList.add('visible');
+}
 let toastTimer;
 function showToast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),1400);}
+
+// ── Button listeners ──────────────────────────────────
 $('btn-yes').addEventListener('click',()=>decide('yes'));
 $('btn-no').addEventListener('click',()=>decide('no'));
 $('btn-maybe').addEventListener('click',()=>decide('maybe'));
-$('error-retry').addEventListener('click',()=>{$('error-screen').style.display='none';$('auth-screen').style.display='flex';});
-$('reset-btn').addEventListener('click',()=>{$('done-screen').classList.remove('visible');$('auth-screen').style.display='flex';});
-document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')decide('yes');if(e.key==='ArrowLeft')decide('no');if(e.key==='ArrowUp')decide('maybe');});
-</script>
-<script>
-const m={name:"CKC Recipe Review",short_name:"CKC",display:"standalone",background_color:"#0f0f0d",theme_color:"#0f0f0d",orientation:"portrait"};
-const b=new Blob([JSON.stringify(m)],{type:'application/json'});const l=document.createElement('link');l.rel='manifest';l.href=URL.createObjectURL(b);document.head.appendChild(l);
+$('export-btn').addEventListener('click',exportCSV);
+$('error-retry').addEventListener('click',()=>{$('error-screen').style.display='none';loadRecipes();});
+$('reset-btn').addEventListener('click',()=>{
+  currentIndex=0;counts={yes:0,maybe:0,no:0};
+  $('done-screen').classList.remove('visible');
+  loadRecipes();
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight') decide('yes');
+  if(e.key==='ArrowLeft')  decide('no');
+  if(e.key==='ArrowUp')    decide('maybe');
+});
+
+// ── PWA manifest ──────────────────────────────────────
+const _m={name:'CKC Recipe Review',short_name:'CKC',display:'standalone',background_color:'#0f0f0d',theme_color:'#0f0f0d',orientation:'portrait'};
+const _b=new Blob([JSON.stringify(_m)],{type:'application/json'});const _l=document.createElement('link');_l.rel='manifest';_l.href=URL.createObjectURL(_b);document.head.appendChild(_l);
+
+// ── Login ─────────────────────────────────────────────
+const LOGIN_KEY = 'ckc_auth';
+function checkLogin(){
+  if(localStorage.getItem(LOGIN_KEY)==='1'){
+    document.getElementById('login-screen').style.display='none';
+    loadRecipes();
+  }
+}
+document.getElementById('login-btn').addEventListener('click', doLogin);
+document.getElementById('login-pass').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
+function doLogin(){
+  const u = document.getElementById('login-user').value.trim();
+  const p = document.getElementById('login-pass').value;
+  if(u==='admin' && p==='prince'){
+    localStorage.setItem(LOGIN_KEY,'1');
+    document.getElementById('login-screen').style.display='none';
+    loadRecipes();
+  } else {
+    document.getElementById('login-error').textContent='Incorrect username or password';
+    document.getElementById('login-pass').value='';
+  }
+}
+
+// ── Start ─────────────────────────────────────────────
+checkLogin();
 </script>
 </body>
 </html>
