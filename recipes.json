@@ -7702,5 +7702,1885 @@
     "course": "Entree",
     "description": "Sichuan-style kung pao chicken with dried chilies, peanuts, and a savory-spicy sauce. Authentic and deeply flavorful.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/kung-pao-chicken.webp"
+  },
+  {
+    "name": "Mapo Tofu",
+    "url": "https://thewoksoflife.com/ma-po-tofu/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Classic Sichuan mapo tofu with ground pork, silken tofu, doubanjiang, and numbing Sichuan peppercorns.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/mapo-tofu.webp"
+  },
+  {
+    "name": "Chicken and Broccoli",
+    "url": "https://thewoksoflife.com/chicken-broccoli-chinese-takeout/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Chinese-American chicken and broccoli stir-fry in a velvety oyster sauce. Weeknight takeout replicated at home.",
+    "image": null
+  },
+  {
+    "name": "Red Braised Pork Belly",
+    "url": "https://thewoksoflife.com/red-braised-pork-belly/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Hong Shao Rou — meltingly tender pork belly braised in soy, rice wine, and rock sugar until deeply caramelized.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/red-braised-pork-belly.webp"
+  },
+  {
+    "name": "Honey Garlic Salmon",
+    "url": "https://www.jocooks.com/recipes/honey-garlic-salmon/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Salmon pan-seared and glazed with a sticky honey garlic sauce. Fast, five-ingredient weeknight fish.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/honey-garlic-salmon.webp"
+  },
+  {
+    "name": "Chicken Piccata",
+    "url": "https://www.jocooks.com/recipes/chicken-piccata/",
+    "cuisine": "Italian",
+    "course": "Entree",
+    "description": "Lightly breaded chicken cutlets in a bright lemon caper sauce. A classic Italian-American dish that impresses every time.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chicken-piccata.webp"
+  },
+  {
+    "name": "Beef Stew",
+    "url": "https://www.jocooks.com/recipes/beef-stew/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Hearty beef stew with tender chunks of beef, potatoes, and carrots in a rich, thick gravy.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/beef-stew.webp"
+  },
+  {
+    "name": "Moroccan Chicken",
+    "url": "https://www.jocooks.com/recipes/moroccan-chicken/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Spiced Moroccan chicken with ras el hanout, preserved lemons, and olives. Tagine-inspired flavors in one pan.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/moroccan-chicken.webp"
+  },
+  {
+    "name": "Pork Tenderloin",
+    "url": "https://www.jocooks.com/recipes/pork-tenderloin/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Juicy pork tenderloin seared and roasted with garlic and herbs. Simple, reliable, and elegant weeknight centerpiece.",
+    "image": null
+  },
+  {
+    "name": "Lamb Chops",
+    "url": "https://www.jocooks.com/recipes/pan-seared-lamb-chops/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Herb-rubbed lamb chops pan-seared to a perfect crust. Quick, impressive weeknight protein.",
+    "image": null
+  },
+  {
+    "name": "Butter Chicken",
+    "url": "https://www.jocooks.com/recipes/butter-chicken/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Tender chicken in a rich, fragrant tomato-cream butter sauce. Jo's approachable take on the beloved Indian classic.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/butter-chicken.webp"
+  },
+  {
+    "name": "Slow Cooker Chicken Tacos",
+    "url": "https://www.foodiecrush.com/slow-cooker-chicken-tacos/",
+    "cuisine": "Latin/South American",
+    "course": "Entree",
+    "description": "Shredded chicken slow-cooked with salsa verde for easy, flavorful tacos. A set-and-forget weeknight staple.",
+    "image": null
+  },
+  {
+    "name": "Grilled Salmon with Avocado Salsa",
+    "url": "https://www.foodiecrush.com/grilled-salmon-with-avocado-salsa/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Grilled salmon fillets topped with a fresh avocado-mango salsa. Light, vibrant, and impressive.",
+    "image": null
+  },
+  {
+    "name": "Sheet Pan Chicken",
+    "url": "https://www.foodiecrush.com/sheet-pan-chicken/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "One-pan roasted chicken thighs and vegetables with a simple herb marinade. Easy weeknight dinner with minimal cleanup.",
+    "image": null
+  },
+  {
+    "name": "Chicken Fajita Bowls",
+    "url": "https://www.foodiecrush.com/chicken-fajita-bowls/",
+    "cuisine": "Latin/South American",
+    "course": "Entree",
+    "description": "Seasoned chicken and peppers over rice with all the fajita toppings. Colorful, customizable weeknight bowl.",
+    "image": null
+  },
+  {
+    "name": "Shrimp Tacos",
+    "url": "https://www.foodiecrush.com/shrimp-tacos/",
+    "cuisine": "Latin/South American",
+    "course": "Entree",
+    "description": "Seasoned shrimp in warm tortillas with slaw and chipotle crema. Quick, crowd-pleasing weeknight tacos.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/shrimp-tacos.webp"
+  },
+  {
+    "name": "Herb Roasted Chicken",
+    "url": "https://www.foodiecrush.com/herb-roasted-chicken-thighs/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Chicken thighs roasted under a blanket of fresh herbs and garlic until crispy and golden.",
+    "image": null
+  },
+  {
+    "name": "Butter Chicken",
+    "url": "https://ministryofcurry.com/butter-chicken/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Authentic Indian butter chicken (murgh makhani) in a silky tomato-cream sauce. Instant Pot and stovetop versions included.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/butter-chicken.webp"
+  },
+  {
+    "name": "Lamb Curry",
+    "url": "https://ministryofcurry.com/instant-pot-lamb-curry/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Tender Instant Pot lamb curry with aromatic whole spices and a deeply flavorful gravy.",
+    "image": null
+  },
+  {
+    "name": "Saag Chicken",
+    "url": "https://ministryofcurry.com/saag-chicken/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Chicken simmered in a vibrant spiced spinach gravy. A nutritious and deeply flavorful Indian classic.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/saag-chicken.webp"
+  },
+  {
+    "name": "Keema",
+    "url": "https://ministryofcurry.com/keema/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Spiced ground meat (keema) with peas in a fragrant sauce. A versatile Indian staple served with naan or rice.",
+    "image": null
+  },
+  {
+    "name": "Tandoori Chicken",
+    "url": "https://ministryofcurry.com/tandoori-chicken/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Yogurt-marinated chicken with tandoori spices grilled or oven-roasted until charred and juicy.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/tandoori-chicken.webp"
+  },
+  {
+    "name": "Lemon Garlic Chicken",
+    "url": "https://littlesunnykitchen.com/lemon-garlic-chicken/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Bright lemon garlic chicken thighs baked or pan-seared. Simple, clean flavors that work any night of the week.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/lemon-garlic-chicken.webp"
+  },
+  {
+    "name": "Chicken Shawarma",
+    "url": "https://littlesunnykitchen.com/chicken-shawarma/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Middle Eastern shawarma-spiced chicken baked in the oven and served in wraps or bowls.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chicken-shawarma.webp"
+  },
+  {
+    "name": "Butter Chicken",
+    "url": "https://littlesunnykitchen.com/butter-chicken/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Creamy, rich butter chicken with an approachable recipe for the beloved Indian dish.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/butter-chicken.webp"
+  },
+  {
+    "name": "Baked Salmon",
+    "url": "https://littlesunnykitchen.com/baked-salmon/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Simple oven-baked salmon with lemon and herbs. A clean, healthy protein dinner in under 20 minutes.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/baked-salmon.webp"
+  },
+  {
+    "name": "Slow Cooker Lamb Stew",
+    "url": "https://littlesunnykitchen.com/slow-cooker-lamb-stew/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Tender chunks of lamb slow-cooked with vegetables in a spiced tomato broth. Warming and comforting.",
+    "image": null
+  },
+  {
+    "name": "Chicken Kabobs",
+    "url": "https://littlesunnykitchen.com/chicken-kabobs/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Marinated chicken and vegetable skewers grilled until charred and juicy. Perfect summer grilling recipe.",
+    "image": null
+  },
+  {
+    "name": "Coconut Chickpea Curry",
+    "url": "https://www.theendlessmeal.com/coconut-chickpea-curry/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Creamy coconut milk chickpea curry with warming spices. Protein-rich vegan dinner ready in 30 minutes.",
+    "image": null
+  },
+  {
+    "name": "Lemon Garlic Chicken Thighs",
+    "url": "https://www.theendlessmeal.com/lemon-garlic-chicken-thighs/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Chicken thighs with crispy skin in a bright lemon garlic pan sauce. Simple, reliable weeknight staple.",
+    "image": null
+  },
+  {
+    "name": "Honey Garlic Shrimp",
+    "url": "https://www.theendlessmeal.com/honey-garlic-shrimp/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Shrimp cooked in a sticky honey garlic sauce. Quick 15-minute weeknight dinner with big flavor.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/honey-garlic-shrimp.webp"
+  },
+  {
+    "name": "Blackened Chicken",
+    "url": "https://www.theendlessmeal.com/blackened-chicken/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Chicken coated in Cajun blackening spices and seared until deeply charred. Smoky, spicy, and satisfying.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/blackened-chicken.webp"
+  },
+  {
+    "name": "Salmon Teriyaki",
+    "url": "https://www.theendlessmeal.com/salmon-teriyaki/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Salmon glazed with homemade teriyaki sauce and broiled until caramelized. Quick weeknight Japanese-inspired dinner.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/salmon-teriyaki.webp"
+  },
+  {
+    "name": "Chicken Tikka Masala",
+    "url": "https://www.cookingclassy.com/chicken-tikka-masala/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Richly spiced chicken tikka masala with a creamy tomato sauce. Jaclyn's straightforward version of the beloved dish.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chicken-tikka-masala.webp"
+  },
+  {
+    "name": "Honey Garlic Chicken",
+    "url": "https://www.cookingclassy.com/honey-garlic-chicken/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Chicken thighs pan-seared and glazed in a sticky honey garlic sauce. A foolproof weeknight protein.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/honey-garlic-chicken.webp"
+  },
+  {
+    "name": "Baked Teriyaki Chicken",
+    "url": "https://www.cookingclassy.com/baked-teriyaki-chicken/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Chicken thighs baked in homemade teriyaki sauce until sticky and caramelized. Easy sheet pan dinner.",
+    "image": null
+  },
+  {
+    "name": "One Pan Salmon and Asparagus",
+    "url": "https://www.cookingclassy.com/one-pan-salmon-asparagus/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Salmon and asparagus cooked together in one pan with a garlic herb butter. Fast, elegant, minimal cleanup.",
+    "image": null
+  },
+  {
+    "name": "Beef Stir Fry",
+    "url": "https://www.cookingclassy.com/beef-stir-fry/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Tender beef strips stir-fried with colorful vegetables in a savory brown sauce. Weeknight takeout alternative.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/beef-stir-fry.webp"
+  },
+  {
+    "name": "Chicken Fajitas",
+    "url": "https://www.cookingclassy.com/chicken-fajitas/",
+    "cuisine": "Latin/South American",
+    "course": "Entree",
+    "description": "Sizzling chicken fajitas with caramelized onions and peppers. Classic Tex-Mex crowd-pleaser.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chicken-fajitas.webp"
+  },
+  {
+    "name": "Miso Ginger Salmon Bowl",
+    "url": "https://familystylefood.com/miso-ginger-salmon-bowl/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Salmon marinated in a miso-ginger glaze and served over rice with pickled vegetables. Elegant Japanese-inspired bowl.",
+    "image": null
+  },
+  {
+    "name": "Greek Chicken Kebabs",
+    "url": "https://familystylefood.com/greek-chicken-kebabs/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Herb-marinated chicken skewers with Greek spices, served with tzatziki. Light and vibrant summer grilling.",
+    "image": null
+  },
+  {
+    "name": "Braised Chicken Thighs with Olives and Tomatoes",
+    "url": "https://familystylefood.com/braised-chicken-thighs-olives-tomatoes/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Chicken thighs braised in a rustic sauce with olives, capers, and tomatoes. Italian-inspired one-pot comfort.",
+    "image": null
+  },
+  {
+    "name": "Spiced Lamb Meatballs",
+    "url": "https://familystylefood.com/spiced-lamb-meatballs/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Aromatic lamb meatballs with warm spices in a tangy tomato sauce. Middle Eastern-inspired comfort dish.",
+    "image": null
+  },
+  {
+    "name": "Seared Scallops with Herb Butter",
+    "url": "https://familystylefood.com/seared-scallops/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Golden-seared scallops finished with a fresh herb butter. Simple technique, stunning restaurant-quality result.",
+    "image": null
+  },
+  {
+    "name": "Chicken and Chickpea Stew",
+    "url": "https://food52.com/recipes/chicken-and-chickpea-stew",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Hearty chicken and chickpea stew with tomatoes and warming spices. Community-sourced recipe with big flavor.",
+    "image": null
+  },
+  {
+    "name": "Miso Butter Roasted Chicken",
+    "url": "https://food52.com/recipes/miso-butter-roasted-chicken",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Whole chicken roasted under a miso butter rub for incredibly savory, caramelized skin.",
+    "image": null
+  },
+  {
+    "name": "Lamb Meatballs with Yogurt Sauce",
+    "url": "https://food52.com/recipes/lamb-meatballs-with-yogurt-sauce",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Spiced lamb meatballs served with tangy yogurt sauce and fresh herbs. Middle Eastern-inspired weeknight protein.",
+    "image": null
+  },
+  {
+    "name": "Five-Ingredient Pasta with Shrimp",
+    "url": "https://food52.com/recipes/shrimp-pasta",
+    "cuisine": "Italian",
+    "course": "Entree",
+    "description": "Simple shrimp pasta with garlic, lemon, and olive oil. Community-tested recipe celebrating minimal-ingredient cooking.",
+    "image": null
+  },
+  {
+    "name": "Adobo Chicken",
+    "url": "https://wanderingchickpea.com/adobo-chicken/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Filipino chicken adobo braised in vinegar, soy, and garlic. Tangy, savory, and deeply comforting.",
+    "image": null
+  },
+  {
+    "name": "Spiced Lamb Flatbread",
+    "url": "https://wanderingchickpea.com/spiced-lamb-flatbread/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Flatbread topped with spiced ground lamb and Middle Eastern spices. Weeknight-friendly open-faced mezze-style dish.",
+    "image": null
+  },
+  {
+    "name": "Coconut Chickpea Bowl",
+    "url": "https://wanderingchickpea.com/coconut-chickpea-bowl/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Creamy coconut chickpeas over rice with bright garnishes. Protein-rich vegan bowl with warming spices.",
+    "image": null
+  },
+  {
+    "name": "Chana Masala",
+    "url": "https://www.cookwithmanali.com/chana-masala/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Authentic North Indian chana masala with tender chickpeas in a spiced tomato-onion gravy.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chana-masala.webp"
+  },
+  {
+    "name": "Chicken Curry",
+    "url": "https://www.cookwithmanali.com/chicken-curry/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Classic homestyle Indian chicken curry with a thick, aromatic gravy. Manali's comforting family recipe.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chicken-curry.webp"
+  },
+  {
+    "name": "Lamb Keema Curry",
+    "url": "https://www.cookwithmanali.com/keema-curry/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Spiced ground lamb curry with peas and aromatic whole spices. Quick, hearty Indian weeknight staple.",
+    "image": null
+  },
+  {
+    "name": "Aloo Gobi",
+    "url": "https://www.indianhealthyrecipes.com/aloo-gobi/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Dry-spiced cauliflower and potato curry cooked with turmeric, cumin, and coriander. Everyday Indian comfort dish.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/aloo-gobi.webp"
+  },
+  {
+    "name": "Chicken Biryani",
+    "url": "https://www.indianhealthyrecipes.com/chicken-biryani-recipe/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Aromatic basmati rice layered with spiced chicken and saffron. Swasthi's authentic approach to the celebratory Indian dish.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chicken-biryani.webp"
+  },
+  {
+    "name": "Egg Curry",
+    "url": "https://www.indianhealthyrecipes.com/egg-curry/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Hard-boiled eggs in a spiced onion-tomato gravy. Budget-friendly, protein-rich Indian weeknight staple.",
+    "image": null
+  },
+  {
+    "name": "Prawn Masala",
+    "url": "https://www.indianhealthyrecipes.com/prawn-masala/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Shrimp cooked in a spiced South Indian onion-tomato masala. Coastal-style prawn dish with bold aromatics.",
+    "image": null
+  },
+  {
+    "name": "Rajma",
+    "url": "https://www.indianhealthyrecipes.com/rajma-recipe/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Punjabi kidney bean curry with a thick, spiced tomato-onion gravy. Protein-rich North Indian staple served with rice.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/rajma.webp"
+  },
+  {
+    "name": "Miso Salmon",
+    "url": "https://playswellwithbutter.com/miso-salmon/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Salmon marinated in a miso-soy glaze and broiled until caramelized. Pantry-friendly recipe with umami depth.",
+    "image": null
+  },
+  {
+    "name": "Cast Iron Steak",
+    "url": "https://playswellwithbutter.com/cast-iron-steak/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Ribeye or NY strip seared in a blazing hot cast iron with butter, garlic, and herbs. The definitive home steakhouse technique.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cast-iron-steak.webp"
+  },
+  {
+    "name": "Greek Chicken",
+    "url": "https://playswellwithbutter.com/greek-chicken-bowls/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Greek-marinated chicken served as a bowl with grains, feta, and tzatziki. Fresh and satisfying Mediterranean dinner.",
+    "image": null
+  },
+  {
+    "name": "Honey Garlic Salmon",
+    "url": "https://playswellwithbutter.com/honey-garlic-salmon/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Pan-seared salmon with a sticky honey garlic glaze. Quick weeknight fish with a sweet-savory finish.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/honey-garlic-salmon.webp"
+  },
+  {
+    "name": "Thai Basil Chicken",
+    "url": "https://playswellwithbutter.com/thai-basil-chicken/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Spicy Thai basil chicken (pad krapow gai) with ground chicken, chilies, and fragrant basil over rice.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/thai-basil-chicken.webp"
+  },
+  {
+    "name": "Lamb Chops with Herb Oil",
+    "url": "https://playswellwithbutter.com/lamb-chops/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Herb-rubbed lamb chops seared until crisped and served with a vibrant green herb oil.",
+    "image": null
+  },
+  {
+    "name": "Harissa Chicken",
+    "url": "https://allthehealthythings.com/harissa-chicken/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Chicken marinated in bold harissa paste and baked or grilled until charred. North African spice profile with minimal effort.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/harissa-chicken.webp"
+  },
+  {
+    "name": "Sheet Pan Salmon and Vegetables",
+    "url": "https://allthehealthythings.com/sheet-pan-salmon/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Salmon and colorful vegetables roasted on a single sheet pan. Clean, simple, and protein-packed weeknight dinner.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/sheet-pan-salmon-and-vegetables.webp"
+  },
+  {
+    "name": "Greek Chicken Bowls",
+    "url": "https://allthehealthythings.com/greek-chicken-bowls/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Marinated Greek chicken served in bowls with rice, cucumbers, olives, and tzatziki.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/greek-chicken-bowls.webp"
+  },
+  {
+    "name": "Ground Turkey Stir Fry",
+    "url": "https://allthehealthythings.com/ground-turkey-stir-fry/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Lean ground turkey stir-fried with vegetables in a savory Asian-style sauce. Fast, nutritious weeknight dinner.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/ground-turkey-stir-fry.webp"
+  },
+  {
+    "name": "Tuscan Chicken",
+    "url": "https://allthehealthythings.com/tuscan-chicken/",
+    "cuisine": "Italian",
+    "course": "Entree",
+    "description": "Chicken in a sun-dried tomato and spinach cream sauce. A lighter, healthier take on the Italian favorite.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/tuscan-chicken.webp"
+  },
+  {
+    "name": "Miso Glazed Salmon",
+    "url": "https://www.twopeasandtheirpod.com/miso-glazed-salmon/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Salmon brushed with a sweet miso glaze and broiled until caramelized. Quick, elegant, five-ingredient dinner.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/miso-glazed-salmon.webp"
+  },
+  {
+    "name": "Chicken Enchiladas",
+    "url": "https://www.twopeasandtheirpod.com/chicken-enchiladas/",
+    "cuisine": "Latin/South American",
+    "course": "Entree",
+    "description": "Rolled chicken enchiladas in red sauce with melted cheese. A family-favorite Mexican comfort dish.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chicken-enchiladas.webp"
+  },
+  {
+    "name": "Lemon Herb Chicken",
+    "url": "https://www.twopeasandtheirpod.com/lemon-herb-chicken/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Chicken marinated in lemon, garlic, and fresh herbs then grilled or baked. Versatile summer staple.",
+    "image": null
+  },
+  {
+    "name": "Sheet Pan Chicken Fajitas",
+    "url": "https://www.twopeasandtheirpod.com/sheet-pan-chicken-fajitas/",
+    "cuisine": "Latin/South American",
+    "course": "Entree",
+    "description": "One-pan chicken fajitas with caramelized peppers and onions. Easy weeknight Tex-Mex done right.",
+    "image": null
+  },
+  {
+    "name": "Shrimp Scampi",
+    "url": "https://www.twopeasandtheirpod.com/shrimp-scampi/",
+    "cuisine": "Italian",
+    "course": "Entree",
+    "description": "Classic shrimp scampi in garlic butter and white wine. Fast, elegant, and endlessly satisfying.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/shrimp-scampi.webp"
+  },
+  {
+    "name": "One-Pot Chicken and Lentils",
+    "url": "https://thefirstmess.com/one-pot-chicken-lentils/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Braised chicken with lentils and vegetables in one pot. Wholesome, hearty, plant-protein-rich comfort dish.",
+    "image": null
+  },
+  {
+    "name": "White Bean and Kale Soup with Sausage",
+    "url": "https://thefirstmess.com/white-bean-sausage-soup/",
+    "cuisine": "Italian",
+    "course": "Entree",
+    "description": "Tuscan-inspired white bean and kale soup with sausage. Protein-rich one-pot meal packed with flavor.",
+    "image": null
+  },
+  {
+    "name": "Chickpea Coconut Curry",
+    "url": "https://thefirstmess.com/chickpea-coconut-curry/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Creamy coconut chickpea curry with spinach and warming spices. Protein-rich vegan dinner in 30 minutes.",
+    "image": null
+  },
+  {
+    "name": "Smoky Black Bean Tacos",
+    "url": "https://thefirstmess.com/smoky-black-bean-tacos/",
+    "cuisine": "Latin/South American",
+    "course": "Entree",
+    "description": "Smoky seasoned black bean tacos with all the toppings. Satisfying plant-based protein in a fun format.",
+    "image": null
+  },
+  {
+    "name": "Chicken Tikka Masala",
+    "url": "https://www.inspiredtaste.net/36453/chicken-tikka-masala-recipe/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Richly spiced chicken tikka masala with a creamy tomato sauce. Adam and Joanne's thoroughly tested version.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chicken-tikka-masala.webp"
+  },
+  {
+    "name": "Easy Lemon Herb Salmon",
+    "url": "https://www.inspiredtaste.net/35452/lemon-herb-salmon-recipe/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Salmon baked with a lemon herb butter. Simple, foolproof approach to weeknight fish.",
+    "image": null
+  },
+  {
+    "name": "Simple Chicken Thighs",
+    "url": "https://www.inspiredtaste.net/35949/simple-chicken-thighs/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Pan-seared chicken thighs with crispy skin and a simple herb seasoning. The foundation for countless weeknight meals.",
+    "image": null
+  },
+  {
+    "name": "Thai Peanut Noodles with Chicken",
+    "url": "https://www.inspiredtaste.net/28753/thai-peanut-noodles/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Noodles tossed in a creamy Thai peanut sauce with shredded chicken. Quick, satisfying, and endlessly adaptable.",
+    "image": null
+  },
+  {
+    "name": "Crispy Tofu Bowl",
+    "url": "https://www.veganricha.com/crispy-tofu-bowl/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Crispy baked tofu over rice or grains with a savory sauce and fresh toppings. Satisfying vegan protein bowl.",
+    "image": null
+  },
+  {
+    "name": "Lentil Dal",
+    "url": "https://www.veganricha.com/lentil-dal/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Comforting red lentil dal with cumin tempering and fresh cilantro. Quick, protein-rich vegan Indian staple.",
+    "image": null
+  },
+  {
+    "name": "Chana Masala",
+    "url": "https://www.veganricha.com/chana-masala/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Chickpea masala with tangy tomatoes and bold spices. Richa's popular plant-based protein-forward Indian classic.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chana-masala.webp"
+  },
+  {
+    "name": "Tempeh Stir Fry",
+    "url": "https://www.veganricha.com/tempeh-stir-fry/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Marinated tempeh stir-fried with vegetables in a savory Asian sauce. High-protein, weeknight-friendly vegan meal.",
+    "image": null
+  },
+  {
+    "name": "Black Bean Tacos",
+    "url": "https://www.veganricha.com/black-bean-tacos/",
+    "cuisine": "Latin/South American",
+    "course": "Entree",
+    "description": "Spiced black bean tacos with vibrant toppings. Quick, satisfying plant-based protein in taco form.",
+    "image": null
+  },
+  {
+    "name": "White Bean Stew",
+    "url": "https://simple-veganista.com/white-bean-stew/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Tuscan-style white bean and tomato stew with herbs. Protein-rich, comforting, and deeply flavorful vegan dish.",
+    "image": null
+  },
+  {
+    "name": "Lentil Tacos",
+    "url": "https://simple-veganista.com/lentil-tacos/",
+    "cuisine": "Latin/South American",
+    "course": "Entree",
+    "description": "Savory seasoned lentils as a taco filling with fresh toppings. A satisfying plant-protein alternative to meat tacos.",
+    "image": null
+  },
+  {
+    "name": "Chickpea Curry",
+    "url": "https://simple-veganista.com/chickpea-curry/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Simple, warming chickpea curry with coconut milk and aromatic spices. Weeknight vegan comfort food.",
+    "image": null
+  },
+  {
+    "name": "Black Bean Enchiladas",
+    "url": "https://simple-veganista.com/black-bean-enchiladas/",
+    "cuisine": "Latin/South American",
+    "course": "Entree",
+    "description": "Rolled black bean enchiladas in red sauce. Protein-rich vegan take on a Mexican comfort classic.",
+    "image": null
+  },
+  {
+    "name": "BBQ Jackfruit Tacos",
+    "url": "https://www.thissavoryvegan.com/bbq-jackfruit-tacos/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Smoky BBQ jackfruit in tacos with slaw. Meaty-textured vegan protein that satisfies the barbecue craving.",
+    "image": null
+  },
+  {
+    "name": "Lentil Bolognese",
+    "url": "https://www.thissavoryvegan.com/lentil-bolognese/",
+    "cuisine": "Italian",
+    "course": "Entree",
+    "description": "Lentil-based Bolognese sauce over pasta. Protein-rich vegan version of the Italian meat sauce classic.",
+    "image": null
+  },
+  {
+    "name": "Chickpea Shawarma",
+    "url": "https://www.thissavoryvegan.com/chickpea-shawarma-bowls/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Chickpeas roasted in shawarma spices and served in bowls. Plant-based spin on a Middle Eastern classic.",
+    "image": null
+  },
+  {
+    "name": "Black Bean Burgers",
+    "url": "https://www.thissavoryvegan.com/black-bean-burgers/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Smoky, hearty black bean burgers that hold together on the grill. The go-to vegan burger recipe.",
+    "image": null
+  },
+  {
+    "name": "Grilled Salmon with Mango Salsa",
+    "url": "https://jessicainthekitchen.com/grilled-salmon-mango-salsa/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Grilled salmon topped with a vibrant fresh mango salsa. Colorful, tropical, and naturally protein-rich.",
+    "image": null
+  },
+  {
+    "name": "Jerk Tofu",
+    "url": "https://jessicainthekitchen.com/jamaican-jerk-tofu/",
+    "cuisine": "Caribbean",
+    "course": "Entree",
+    "description": "Tofu marinated in authentic Jamaican jerk seasoning and grilled or baked. Bold, smoky Caribbean-inspired vegan protein.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/jerk-tofu.webp"
+  },
+  {
+    "name": "Chickpea Coconut Curry",
+    "url": "https://jessicainthekitchen.com/chickpea-coconut-curry/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Creamy coconut milk chickpea curry with spinach and warming spices. Nourishing plant-based weeknight dinner.",
+    "image": null
+  },
+  {
+    "name": "BBQ Cauliflower Steaks",
+    "url": "https://jessicainthekitchen.com/bbq-cauliflower-steaks/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Thick cauliflower steaks basted in smoky BBQ sauce and grilled. Hearty plant-based main course.",
+    "image": null
+  },
+  {
+    "name": "Teriyaki Tempeh Bowl",
+    "url": "https://jessicainthekitchen.com/teriyaki-tempeh-bowl/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Glazed teriyaki tempeh over rice with steamed vegetables. Simple, protein-packed vegan bowl.",
+    "image": null
+  },
+  {
+    "name": "Salt and Pepper Pork Chops",
+    "url": "https://www.madewithlau.com/salt-pepper-pork-chops/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Classic Cantonese salt and pepper pork chops with a crispy coating and aromatic seasonings.",
+    "image": null
+  },
+  {
+    "name": "Steamed Fish with Ginger and Scallions",
+    "url": "https://www.madewithlau.com/steamed-fish/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Cantonese steamed whole fish finished with hot oil, ginger, and scallions. Elegant technique from Randy Lau's father.",
+    "image": null
+  },
+  {
+    "name": "Oyster Sauce Beef",
+    "url": "https://www.madewithlau.com/oyster-sauce-beef/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Tender beef stir-fried in oyster sauce with ginger and scallions. Chinese comfort food done authentically.",
+    "image": null
+  },
+  {
+    "name": "Braised Pork Belly",
+    "url": "https://www.madewithlau.com/braised-pork-belly/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Cantonese braised pork belly cooked low and slow in a sweet-savory soy sauce until meltingly tender.",
+    "image": null
+  },
+  {
+    "name": "Kung Pao Chicken",
+    "url": "https://www.madewithlau.com/kung-pao-chicken/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Authentic kung pao chicken with Sichuan peppercorns, dried chilies, and peanuts. Made by Randy's father Lau.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/kung-pao-chicken.webp"
+  },
+  {
+    "name": "Crispy Baked Chicken Thighs",
+    "url": "https://www.onceuponachef.com/recipes/crispy-baked-chicken-thighs.html",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Oven-baked chicken thighs with ultra-crispy skin and juicy interior using Jenn's foolproof technique.",
+    "image": null
+  },
+  {
+    "name": "Beef Tenderloin",
+    "url": "https://www.onceuponachef.com/recipes/beef-tenderloin-roast.html",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Perfectly roasted beef tenderloin with a herb crust. Jenn's special-occasion showstopper with restaurant-quality results.",
+    "image": null
+  },
+  {
+    "name": "Lemon Chicken",
+    "url": "https://www.onceuponachef.com/recipes/lemon-chicken.html",
+    "cuisine": "Italian",
+    "course": "Entree",
+    "description": "Tender chicken in a bright lemon-butter pan sauce with capers. Simple, elegant, and ready in 30 minutes.",
+    "image": null
+  },
+  {
+    "name": "Herb Roasted Salmon",
+    "url": "https://www.onceuponachef.com/recipes/herb-roasted-salmon.html",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Salmon roasted with a fresh herb and Dijon crust. Jenn's reliable approach to elegant weeknight fish.",
+    "image": null
+  },
+  {
+    "name": "Turkey Meatballs",
+    "url": "https://www.onceuponachef.com/recipes/turkey-meatballs.html",
+    "cuisine": "Italian",
+    "course": "Entree",
+    "description": "Light and flavorful turkey meatballs with a perfect texture. Served with marinara for a lighter take on spaghetti night.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/turkey-meatballs.webp"
+  },
+  {
+    "name": "Spatchcock Chicken",
+    "url": "https://www.ambitiouskitchen.com/spatchcock-chicken/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Butterflied roast chicken that cooks in record time with extra-crispy skin. Monique's technique-driven approach to a whole bird.",
+    "image": null
+  },
+  {
+    "name": "Thai Basil Chicken",
+    "url": "https://www.ambitiouskitchen.com/thai-basil-chicken/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Spicy Thai basil stir-fry with ground chicken over rice. Weeknight-quick, bold, and addictive.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/thai-basil-chicken.webp"
+  },
+  {
+    "name": "Honey Lemon Chicken",
+    "url": "https://www.ambitiouskitchen.com/honey-lemon-chicken/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Pan-seared chicken in a bright honey-lemon sauce. Clean, simple, and endlessly satisfying.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/honey-lemon-chicken.webp"
+  },
+  {
+    "name": "Salmon with Mango Salsa",
+    "url": "https://www.ambitiouskitchen.com/salmon-mango-salsa/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Grilled or baked salmon topped with a vibrant mango-avocado salsa. Fresh, healthy, and visually stunning.",
+    "image": null
+  },
+  {
+    "name": "Sheet Pan Chicken Shawarma",
+    "url": "https://www.ambitiouskitchen.com/sheet-pan-chicken-shawarma/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Spiced shawarma chicken roasted on a sheet pan with vegetables. Bold Middle Eastern flavors with weeknight ease.",
+    "image": null
+  },
+  {
+    "name": "Lemon Herb Roasted Chicken",
+    "url": "https://downshiftology.com/recipes/lemon-herb-roasted-chicken/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Whole chicken roasted with a lemon herb butter under the skin. Lisa's clean, wholesome approach to a family classic.",
+    "image": null
+  },
+  {
+    "name": "Salmon with Avocado Salsa",
+    "url": "https://downshiftology.com/recipes/baked-salmon-avocado-salsa/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Baked salmon topped with creamy avocado salsa. Naturally gluten-free, paleo-friendly, and ready in 20 minutes.",
+    "image": null
+  },
+  {
+    "name": "Sheet Pan Shrimp Fajitas",
+    "url": "https://downshiftology.com/recipes/shrimp-fajitas/",
+    "cuisine": "Latin/South American",
+    "course": "Entree",
+    "description": "Shrimp and peppers roasted together on a sheet pan with fajita spices. Healthy, colorful, fast weeknight dinner.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/sheet-pan-shrimp-fajitas.webp"
+  },
+  {
+    "name": "Mediterranean Baked Chicken",
+    "url": "https://downshiftology.com/recipes/mediterranean-baked-chicken/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Chicken baked with olives, tomatoes, and artichokes in Mediterranean spices. Clean-eating comfort dish.",
+    "image": null
+  },
+  {
+    "name": "Chicken Enchilada Casserole",
+    "url": "https://www.thecookierookie.com/chicken-enchilada-casserole/",
+    "cuisine": "Latin/South American",
+    "course": "Entree",
+    "description": "Layered chicken enchilada casserole with cheese and red sauce. Easy crowd-pleaser for family dinners.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chicken-enchilada-casserole.webp"
+  },
+  {
+    "name": "Slow Cooker Pot Roast",
+    "url": "https://www.thecookierookie.com/slow-cooker-pot-roast/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Tender chuck roast slow-cooked with vegetables in a savory broth. Classic Sunday dinner made effortlessly.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/slow-cooker-pot-roast.webp"
+  },
+  {
+    "name": "Honey Garlic Salmon",
+    "url": "https://www.thecookierookie.com/honey-garlic-salmon/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Salmon glazed with honey garlic and pan-seared until caramelized. Weeknight fish that feels special.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/honey-garlic-salmon.webp"
+  },
+  {
+    "name": "Lamb Shank Ragu",
+    "url": "https://www.saveur.com/lamb-shank-ragu-recipe/",
+    "cuisine": "Italian",
+    "course": "Entree",
+    "description": "Slow-braised lamb shanks broken into a rich pasta ragu. Restaurant-worthy technique for a deeply satisfying sauce.",
+    "image": null
+  },
+  {
+    "name": "Spiced Roast Chicken",
+    "url": "https://www.saveur.com/spiced-roast-chicken-recipe/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Whole chicken rubbed with a complex spice blend and roasted until golden. A global approach to the classic centerpiece.",
+    "image": null
+  },
+  {
+    "name": "Miso Glazed Black Cod",
+    "url": "https://www.saveur.com/miso-glazed-black-cod/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Black cod marinated in miso and mirin, broiled until caramelized. Japanese-inspired luxury seafood dish.",
+    "image": null
+  },
+  {
+    "name": "Prawn Curry",
+    "url": "https://thehappyfoodie.co.uk/recipes/prawn-curry/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Fragrant prawn curry with coconut milk and spices. Quick Indian-inspired seafood dinner ready in 20 minutes.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/prawn-curry.webp"
+  },
+  {
+    "name": "Chicken Traybake",
+    "url": "https://thehappyfoodie.co.uk/recipes/chicken-traybake/",
+    "cuisine": "British",
+    "course": "Entree",
+    "description": "One-tray roasted chicken with vegetables. A British weeknight staple with minimal prep and maximum flavor.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chicken-traybake.webp"
+  },
+  {
+    "name": "Beef Short Rib Stew",
+    "url": "https://thehappyfoodie.co.uk/recipes/beef-short-rib-stew/",
+    "cuisine": "British",
+    "course": "Entree",
+    "description": "Slow-cooked beef short ribs in a rich red wine stew with root vegetables. A classic British winter warmer.",
+    "image": null
+  },
+  {
+    "name": "Salmon Teriyaki",
+    "url": "https://thehappyfoodie.co.uk/recipes/salmon-teriyaki/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Salmon fillets in a homemade teriyaki glaze. Quick Japanese-inspired dinner from leading UK chefs.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/salmon-teriyaki.webp"
+  },
+  {
+    "name": "Spaghetti Aglio e Olio with Shrimp",
+    "url": "https://anitalianinmykitchen.com/spaghetti-aglio-e-olio/",
+    "cuisine": "Italian",
+    "course": "Entree",
+    "description": "Classic garlic and olive oil pasta with plump shrimp added for protein. The simplest Italian seafood pasta.",
+    "image": null
+  },
+  {
+    "name": "Chicken Cacciatore",
+    "url": "https://anitalianinmykitchen.com/chicken-cacciatore/",
+    "cuisine": "Italian",
+    "course": "Entree",
+    "description": "Chicken braised in a rustic tomato and vegetable cacciatore sauce. Authentic Italian hunter-style comfort dish.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chicken-cacciatore.webp"
+  },
+  {
+    "name": "Italian Stuffed Chicken",
+    "url": "https://anitalianinmykitchen.com/italian-stuffed-chicken-breast/",
+    "cuisine": "Italian",
+    "course": "Entree",
+    "description": "Chicken breasts stuffed with prosciutto, provolone, and herbs. Elegant Italian main that looks impressive.",
+    "image": null
+  },
+  {
+    "name": "Pork Milanese",
+    "url": "https://anitalianinmykitchen.com/pork-milanese/",
+    "cuisine": "Italian",
+    "course": "Entree",
+    "description": "Thin pork cutlets breaded and pan-fried Milanese-style until golden and crispy. Classic Italian technique.",
+    "image": null
+  },
+  {
+    "name": "Air Fryer Chicken Tenders",
+    "url": "https://healthyfitnessmeals.com/air-fryer-chicken-tenders/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Crispy chicken tenders made in the air fryer with minimal oil. High-protein, family-friendly weeknight staple.",
+    "image": null
+  },
+  {
+    "name": "Ground Turkey and Sweet Potato Skillet",
+    "url": "https://healthyfitnessmeals.com/ground-turkey-sweet-potato-skillet/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Ground turkey and roasted sweet potato cooked together in one skillet. Lean, protein-packed weeknight dinner.",
+    "image": null
+  },
+  {
+    "name": "Baked Cajun Chicken",
+    "url": "https://healthyfitnessmeals.com/baked-cajun-chicken/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Oven-baked chicken coated in Cajun spices. Bold flavor with clean, lean ingredients.",
+    "image": null
+  },
+  {
+    "name": "Salmon Buddha Bowl",
+    "url": "https://healthyfitnessmeals.com/salmon-buddha-bowl/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Nutritious salmon bowl with grains, greens, and a tahini dressing. Balanced, protein-rich meal prep hero.",
+    "image": null
+  },
+  {
+    "name": "Turkey Stuffed Peppers",
+    "url": "https://healthyfitnessmeals.com/turkey-stuffed-peppers/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Bell peppers stuffed with lean ground turkey, rice, and tomato sauce. Colorful, macro-friendly weeknight dinner.",
+    "image": null
+  },
+  {
+    "name": "Jerk Chicken with Pineapple Salsa",
+    "url": "https://www.orchidsandsweettea.com/jerk-chicken-with-pineapple-salsa/",
+    "cuisine": "Caribbean",
+    "course": "Entree",
+    "description": "Authentic jerk chicken with smoky allspice and scotch bonnet, topped with a sweet pineapple salsa.",
+    "image": null
+  },
+  {
+    "name": "Cajun Shrimp and Grits",
+    "url": "https://www.orchidsandsweettea.com/cajun-shrimp-and-grits/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Spicy Cajun shrimp over creamy stone-ground grits. Classic Southern dish elevated with bold seasoning.",
+    "image": null
+  },
+  {
+    "name": "Blackened Salmon Tacos",
+    "url": "https://www.orchidsandsweettea.com/blackened-salmon-tacos/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Spiced blackened salmon in warm tortillas with avocado crema and slaw. Bold, colorful weeknight tacos.",
+    "image": null
+  },
+  {
+    "name": "Korean Beef Bowls",
+    "url": "https://justinesnacks.com/korean-beef-bowls/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Ground beef seasoned with Korean-style gochujang and soy over rice. Quick, spicy weeknight bowl.",
+    "image": null
+  },
+  {
+    "name": "Chicken Katsu Curry Bowl",
+    "url": "https://justinesnacks.com/chicken-katsu-curry/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Crispy chicken katsu with Japanese curry sauce over rice. Justine's take on the beloved Japanese comfort dish.",
+    "image": null
+  },
+  {
+    "name": "Crispy Chicken Sandwich",
+    "url": "https://justinesnacks.com/crispy-chicken-sandwich/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Juicy crispy fried chicken on a brioche bun with pickles and special sauce. Restaurant-style sandwich at home.",
+    "image": null
+  },
+  {
+    "name": "Salmon with Crispy Capers",
+    "url": "https://justinesnacks.com/salmon-crispy-capers/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Pan-seared salmon with crispy capers and a bright herb sauce. Quick, elegant weeknight seafood.",
+    "image": null
+  },
+  {
+    "name": "Spiced Lamb Flatbread",
+    "url": "https://justinesnacks.com/spiced-lamb-flatbread/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Flatbread topped with spiced ground lamb, herbs, and yogurt. Weeknight-friendly Middle Eastern inspired main.",
+    "image": null
+  },
+  {
+    "name": "Spiced Lamb Shoulder with Herby Couscous",
+    "url": "https://www.mob.co.uk/recipes/spiced-lamb-shoulder",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Slow-roasted spiced lamb shoulder served over herby couscous. Bold North African flavors, Mob's crowd-feeding style.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/spiced-lamb-shoulder-with-herby-couscous.webp"
+  },
+  {
+    "name": "Chicken Katsu Curry",
+    "url": "https://www.mob.co.uk/recipes/chicken-katsu-curry",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Crispy chicken katsu with a rich Japanese curry sauce. Mob's accessible take on the beloved comfort dish.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chicken-katsu-curry.webp"
+  },
+  {
+    "name": "Thai Green Curry",
+    "url": "https://www.mob.co.uk/recipes/thai-green-curry",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Fragrant Thai green curry with tender chicken and coconut milk. Mob's vibrant weeknight version of the classic.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/thai-green-curry.webp"
+  },
+  {
+    "name": "Beef Rendang",
+    "url": "https://www.mob.co.uk/recipes/beef-rendang",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Indonesian-inspired slow-cooked beef rendang with coconut and aromatic spices. Rich, complex weeknight project.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/beef-rendang.webp"
+  },
+  {
+    "name": "Prawn Linguine",
+    "url": "https://www.mob.co.uk/recipes/prawn-linguine",
+    "cuisine": "Italian",
+    "course": "Entree",
+    "description": "Quick prawn linguine with garlic, chili, and white wine. Classic Italian seafood pasta done simply.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/prawn-linguine.webp"
+  },
+  {
+    "name": "Sheet Pan Chicken Thighs with Lemon and Herbs",
+    "url": "https://whatsgabycooking.com/sheet-pan-chicken-thighs/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Chicken thighs roasted on a sheet pan with lemon, herbs, and garlic. Gaby's go-to weeknight staple.",
+    "image": null
+  },
+  {
+    "name": "Salmon Tacos",
+    "url": "https://whatsgabycooking.com/salmon-tacos/",
+    "cuisine": "Latin/South American",
+    "course": "Entree",
+    "description": "Spiced salmon in warm tortillas with avocado crema and slaw. Bright, fresh weeknight tacos.",
+    "image": null
+  },
+  {
+    "name": "Grilled Chicken Bowl",
+    "url": "https://whatsgabycooking.com/grilled-chicken-bowl/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Grilled chicken served as a customizable bowl with grains, vegetables, and Gaby's signature dressing.",
+    "image": null
+  },
+  {
+    "name": "Beef Tacos",
+    "url": "https://whatsgabycooking.com/beef-tacos/",
+    "cuisine": "Latin/South American",
+    "course": "Entree",
+    "description": "Seasoned ground beef tacos with classic toppings. Gaby's reliable crowd-pleasing taco night formula.",
+    "image": null
+  },
+  {
+    "name": "Shrimp Stir Fry",
+    "url": "https://whatsgabycooking.com/shrimp-stir-fry/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Quick shrimp stir-fry with vegetables in a savory sauce. Fast, colorful weeknight protein.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/shrimp-stir-fry.webp"
+  },
+  {
+    "name": "Crispy Baked Chicken Strips",
+    "url": "https://www.lecremedelacrumb.com/crispy-baked-chicken-strips/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Oven-baked chicken strips with an ultra-crispy coating. Kid-friendly but satisfying for all ages.",
+    "image": null
+  },
+  {
+    "name": "Garlic Herb Steak",
+    "url": "https://www.lecremedelacrumb.com/garlic-herb-skillet-steak/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Skillet steak basted with garlic herb butter until perfectly seared. Quick steakhouse dinner at home.",
+    "image": null
+  },
+  {
+    "name": "Sheet Pan Lemon Chicken and Potatoes",
+    "url": "https://www.lecremedelacrumb.com/sheet-pan-lemon-chicken-potatoes/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Chicken and potatoes roasted together with lemon and herbs on one sheet pan. Easy, comforting weeknight dinner.",
+    "image": null
+  },
+  {
+    "name": "Honey Mustard Baked Salmon",
+    "url": "https://www.lecremedelacrumb.com/honey-mustard-baked-salmon/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Salmon fillets coated in a tangy honey mustard glaze and baked until flaky. Sweet-savory weeknight fish.",
+    "image": null
+  },
+  {
+    "name": "Salmon with Cucumber Herb Sauce",
+    "url": "https://www.alisoneroman.com/recipes/salmon-cucumber-herb-sauce",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Salmon roasted and served with a bright, cooling cucumber herb sauce. Alison's understated, editor-approved approach.",
+    "image": null
+  },
+  {
+    "name": "Spiced Chicken with Dates and Olives",
+    "url": "https://www.alisoneroman.com/recipes/spiced-chicken-dates-olives",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Chicken braised with dates, olives, and warm spices. Sweet-savory North African-inflected flavor from Alison Roman.",
+    "image": null
+  },
+  {
+    "name": "Crispy Fish Tacos",
+    "url": "https://www.alisoneroman.com/recipes/crispy-fish-tacos",
+    "cuisine": "Latin/South American",
+    "course": "Entree",
+    "description": "Crispy fried fish in tacos with pickled onions and herb crema. Alison's elevated take on taco night.",
+    "image": null
+  },
+  {
+    "name": "Turmeric-Braised Chicken",
+    "url": "https://www.alisoneroman.com/recipes/turmeric-braised-chicken",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Chicken braised in a golden turmeric broth with herbs. Vibrant, anti-inflammatory, and deeply comforting.",
+    "image": null
+  },
+  {
+    "name": "Miso Roasted Salmon",
+    "url": "https://eye-swoon.com/recipes/miso-roasted-salmon",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Salmon roasted under a miso-soy glaze with sesame. Clean, minimalist approach with maximum umami.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/miso-roasted-salmon.webp"
+  },
+  {
+    "name": "Za'atar Chicken with Broccolini",
+    "url": "https://eye-swoon.com/recipes/zaatar-chicken-broccolini",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Za'atar-rubbed roasted chicken with charred broccolini. Simple, herb-forward, and beautifully photographed.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/zaatar-chicken-with-broccolini.webp"
+  },
+  {
+    "name": "Herb Roasted Chicken Thighs with Lemon",
+    "url": "https://eye-swoon.com/recipes/herb-roasted-chicken-thighs",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Chicken thighs slow-roasted with fresh herbs, lemon, and garlic. Eye Swoon's elegant, minimalist approach.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/herb-roasted-chicken-thighs-with-lemon.webp"
+  },
+  {
+    "name": "Skillet Lemon Chicken with Olives",
+    "url": "https://www.littlespicejar.com/skillet-lemon-chicken-olives/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Pan-seared chicken in a bright lemon sauce with Castelvetrano olives. Mediterranean simplicity at its best.",
+    "image": null
+  },
+  {
+    "name": "Sheet Pan Chicken Tikka",
+    "url": "https://www.littlespicejar.com/sheet-pan-chicken-tikka/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Tikka-marinated chicken and vegetables roasted on a sheet pan. Indian flavors made weeknight-accessible.",
+    "image": null
+  },
+  {
+    "name": "Spicy Thai Basil Shrimp",
+    "url": "https://www.littlespicejar.com/thai-basil-shrimp/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Shrimp stir-fried with chilies and fragrant Thai basil. Punchy, quick, and great over steamed rice.",
+    "image": null
+  },
+  {
+    "name": "Honey Garlic Chicken Meal Prep",
+    "url": "https://www.littlespicejar.com/honey-garlic-chicken/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Sticky honey garlic chicken that doubles beautifully for meal prep. Sweet, savory, and protein-packed.",
+    "image": null
+  },
+  {
+    "name": "Sheet Pan Salmon with Veggies",
+    "url": "https://www.littlespicejar.com/sheet-pan-salmon/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Salmon roasted with colorful vegetables on one sheet pan. Clean, healthy weeknight dinner.",
+    "image": null
+  },
+  {
+    "name": "Easy Chickpea Shawarma Bowl",
+    "url": "https://minimalistbaker.com/easy-chickpea-shawarma/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Shawarma-spiced chickpeas served in bowls with tahini and fresh vegetables. Dana's 10-ingredient plant-based dinner.",
+    "image": null
+  },
+  {
+    "name": "Crispy Sesame Tofu",
+    "url": "https://minimalistbaker.com/crispy-sesame-tofu-with-sticky-rice/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Crispy baked tofu in a sticky sesame sauce over rice. Crowd-pleasing vegan protein with addictive sauce.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/crispy-sesame-tofu.webp"
+  },
+  {
+    "name": "Spiced Red Lentil Soup",
+    "url": "https://minimalistbaker.com/1-pot-spiced-red-lentil-tomato-coconut-soup/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "One-pot red lentil soup with coconut milk and warming spices. Simple, protein-rich, and deeply comforting vegan entree.",
+    "image": null
+  },
+  {
+    "name": "Tempeh Bowls with Almond Butter Sauce",
+    "url": "https://minimalistbaker.com/tempeh-bowls-with-almond-butter-sauce/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Marinated tempeh over rice with a rich almond butter sauce and pickled vegetables. Dana's fan-favorite protein bowl.",
+    "image": null
+  },
+  {
+    "name": "White Bean Chicken Chili",
+    "url": "https://minimalistbaker.com/white-bean-chicken-chili/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Creamy white bean and chicken chili with subtle spice. Minimalist Baker's lighter take on a cold-weather staple.",
+    "image": null
+  },
+  {
+    "name": "Miso-Ginger Roasted Salmon",
+    "url": "https://www.panningtheglobe.com/miso-ginger-roasted-salmon/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Salmon marinated in miso and ginger, roasted until caramelized. Clean, elegant, Japanese-inspired weeknight fish.",
+    "image": null
+  },
+  {
+    "name": "Thai Red Curry Chicken",
+    "url": "https://www.panningtheglobe.com/thai-red-curry-chicken/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Fragrant Thai red curry with coconut milk and tender chicken. Lisa's globe-trotting approach to a Southeast Asian classic.",
+    "image": null
+  },
+  {
+    "name": "Lamb Tagine with Apricots",
+    "url": "https://www.panningtheglobe.com/lamb-tagine-apricots/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Moroccan-inspired lamb tagine with dried apricots and warm spices. Slow-cooked to fork-tender perfection.",
+    "image": null
+  },
+  {
+    "name": "Greek Chicken and Potatoes",
+    "url": "https://www.panningtheglobe.com/greek-chicken-and-potatoes/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Classic Greek roasted chicken and potatoes with lemon, garlic, and oregano. Authentic and deeply satisfying.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/greek-chicken-and-potatoes.webp"
+  },
+  {
+    "name": "Indian Spiced Lamb Meatballs",
+    "url": "https://www.servingdumplings.com/indian-spiced-lamb-meatballs/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Lamb meatballs spiced with cumin, coriander, and garam masala in a tomato sauce. Aromatic, satisfying Indian-inspired dinner.",
+    "image": null
+  },
+  {
+    "name": "Miso Butter Chicken with Bok Choy",
+    "url": "https://www.servingdumplings.com/miso-butter-chicken/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Chicken thighs glazed in miso butter and served with steamed bok choy. Umami-rich Japanese-inspired weeknight dinner.",
+    "image": null
+  },
+  {
+    "name": "Korean Braised Short Ribs",
+    "url": "https://www.servingdumplings.com/korean-braised-short-ribs/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Beef short ribs braised in a Korean-style sauce with soy, gochujang, and aromatics. Fall-apart tender.",
+    "image": null
+  },
+  {
+    "name": "Salmon with Black Bean Sauce",
+    "url": "https://www.servingdumplings.com/salmon-black-bean-sauce/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Salmon fillets cooked in a Chinese black bean sauce with ginger and scallions. Quick, punchy weeknight fish.",
+    "image": null
+  },
+  {
+    "name": "Ginger Pork Stir Fry",
+    "url": "https://www.servingdumplings.com/ginger-pork-stir-fry/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Pork stir-fried with fresh ginger, scallions, and soy sauce. Fast, aromatic weeknight stir-fry.",
+    "image": null
+  },
+  {
+    "name": "Mapo Tofu",
+    "url": "https://omnivorescookbook.com/mapo-tofu/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Maggie's authentic Sichuan mapo tofu with doubanjiang, ground pork, and numbing peppercorns.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/mapo-tofu.webp"
+  },
+  {
+    "name": "Braised Pork Belly",
+    "url": "https://omnivorescookbook.com/braised-pork-belly/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Slow-braised pork belly in soy, rice wine, and rock sugar. Maggie's Shanghai-style red-braised pork.",
+    "image": null
+  },
+  {
+    "name": "Black Pepper Chicken",
+    "url": "https://omnivorescookbook.com/black-pepper-chicken/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Crispy chicken stir-fried with black pepper, onions, and bell peppers. Fragrant and bold Chinese-American stir-fry.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/black-pepper-chicken.webp"
+  },
+  {
+    "name": "Salt and Pepper Shrimp",
+    "url": "https://omnivorescookbook.com/salt-pepper-shrimp/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Crispy shell-on shrimp seasoned with salt, pepper, and chilies. Cantonese restaurant-style in minutes.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/salt-and-pepper-shrimp.webp"
+  },
+  {
+    "name": "Chicken Ranchero",
+    "url": "https://www.oliviaadriance.com/chicken-ranchero/",
+    "cuisine": "Latin/South American",
+    "course": "Entree",
+    "description": "Saucy ranchero-spiced chicken with a bright, smoky tomato sauce. Bold and satisfying weeknight Tex-Mex.",
+    "image": null
+  },
+  {
+    "name": "Honey Soy Glazed Salmon",
+    "url": "https://www.oliviaadriance.com/honey-soy-salmon/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Salmon glazed in a sweet honey-soy marinade and pan-seared or baked. Quick, clean weeknight fish.",
+    "image": null
+  },
+  {
+    "name": "Moroccan Chicken Bowls",
+    "url": "https://www.oliviaadriance.com/moroccan-chicken-bowls/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Spiced Moroccan chicken served in bowls with couscous and harissa. Vibrant, nutritious dinner.",
+    "image": null
+  },
+  {
+    "name": "Ground Turkey Tacos",
+    "url": "https://www.oliviaadriance.com/ground-turkey-tacos/",
+    "cuisine": "Latin/South American",
+    "course": "Entree",
+    "description": "Lean ground turkey tacos with bold seasoning and fresh toppings. Lighter weeknight taco night.",
+    "image": null
+  },
+  {
+    "name": "Sheet Pan Chicken with Tomatoes",
+    "url": "https://www.oliviaadriance.com/sheet-pan-chicken-tomatoes/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Chicken thighs roasted with burst tomatoes and garlic on a sheet pan. Simple, vibrant Mediterranean weeknight dinner.",
+    "image": null
+  },
+  {
+    "name": "Honey Garlic Pork Tenderloin",
+    "url": "https://www.paleorunningmomma.com/honey-garlic-pork-tenderloin/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Pork tenderloin glazed in honey garlic and roasted until juicy. Paleo-friendly, quick, and satisfying.",
+    "image": null
+  },
+  {
+    "name": "Sheet Pan Chicken and Sweet Potatoes",
+    "url": "https://www.paleorunningmomma.com/sheet-pan-chicken-sweet-potatoes/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Whole30-friendly sheet pan chicken and sweet potatoes with herbs. Clean, satisfying one-pan dinner.",
+    "image": null
+  },
+  {
+    "name": "Chicken Stir Fry with Cauliflower Rice",
+    "url": "https://www.paleorunningmomma.com/chicken-stir-fry-cauliflower-rice/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Paleo chicken stir fry over cauliflower rice. Low-carb weeknight dinner with big Asian-inspired flavor.",
+    "image": null
+  },
+  {
+    "name": "Chicken Tikka with Raita",
+    "url": "https://thefoodcharlatan.com/chicken-tikka-raita/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Yogurt-marinated chicken tikka grilled with bold Indian spices, served with cooling raita.",
+    "image": null
+  },
+  {
+    "name": "Slow Cooker Chicken Tacos",
+    "url": "https://thefoodcharlatan.com/slow-cooker-chicken-tacos/",
+    "cuisine": "Latin/South American",
+    "course": "Entree",
+    "description": "Shredded chicken slow-cooked with salsa and spices for effortless weeknight tacos.",
+    "image": null
+  },
+  {
+    "name": "Sheet Pan Pork Chops and Veggies",
+    "url": "https://thefoodcharlatan.com/sheet-pan-pork-chops/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Pork chops and vegetables roasted together on one pan with a savory seasoning blend.",
+    "image": null
+  },
+  {
+    "name": "Chicken Shawarma",
+    "url": "https://dishedbykate.com/chicken-shawarma/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Tender spiced shawarma chicken baked or grilled, perfect for wraps or bowls.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chicken-shawarma.webp"
+  },
+  {
+    "name": "Salmon Rice Bowl",
+    "url": "https://dishedbykate.com/salmon-rice-bowl/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Baked or pan-seared salmon over seasoned rice with cucumber and avocado. Clean, protein-packed bowl.",
+    "image": null
+  },
+  {
+    "name": "Greek Meatballs",
+    "url": "https://dishedbykate.com/greek-meatballs/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Herb-packed Greek lamb meatballs with tzatziki. Simple and vibrant Mediterranean dinner.",
+    "image": null
+  },
+  {
+    "name": "Honey Garlic Salmon",
+    "url": "https://dishedbykate.com/honey-garlic-salmon/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Salmon pan-seared and glazed with honey garlic sauce. Quick, elegant five-ingredient weeknight dinner.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/honey-garlic-salmon.webp"
+  },
+  {
+    "name": "Honey Harissa Chicken",
+    "url": "https://dishingouthealth.com/honey-harissa-chicken/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Chicken thighs glazed in a sweet honey-harissa sauce. North African heat balanced with sweetness.",
+    "image": null
+  },
+  {
+    "name": "Spicy Salmon Rice Bowl",
+    "url": "https://dishingouthealth.com/spicy-salmon-rice-bowl/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Spicy marinated salmon over seasoned rice with cucumber and avocado. Bright, protein-packed bowl.",
+    "image": null
+  },
+  {
+    "name": "Lemon Herb Chicken Thighs",
+    "url": "https://dishingouthealth.com/lemon-herb-chicken-thighs/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Herb-marinated chicken thighs baked until golden. Clean, fresh flavors with a bright lemon finish.",
+    "image": null
+  },
+  {
+    "name": "Blackened Salmon Tacos with Mango Salsa",
+    "url": "https://somuchfoodblog.com/blackened-salmon-tacos/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Cajun blackened salmon in tacos with a fresh mango salsa. Bold, colorful weeknight taco night.",
+    "image": null
+  },
+  {
+    "name": "Sheet Pan Greek Chicken and Veggies",
+    "url": "https://somuchfoodblog.com/sheet-pan-greek-chicken/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "One-pan Greek chicken thighs with roasted vegetables. Light Mediterranean flavors, minimal cleanup.",
+    "image": null
+  },
+  {
+    "name": "Ground Turkey Bowls",
+    "url": "https://somuchfoodblog.com/ground-turkey-bowls/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Seasoned ground turkey over grain bowls with bright toppings. Lean, protein-dense meal prep staple.",
+    "image": null
+  },
+  {
+    "name": "Baked Teriyaki Salmon",
+    "url": "https://kalejunkie.com/baked-teriyaki-salmon/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Salmon baked in homemade teriyaki sauce until caramelized. Quick weeknight fish with a glossy glaze.",
+    "image": null
+  },
+  {
+    "name": "Sheet Pan Salmon and Vegetables",
+    "url": "https://kalejunkie.com/sheet-pan-salmon-vegetables/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Salmon and colorful vegetables roasted together on one sheet pan. Clean, protein-rich weeknight dinner.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/sheet-pan-salmon-and-vegetables.webp"
+  },
+  {
+    "name": "Greek Meatballs with Tzatziki",
+    "url": "https://kalejunkie.com/greek-meatballs/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Herb-packed Greek lamb meatballs served with cooling tzatziki. Simple Mediterranean protein dinner.",
+    "image": null
+  },
+  {
+    "name": "Honey Garlic Shrimp Bowls",
+    "url": "https://kalejunkie.com/honey-garlic-shrimp-bowls/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Shrimp tossed in sticky honey garlic sauce over rice bowls. Quick, satisfying weeknight dinner.",
+    "image": null
+  },
+  {
+    "name": "Lemon Pepper Chicken Thighs",
+    "url": "https://www.killingthyme.net/lemon-pepper-chicken-thighs/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Juicy chicken thighs seasoned with bold lemon pepper and baked until crispy. A simple weeknight favorite.",
+    "image": null
+  },
+  {
+    "name": "One-Pan Pork Tenderloin with Apples",
+    "url": "https://www.killingthyme.net/one-pan-pork-tenderloin-apples/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Pork tenderloin roasted with apples in one pan. Sweet-savory autumn-inspired weeknight dinner.",
+    "image": null
+  },
+  {
+    "name": "Sheet Pan Cajun Salmon",
+    "url": "https://www.killingthyme.net/sheet-pan-cajun-salmon/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Salmon coated in Cajun spices and roasted on a sheet pan with vegetables. Bold, smoky weeknight fish.",
+    "image": null
+  },
+  {
+    "name": "Za'atar Chicken Thighs",
+    "url": "https://www.feastingathome.com/zaatar-chicken-thighs/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Chicken thighs rubbed with za'atar and roasted until golden. Sylvia's Middle Eastern-inspired weeknight staple.",
+    "image": null
+  },
+  {
+    "name": "Persian Herb Frittata with Smoked Salmon",
+    "url": "https://www.feastingathome.com/persian-herb-frittata/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Herb-packed Persian frittata with smoked salmon and spices. Protein-rich dinner or brunch centerpiece.",
+    "image": null
+  },
+  {
+    "name": "Miso Salmon with Bok Choy",
+    "url": "https://www.feastingathome.com/miso-salmon/",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Miso-glazed salmon roasted alongside bok choy. Clean, umami-rich Japanese-inspired weeknight dish.",
+    "image": null
+  },
+  {
+    "name": "Chicken Kofta with Yogurt Sauce",
+    "url": "https://tastesbetterfromscratch.com/chicken-kofta/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Ground chicken kofta skewers with aromatic spices served with garlic yogurt. Middle Eastern-inspired crowd-pleaser.",
+    "image": null
+  },
+  {
+    "name": "Honey Garlic Pork Chops",
+    "url": "https://tastesbetterfromscratch.com/honey-garlic-pork-chops/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Pork chops glazed in sticky honey garlic sauce and pan-seared until caramelized. 20-minute weeknight winner.",
+    "image": null
+  },
+  {
+    "name": "Easy Butter Chicken",
+    "url": "https://tastesbetterfromscratch.com/butter-chicken/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Lauren's approachable butter chicken with tender chicken in a creamy spiced tomato sauce. Family-friendly Indian.",
+    "image": null
+  },
+  {
+    "name": "Sheet Pan Salmon and Asparagus",
+    "url": "https://tastesbetterfromscratch.com/sheet-pan-salmon-asparagus/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Salmon and asparagus roasted together with a lemon butter glaze. Clean, elegant one-pan dinner.",
+    "image": null
+  },
+  {
+    "name": "Chicken Souvlaki",
+    "url": "https://www.themediterraneandish.com/chicken-souvlaki-recipe/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Greek souvlaki-marinated chicken grilled on skewers with herbs and lemon. Suzy's authentic Mediterranean grilling.",
+    "image": null
+  },
+  {
+    "name": "Moroccan Lamb Stew",
+    "url": "https://www.themediterraneandish.com/moroccan-lamb-stew/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Slow-cooked Moroccan lamb stew with warm spices, chickpeas, and dried fruit. Deeply flavorful North African comfort.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/moroccan-lamb-stew.webp"
+  },
+  {
+    "name": "Baked Cod with Lemon and Garlic",
+    "url": "https://www.themediterraneandish.com/baked-cod-recipe/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Flaky cod baked with lemon, garlic, and olive oil. Clean, light Mediterranean seafood in 15 minutes.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/baked-cod-with-lemon-and-garlic.webp"
+  },
+  {
+    "name": "Turkish Chicken Kebabs",
+    "url": "https://www.themediterraneandish.com/turkish-chicken-kebabs/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Juicy Turkish-spiced chicken skewers with a bold yogurt marinade. Perfect for grilling season.",
+    "image": null
+  },
+  {
+    "name": "Roasted Chicken with Preserved Lemon",
+    "url": "https://www.themodernproper.com/roasted-chicken-preserved-lemon/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Whole roasted chicken with preserved lemon, herbs, and garlic. The Modern Proper's elegant weeknight centerpiece.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/roasted-chicken-with-preserved-lemon.webp"
+  },
+  {
+    "name": "Ground Beef Stir Fry",
+    "url": "https://themodernproper.com/ground-beef-stir-fry",
+    "cuisine": "Asian",
+    "course": "Entree",
+    "description": "Quick ground beef stir fry with vegetables in a savory sauce over rice. Fast weeknight protein bowl.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/ground-beef-stir-fry.webp"
+  },
+  {
+    "name": "Chicken Piccata",
+    "url": "https://themodernproper.com/chicken-piccata",
+    "cuisine": "Italian",
+    "course": "Entree",
+    "description": "Lemon caper chicken piccata with crispy pan-seared cutlets. The Modern Proper's clean, elegant Italian-American staple.",
+    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chicken-piccata.webp"
+  },
+  {
+    "name": "Garlic Herb Pork Tenderloin",
+    "url": "https://cookieandkate.com/garlic-herb-pork-tenderloin-recipe/",
+    "cuisine": "American",
+    "course": "Entree",
+    "description": "Juicy pork tenderloin roasted with garlic and fresh herbs. Kate's reliable whole30-friendly protein centerpiece.",
+    "image": null
+  },
+  {
+    "name": "Roasted Salmon Bowls with Tahini",
+    "url": "https://cookieandkate.com/roasted-salmon-bowls-tahini/",
+    "cuisine": "Mediterranean",
+    "course": "Entree",
+    "description": "Salmon roasted and served in bowls with grains, vegetables, and a creamy tahini dressing.",
+    "image": null
+  },
+  {
+    "name": "Coconut Chickpea Curry",
+    "url": "https://cookieandkate.com/coconut-chickpea-curry-recipe/",
+    "cuisine": "Indian",
+    "course": "Entree",
+    "description": "Creamy coconut chickpea curry with spinach and warming spices. Kate's most popular vegan protein entree.",
+    "image": null
   }
 ]
