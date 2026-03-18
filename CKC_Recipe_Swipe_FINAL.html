@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CKC Review">
+<meta name="theme-color" content="#0f0f0d">
+<title>CKC Recipe Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{--bg:#0f0f0d;--surface:#1a1a16;--border:rgba(255,255,255,0.08);--text-primary:#f5f3ee;--text-secondary:rgba(245,243,238,0.5);--text-muted:rgba(245,243,238,0.25);--green:#7cb87a;--green-glow:rgba(124,184,122,0.15);--red:#c96b6b;--red-glow:rgba(201,107,107,0.15);--yellow:#d4a843;--yellow-glow:rgba(212,168,67,0.15);--font-display:'Cormorant Garamond',Georgia,serif;--font-body:'DM Sans',system-ui,sans-serif}
+html,body{height:100%;width:100%;overflow:hidden;background:var(--bg);color:var(--text-primary);font-family:var(--font-body)}
+#app{height:100dvh;width:100%;display:flex;flex-direction:column;position:relative;overflow:hidden}
+#auth-screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;padding:2rem;z-index:100;background:var(--bg)}
+.auth-logo{font-family:var(--font-display);font-size:2.5rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase}
+.auth-tagline{font-size:12px;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;margin-top:-1.5rem}
+.auth-subtitle{font-size:13px;color:var(--text-secondary);text-align:center;line-height:1.6;max-width:260px}
+.google-btn{display:flex;align-items:center;gap:10px;background:var(--text-primary);color:var(--bg);border:none;border-radius:100px;padding:14px 28px;font-family:var(--font-body);font-size:14px;font-weight:500;cursor:pointer;transition:opacity .2s}
+.google-btn:active{opacity:.8}
+.google-btn svg{width:18px;height:18px;flex-shrink:0}
+.auth-note{font-size:11px;color:var(--text-muted);text-align:center;max-width:240px;line-height:1.5}
+#loading{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:80;background:var(--bg)}
+.loading-text{font-size:12px;color:var(--text-muted);letter-spacing:.08em}
+.dots{display:flex;gap:6px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--text-muted);animation:pulse 1.2s ease-in-out infinite}
+.dot:nth-child(2){animation-delay:.2s}.dot:nth-child(3){animation-delay:.4s}
+@keyframes pulse{0%,100%{opacity:.2;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
+#error-screen{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:2rem;z-index:90;background:var(--bg)}
+.error-title{font-family:var(--font-display);font-size:1.5rem;color:var(--red)}
+.error-msg{font-size:13px;color:var(--text-secondary);text-align:center;line-height:1.6;max-width:280px}
+.error-btn{background:none;border:1px solid var(--border);border-radius:100px;padding:10px 24px;color:var(--text-secondary);font-family:var(--font-body);font-size:13px;cursor:pointer}
+#header{display:none;padding:16px 20px 12px;flex-shrink:0}
+#header.visible{display:flex;align-items:center;justify-content:space-between}
+.header-logo{font-family:var(--font-display);font-size:1.1rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase}
+.header-stats{display:flex;gap:10px;align-items:center}
+.stat-dot{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text-muted)}
+.stat-dot::before{content:'';width:6px;height:6px;border-radius:50%}
+.stat-dot.green::before{background:var(--green)}.stat-dot.yellow::before{background:var(--yellow)}.stat-dot.red::before{background:var(--red)}
+.header-progress{font-size:11px;color:var(--text-muted)}
+#card-area{flex:1;display:none;position:relative;overflow:hidden}
+#card-area.visible{display:block}
+.card-stack{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0 16px}
+.recipe-card{position:absolute;width:100%;max-width:400px;border-radius:20px;overflow:hidden;background:var(--surface);border:1px solid var(--border);cursor:grab;touch-action:none;will-change:transform}
+.recipe-card:active{cursor:grabbing}
+.recipe-card.back-1{transform:scale(.95) translateY(16px);z-index:1;pointer-events:none}
+.recipe-card.back-2{transform:scale(.90) translateY(32px);z-index:0;pointer-events:none}
+.recipe-card.top{z-index:2}
+.card-img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:var(--bg)}
+.card-img-placeholder{width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,#1e1e1a,#2a2a24);display:flex;align-items:center;justify-content:center;font-size:3rem;opacity:.2}
+.card-body{padding:20px 20px 16px}
+.card-cuisine{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;font-weight:500}
+.card-name{font-family:var(--font-display);font-size:1.7rem;font-weight:500;line-height:1.15;color:var(--text-primary);margin-bottom:10px}
+.card-desc{font-size:13px;color:var(--text-secondary);line-height:1.55;font-weight:300}
+.card-source{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px}
+.card-source a{color:var(--text-muted);text-decoration:none}
+.swipe-label{position:absolute;font-family:var(--font-display);font-size:2rem;font-weight:600;font-style:italic;letter-spacing:.05em;text-transform:uppercase;opacity:0;pointer-events:none;border:3px solid currentColor;padding:4px 14px;border-radius:6px}
+.label-yes{top:20px;left:20px;color:var(--green)}.label-no{top:20px;right:20px;color:var(--red)}.label-maybe{left:50%;transform:translateX(-50%);bottom:20px;color:var(--yellow)}
+#actions{display:none;padding:16px 20px 36px;flex-shrink:0}
+#actions.visible{display:flex;align-items:center;justify-content:center;gap:20px}
+.action-btn{border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s}
+.action-btn:active{transform:scale(.9)}
+.btn-red{width:60px;height:60px;background:var(--red-glow);border:1.5px solid var(--red)}.btn-red svg{stroke:var(--red)}
+.btn-green{width:70px;height:70px;background:var(--green-glow);border:1.5px solid var(--green)}.btn-green svg{stroke:var(--green)}
+.btn-yellow{width:52px;height:52px;background:var(--yellow-glow);border:1.5px solid var(--yellow)}.btn-yellow svg{stroke:var(--yellow)}
+#swipe-hint{position:absolute;bottom:110px;left:0;right:0;text-align:center;font-size:11px;color:var(--text-muted);letter-spacing:.08em;pointer-events:none;animation:fadeHint 3s ease forwards;animation-delay:1.5s}
+@keyframes fadeHint{0%{opacity:1}70%{opacity:1}100%{opacity:0}}
+#done-screen{display:none;position:absolute;inset:0;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:2rem;z-index:50;background:var(--bg)}
+#done-screen.visible{display:flex}
+.done-title{font-family:var(--font-display);font-size:2.5rem;font-weight:500;font-style:italic}
+.done-subtitle{font-size:13px;color:var(--text-secondary)}
+.done-stats{display:flex;gap:28px;margin-top:8px}
+.done-stat{text-align:center}
+.done-num{font-family:var(--font-display);font-size:2.5rem;font-weight:500;display:block}
+.done-label{font-size:10px;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase}
+.done-stat.green .done-num{color:var(--green)}.done-stat.yellow .done-num{color:var(--yellow)}.done-stat.red .done-num{color:var(--red)}
+.done-note{font-size:11px;color:var(--text-muted);text-align:center;max-width:240px;line-height:1.6}
+.reset-btn{margin-top:8px;background:none;border:1px solid var(--border);border-radius:100px;padding:10px 24px;color:var(--text-secondary);font-family:var(--font-body);font-size:13px;cursor:pointer}
+#toast{position:fixed;bottom:120px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:8px 18px;font-size:12px;color:var(--text-secondary);opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap;z-index:200}
+#toast.show{opacity:1}
+.exit-right{animation:exitRight .35s ease-in forwards}
+.exit-left{animation:exitLeft .35s ease-in forwards}
+.exit-up{animation:exitUp .35s ease-in forwards}
+@keyframes exitRight{to{transform:translateX(130%) rotate(20deg);opacity:0}}
+@keyframes exitLeft{to{transform:translateX(-130%) rotate(-20deg);opacity:0}}
+@keyframes exitUp{to{transform:translateY(-130%) scale(.9);opacity:0}}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="auth-screen">
+    <div class="auth-logo">CKC</div>
+    <div class="auth-tagline">Recipe Review</div>
+    <p class="auth-subtitle">Sign in with the Google account that owns your CKC staging sheet.</p>
+    <button class="google-btn" id="google-btn">
+      <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+      Sign in with Google
+    </button>
+    <p class="auth-note">Your data stays private. The app reads your staging sheet and writes decisions only.</p>
+  </div>
+  <div id="loading"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><div class="loading-text" id="loading-text">Loading recipes...</div></div>
+  <div id="error-screen"><div class="error-title">Something went wrong</div><div class="error-msg" id="error-msg"></div><button class="error-btn" id="error-retry">Try again</button></div>
+  <div id="header"><div class="header-logo">CKC</div><div class="header-stats"><div class="stat-dot green" id="stat-yes">0</div><div class="stat-dot yellow" id="stat-maybe">0</div><div class="stat-dot red" id="stat-no">0</div></div><div class="header-progress" id="progress"></div></div>
+  <div id="card-area"><div class="card-stack" id="card-stack"></div><div id="swipe-hint">swipe right yes &nbsp;·&nbsp; left no &nbsp;·&nbsp; up maybe</div></div>
+  <div id="actions">
+    <button class="action-btn btn-red" id="btn-no"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <button class="action-btn btn-yellow" id="btn-maybe"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></button>
+    <button class="action-btn btn-green" id="btn-yes"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+  </div>
+  <div id="done-screen"><div class="done-title">All done.</div><p class="done-subtitle">Session complete.</p><div class="done-stats"><div class="done-stat green"><span class="done-num" id="final-yes">0</span><span class="done-label">Yes</span></div><div class="done-stat yellow"><span class="done-num" id="final-maybe">0</span><span class="done-label">Maybe</span></div><div class="done-stat red"><span class="done-num" id="final-no">0</span><span class="done-label">No</span></div></div><p class="done-note">All decisions saved to your CKC Recipe Decisions sheet.</p><button class="reset-btn" id="reset-btn">Back to start</button></div>
+  <div id="toast"></div>
+</div>
+<script src="https://accounts.google.com/gsi/client" async></script>
+<script>
+const CONFIG={CLIENT_ID:'113570992242-r0fk36g1jcqsh3uifj4t73ec4chgd842.apps.googleusercontent.com',SHEET_ID:'1T-TwBUKO9SjloycmhbAgTBD-NtOmsN8KDv-3fAZXAZo',STAGING_TAB:'staging sheet',DECISIONS_TAB:'ckc recipe decisions',SCOPES:'https://www.googleapis.com/auth/spreadsheets'};
+let accessToken=null,recipes=[],currentIndex=0,counts={yes:0,maybe:0,no:0},animating=false,isDragging=false,startX=0,startY=0,currentX=0,currentY=0,topCard=null;
+const $=id=>document.getElementById(id);
+$('google-btn').addEventListener('click',()=>{
+  const client=google.accounts.oauth2.initTokenClient({client_id:CONFIG.CLIENT_ID,scope:CONFIG.SCOPES,callback:async r=>{
+    if(r.error){showError('Sign in failed. Please try again.');return;}
+    accessToken=r.access_token;$('auth-screen').style.display='none';showLoading('Loading your recipes...');await loadRecipes();
+  }});client.requestAccessToken();
+});
+async function loadRecipes(){
+  try{
+    const range=encodeURIComponent("'"+CONFIG.STAGING_TAB+"'!A:F");
+    const res=await fetch('https://sheets.googleapis.com/v4/spreadsheets/'+CONFIG.SHEET_ID+'/values/'+range,{headers:{Authorization:'Bearer '+accessToken}});
+    if(!res.ok)throw new Error('Could not read sheet ('+res.status+'). Make sure you are signed into the right Google account.');
+    const data=await res.json();
+    const rows=(data.values||[]).slice(1);
+    recipes=rows.map((row,i)=>({rowIndex:i+2,name:row[0]||'',url:row[1]||'',cuisine:row[2]||'',course:row[3]||'',description:row[4]||'',status:row[5]||''})).filter(r=>!r.status&&r.name);
+    if(!recipes.length){showError('No unreviewed recipes found. Make sure column A has recipe names and column F is empty for unreviewed rows.');return;}
+    await ensureHeaders();hideLoading();showMain();renderCards();
+  }catch(e){showError(e.message||'Unknown error.');}
+}
+async function ensureHeaders(){
+  try{
+    const range=encodeURIComponent("'"+CONFIG.DECISIONS_TAB+"'!A1");
+    const res=await fetch('https://sheets.googleapis.com/v4/spreadsheets/'+CONFIG.SHEET_ID+'/values/'+range,{headers:{Authorization:'Bearer '+accessToken}});
+    const data=await res.json();
+    if(!data.values){await sheetPut("'"+CONFIG.DECISIONS_TAB+"'!A1:G1",[['Recipe Name','Decision','Cuisine','Course','Source URL','Timestamp','Staging Row']]);}
+  }catch(e){}
+}
+function renderCards(){
+  $('card-stack').innerHTML='';
+  if(currentIndex>=recipes.length){showDone();return;}
+  const slice=recipes.slice(currentIndex,currentIndex+3);
+  [...slice].reverse().forEach((recipe,i)=>{
+    const ri=slice.length-1-i;const card=buildCard(recipe);
+    if(ri===0&&slice.length>=3)card.classList.add('back-2');
+    else if(ri===0)card.classList.add('back-1');
+    else if(ri===1)card.classList.add('back-1');
+    else{card.classList.add('top');setupDrag(card);}
+    $('card-stack').appendChild(card);
+  });
+  if(slice.length===1){const c=$('card-stack').querySelector('.recipe-card');c.className='recipe-card top';setupDrag(c);}
+  topCard=$('card-stack').querySelector('.top');
+  $('progress').textContent=(currentIndex+1)+' / '+recipes.length;
+}
+function buildCard(r){
+  const card=document.createElement('div');card.className='recipe-card';
+  let domain='';try{domain=r.url?new URL(r.url).hostname.replace('www.',''):'';}catch(e){}
+  card.innerHTML='<div style="position:relative"><img class="card-img" src="" alt="'+r.name+'" onerror="this.outerHTML=\'<div class=\\'card-img-placeholder\\'>&#127859;</div>\'"><div class="swipe-label label-yes">Yes</div><div class="swipe-label label-no">No</div><div class="swipe-label label-maybe">Maybe</div></div><div class="card-body"><div class="card-cuisine">'+r.cuisine+(r.course?' &middot; '+r.course:'')+'</div><div class="card-name">'+r.name+'</div><div class="card-desc">'+r.description+'</div>'+(domain?'<div class="card-source"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><a href="'+r.url+'" target="_blank">'+domain+'</a></div>':'')+'</div>';
+  if(r.url)fetchOGImage(card.querySelector('.card-img'),r.url);
+  return card;
+}
+async function fetchOGImage(img,url){
+  try{
+    const res=await fetch('https://api.allorigins.win/get?url='+encodeURIComponent(url));
+    const data=await res.json();
+    const m=data.contents.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i)||data.contents.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i);
+    if(m&&m[1])img.src=m[1];else img.outerHTML='<div class="card-img-placeholder">&#127859;</div>';
+  }catch(e){try{img.outerHTML='<div class="card-img-placeholder">&#127859;</div>';}catch(e2){}}
+}
+function setupDrag(card){card.addEventListener('mousedown',onStart);card.addEventListener('touchstart',onStart,{passive:true});}
+function onStart(e){
+  if(animating)return;isDragging=true;const pt=e.touches?e.touches[0]:e;startX=pt.clientX;startY=pt.clientY;currentX=0;currentY=0;topCard=e.currentTarget;topCard.style.transition='none';
+  document.addEventListener('mousemove',onMove);document.addEventListener('touchmove',onMove,{passive:false});document.addEventListener('mouseup',onEnd);document.addEventListener('touchend',onEnd);
+}
+function onMove(e){
+  if(!isDragging)return;if(e.cancelable)e.preventDefault();const pt=e.touches?e.touches[0]:e;currentX=pt.clientX-startX;currentY=pt.clientY-startY;
+  topCard.style.transform='translateX('+currentX+'px) translateY('+currentY+'px) rotate('+(currentX*0.06)+'deg)';
+  const absX=Math.abs(currentX),absY=Math.abs(currentY),t=40;
+  const ly=topCard.querySelector('.label-yes'),ln=topCard.querySelector('.label-no'),lm=topCard.querySelector('.label-maybe');
+  if(currentY<-t&&absY>absX){lm.style.opacity=Math.min((-currentY-t)/60,1);ly.style.opacity=0;ln.style.opacity=0;}
+  else if(currentX>t){ly.style.opacity=Math.min((currentX-t)/60,1);ln.style.opacity=0;lm.style.opacity=0;}
+  else if(currentX<-t){ln.style.opacity=Math.min((-currentX-t)/60,1);ly.style.opacity=0;lm.style.opacity=0;}
+  else{ly.style.opacity=0;ln.style.opacity=0;lm.style.opacity=0;}
+}
+function onEnd(){
+  if(!isDragging)return;isDragging=false;
+  document.removeEventListener('mousemove',onMove);document.removeEventListener('touchmove',onMove);document.removeEventListener('mouseup',onEnd);document.removeEventListener('touchend',onEnd);
+  const absX=Math.abs(currentX),absY=Math.abs(currentY),t=80;
+  if(currentY<-t&&absY>absX)decide('maybe');else if(currentX>t)decide('yes');else if(currentX<-t)decide('no');
+  else{topCard.style.transition='transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275)';topCard.style.transform='';topCard.querySelectorAll('.swipe-label').forEach(l=>l.style.opacity=0);}
+  currentX=0;currentY=0;
+}
+async function decide(action){
+  if(animating||currentIndex>=recipes.length)return;animating=true;const recipe=recipes[currentIndex];counts[action]++;
+  $('stat-yes').textContent=counts.yes;$('stat-maybe').textContent=counts.maybe;$('stat-no').textContent=counts.no;
+  const card=$('card-stack').querySelector('.top');
+  if(card){card.style.transition='none';card.classList.add(action==='yes'?'exit-right':action==='no'?'exit-left':'exit-up');card.addEventListener('animationend',()=>{currentIndex++;animating=false;renderCards();},{once:true});}
+  showToast(action==='yes'?'Saved to Yes':action==='maybe'?'Saved to Maybe':'Skipped');
+  writeDecision(recipe,action);markReviewed(recipe.rowIndex,action);
+}
+async function writeDecision(r,action){
+  try{
+    const range=encodeURIComponent("'"+CONFIG.DECISIONS_TAB+"'!A:G");
+    await fetch('https://sheets.googleapis.com/v4/spreadsheets/'+CONFIG.SHEET_ID+'/values/'+range+':append?valueInputOption=RAW&insertDataOption=INSERT_ROWS',{method:'POST',headers:{Authorization:'Bearer '+accessToken,'Content-Type':'application/json'},body:JSON.stringify({values:[[r.name,action.toUpperCase(),r.cuisine,r.course,r.url,new Date().toLocaleString(),r.rowIndex]]})});
+  }catch(e){console.error(e);}
+}
+async function markReviewed(rowIndex,action){
+  try{
+    const range=encodeURIComponent("'"+CONFIG.STAGING_TAB+"'!F"+rowIndex);
+    await fetch('https://sheets.googleapis.com/v4/spreadsheets/'+CONFIG.SHEET_ID+'/values/'+range+'?valueInputOption=RAW',{method:'PUT',headers:{Authorization:'Bearer '+accessToken,'Content-Type':'application/json'},body:JSON.stringify({values:[[action.toUpperCase()]]})});
+  }catch(e){console.error(e);}
+}
+async function sheetPut(range,values){
+  const enc=encodeURIComponent(range);
+  await fetch('https://sheets.googleapis.com/v4/spreadsheets/'+CONFIG.SHEET_ID+'/values/'+enc+'?valueInputOption=RAW',{method:'PUT',headers:{Authorization:'Bearer '+accessToken,'Content-Type':'application/json'},body:JSON.stringify({values})});
+}
+function showMain(){$('header').classList.add('visible');$('card-area').classList.add('visible');$('actions').classList.add('visible');}
+function hideMain(){$('header').classList.remove('visible');$('card-area').classList.remove('visible');$('actions').classList.remove('visible');}
+function showLoading(t){$('loading-text').textContent=t||'Loading...';$('loading').style.display='flex';}
+function hideLoading(){$('loading').style.display='none';}
+function showError(msg){hideLoading();$('error-msg').textContent=msg;$('error-screen').style.display='flex';}
+function showDone(){hideMain();$('final-yes').textContent=counts.yes;$('final-maybe').textContent=counts.maybe;$('final-no').textContent=counts.no;$('done-screen').classList.add('visible');}
+let toastTimer;
+function showToast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),1400);}
+$('btn-yes').addEventListener('click',()=>decide('yes'));
+$('btn-no').addEventListener('click',()=>decide('no'));
+$('btn-maybe').addEventListener('click',()=>decide('maybe'));
+$('error-retry').addEventListener('click',()=>{$('error-screen').style.display='none';$('auth-screen').style.display='flex';});
+$('reset-btn').addEventListener('click',()=>{$('done-screen').classList.remove('visible');$('auth-screen').style.display='flex';});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')decide('yes');if(e.key==='ArrowLeft')decide('no');if(e.key==='ArrowUp')decide('maybe');});
+</script>
+<script>
+const m={name:"CKC Recipe Review",short_name:"CKC",display:"standalone",background_color:"#0f0f0d",theme_color:"#0f0f0d",orientation:"portrait"};
+const b=new Blob([JSON.stringify(m)],{type:'application/json'});const l=document.createElement('link');l.rel='manifest';l.href=URL.createObjectURL(b);document.head.appendChild(l);
+</script>
+</body>
+</html>
