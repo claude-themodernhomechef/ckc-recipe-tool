@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ratio Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0f0f0d;color:#f5f3ee;font-family:'DM Sans',sans-serif;display:flex;gap:32px;justify-content:center;align-items:flex-start;padding:40px 24px;flex-wrap:wrap}
+.col{display:flex;flex-direction:column;align-items:center;gap:12px}
+.label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(245,243,238,.35)}
+.card{width:300px;border-radius:20px;overflow:hidden;background:#1a1a16;border:1px solid rgba(255,255,255,.08)}
+.img-4-3{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.img-2-3{width:100%;aspect-ratio:2/3;object-fit:cover;display:block}
+.card-body{padding:18px 18px 14px}
+.card-cuisine{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(245,243,238,.28);margin-bottom:6px}
+.card-name{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:500;line-height:1.15;margin-bottom:8px}
+.card-desc{font-size:12px;color:rgba(245,243,238,.5);line-height:1.55;font-weight:300}
+.card-source{margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.08);font-size:11px;color:rgba(245,243,238,.28)}
+</style>
+</head>
+<body>
+
+<div class="col">
+  <div class="label">Current — 4:3</div>
+  <div class="card">
+    <img class="img-4-3" src="https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/carne-asada-tacos.webp" alt="">
+    <div class="card-body">
+      <div class="card-cuisine">Latin/South American · Entree</div>
+      <div class="card-name">Carne Asada Tacos</div>
+      <div class="card-desc">Skirt steak marinated in lime, spices & garlic; cross-protein swap potential</div>
+      <div class="card-source">acozykitchen.com</div>
+    </div>
+  </div>
+</div>
+
+<div class="col">
+  <div class="label">New — 2:3</div>
+  <div class="card">
+    <img class="img-2-3" src="https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/carne-asada-tacos.webp" alt="">
+    <div class="card-body">
+      <div class="card-cuisine">Latin/South American · Entree</div>
+      <div class="card-name">Carne Asada Tacos</div>
+      <div class="card-desc">Skirt steak marinated in lime, spices & garlic; cross-protein swap potential</div>
+      <div class="card-source">acozykitchen.com</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
