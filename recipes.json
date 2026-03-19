@@ -273,7 +273,7 @@
     "url": "https://therecipecritic.com/marry-me-salmon/",
     "cuisine": "Italian",
     "course": "Entree",
-    "description": "",
+    "description": "Salmon so good, it will have everyone falling in love! Marry Me Salmon is soft and flaky, smothered in an buttery, creamy sun-dried tomato sauce.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/marry-me-salmon.webp",
     "protein": "fish"
   },
@@ -722,7 +722,7 @@
     "url": "https://www.onceuponachef.com/recipes/slow-roasted-salmon-with-french-herb-salsa.html",
     "cuisine": "French",
     "course": "Entree",
-    "description": "",
+    "description": "This slow-roasted salmon with fresh herbs looks impressive, tastes amazing, and couldn’t be easier. Serve it warm, chilled, or at room temp.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/slow-roasted-salmon-with-french-herb-salsa.webp",
     "protein": "fish"
   },
@@ -749,7 +749,7 @@
     "url": "https://www.onceuponachef.com/recipes/pan-seared-salmon-with-soy-mustard-glaze.html",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "Whip up this quick and elegant salmon with a soy-mustard glaze—full of flavor and ready in just 15 minutes!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/pan-seared-salmon-with-soy-mustard-glaze.webp",
     "protein": "fish"
   },
@@ -848,7 +848,7 @@
     "url": "https://www.recipetineats.com/lemon-garlic-salmon-tray-bake-easy-healthy/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "A simple, healthy, very tasty salmon tray bake with parmesan asparagus and blistered tomatoes all cooked on on tray!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/lemon-garlic-salmon-tray-bake.webp",
     "protein": "fish"
   },
@@ -941,7 +941,7 @@
     "url": "https://www.themediterraneandish.com/air-fryer-salmon/",
     "cuisine": "Mediterranean",
     "course": "Entree",
-    "description": "",
+    "description": "Air fryer salmon with garlic and spices cooks to perfect tenderness in lightning speed. Use them to top a salad for a fast, easy dinner.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/air-fryer-salmon.webp",
     "protein": "fish"
   },
@@ -1015,7 +1015,7 @@
     "url": "https://thedefineddish.com/panko-crusted-baked-salmon/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "This Panko-Crusted Baked Salmon is a new variation I have been doing lately. I love the crunch the panko crumbs add and it's so quick to make.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/panko-crusted-baked-salmon.webp",
     "protein": "fish"
   },
@@ -1119,7 +1119,7 @@
     "url": "https://cafedelites.com/sheet-pan-garlic-butter-baked-salmon/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Succulent garlic butter baked salmon that melts in your mouth! Packed with bold flavors, it's the ultimate easy dinner recipe you'll crave again and again.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/garlic-butter-baked-salmon.webp",
     "protein": "fish"
   },
@@ -1128,7 +1128,7 @@
     "url": "https://cafedelites.com/crispy-seared-lemon-garlic-herb-salmon/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Pan Seared Salmon with a lemon garlic butter sauce is a deliciously easy salmon recipe, so simple to make, yet so delicious! Crispy on the...",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/pan-seared-salmon-with-lemon-garlic-butter-sauce.webp",
     "protein": "fish"
   },
@@ -1173,7 +1173,7 @@
     "url": "https://www.thegoodbite.co.uk/recipes/creamy-cajun-chicken-pasta-2/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Creamy Cajun Chicken Pasta has got to be one of the most comforting ways to enjoy chicken and pasta. So creamy and absolutely delicious!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/creamy-cajun-chicken-pasta.webp",
     "protein": "chicken"
   },
@@ -1296,7 +1296,7 @@
     "url": "https://therecipecritic.com/marry-me-salmon/",
     "cuisine": "Italian",
     "course": "Entree",
-    "description": "",
+    "description": "Salmon so good, it will have everyone falling in love! Marry Me Salmon is soft and flaky, smothered in an buttery, creamy sun-dried tomato sauce.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/marry-me-salmon.webp",
     "protein": "fish"
   },
@@ -1305,7 +1305,7 @@
     "url": "https://therecipecritic.com/creamy-tuscan-garlic-salmon/",
     "cuisine": "Italian",
     "course": "Entree",
-    "description": "",
+    "description": "Creamy Tuscan garlic salmon is an easy 30-minute restaurant-quality meal. The pan-seared salmon gets smothered in the most amazing creamy Tuscan garlic sauce with sun-dried tomatoes and spinach.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/creamy-tuscan-garlic-salmon.webp",
     "protein": "fish"
   },
@@ -3042,7 +3042,7 @@
     "url": "https://www.mob.co.uk/recipes/spicy-chicken-pasta",
     "cuisine": "Italian",
     "course": "Entree",
-    "description": "",
+    "description": "This flavourful, spicy chicken pasta is about to be slotted straight into your weekly rotation. If you like spice then you’ll like this simple pasta dish.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/spicy-chicken-pasta.webp",
     "protein": "chicken"
   },
@@ -3051,7 +3051,7 @@
     "url": "https://www.mob.co.uk/recipes/hot-chicken-katsu-curry",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "This is our favourite chicken katsu curry recipe. If you like Wagamamas and you like chicken, this one's for you. Give it a go tonight.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/hot-chicken-katsu-curry.webp",
     "protein": "chicken"
   },
@@ -3105,7 +3105,7 @@
     "url": "https://www.mob.co.uk/recipes/steak-tacos-with-burnt-tomato-salsa",
     "cuisine": "Latin/South American",
     "course": "Entree",
-    "description": "",
+    "description": "Ugo Monye teaches us how to make the perfect burnt tomato salsa with Bull’s-Eye Kentucky Habanero Hot Sauce.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/steak-tacos-with-burnt-tomato-salsa.webp",
     "protein": "meat"
   },
@@ -3141,7 +3141,7 @@
     "url": "https://www.mob.co.uk/recipes/curry-fried-chicken",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "We had Melissa Thompson make her Curry Fried Chicken from her new book Motherland and it was all the things we love. Big flavours. Incredible textures.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/curry-fried-chicken.webp",
     "protein": "chicken"
   },
@@ -3393,7 +3393,7 @@
     "url": "https://www.thegoodbite.co.uk/recipes/creamy-cajun-chicken-pasta-2/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Creamy Cajun Chicken Pasta has got to be one of the most comforting ways to enjoy chicken and pasta. So creamy and absolutely delicious!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/creamy-cajun-chicken-pasta.webp",
     "protein": "chicken"
   },
@@ -3411,7 +3411,7 @@
     "url": "https://www.thegoodbite.co.uk/recipes/peanut-chilli-beef-noodles/",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "Peanut Chilli Beef Noodles are one of the quickest and tastiest dishes you could possibly make. Easy, tasty and delicious.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/peanut-chilli-beef-noodles.webp",
     "protein": "meat"
   },
@@ -3465,7 +3465,7 @@
     "url": "https://www.thegoodbite.co.uk/recipes/classic-beef-stew-and-creamy-cheesy-mash/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "The only classic beef stew recipe you’ll ever need. So comforting and delicious, stewed to perfection with @russelhobbs multi cooker.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/classic-beef-stew-with-creamy-cheesy-mash.webp",
     "protein": "meat"
   },
@@ -3483,7 +3483,7 @@
     "url": "https://eye-swoon.com/blogs/recipes/whole-roasted-fish-with-citrus-herbs",
     "cuisine": "Mediterranean",
     "course": "Entree",
-    "description": "",
+    "description": "Recipes Mains: Whole Roasted Fish with Citrus &amp; Herbs Athena Calderone for Food &amp; Wine Ingredients Serves 4-6 people 1 3lb whole fish (red snapper, branzino or seabass) cleaned, scaled, &amp; ",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/whole-roasted-fish-with-citrus-herbs.webp",
     "protein": "fish"
   },
@@ -3510,7 +3510,7 @@
     "url": "https://eye-swoon.com/blogs/eyeswoon-unplugged/eyeswoon-unplugged-pork-shoulder-ragu",
     "cuisine": "Italian",
     "course": "Entree",
-    "description": "",
+    "description": "Food EyeSwoon Unplugged: Pork Shoulder Ragu Each time I post an EyeSwoon Unplugged cooking video on my IG Stories I am met with a handful of DM’s asking about the resource of everything from my knives",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/pork-shoulder-ragu.webp",
     "protein": "pork"
   },
@@ -3672,7 +3672,7 @@
     "url": "https://healthyfitnessmeals.com/cajun-shrimp-pasta/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Easy to make Cajun-style shrimp pasta that's ready in just 30 minutes.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cajun-shrimp-pasta.webp",
     "protein": "seafood"
   },
@@ -3690,7 +3690,7 @@
     "url": "https://healthyfitnessmeals.com/teriyaki-chicken-stir-fry/",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "Enjoy this healthy and easy teriyaki chicken recipe for a quick dinner at home with the family. The homemade teriyaki sauce is sweet and savory and delicious with the fresh vegetables.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/teriyaki-chicken-stir-fry.webp",
     "protein": "chicken"
   },
@@ -3726,7 +3726,7 @@
     "url": "https://www.acozykitchen.com/easy-broiled-miso-lemon-salmon",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "This Miso Lemon Salmon uses miso, honey, and lemon for a fast, flavorful broiled salmon recipe that feels light but satisfying.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/easy-miso-lemon-salmon.webp",
     "protein": "fish"
   },
@@ -3735,7 +3735,7 @@
     "url": "https://www.acozykitchen.com/grilled-salmon",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Hello, sweet friends! I finally got a tree! Woohoo! And I’ve been decorating the house trying to get it as merry as can be. This includes a gigantic garland, a bunch of little trees and",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/grilled-salmon-with-acorn-squash-and-herbed-butter.webp",
     "protein": "fish"
   },
@@ -3744,7 +3744,7 @@
     "url": "https://www.acozykitchen.com/grilled-grass-fed-steak-gyros",
     "cuisine": "Mediterranean",
     "course": "Entree",
-    "description": "",
+    "description": "Steak gyros wrapped in a warm pita with creamy tzatziki sauce, a tomato salad and topped with lots of garnish and herbs.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/steak-gyros.webp",
     "protein": "meat"
   },
@@ -3753,7 +3753,7 @@
     "url": "https://www.acozykitchen.com/cozy-beef-autumnal-stew",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "This Cozy Beef Stew is the braised until the meat is tender and delicious. Serve it on a bed of polenta or mashed potatoes.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cozy-beef-stew.webp",
     "protein": "meat"
   },
@@ -3762,7 +3762,7 @@
     "url": "https://www.acozykitchen.com/steak-salad-with-creamy-chimichurri-dressing",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "This Steak Salad with Creamy Chimichurri Dressing features a quick-seared steak, kale, feta, and a bright yogurt herb sauce.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/steak-salad-with-creamy-chimichurri-dressing.webp",
     "protein": "meat"
   },
@@ -3771,7 +3771,7 @@
     "url": "https://www.acozykitchen.com/birria",
     "cuisine": "Mexican",
     "course": "Entree",
-    "description": "",
+    "description": "Make this warm and authentic bowl of Beef Birria. Serve with tortillas, white onions, cilantro and limes. Use the leftovers for Birria Tacos.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/beef-birria.webp",
     "protein": "meat"
   },
@@ -3789,7 +3789,7 @@
     "url": "https://www.acozykitchen.com/green-onion-shrimp-stir-fry",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "Make this Ginger Shrimp Stir-Fry with Garlic Bok Choy for a quick weeknight meal. It's healthy and hearty; perfect for a regular meal.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/ginger-shrimp-stir-fry-with-garlic-bok-choy.webp",
     "protein": "seafood"
   },
@@ -3798,7 +3798,7 @@
     "url": "https://dishingouthealth.com/panko-crusted-salmon/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Crispy Panko Crusted Salmon baked until golden and served over a silky lemon-dill cream sauce for an entree that's bright, savory, and flavor-packed.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/panko-crusted-salmon-with-creamy-dill-sauce.webp",
     "protein": "fish"
   },
@@ -3807,7 +3807,7 @@
     "url": "https://dishingouthealth.com/honey-chipotle-salmon-tacos/",
     "cuisine": "Mexican",
     "course": "Entree",
-    "description": "",
+    "description": "Honey-Chipotle Salmon Tacos with red cabbage slaw and garlic-lime crema. A nutritious, flavor-packed taco ready in just 30 minutes!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/honey-chipotle-salmon-tacos.webp",
     "protein": "fish"
   },
@@ -3816,7 +3816,7 @@
     "url": "https://dishingouthealth.com/spinach-artichoke-salmon-skillet/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Combine the signature creaminess of spinach and artichoke dip with succulent spiced salmon and orzo and you have the ultimate one pan dinner recipe.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/spinach-artichoke-salmon-skillet.webp",
     "protein": "fish"
   },
@@ -3825,7 +3825,7 @@
     "url": "https://dishingouthealth.com/salmon-and-lentil-salad/",
     "cuisine": "Mediterranean",
     "course": "Entree",
-    "description": "",
+    "description": "Mediterranean-inspired Salmon and Lentil Salad with pickled beets, feta, and lemon-dill dressing. Rich in protein, fiber, and heart-healthy fats.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/salmon-and-lentil-salad.webp",
     "protein": "fish"
   },
@@ -3834,7 +3834,7 @@
     "url": "https://dishingouthealth.com/sausage-and-cabbage-skillet/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "This easy sausage and cabbage skillet is a cozy, one-pan dinner that comes together in just 30 minutes. High in protein and fiber, and flavor-packed.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/easy-chicken-sausage-and-cabbage-skillet.webp",
     "protein": "chicken"
   },
@@ -3843,7 +3843,7 @@
     "url": "https://dishingouthealth.com/chipotle-chicken-chopped-salad/",
     "cuisine": "Mexican",
     "course": "Entree",
-    "description": "",
+    "description": "Meal prep-friendly Chipotle Chicken Salad with copycat Chipotle Vinaigrette. Filling, packed with nutritious ingredients and a spicy, bold dressing.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chipotle-chicken-chopped-salad.webp",
     "protein": "chicken"
   },
@@ -3852,7 +3852,7 @@
     "url": "https://dishingouthealth.com/hot-honey-mustard-chicken-bowls/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Hot Honey Mustard Chicken Bowls with roasted sweet potato, cabbage, and quinoa. Packed with protein and fiber, and make-ahead friendly.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/hot-honey-mustard-chicken-bowls.webp",
     "protein": "chicken"
   },
@@ -3870,7 +3870,7 @@
     "url": "https://themodernproper.com/blackened-salmon",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "The seasoning for this blackened salmon is a little sweet, with a little heat, and lots of flavor. Pan-cooked, you’ll get a nice flaky filet and a…",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/blackened-salmon.webp",
     "protein": "fish"
   },
@@ -3879,7 +3879,7 @@
     "url": "https://themodernproper.com/roasted-salmon-with-spring-pesto",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "An herbal, vibrant pea-and-carrot top pesto makes the ideal partner for a big, beautiful filet of roasted salmon. Simple, colorful, healthy and so…",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/roasted-salmon-with-spring-pesto.webp",
     "protein": "fish"
   },
@@ -3888,7 +3888,7 @@
     "url": "https://themodernproper.com/grilled-chicken",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Plain grilled chicken meets its match with this simple marinade of herbs, garlic, Dijon mustard, Worcestershire, and brown sugar. Mix up a batch next time…",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/grilled-chicken.webp",
     "protein": "chicken"
   },
@@ -3897,7 +3897,7 @@
     "url": "https://themodernproper.com/chicken-caprese",
     "cuisine": "Italian",
     "course": "Entree",
-    "description": "",
+    "description": "Our Caprese chicken checks all the boxes: tender marinated chicken, juicy Roma tomatoes, herby homemade pesto, and melty mozzarella. You’re in charge of…",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chicken-caprese.webp",
     "protein": "chicken"
   },
@@ -3906,7 +3906,7 @@
     "url": "https://themodernproper.com/grilled-rib-eye-steak-with-italian-salsa-verde",
     "cuisine": "Italian",
     "course": "Entree",
-    "description": "",
+    "description": "It doesn’t get much more decadent than this juicy, rich and buttery grilled rib eye steak with Italian salsa verde.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/grilled-rib-eye-steak-with-italian-salsa-verde.webp",
     "protein": "meat"
   },
@@ -3915,7 +3915,7 @@
     "url": "https://themodernproper.com/easy-steak-fajitas",
     "cuisine": "Mexican",
     "course": "Entree",
-    "description": "",
+    "description": "Steak fajitas are a fast and flavorful dinner everyone will love. A perfect make-ahead meal to throw on the grill when you need a low-frills affair.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/easy-steak-fajitas.webp",
     "protein": "meat"
   },
@@ -3924,7 +3924,7 @@
     "url": "https://themodernproper.com/crispy-chicken-carnitas",
     "cuisine": "Mexican",
     "course": "Entree",
-    "description": "",
+    "description": "My crispy chicken carnitas recipe is just as delicious and juicy as classic carnitas, but a bit healthier. Adding carnitas to tacos, nachos, or a big…",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/crispy-chicken-carnitas.webp",
     "protein": "chicken"
   },
@@ -3933,7 +3933,7 @@
     "url": "https://tastesbetterfromscratch.com/fajitas/",
     "cuisine": "Mexican",
     "course": "Entree",
-    "description": "",
+    "description": "Grilled chicken, steak, or shrimp Fajitas with easy homemade fajita seasoning and served with grilled bell peppers and onions in a flour tortilla.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/fajitas-chicken-steak-or-shrimp.webp",
     "protein": "seafood"
   },
@@ -3942,7 +3942,7 @@
     "url": "https://tastesbetterfromscratch.com/slow-cooker-creamy-ranch-pork-chops/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Sink your teeth into these ultra‑tender pork chops cooked low and slow in a rich, homemade creamy ranch sauce—no packet seasoning needed! Perfectly easy for busy weeknights, this recipe takes just 10 ",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/slow-cooker-pork-chops.webp",
     "protein": "pork"
   },
@@ -3951,7 +3951,7 @@
     "url": "https://tastesbetterfromscratch.com/favorite-baked-salmon-with-dill/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "It's so easy to make our Baked Salmon recipe at home, with lemon garlic butter and baked in the oven with tinfoil.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/baked-salmon-with-dill.webp",
     "protein": "fish"
   },
@@ -3960,7 +3960,7 @@
     "url": "https://tastesbetterfromscratch.com/hibachi-chicken/",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "This Japanese-inspired Hibachi Chicken recipe is made from home with flavorful sautéed chicken and veggies with yum yum sauce and rice.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/hibachi-chicken.webp",
     "protein": "chicken"
   },
@@ -3969,7 +3969,7 @@
     "url": "https://tastesbetterfromscratch.com/cedar-plank-salmon/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "This restaurant-worthy Cedar Plank Salmon recipe is on your table in less than 30 minutes and is topped with a brown sugar dijon glaze.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cedar-plank-salmon.webp",
     "protein": "fish"
   },
@@ -3978,7 +3978,7 @@
     "url": "https://tastesbetterfromscratch.com/air-fryer-salmon-bites/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "This Air Fryer Salmon Bites recipe is well seasoned, the perfect texture, and served with a remoulade sauce. It only takes 15 minutes!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/air-fryer-salmon-bites.webp",
     "protein": "fish"
   },
@@ -3987,7 +3987,7 @@
     "url": "https://tastesbetterfromscratch.com/marinated-steak-kebabs/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "These marinated Steak Kabobs are grilled with any of your favorite vegetables. I love to use onion and red, green, and yellow bell peppers!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/steak-kabobs.webp",
     "protein": "meat"
   },
@@ -3996,7 +3996,7 @@
     "url": "https://tastesbetterfromscratch.com/thai-basil-beef-pad-gra-prow/",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "This Thai Basil Beef recipe takes less than 30 minutes and is so delicious! It's easy to customize to your preferred spice level.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/thai-basil-beef.webp",
     "protein": "meat"
   },
@@ -4014,7 +4014,7 @@
     "url": "https://www.themediterraneandish.com/baked-salmon-recipe-garlic-cilantro-sauce/",
     "cuisine": "Mediterranean",
     "course": "Entree",
-    "description": "",
+    "description": "This baked cilantro lime salmon recipe with tomatoes is your ticket to dinner in under 20 minutes, with big flavor and no fuss!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cilantro-lime-baked-salmon.webp",
     "protein": "fish"
   },
@@ -4023,7 +4023,7 @@
     "url": "https://www.themediterraneandish.com/shrimp-lettuce-wraps/",
     "cuisine": "Mediterranean",
     "course": "Entree",
-    "description": "",
+    "description": "Loaded shrimp lettuce wraps with crunchy veggies and delicious sauce in just 10 minutes! You can make these with any protein of your choice too!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/shrimp-lettuce-wraps.webp",
     "protein": "seafood"
   },
@@ -4032,7 +4032,7 @@
     "url": "https://www.themediterraneandish.com/baked-shrimp-stew-recipe/",
     "cuisine": "Mediterranean",
     "course": "Entree",
-    "description": "",
+    "description": "Easy, comforting shrimp stew, cooked in a rustic Mediterranean chunky tomato sauce! Healthy and loaded w/ flavor from fresh garlic, bell peppers & more.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/mediterranean-style-shrimp-stew.webp",
     "protein": "seafood"
   },
@@ -4041,7 +4041,7 @@
     "url": "https://www.themediterraneandish.com/shrimp-foil-packets/",
     "cuisine": "Mediterranean",
     "course": "Entree",
-    "description": "",
+    "description": "Grilled shrimp foil packets with a garlic and white wine marinade and fresh seasonal vegetables. A delicious bbq and camping recipe!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/grilled-shrimp-foil-packets.webp",
     "protein": "seafood"
   },
@@ -4050,7 +4050,7 @@
     "url": "https://www.themediterraneandish.com/greek-style-salmon-salad/",
     "cuisine": "Mediterranean",
     "course": "Entree",
-    "description": "",
+    "description": "BEST Salmon salad you'll make in less than 20 minutes! Greek-style salad w/ perfectly cooked salmon, crispy vegetables & mint vinaigrette.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/greek-salmon-salad.webp",
     "protein": "fish"
   },
@@ -4059,7 +4059,7 @@
     "url": "https://www.themediterraneandish.com/mediterranean-garlic-shrimp-skewers/",
     "cuisine": "Mediterranean",
     "course": "Entree",
-    "description": "",
+    "description": "Juicy, flavor-packed shrimp kabobs, tossed in a marinade with garlic, fresh herbs and spices; grilled to perfection! Video & tips included.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/grilled-shrimp-kabobs-mediterranean-style.webp",
     "protein": "seafood"
   },
@@ -4068,7 +4068,7 @@
     "url": "https://www.themediterraneandish.com/air-fryer-salmon/",
     "cuisine": "Mediterranean",
     "course": "Entree",
-    "description": "",
+    "description": "Air fryer salmon with garlic and spices cooks to perfect tenderness in lightning speed. Use them to top a salad for a fast, easy dinner.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/air-fryer-salmon.webp",
     "protein": "fish"
   },
@@ -4077,7 +4077,7 @@
     "url": "https://www.themediterraneandish.com/easy-shrimp-recipe/",
     "cuisine": "Mediterranean",
     "course": "Entree",
-    "description": "",
+    "description": "All-star, easy shrimp recipe! Seasoned w/ Mediterranean spices and quickly cooked in a delicious light sauce w/ bell peppers, shallots, tomatoes. 25 mins!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/easy-mediterranean-style-garlic-shrimp.webp",
     "protein": "seafood"
   },
@@ -4255,7 +4255,7 @@
     "url": "https://www.recipetineats.com/lemon-garlic-salmon-tray-bake-easy-healthy/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "A simple, healthy, very tasty salmon tray bake with parmesan asparagus and blistered tomatoes all cooked on on tray!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/lemon-garlic-salmon-tray-bake.webp",
     "protein": "fish"
   },
@@ -4273,7 +4273,7 @@
     "url": "https://www.recipetineats.com/asian-chilli-garlic-prawns-shrimp/",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "Juicy prawns in a sweet, spicy, garlicky sauce, this Chilli Garlic Prawns is super quick to make but packs a serious flavour punch!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/asian-chilli-garlic-prawns.webp",
     "protein": "seafood"
   },
@@ -4282,7 +4282,7 @@
     "url": "https://www.recipetineats.com/baked-shrimp-prawns/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Here's an excellent baked shrimp recipe - shrimp roasted in a lemon butter sauce with a crunchy parmesan breadrumb topping. A crispy baked Shrimp Scampi!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/crunchy-baked-shrimp-in-garlic-butter-sauce.webp",
     "protein": "seafood"
   },
@@ -4291,7 +4291,7 @@
     "url": "https://www.recipetineats.com/french-chicken-au-poivre-sauce/",
     "cuisine": "French",
     "course": "Entree",
-    "description": "",
+    "description": "Chef JB's chicken au poivre. Golden seared chicken smothered in a creamy peppercorn sauce. Perfect quick mid-week dinner with a French accent!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chicken-au-poivre-creamy-peppercorn-sauce.webp",
     "protein": "chicken"
   },
@@ -4300,7 +4300,7 @@
     "url": "https://www.recipetineats.com/how-to-cook-steak/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "How to cook steak like a chef - baste with garlic thyme butter as it cooks! It makes the nost of great quality steaks and fancies up economical steak!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/how-to-cook-steak.webp",
     "protein": "meat"
   },
@@ -4309,7 +4309,7 @@
     "url": "https://www.recipetineats.com/chicken-breast-in-creamy-mushroom-sauce/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Quick chicken dinner that's elegant enough for company - a lightly crusted chicken breast with an incredible creamy mushroom sauce. Simple!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chicken-breast-in-creamy-mushroom-sauce.webp",
     "protein": "chicken"
   },
@@ -4318,7 +4318,7 @@
     "url": "https://www.recipetineats.com/chicken-breast-recipe/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "This is my go-to chicken breast recipe. Quick, pantry staples but NOT BORING! Seasoned crusted chicken, simple buttery pan sauce, so good.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/pan-seared-chicken-breast.webp",
     "protein": "chicken"
   },
@@ -4327,7 +4327,7 @@
     "url": "https://www.recipetineats.com/asian-grilled-shrimp-prawns-bbq-or-stove/",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "Juicy prawns kissed with caramelisation from the BBQ, drizzled with brown butter, lime and sweet soy. This Asian Grilled Shrimp is a copycat of a popular dish from a restaurant in Sydney.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/asian-grilled-shrimp.webp",
     "protein": "seafood"
   },
@@ -4336,7 +4336,7 @@
     "url": "https://somuchfoodblog.com/crab-stuffed-salmon/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "This restaurant-worthy Crab-Stuffed Salmon is the easiest gourmet meal you'll ever make! Tender salmon filets are stuffed with a succulent jumbo lump crab cake mix and brushed with a lemon-y old bay b",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/crab-stuffed-salmon.webp",
     "protein": "fish"
   },
@@ -4345,7 +4345,7 @@
     "url": "https://somuchfoodblog.com/shrimp-tacos-with-slaw/",
     "cuisine": "Mexican",
     "course": "Entree",
-    "description": "",
+    "description": "This easy, one-skillet recipe for Shrimp Tacos with Slaw is a weeknight favorite! It's fresh, healthy, and only takes 30 minutes to make.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/shrimp-tacos-with-slaw.webp",
     "protein": "seafood"
   },
@@ -4354,7 +4354,7 @@
     "url": "https://somuchfoodblog.com/steak-and-caramelized-onion-salad/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "This steak and caramelized onion salad is the perfect dinner-worthy salad recipe! It's light and fresh and perfect for a summer dinner!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/steak-and-caramelized-onion-salad.webp",
     "protein": "meat"
   },
@@ -4363,7 +4363,7 @@
     "url": "https://somuchfoodblog.com/crispy-fried-chicken-tenders/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Crispy, crunchy fried chicken tenders are served with honey mustard dipping sauce for a grownup spin on a favorite childhood meal!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/20-minute-fried-chicken-tenders.webp",
     "protein": "chicken"
   },
@@ -4372,7 +4372,7 @@
     "url": "https://somuchfoodblog.com/shrimp-burrito-bowls/",
     "cuisine": "Mexican",
     "course": "Entree",
-    "description": "",
+    "description": "These quick and easy shrimp burrito bowls come together in minutes! They're light, fresh, healthy, and still packed with flavor.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/salsa-verde-shrimp-burrito-bowls.webp",
     "protein": "seafood"
   },
@@ -4381,7 +4381,7 @@
     "url": "https://somuchfoodblog.com/easy-hibachi-bowls/",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "These easy Hibachi Bowls are loaded with succulent shrimp, tender sirloin, fried rice, veggies, and tons of creamy hibachi sauce.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/homemade-hibachi-bowls.webp",
     "protein": null
   },
@@ -4390,7 +4390,7 @@
     "url": "https://somuchfoodblog.com/spicy-salmon-sushi-bowls/",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "Sushi-grade salmon is coated in spicy mayo and served over rice with your favorite toppings! No-cook salmon sushi bowls are SO easy!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/spicy-salmon-sushi-bowls.webp",
     "protein": "fish"
   },
@@ -4399,7 +4399,7 @@
     "url": "https://www.gimmesomeoven.com/honey-mustard-salmon-in-foil/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "This Honey Mustard Salmon recipe only takes 25 minutes to make in the oven or on the grill, and tastes absolutely DELICIOUS!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/honey-mustard-salmon-in-foil.webp",
     "protein": "fish"
   },
@@ -4408,7 +4408,7 @@
     "url": "https://www.gimmesomeoven.com/baked-shrimp/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "The easiest way to cook shrimp -- in the oven! This 10-minute baked shrimp recipe is always a winner, and easy to customize with any seasonings you prefer.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/easy-baked-shrimp.webp",
     "protein": "seafood"
   },
@@ -4417,7 +4417,7 @@
     "url": "https://www.gimmesomeoven.com/easy-peruvian-shrimp/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "This Easy Peruvian Shrimp recipe takes less than 15 minutes to make, and it's full of delicious bold flavors that I absolutely love!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/easy-peruvian-shrimp.webp",
     "protein": "seafood"
   },
@@ -4426,7 +4426,7 @@
     "url": "https://www.gimmesomeoven.com/cilantro-lime-baked-shrimp-recipe/",
     "cuisine": "Mexican",
     "course": "Entree",
-    "description": "",
+    "description": "This Cilantro Lime Baked Shrimp recipe is crazy delicious, made with healthier ingredients, and comes together in less than 30 minutes.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cilantro-lime-baked-shrimp.webp",
     "protein": "seafood"
   },
@@ -4435,7 +4435,7 @@
     "url": "https://www.gimmesomeoven.com/quick-and-easy-stir-fry/",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "You'll love this fresh and delicious, quick and easy stir-fry recipe that is ready to go in about 20 minutes!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/quick-and-easy-stir-fry.webp",
     "protein": null
   },
@@ -4444,7 +4444,7 @@
     "url": "https://www.gimmesomeoven.com/sizzlin-spicy-szechuan-stir-fry/",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "This Sizzlin' Spicy Szechuan Stir-Fry is quick and easy to make with beef, chicken, shrimp or tofu. Feel free to make it as spicy or mild as you prefer!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/sizzlin-spicy-szechuan-stir-fry.webp",
     "protein": null
   },
@@ -4453,7 +4453,7 @@
     "url": "https://www.gimmesomeoven.com/hummus-crusted-chicken/",
     "cuisine": "Mediterranean",
     "course": "Entree",
-    "description": "",
+    "description": "Hummus makes for a super simple sauce in this delicious baked chicken recipe! And it takes just 10 minutes to prep!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/hummus-crusted-chicken.webp",
     "protein": "chicken"
   },
@@ -4462,7 +4462,7 @@
     "url": "https://www.onceuponachef.com/recipes/restaurant-style-pan-seared-salmon.html",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "(TESTED & PERFECTED RECIPE) Golden-crisp on top and just barely cooked in the center, this restaurant-style pan seared salmon is easy to make and elegant.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/restaurant-style-pan-seared-salmon.webp",
     "protein": "fish"
   },
@@ -4471,7 +4471,7 @@
     "url": "https://www.onceuponachef.com/recipes/slow-roasted-salmon-with-french-herb-salsa.html",
     "cuisine": "French",
     "course": "Entree",
-    "description": "",
+    "description": "This slow-roasted salmon with fresh herbs looks impressive, tastes amazing, and couldn’t be easier. Serve it warm, chilled, or at room temp.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/slow-roasted-salmon-with-french-herb-salsa.webp",
     "protein": "fish"
   },
@@ -4480,7 +4480,7 @@
     "url": "https://www.onceuponachef.com/recipes/pan-seared-salmon-with-soy-mustard-glaze.html",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "Whip up this quick and elegant salmon with a soy-mustard glaze—full of flavor and ready in just 15 minutes!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/pan-seared-salmon-with-soy-mustard-glaze.webp",
     "protein": "fish"
   },
@@ -4489,7 +4489,7 @@
     "url": "https://www.onceuponachef.com/recipes/greek-shrimp-tomatoes-feta.html",
     "cuisine": "Mediterranean",
     "course": "Entree",
-    "description": "",
+    "description": "(TESTED & PERFECTED RECIPE) Shrimp saganaki, or shrimp baked in a spiced tomato sauce with feta, makes an easy weeknight dish.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/shrimp-saganaki-greek-shrimp-with-tomatoes-and-feta.webp",
     "protein": "seafood"
   },
@@ -4498,7 +4498,7 @@
     "url": "https://www.onceuponachef.com/recipes/beef-and-broccoli.html",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "This beef with broccoli recipe delivers all the savory, saucy flavor you love from takeout—and it’s easy enough to whip up on a weeknight.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/easy-beef-and-broccoli.webp",
     "protein": "meat"
   },
@@ -4507,7 +4507,7 @@
     "url": "https://www.onceuponachef.com/recipes/coq-au-vin.html",
     "cuisine": "French",
     "course": "Entree",
-    "description": "",
+    "description": "A comforting French classic made easy: chicken, wine, and mushrooms in a rich, savory sauce you’ll want to mop up with bread.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/coq-au-vin.webp",
     "protein": "chicken"
   },
@@ -4525,7 +4525,7 @@
     "url": "https://feelgoodfoodie.net/recipe/shrimp-fajitas-bell-peppers-avocado-salsa/",
     "cuisine": "Mexican",
     "course": "Entree",
-    "description": "",
+    "description": "This shrimp fajita recipe is easy to make in one skillet with seared shrimp and a mix of bell peppers, onions, and fajita seasoning.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/shrimp-fajitas.webp",
     "protein": "seafood"
   },
@@ -4600,7 +4600,7 @@
     "url": "https://www.servingdumplings.com/recipe/pan-seared-salmon-in-garlic-mascarpone-sauce/",
     "cuisine": "Italian",
     "course": "Entree",
-    "description": "",
+    "description": "Pan seared salmon in garlic mascarpone sauce with sun-dried tomatoes and roasted bell peppers. Super easy, yet seriously delicious.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/pan-seared-salmon-in-garlic-mascarpone-sauce.webp",
     "protein": "fish"
   },
@@ -4609,7 +4609,7 @@
     "url": "https://www.servingdumplings.com/recipe/shrimp-with-garlic-sauteed-mushrooms/",
     "cuisine": "Italian",
     "course": "Entree",
-    "description": "",
+    "description": "Shrimp with garlic sautéed mushrooms, a quick and easy dinner idea with tons of flavor. This dish is ready in just 20 minutes!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/shrimp-with-garlic-sauteed-mushrooms.webp",
     "protein": "seafood"
   },
@@ -4618,7 +4618,7 @@
     "url": "https://www.servingdumplings.com/recipe/honey-orange-salmon/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Honey orange salmon with. An amazing 20 minute dish. Pan-seared salmon with a pop of bright sauce and a splash of soy for some big flavors.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/honey-orange-salmon.webp",
     "protein": "fish"
   },
@@ -4627,7 +4627,7 @@
     "url": "https://www.servingdumplings.com/recipe/cajun-honey-garlic-butter-salmon/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Cajun honey garlic butter salmon. This cajun honey salmon recipe is a sweet-and-spicy meal that’s ready in just 15 minutes.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cajun-honey-butter-salmon.webp",
     "protein": "fish"
   },
@@ -4636,7 +4636,7 @@
     "url": "https://www.servingdumplings.com/recipe/salmon-in-creamy-red-pesto-sauce/",
     "cuisine": "Italian",
     "course": "Entree",
-    "description": "",
+    "description": "Salmon in creamy red pesto sauce with spinach. Served in a pesto sauce with cream cheese. Ready in 30 minutes and made in one skillet!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/salmon-in-creamy-red-pesto-sauce.webp",
     "protein": "fish"
   },
@@ -4645,7 +4645,7 @@
     "url": "https://www.servingdumplings.com/recipe/chimichurri-shrimp/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "20-minute shrimp with Chimichurri sauce. Quickly seared shrimp with a herby, garlicky, buttery Chimichurri sauce.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/20-minute-chimichurri-shrimp.webp",
     "protein": "seafood"
   },
@@ -4654,7 +4654,7 @@
     "url": "https://www.servingdumplings.com/recipe/mussels-and-shrimp-in-garlic-tomato-sauce/",
     "cuisine": "Mediterranean",
     "course": "Entree",
-    "description": "",
+    "description": "Mussels and shrimp in a garlic tomato sauce. Delicious, saucy and a true flavor bomb. Plus, it’s made in one skillet!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/mussels-and-shrimp-in-garlic-tomato-sauce.webp",
     "protein": "seafood"
   },
@@ -4663,7 +4663,7 @@
     "url": "https://thedefineddish.com/garlic-shrimp-stir-fry/",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "Looking for a quick and easy takeout-inspired recipe? Make this Garlic Shrimp Stir-Fry, which is packed with colorful veggies!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/garlic-shrimp-stir-fry.webp",
     "protein": "seafood"
   },
@@ -4672,7 +4672,7 @@
     "url": "https://thedefineddish.com/perfect-pan-roasted-salmon/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Next time you have some beautiful salmon filets, try making this Perfect Pan-Roasted Salmon. Add your own seasoning to make it your own!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/perfect-pan-roasted-salmon.webp",
     "protein": "fish"
   },
@@ -4681,7 +4681,7 @@
     "url": "https://thedefineddish.com/panko-crusted-baked-salmon/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "This Panko-Crusted Baked Salmon is a new variation I have been doing lately. I love the crunch the panko crumbs add and it's so quick to make.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/panko-crusted-baked-salmon.webp",
     "protein": "fish"
   },
@@ -4699,7 +4699,7 @@
     "url": "https://thedefineddish.com/steak-with-italian-salsa-verde-and-veggies/",
     "cuisine": "Italian",
     "course": "Entree",
-    "description": "",
+    "description": "If you're looking for a simple, elegant, grilled dinner to serve, this Steak with Italian Salsa Verde, Veggies, and Potatoes is your answer.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/steak-with-italian-salsa-verde-and-veggies.webp",
     "protein": "meat"
   },
@@ -4717,7 +4717,7 @@
     "url": "https://thedefineddish.com/sichuan-beef-stir-fry/",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "This Sichuan Beef Stir Fry is very full of flavor and delicious. I love the thin beef strips stir-fried with the thin cut, or julienned cut, vegetables.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/sichuan-beef-stir-fry.webp",
     "protein": "meat"
   },
@@ -4744,7 +4744,7 @@
     "url": "https://www.thecookierookie.com/chicken-lettuce-wraps-recipe/",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "Full of flavor and easy to make, ground chicken lettuce wraps are ready to serve in 25 minutes. Perfect to serve as an app or low-carb dinner.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/ground-chicken-lettuce-wraps.webp",
     "protein": "chicken"
   },
@@ -4753,7 +4753,7 @@
     "url": "https://www.thecookierookie.com/bbq-shrimp/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "These New Orleans style BBQ Shrimp are cooked in a rich, savory, buttery, garlic and Worcestershire sauce with Cajun seasoning.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/new-orleans-bbq-shrimp.webp",
     "protein": "seafood"
   },
@@ -4762,7 +4762,7 @@
     "url": "https://www.thecookierookie.com/honey-sesame-shrimp/",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "This honey sesame shrimp is made with just 5 ingredients and is ready to serve in 15 minutes! Sweet and salty, serve over rice or noodles.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/honey-sesame-shrimp.webp",
     "protein": "seafood"
   },
@@ -4771,7 +4771,7 @@
     "url": "https://www.feastingathome.com/spicy-mexican-shrimp/",
     "cuisine": "Mexican",
     "course": "Entree",
-    "description": "",
+    "description": "This easy, spicy Mexican shrimp recipe is delicious with rice & beans, over salad greens, or piled in tacos with creamy avocado sauce.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/spicy-mexican-shrimp.webp",
     "protein": "seafood"
   },
@@ -4798,7 +4798,7 @@
     "url": "https://whatsgabycooking.com/salmon-shawarma/",
     "cuisine": "Mediterranean",
     "course": "Entree",
-    "description": "",
+    "description": "Grab the recipe for this Salmon Shawarma in part of this entire Shawarma inspired dinner menu. It's easy to make and easier to eat.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/salmon-shawarma.webp",
     "protein": "fish"
   },
@@ -4807,7 +4807,7 @@
     "url": "https://whatsgabycooking.com/steamed-salmon-with-garlic-herbs-and-lemon/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Grab the recipe for Steamed Salmon with Garlic, Herbs and Lemon and serve it up with some steamed white rice for the perfect dinner menu!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/steamed-salmon-with-garlic-herbs-and-lemon.webp",
     "protein": "fish"
   },
@@ -4816,7 +4816,7 @@
     "url": "https://whatsgabycooking.com/the-ultimate-garlic-shrimp-scampi/",
     "cuisine": "Italian",
     "course": "Entree",
-    "description": "",
+    "description": "Grab the recipe for the ULTIMATE Garlic Shrimp Scampi that's loaded with tons of garlic, perfectly cooked shrimp and a wine sauce that you'll love.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/ultimate-garlic-shrimp-scampi.webp",
     "protein": "seafood"
   },
@@ -4825,7 +4825,7 @@
     "url": "https://whatsgabycooking.com/hawaiian-garlic-shrimp/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "A few months back, while we were on the North Shore of Oahu, we fell in love with Hawaiian Garlic Shrimp. It was on repeat in our rental house for our week on",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/hawaiian-garlic-shrimp.webp",
     "protein": "seafood"
   },
@@ -4834,7 +4834,7 @@
     "url": "https://whatsgabycooking.com/pan-seared-salmon",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "A simple but delicious dinner made with pan seared salmon and a herb pesto vinaigrette that you'll want to use for just about every meal from here on out!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/pan-seared-salmon-with-herb-pesto-vinaigrette.webp",
     "protein": "fish"
   },
@@ -4843,7 +4843,7 @@
     "url": "https://whatsgabycooking.com/herb-crusted-roasted-salmon/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "I've never been big on going on for New Years Eve. I'd rather throw a party at my own house, cook dinner for my nearest and dearest and ring in the new year with some champagne, from my couch, in my p",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/herb-crusted-roasted-salmon.webp",
     "protein": "fish"
   },
@@ -4852,7 +4852,7 @@
     "url": "https://whatsgabycooking.com/perfect-chicken-scampi/",
     "cuisine": "Italian",
     "course": "Entree",
-    "description": "",
+    "description": "Ready for your new favorite chicken dinner? Thrilled to introduce you to my Chicken Scampi – a flavorful twist on a classic shrimp dish.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/perfect-chicken-scampi.webp",
     "protein": "chicken"
   },
@@ -4870,7 +4870,7 @@
     "url": "https://cafedelites.com/steak-creamy-garlic-shrimp/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "This Steak And Creamy Garlic Shrimp recipe is not only quick and easy, but down right delicious. Whip this out at your next dinner party!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/steak-and-creamy-garlic-shrimp-surf-and-turf.webp",
     "protein": "seafood"
   },
@@ -4879,7 +4879,7 @@
     "url": "https://cafedelites.com/garlic-butter-shrimp-scampi/",
     "cuisine": "Italian",
     "course": "Entree",
-    "description": "",
+    "description": "Garlic Butter Shrimp Scampi is so quick and easy! A garlic buttery scampi sauce with a hint of white wine & lemon in less than 10 minutes! Serve as an appetizer/light meal OR for dinner with pasta! Ke",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/garlic-butter-shrimp-scampi.webp",
     "protein": "seafood"
   },
@@ -4906,7 +4906,7 @@
     "url": "https://cafedelites.com/crispy-seared-lemon-garlic-herb-salmon/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Pan Seared Salmon with a lemon garlic butter sauce is a deliciously easy salmon recipe, so simple to make, yet so delicious! Crispy on the...",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/pan-seared-salmon-with-lemon-garlic-butter-sauce.webp",
     "protein": "fish"
   },
@@ -4924,7 +4924,7 @@
     "url": "https://cafedelites.com/sheet-pan-garlic-butter-baked-salmon/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Succulent garlic butter baked salmon that melts in your mouth! Packed with bold flavors, it's the ultimate easy dinner recipe you'll crave again and again.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/garlic-butter-baked-salmon.webp",
     "protein": "fish"
   },
@@ -4933,7 +4933,7 @@
     "url": "https://cafedelites.com/lemon-garlic-butter-shrimp/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Whip up my Lemon Garlic Butter Shrimp in a skillet! With fresh lemon, garlic, and butter, this flavorful dish is ready in under 20 minutes",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/lemon-garlic-butter-shrimp.webp",
     "protein": "seafood"
   },
@@ -4942,7 +4942,7 @@
     "url": "https://cafedelites.com/creamy-garlic-butter-salmon/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "How to cook salmon in a mouthwatering garlic butter cream sauce! A super easy, fast, simple and INCREDIBLE Salmon Recipe!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/creamy-garlic-butter-salmon.webp",
     "protein": "fish"
   },
@@ -4960,7 +4960,7 @@
     "url": "https://therecipecritic.com/mexican-shrimp-recipe/",
     "cuisine": "Mexican",
     "course": "Entree",
-    "description": "",
+    "description": "Mexican Shrimp Skillet is full of thick, plump shrimp with and veggies mixed together in my famous taco seasoning all in sautéd in one pan.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/mexican-shrimp-skillet.webp",
     "protein": "seafood"
   },
@@ -4969,7 +4969,7 @@
     "url": "https://therecipecritic.com/creamy-tuscan-garlic-shrimp/",
     "cuisine": "Italian",
     "course": "Entree",
-    "description": "",
+    "description": "Tuscan Garlic Shrimp is the most amazing creamy shrimp dish. A creamy garlic parmesan sauce with spinach and sun-dried tomatoes creates an unforgettable restaurant quality meal right at home!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/creamy-tuscan-garlic-shrimp.webp",
     "protein": "seafood"
   },
@@ -4978,7 +4978,7 @@
     "url": "https://therecipecritic.com/grilled-shrimp/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "The BEST Grilled Shrimp is the perfect weeknight meal because it is super quick, full of flavor, and so easy to make!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/grilled-shrimp.webp",
     "protein": "seafood"
   },
@@ -4996,7 +4996,7 @@
     "url": "https://therecipecritic.com/marry-me-salmon/",
     "cuisine": "Italian",
     "course": "Entree",
-    "description": "",
+    "description": "Salmon so good, it will have everyone falling in love! Marry Me Salmon is soft and flaky, smothered in an buttery, creamy sun-dried tomato sauce.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/marry-me-salmon.webp",
     "protein": "fish"
   },
@@ -5005,7 +5005,7 @@
     "url": "https://therecipecritic.com/creamy-tuscan-garlic-salmon/",
     "cuisine": "Italian",
     "course": "Entree",
-    "description": "",
+    "description": "Creamy Tuscan garlic salmon is an easy 30-minute restaurant-quality meal. The pan-seared salmon gets smothered in the most amazing creamy Tuscan garlic sauce with sun-dried tomatoes and spinach.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/creamy-tuscan-garlic-salmon.webp",
     "protein": "fish"
   },
@@ -5014,7 +5014,7 @@
     "url": "https://therecipecritic.com/butter-garlic-herb-salmon-foil-packets/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Butter Garlic Herb Salmon Foil Packets are made with tender, flaky salmon with fresh summer veggies. They taste amazing and cook perfectly!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/salmon-foil-packets-with-garlic-herb-butter.webp",
     "protein": "fish"
   },
@@ -5023,7 +5023,7 @@
     "url": "https://therecipecritic.com/sheet-pan-chicken-fajitas/",
     "cuisine": "Mexican",
     "course": "Entree",
-    "description": "",
+    "description": "My sheet pan salsa verde chicken is fresh, flavorful, and ready with almost no cleanup! It's the weeknight win you didn’t know you needed.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/sheet-pan-salsa-verde-chicken-fajitas.webp",
     "protein": "chicken"
   },
@@ -5041,7 +5041,7 @@
     "url": "https://diethood.com/slow-cooker-salmon/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "This Slow Cooker Salmon recipe makes tender, flaky fish, topped with a creamy lemon sauce. Flavorful & cooked to perfection in your slow cooker.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/slow-cooker-salmon-with-creamy-lemon-sauce.webp",
     "protein": "fish"
   },
@@ -5059,7 +5059,7 @@
     "url": "https://diethood.com/easy-garlic-shrimp/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "This one-pan creamy garlic shrimp is easy to make, with juicy shrimp and smoky bacon smothered in a garlicky Parmesan sauce with lemon.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/creamy-garlic-shrimp-with-bacon.webp",
     "protein": "seafood"
   },
@@ -5068,7 +5068,7 @@
     "url": "https://diethood.com/baked-shrimp-scampi/",
     "cuisine": "Italian",
     "course": "Entree",
-    "description": "",
+    "description": "Whip up a batch of crispy Baked Shrimp Scampi and bring that upscale restaurant vibe straight to your kitchen!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/baked-shrimp-scampi.webp",
     "protein": "seafood"
   },
@@ -5086,7 +5086,7 @@
     "url": "https://diethood.com/steak-salad-dijon-balsamic-dressing/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "This Steak Salad is brimming with juicy steak, vibrant vegetables, and a delectably tangy Dijon Balsamic Dressing. It's an ideal choice for a keto-friendly lunch or dinner!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/steak-salad-with-dijon-balsamic-dressing.webp",
     "protein": "meat"
   },
@@ -5104,7 +5104,7 @@
     "url": "https://www.feastingathome.com/grilled-salmon-salad/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "The BEST Grilled Salmon Salad with Avocado, Arugula, Cucumber, Pepitas, Cotija Cheese & Creamy Cilantro Lime Dressing.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/grilled-salmon-salad.webp",
     "protein": "fish"
   },
@@ -5113,7 +5113,7 @@
     "url": "https://www.feastingathome.com/spicy-mexican-shrimp/",
     "cuisine": "Mexican",
     "course": "Entree",
-    "description": "",
+    "description": "This easy, spicy Mexican shrimp recipe is delicious with rice & beans, over salad greens, or piled in tacos with creamy avocado sauce.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/spicy-mexican-shrimp.webp",
     "protein": "seafood"
   },
@@ -5122,7 +5122,7 @@
     "url": "https://www.feastingathome.com/chicken-cabbage-stir-fry/",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "A cozy, savory, and easy weeknight dinner. Delicious on its own or spooned over rice or rice noodles!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chicken-cabbage-stir-fry.webp",
     "protein": "chicken"
   },
@@ -5158,7 +5158,7 @@
     "url": "https://www.jaroflemons.com/dairy-free-tuscan-chicken-skillet/",
     "cuisine": "Italian",
     "course": "Entree",
-    "description": "",
+    "description": "Dairy-Free Tuscan Chicken Skillet: Perfect for an easy, healthy weeknight dinner! Dairy-free, gluten-free, and paleo. So delicious!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/dairy-free-tuscan-chicken.webp",
     "protein": "chicken"
   },
@@ -5167,7 +5167,7 @@
     "url": "https://www.jaroflemons.com/hot-honey-chicken-bowls/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Make this easy skillet hot honey chicken for a dinner recipe that everyone will love! These Hot Honey Chicken Bowls the best weeknight meal.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/hot-honey-chicken-bowls.webp",
     "protein": "chicken"
   },
@@ -5176,7 +5176,7 @@
     "url": "https://www.jaroflemons.com/bang-bang-chicken-bowls/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "This Bang Bang Chicken Recipe is SO good! With 40 grams of protein and healthy ingredients, these bowls are flavorful and easy to make.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/bang-bang-chicken-bowls.webp",
     "protein": "chicken"
   },
@@ -5185,7 +5185,7 @@
     "url": "https://www.jaroflemons.com/crispy-buffalo-chicken-bowls/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Crispy Buffalo Chicken Bowls made in one pan in 40 minutes. This buffalo chicken recipe is the best healthy dinner idea!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/crispy-buffalo-chicken-bowls.webp",
     "protein": "chicken"
   },
@@ -5196,7 +5196,7 @@
     "alignmentScore": 94,
     "cuisine": "Mexican",
     "course": "Entree",
-    "description": "",
+    "description": "This easy Chili Lime Steak Tacos recipe with Mango Salsa is healthy, flavorful, and made in the slow cooker. The best weeknight dinner idea!",
     "rating": "5 (13 ratings)",
     "image": null
   },
@@ -5205,7 +5205,7 @@
     "url": "https://www.jaroflemons.com/easy-lemon-garlic-shrimp-quinoa/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "This Easy Lemon Garlic Shrimp recipe is made with only a few ingredients and packed with flavor. Make this from start to finish in only 20 minutes!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/easy-lemon-garlic-shrimp.webp",
     "protein": "seafood"
   },
@@ -5214,7 +5214,7 @@
     "url": "https://www.jaroflemons.com/barbecue-salmon-quinoa/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Flaky Maple Barbecue Salmon that's perfect for an easy and healthy dinner. Made in the oven in 25 minutes, the entire family will love this quick recipe!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/maple-barbecue-salmon.webp",
     "protein": "fish"
   },
@@ -5223,7 +5223,7 @@
     "url": "https://www.killingthyme.net/lemon-garlic-butter-shrimp-with-chilies/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Lemon Garlic Shrimp sprinkled with Chilies is the perfect compliment for grilled meats and pasta with its bright and garlicky flavors!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/lemon-garlic-shrimp-with-chilies.webp",
     "protein": "seafood"
   },
@@ -5232,7 +5232,7 @@
     "url": "https://www.killingthyme.net/grilled-shrimp-with-salsa-and-garlic-marinade/",
     "cuisine": "Mexican",
     "course": "Entree",
-    "description": "",
+    "description": "Grilled Shrimp with Salsa and Garlic Marinade",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/grilled-shrimp-with-salsa-and-garlic-marinade.webp",
     "protein": "seafood"
   },
@@ -5241,7 +5241,7 @@
     "url": "https://www.killingthyme.net/easy-salmon-burger-recipe/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "This healthy salmon burger recipe is made with fresh salmon fillets. It's easy, nourishing, and full of flavor! Not to mention, it's a great way to get more fish into your diet.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/healthy-salmon-burgers.webp",
     "protein": "fish"
   },
@@ -5250,7 +5250,7 @@
     "url": "https://www.killingthyme.net/best-turkey-burger-recipe/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "These super flavorful juicy patties make for the best turkey burger. They're weeknight friendly and can be frozen for future dinners!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/best-turkey-burgers.webp",
     "protein": "meat"
   },
@@ -5259,7 +5259,7 @@
     "url": "https://www.killingthyme.net/pan-seared-salmon-with-avocado-and-mango-salsa/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Fresh and simple ingredients are used to dish up this crispy-skinned pan-seared salmon topped with creamy and tangy avocado and mango salsa. It's the perfect dinner to greet Spring and Summer!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/pan-seared-salmon-with-avocado-and-mango-salsa.webp",
     "protein": "fish"
   },
@@ -5268,7 +5268,7 @@
     "url": "https://www.killingthyme.net/pan-seared-salmon-with-concord-grape-sauce/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "This Pan-Seared Salmon With Concord Grape Sauce is easy enough for a weeknight meal, yet exquisite enough to serve at a swanky dinner party.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/pan-seared-salmon-with-concord-grape-sauce.webp",
     "protein": "fish"
   },
@@ -5363,7 +5363,7 @@
     "url": "https://omnivorescookbook.com/kung-pao-shrimp/",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "Authentic tasting kung pao shrimp featuring tender shrimp cooked with a spicy, sweet, sour and savory sauce with crunchy peppers and peanuts.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/kung-pao-shrimp.webp",
     "protein": "seafood"
   },
@@ -5372,7 +5372,7 @@
     "url": "https://omnivorescookbook.com/sichuan-shrimp-stir-fry/",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "Authentic Chinese restaurant-style Sichuan shrimp is quick enough for a weeknight meal and delivers a crispy texture and richly aromatic, utterly divine flavor with that signature Sichuan spice.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/sichuan-shrimp-stir-fry.webp",
     "protein": "seafood"
   },
@@ -5390,7 +5390,7 @@
     "url": "https://omnivorescookbook.com/kung-pao-beef/",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "An authentic tasting kung pao beef that features juicy tender beef slices, crisp peppers and crunchy peanuts cooked in a rich sauce that is savory, sour, sweet, and spicy.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/kung-pao-beef.webp",
     "protein": "meat"
   },
@@ -5399,7 +5399,7 @@
     "url": "https://omnivorescookbook.com/pan-fried-salmon/",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "These pan fried salmon bites are crispy on the outside and soft and moist on the inside, served with a gingery, garlicky savory sauce.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/pan-fried-salmon-bites.webp",
     "protein": "fish"
   },
@@ -5408,7 +5408,7 @@
     "url": "https://omnivorescookbook.com/sweet-and-sour-salmon/",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "This super-simple sheet pan dinner of salmon bok choy is healthful and delicious dish to serve guests or a good-for-you meal!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/sweet-and-sour-salmon-with-bok-choy.webp",
     "protein": "fish"
   },
@@ -5417,7 +5417,7 @@
     "url": "https://omnivorescookbook.com/ground-beef-stir-fry-with-celery/",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "Ground Beef Stir Fry with Celery - A savory beef dish that hits all the right notes and can be on your table in less than 30 minutes.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/ground-beef-stir-fry-with-celery.webp",
     "protein": "meat"
   },
@@ -5426,7 +5426,7 @@
     "url": "https://pinchofyum.com/baked-salmon-with-amazing-lemon-sauce",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Delicious baked salmon with crispy potatoes, broccoli, and the most amazing life-changing lemon sauce smothered on top of it all. This is restaurant bistro-style eating!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/baked-salmon-with-amazing-lemon-sauce.webp",
     "protein": "fish"
   },
@@ -5435,7 +5435,7 @@
     "url": "https://pinchofyum.com/spicy-shrimp-tacos-with-garlic-cilantro-lime-slaw",
     "cuisine": "Mexican",
     "course": "Entree",
-    "description": "",
+    "description": "THE BEST shrimp tacos loaded with avocado, spicy shrimp, and a homemade creamy lime slaw? HELLO YUMMY!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/spicy-shrimp-tacos-with-garlic-cilantro-lime-slaw.webp",
     "protein": "seafood"
   },
@@ -5444,7 +5444,7 @@
     "url": "https://pinchofyum.com/korean-bbq-steak-bowls-with-spicy-sesame-dressing",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "It's the first Monday of the NEW YEAR, and errybody in the club gettin' healthy! Which is why today we are partying up these Korean BBQ",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/korean-bbq-steak-bowls-with-spicy-sesame-dressing.webp",
     "protein": "meat"
   },
@@ -5453,7 +5453,7 @@
     "url": "https://pinchofyum.com/chopped-thai-chicken-salad",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "This simple chopped Thai chicken salad has BIG flavors - peanut, lime, soy, chili, cilantro. Topped with a homemade peanut dressing! Healthy and fresh.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chopped-thai-chicken-salad.webp",
     "protein": "chicken"
   },
@@ -5462,7 +5462,7 @@
     "url": "https://pinchofyum.com/yummy-salmon-burgers-slaw",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "These salmon burgers are THE YUMMIEST! and made with just five ingredients. The best for a quick + easy high protein lunch or dinner.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/salmon-burgers-with-creamy-slaw.webp",
     "protein": "fish"
   },
@@ -5471,7 +5471,7 @@
     "url": "https://pinchofyum.com/spicy-salmon-burgers",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "These Spicy Salmon Burgers are little bundles of flavor! Canned salmon, panko, refreshing lemongrass, and a sweet-spicy zingy combo of red curry paste and brown sugar. So good and so simple!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/spicy-salmon-burgers.webp",
     "protein": "fish"
   },
@@ -5480,7 +5480,7 @@
     "url": "https://pinchofyum.com/freezer-meal-korean-bbq-beef",
     "cuisine": "Asian",
     "course": "Entree",
-    "description": "",
+    "description": "These. Tacos. Are. Life. They are so life that I used the periods-after-each-word trick right up there to really make you understand. Had to. Desperate",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/korean-bbq-beef-freezer-meal.webp",
     "protein": "meat"
   },
@@ -5498,7 +5498,7 @@
     "url": "https://feelgoodfoodie.net/recipe/shrimp-fajitas-bell-peppers-avocado-salsa/",
     "cuisine": "Mexican",
     "course": "Entree",
-    "description": "",
+    "description": "This shrimp fajita recipe is easy to make in one skillet with seared shrimp and a mix of bell peppers, onions, and fajita seasoning.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/shrimp-fajitas.webp",
     "protein": "seafood"
   },
@@ -5516,7 +5516,7 @@
     "url": "https://feelgoodfoodie.net/recipe/garlic-cilantro-oven-baked-salmon/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "This Garlic Cilantro Oven Baked Salmon is easy to prepare and is a healthy quick option for the busy weekdays that the whole family will enjoy",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/garlic-cilantro-baked-salmon.webp",
     "protein": "fish"
   },
@@ -5525,7 +5525,7 @@
     "url": "https://feelgoodfoodie.net/recipe/grilled-shrimp-salad/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Grilled shrimp salad with large, seasoned grilled shrimp added to a bed of lettuce mixed with fresh veggies and a creamy homemade dressing.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/grilled-shrimp-salad.webp",
     "protein": "seafood"
   },
@@ -5534,7 +5534,7 @@
     "url": "https://feelgoodfoodie.net/recipe/easy-sheet-pan-steak-fajitas/",
     "cuisine": "Mexican",
     "course": "Entree",
-    "description": "",
+    "description": "Easy Sheet Pan Steak Beef Fajitas with bell peppers, and onions. Made in the oven in 12 minutes. Minimal cleaning & no fuss. An easy weeknight Tex-Mex dish!",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/sheet-pan-steak-fajitas.webp",
     "protein": "meat"
   },
@@ -5543,7 +5543,7 @@
     "url": "https://feelgoodfoodie.net/recipe/ground-chicken-burgers/",
     "cuisine": "American",
     "course": "Entree",
-    "description": "",
+    "description": "Ground Chicken Burgers made with spices, fresh onion, and garlic, with little mayo to help keep the moisture. Cook on the stovetop for 5-6 minutes per side.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/ground-chicken-burgers.webp",
     "protein": "chicken"
   },
@@ -11442,7 +11442,7 @@
     "alignmentScore": "12.44",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "420 ratings",
+    "description": "Layers of tender potatoes baked in cream and Parmesan until rich, golden, and bubbling—this gratin will steal the show at dinner.",
     "rating": "4.74",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/potatoes-au-gratin.webp"
   },
@@ -11453,7 +11453,7 @@
     "alignmentScore": "12.11",
     "cuisine": "",
     "course": "Rice",
-    "description": "306 ratings",
+    "description": "(TESTED & PERFECTED RECIPE) This Chinese-style cauliflower fried rice is a healthy, low-carb dish that's hearty enough to serve as a main course.",
     "rating": "4.87",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cauliflower-fried-rice.webp"
   },
@@ -11464,7 +11464,7 @@
     "alignmentScore": "12.04",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "329 ratings",
+    "description": "These roasted Brussels sprouts are crispy and caramelized, finished with balsamic vinegar and honey—an easy side for weeknights or holidays.",
     "rating": "4.78",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/roasted-brussels-sprouts-with-balsamic-vinegar-and-honey.webp"
   },
@@ -11475,7 +11475,7 @@
     "alignmentScore": "11.75",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "246 ratings",
+    "description": "This classic ratatouille recipe is the best way to use summer produce—slow-cooked veggies with olive oil, garlic, and fresh herbs.",
     "rating": "4.91",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/ratatouille.webp"
   },
@@ -11486,7 +11486,7 @@
     "alignmentScore": "11.47",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "244 ratings",
+    "description": "TESTED & PERFECTED RECIPE – These crispy zucchini fritters make a wonderful starter or side, and they're a delicious way to use up your summer zucchini.",
     "rating": "4.8",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/zucchini-fritters-with-feta-and-dill.webp"
   },
@@ -11497,7 +11497,7 @@
     "alignmentScore": "10.12",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "126 ratings",
+    "description": "Make your Hanukkah celebration extra special with golden crispy latkes. You can fry them on the stovetop or in the oven—your choice!",
     "rating": "4.81",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/crispy-latkes.webp"
   },
@@ -11508,7 +11508,7 @@
     "alignmentScore": "6.35",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "20 ratings",
+    "description": "A bubbling, golden gratin that’s creamy, cheesy, and impossible to resist.",
     "rating": "4.8",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cauliflower-gratin.webp"
   },
@@ -11519,7 +11519,7 @@
     "alignmentScore": "5.57",
     "cuisine": "",
     "course": "Salad",
-    "description": "12 ratings",
+    "description": "This classic potato salad is a guaranteed crowd-pleaser—creamy, tangy, and just the right amount of crunch.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/all-american-potato-salad.webp"
   },
@@ -11530,7 +11530,7 @@
     "alignmentScore": "5.4",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "11 ratings",
+    "description": "Learn the foolproof method for making crispy baked potato wedges with golden edges and fluffy centers—every time.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/crispy-potato-wedges.webp"
   },
@@ -11541,7 +11541,7 @@
     "alignmentScore": "9.13",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "79 ratings",
+    "description": "These fried and delicious Sopapillas are a puffed dough straight from New Mexico. Serve them warm with a drizzle of honey.",
     "rating": "4.8",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/new-mexico-sopapillas.webp"
   },
@@ -11552,7 +11552,7 @@
     "alignmentScore": "6.51",
     "cuisine": "",
     "course": "Dip/Appetizer",
-    "description": "19 ratings",
+    "description": "This Spinach Artichoke Dip recipe is so easy to throw together and bake it until all cheesy and bubbly. The perfect appetizer for Game Day.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/spinach-artichoke-dip.webp"
   },
@@ -11563,7 +11563,7 @@
     "alignmentScore": "5.4",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "11 ratings",
+    "description": "The best Creamy Mashed Potatoes consists of russet potatoes, melted butter, heavy cream and a touch of tartness like crème fraîche.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/fluffy-creamy-mashed-potatoes.webp"
   },
@@ -11574,7 +11574,7 @@
     "alignmentScore": "5.4",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "11 ratings",
+    "description": "This Goat Cheese Potato Gratin is a tangy twist on the classic. Yukon gold potatoes are layered with the goat cheese and a gruyere béchamel.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/goat-cheese-potato-gratin.webp"
   },
@@ -11585,7 +11585,7 @@
     "alignmentScore": "5.21",
     "cuisine": "",
     "course": "Salad",
-    "description": "10 ratings",
+    "description": "Copycat Sweetgreen Kale Caesar Salad is a mix of kale and romaine lettuce, tossed in a caesar dressing with tomatoes and parmesan crisps.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/copycat-sweetgreen-caesar-salad.webp"
   },
@@ -11596,7 +11596,7 @@
     "alignmentScore": "4.89",
     "cuisine": "",
     "course": "Salad",
-    "description": "9 ratings",
+    "description": "This Brussels Sprout Salad is full of flavor and texture. Tossed with pecans, apples, pomegranate seeds and pecorino romano.",
     "rating": "4.89",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/crunchy-brussels-sprout-salad.webp"
   },
@@ -11607,7 +11607,7 @@
     "alignmentScore": "4.77",
     "cuisine": "",
     "course": "Salad",
-    "description": "8 ratings",
+    "description": "The Best Caesar Salad consists of a thick dressing made up of egg yolks, anchovy fillets, olive oil, parmesan and lemon juice.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/how-to-make-caesar-salad.webp"
   },
@@ -11618,7 +11618,7 @@
     "alignmentScore": "4.23",
     "cuisine": "",
     "course": "Salad",
-    "description": "6 ratings",
+    "description": "This Fall Harvest Salad is bright, full of nourishing autumnal ingredients like kale and squash. Make it in less than 20 minutes!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/fall-harvest-salad.webp"
   },
@@ -11629,7 +11629,7 @@
     "alignmentScore": "4.23",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "6 ratings",
+    "description": "Papa a la Huancaina is a Peruvian appetizer from the region of Huancayo. The creamy spicy sauce is poured over cold slices of potato.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/papa-a-la-huancaina.webp"
   },
@@ -11640,7 +11640,7 @@
     "alignmentScore": "3.49",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "4 ratings",
+    "description": "Cacio e Pepe Mashed Potatoes is made from Yukon gold potatoes. The freshly toasted cracked black pepper and Pecorino Romano add such delicious flavor.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cacio-e-pepe-mashed-potatoes.webp"
   },
@@ -11651,7 +11651,7 @@
     "alignmentScore": "8.1",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "42 ratings",
+    "description": "This easy recipe for borracho beans is made by simmering dried pinto beans in a flavorful beer broth. \"Drunken\" beans are a great side dish!",
     "rating": "4.96",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/borracho-beans.webp"
   },
@@ -11662,7 +11662,7 @@
     "alignmentScore": "7.6",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "34 ratings",
+    "description": "Caramelized onion potatoes au gratin are the perfect Thanksgiving potato side dish recipe and you can make them ahead of time!",
     "rating": "4.92",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/caramelized-onion-potatoes-au-gratin.webp"
   },
@@ -11673,7 +11673,7 @@
     "alignmentScore": "6.99",
     "cuisine": "",
     "course": "Soup",
-    "description": "24 ratings",
+    "description": "This easy recipe walks you through the steps to making restaurant-quality French onion soup, totally from scratch!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/french-onion-soup.webp"
   },
@@ -11684,7 +11684,7 @@
     "alignmentScore": "6.9",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "23 ratings",
+    "description": "Here's what you can add to canned baked beans to make them taste SO much better! Perfect for bbqs, potlucks, and summer dinners!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/dressed-up-baked-beans.webp"
   },
@@ -11695,7 +11695,7 @@
     "alignmentScore": "6.51",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "19 ratings",
+    "description": "Everyone needs the perfect mashed potato recipe and these creme fraiche mashed potatoes are the best ever! Creamy, easy, perfect every time!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/creme-fraiche-chive-mashed-potatoes.webp"
   },
@@ -11706,7 +11706,7 @@
     "alignmentScore": "6.02",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "15 ratings",
+    "description": "Ultra creamy mashed potatoes are swirled with a super quick homemade bacon and onion jam to create THE BEST mashed potatoes ever.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/caramelized-onion-bacon-mashed-potatoes.webp"
   },
@@ -11717,7 +11717,7 @@
     "alignmentScore": "5.57",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "12 ratings",
+    "description": "Making restaurant quality refried beans couldn't be easier! This Instant Pot refried beans recipe is so creamy, flavorful, and quick to make!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/instant-pot-refried-beans.webp"
   },
@@ -11728,7 +11728,7 @@
     "alignmentScore": "5.4",
     "cuisine": "",
     "course": "Salad",
-    "description": "11 ratings",
+    "description": "This Hawaiian-style mac salad is tossed with a creamy dressing and comes together in just 30 minutes. Can be made up to 1 day in advance!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/hawaiian-style-mac-salad.webp"
   },
@@ -11739,7 +11739,7 @@
     "alignmentScore": "5.0",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "9 ratings",
+    "description": "These Roasted Carrots with Whipped Feta are the elegant side dish you need! Perfectly spiced and tender with creamy lemon-y feta sauce.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/roasted-carrots-with-whipped-feta.webp"
   },
@@ -11750,7 +11750,7 @@
     "alignmentScore": "4.23",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "6 ratings",
+    "description": "This extra-cheesy and luscious Brussels Sprouts Gratin is a must for Thanksgiving. The best way to serve brussels that everyone will love.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/brussels-sprouts-gratin.webp"
   },
@@ -11761,7 +11761,7 @@
     "alignmentScore": "9.9",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "97 ratings",
+    "description": "The very best Garlic-Parmesan Roasted Cauliflower recipe that pairs well with ANY entree or protein. Minimal ingredients yet with big flavor.",
     "rating": "4.97",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/parmesan-roasted-cauliflower.webp"
   },
@@ -11772,7 +11772,7 @@
     "alignmentScore": "9.59",
     "cuisine": "",
     "course": "Salad",
-    "description": "84 ratings",
+    "description": "Moroccan Couscous Salad with spice-roasted cauliflower, almonds, and dried fruit tossed in a lemony paprika dressing. Perfect for weekday lunches.",
     "rating": "4.97",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/moroccan-couscous-salad.webp"
   },
@@ -11783,7 +11783,7 @@
     "alignmentScore": "9.16",
     "cuisine": "",
     "course": "Salad",
-    "description": "68 ratings",
+    "description": "Enjoy this 10 Minute Chickpea Tuna Salad for a wholesome, make-ahead lunch or satiating snack. Easy to make and filled with protein-rich ingredients.",
     "rating": "4.98",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chickpea-tuna-salad.webp"
   },
@@ -11794,7 +11794,7 @@
     "alignmentScore": "9.14",
     "cuisine": "",
     "course": "Salad",
-    "description": "67 ratings",
+    "description": "Roasted Broccoli Salad with bacon, shallots, and crispy Panko in a Miso-Caesar dressing. Full of bold flavor and satisfying textures.",
     "rating": "4.99",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/roasted-broccoli-salad.webp"
   },
@@ -11805,7 +11805,7 @@
     "alignmentScore": "9.11",
     "cuisine": "",
     "course": "Salad",
-    "description": "66 ratings",
+    "description": "Quinoa Southwest Salad with Creamy Chipotle Dressing is a protein-packed, make ahead-friendly meal. Gluten free, vegetarian, and ready in 30 minutes.",
     "rating": "4.99",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/quinoa-southwest-salad.webp"
   },
@@ -11816,7 +11816,7 @@
     "alignmentScore": "8.93",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "60 ratings",
+    "description": "Moroccan Cauliflower with Tahini-Honey is a 5 ingredient side dish with fiery flavor and a sweet sesame finish. Serve with your protein of choice!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/moroccan-cauliflower-with-tahini-honey-5-ingredients.webp"
   },
@@ -11827,7 +11827,7 @@
     "alignmentScore": "8.75",
     "cuisine": "",
     "course": "Salad",
-    "description": "58 ratings",
+    "description": "Mediterranean Lentil Salad with sautéed veggies, feta, dill, and a simple lemon-Dijon vinaigrette. Make-ahead friendly and perfect for weekday lunches",
     "rating": "4.94",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/mediterranean-lentil-salad.webp"
   },
@@ -11838,7 +11838,7 @@
     "alignmentScore": "8.74",
     "cuisine": "",
     "course": "Salad",
-    "description": "55 ratings",
+    "description": "Thai Quinoa Salad with butternut squash, kale, and creamy ginger dressing. This easy quinoa salad is vegan, gluten free, and great for meal prep!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/thai-butternut-quinoa-salad-gluten-free.webp"
   },
@@ -11849,7 +11849,7 @@
     "alignmentScore": "8.72",
     "cuisine": "",
     "course": "Salad",
-    "description": "55 ratings",
+    "description": "Fiesta Avocado Corn Salad with herbs, pumpkin seeds, and creamy shallot dressing. A slam-dunk summer side dish that will be the star of any cookout.",
     "rating": "4.99",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/avocado-corn-salad.webp"
   },
@@ -11860,7 +11860,7 @@
     "alignmentScore": "8.06",
     "cuisine": "",
     "course": "Salad",
-    "description": "40 ratings",
+    "description": "Autumn Delicata Squash Salad with sweet and spicy roasted squash, crisp greens, avocado, and pomegranate tossed in a lively maple-mustard dressing.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/autumn-delicata-squash-salad.webp"
   },
@@ -11871,7 +11871,7 @@
     "alignmentScore": "18.98",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "6265 ratings",
+    "description": "My favorite Sweet Potato Casserole recipe is topped with brown sugar pecan topping and can be made in advance, so it's ready to bake anytime!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/sweet-potato-casserole.webp"
   },
@@ -11882,7 +11882,7 @@
     "alignmentScore": "18.05",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "4132 ratings",
+    "description": "Loaded with cheesy goodness and crispy topping, this retro favorite is the unexpected hit that turns family dinners into modern nostalgia.",
     "rating": "4.99",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/funeral-potatoes.webp"
   },
@@ -11893,7 +11893,7 @@
     "alignmentScore": "14.8",
     "cuisine": "",
     "course": "Salad",
-    "description": "925 ratings",
+    "description": "The best and easiest Potato Salad recipe, perfect for any BBQ! This creamy and delicious side dish is made with Yukon Gold Potatoes, hard boiled eggs, pickles, celery, and a homemade dressing.",
     "rating": "4.99",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/traditional-potato-salad.webp"
   },
@@ -11904,7 +11904,7 @@
     "alignmentScore": "14.72",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "890 ratings",
+    "description": "This Fresh Cranberry Relish with oranges is the perfect combination of tart and sweet for your Thanksgiving table.",
     "rating": "4.99",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/fresh-cranberry-relish.webp"
   },
@@ -11915,7 +11915,7 @@
     "alignmentScore": "14.67",
     "cuisine": "",
     "course": "Dip/Appetizer",
-    "description": "957 ratings",
+    "description": "You know the deviled eggs that disappear first at the cookout? These are those—with a smooth, savory filling, a little crunch, and just enough spice to surprise your taste buds.",
     "rating": "4.92",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/traditional-deviled-eggs.webp"
   },
@@ -11926,7 +11926,7 @@
     "alignmentScore": "14.34",
     "cuisine": "",
     "course": "Salad",
-    "description": "737 ratings",
+    "description": "Channel vintage charm and bright flavors in one bowl—whipped cream, marshmallows, and tropical fruit deliver that wow factor guests will love.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/ambrosia-fruit-salad.webp"
   },
@@ -11937,7 +11937,7 @@
     "alignmentScore": "12.7",
     "cuisine": "",
     "course": "Salad",
-    "description": "345 ratings",
+    "description": "This easy Cranberry Salad combines fresh cranberries, pineapple, cream cheese, and whipped cream for a light and fluffy holiday side dish or dessert! It’s a favorite at Thanksgiving gatherings and a p",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cranberry-fluff-salad.webp"
   },
@@ -11948,7 +11948,7 @@
     "alignmentScore": "12.4",
     "cuisine": "",
     "course": "Dip/Appetizer",
-    "description": "301 ratings",
+    "description": "This classic party dip has been showing up at gatherings since the '80s, and it's still the first thing to disappear.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/7-layer-bean-dip.webp"
   },
@@ -11959,7 +11959,7 @@
     "alignmentScore": "12.1",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "274 ratings",
+    "description": "These potatoes au gratin come out luxuriously creamy with tender layers and a golden, bubbly top. It’s the kind of cozy side dish that makes ham, steak, or roasted chicken feel instantly special.",
     "rating": "4.96",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/potatoes-au-gratin.webp"
   },
@@ -11970,7 +11970,7 @@
     "alignmentScore": "11.61",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "209 ratings",
+    "description": "A foolproof way to get light, fluffy mashed potatoes every time! Made with Yukon Gold or russet potatoes, butter, milk, and sour cream - and don't skip the key tips like draining and steaming to avoid",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/perfect-mashed-potatoes.webp"
   },
@@ -11981,7 +11981,7 @@
     "alignmentScore": "10.09",
     "cuisine": "",
     "course": "Salad",
-    "description": "103 ratings",
+    "description": "This easy Cherry Plum Goat Cheese Salad is the BEST for summer! Crunchy, sweet, and creamy, it comes together in just 20 minutes!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cherry-plum-goat-cheese-summer-salad.webp"
   },
@@ -11992,7 +11992,7 @@
     "alignmentScore": "10.02",
     "cuisine": "",
     "course": "Salad",
-    "description": "103 ratings",
+    "description": "This roasted pumpkin salad combines sweet roasted pumpkin, candied nuts, and pomegranate with balsamic dressing for the perfect fall side!",
     "rating": "4.97",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/roasted-pumpkin-salad.webp"
   },
@@ -12003,7 +12003,7 @@
     "alignmentScore": "9.01",
     "cuisine": "",
     "course": "Salad",
-    "description": "75 ratings",
+    "description": "These Mediterranean Salad Bowls w/ Lebanese Meatballs have 37 g protein and next-are SO good! This healthy dinner idea is made in 30 minutes.",
     "rating": "4.79",
     "image": null
   },
@@ -12014,7 +12014,7 @@
     "alignmentScore": "8.99",
     "cuisine": "",
     "course": "Salad",
-    "description": "81 ratings",
+    "description": "This Chick-Fil-A Spicy Southwest Salad copycat recipe tastes just like the real one! Make this easy salad for a healthy weeknight meal.",
     "rating": "4.7",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/spicy-southwest-salad.webp"
   },
@@ -12025,7 +12025,7 @@
     "alignmentScore": "7.21",
     "cuisine": "",
     "course": "Salad",
-    "description": "28 ratings",
+    "description": "This Chicken Cobb Salad Recipe is easy, quick, and the best healthy dinner. Make it in under 40 minutes for the most flavorful hearty salad!",
     "rating": "4.93",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/healthy-chicken-cobb-salad-recipe.webp"
   },
@@ -12036,7 +12036,7 @@
     "alignmentScore": "5.88",
     "cuisine": "",
     "course": "Salad",
-    "description": "14 ratings",
+    "description": "This easy Chicken Salad Recipe is made in just 15 minutes! It's healthy, high-protein, and perfect in sandwiches, wraps, or over lettuce.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/healthy-chicken-salad-recipe.webp"
   },
@@ -12047,7 +12047,7 @@
     "alignmentScore": "5.73",
     "cuisine": "",
     "course": "Salad",
-    "description": "13 ratings",
+    "description": "This Watermelon Feta Chicken Salad is my go-to summer lunch or dinner obsession! No cooking and 15 minutes, this salad recipe is so easy.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/watermelon-feta-chicken-salad.webp"
   },
@@ -12058,7 +12058,7 @@
     "alignmentScore": "5.21",
     "cuisine": "",
     "course": "Salad",
-    "description": "10 ratings",
+    "description": "This protein-packed cucumber salad with chicken, edamame, & a spicy chili crunch dressing is quick, refreshing, and ready in just 15 minutes!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cucumber-salad.webp"
   },
@@ -12069,7 +12069,7 @@
     "alignmentScore": "5.0",
     "cuisine": "",
     "course": "Salad",
-    "description": "9 ratings",
+    "description": "Fresh, colorful, veggie-filled chicken mason jar salads are made in just 10 minutes, with no cooking. Perfect for meal prep!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/mason-jar-salad.webp"
   },
@@ -12080,7 +12080,7 @@
     "alignmentScore": "4.77",
     "cuisine": "",
     "course": "Salad",
-    "description": "8 ratings",
+    "description": "Make this fresh black bean salad in five minutes using seven fresh ingredients for a vibrant, filling appetizer, side dish, or condiment!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/black-bean-salad.webp"
   },
@@ -12091,7 +12091,7 @@
     "alignmentScore": "11.79",
     "cuisine": "",
     "course": "Salad",
-    "description": "235 ratings",
+    "description": "Watermelon salad with feta, cucumber, fresh mint, and honey-lime dressing. Watermelon feta salad is the perfect sweet and salty summer salad!",
     "rating": "4.97",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/watermelon-salad-with-cucumber-feta.webp"
   },
@@ -12102,7 +12102,7 @@
     "alignmentScore": "11.15",
     "cuisine": "",
     "course": "Salad",
-    "description": "178 ratings",
+    "description": "10-minute Mediterranean tuna salad without mayo! With vegetables, herbs, and a Dijon dressing, this healthy tuna salad recipe is a must-try!",
     "rating": "4.95",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/mediterranean-tuna-salad.webp"
   },
@@ -12113,7 +12113,7 @@
     "alignmentScore": "11.04",
     "cuisine": "",
     "course": "Salad",
-    "description": "169 ratings",
+    "description": "This Mediterranean salad is an all-star cucumber tomato salad that you can serve on its own or used as a topping to savory dishes.",
     "rating": "4.95",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/3-ingredient-mediterranean-salad.webp"
   },
@@ -12124,7 +12124,7 @@
     "alignmentScore": "10.71",
     "cuisine": "",
     "course": "Salad",
-    "description": "151 ratings",
+    "description": "This healthy chicken salad recipe takes on a Mediterranean twist with sundried tomatoes, artichokes, a zippy Dijon dressing, and no mayo!",
     "rating": "4.91",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/healthy-chicken-salad-mediterranean.webp"
   },
@@ -12135,7 +12135,7 @@
     "alignmentScore": "10.47",
     "cuisine": "",
     "course": "Salad",
-    "description": "128 ratings",
+    "description": "Easy lettuce salad recipe you'll be making on repeat! It takes 5 minutes and 7 ingredients, and you'll love the bold Parmesan and lemon flavors!",
     "rating": "4.96",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/lettuce-salad-recipe.webp"
   },
@@ -12146,7 +12146,7 @@
     "alignmentScore": "10.19",
     "cuisine": "",
     "course": "Salad",
-    "description": "123 ratings",
+    "description": "Healthy and bright mustard potato salad, prepared Mediterranean-style with dill, capers, and a bright Dijon mustard dressing. Tips & video included.",
     "rating": "4.87",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/mustard-potato-salad.webp"
   },
@@ -12157,7 +12157,7 @@
     "alignmentScore": "10.07",
     "cuisine": "",
     "course": "Salad",
-    "description": "116 ratings",
+    "description": "Cabbage salad recipe with parsley, dill, carrots, bell pepper, radish, and Dijon-Lime Vinaigrette. This crunchy cabbage salad keeps for days!",
     "rating": "4.87",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/mediterranean-cabbage-salad.webp"
   },
@@ -12168,7 +12168,7 @@
     "alignmentScore": "9.98",
     "cuisine": "",
     "course": "Salad",
-    "description": "99 ratings",
+    "description": "Greek potato salad with no mayo, easy vinaigrette, and fresh herbs is a lighter, healthier, and flavorful version of the classic side dish.",
     "rating": "4.99",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/greek-potato-salad.webp"
   },
@@ -12179,7 +12179,7 @@
     "alignmentScore": "9.88",
     "cuisine": "",
     "course": "Salad",
-    "description": "107 ratings",
+    "description": "Greek salad, or Horiatiki, with feta, olives, bell peppers, tomatoes, cucumbers, oil and vinegar in this traditional recipe.",
     "rating": "4.86",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/traditional-greek-salad-recipe.webp"
   },
@@ -12190,7 +12190,7 @@
     "alignmentScore": "9.73",
     "cuisine": "",
     "course": "Salad",
-    "description": "94 ratings",
+    "description": "A light lemony dressing, fresh herbs, and chopped veggies give this raw cauliflower salad a delicious and bright Mediterranean twist everyone loves. Low carb. GF",
     "rating": "4.92",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cauliflower-salad.webp"
   },
@@ -12201,7 +12201,7 @@
     "alignmentScore": "15.28",
     "cuisine": "",
     "course": "Soup",
-    "description": "1522 ratings",
+    "description": "This simple homemade butternut squash soup is the best I've ever tasted! It's super creamy (yet cream-less) and full of delicious roasted butternut flavor.",
     "rating": "4.8",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/roasted-butternut-squash-soup.webp"
   },
@@ -12212,7 +12212,7 @@
     "alignmentScore": "15.21",
     "cuisine": "",
     "course": "Soup",
-    "description": "1473 ratings",
+    "description": "This cauliflower soup recipe is the BEST! Roasted cauliflower makes it taste amazing, and a little butter (instead of cream) makes it luxuriously creamy.",
     "rating": "4.8",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/creamy-roasted-cauliflower-soup-recipe.webp"
   },
@@ -12223,7 +12223,7 @@
     "alignmentScore": "14.3",
     "cuisine": "",
     "course": "Salad",
-    "description": "826 ratings",
+    "description": "This quinoa salad recipe is the best! Everyone loves this healthy quinoa salad made with quinoa, chickpeas, red bell pepper, cucumber, parsley and lemon.",
     "rating": "4.9",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/best-quinoa-salad-recipe.webp"
   },
@@ -12234,7 +12234,7 @@
     "alignmentScore": "13.94",
     "cuisine": "",
     "course": "Soup",
-    "description": "699 ratings",
+    "description": "This vegetable soup recipe is seriously so good! It's easy to make, and full of healthy vegetables and fresh flavor. There's nothing \"blah\" about it!",
     "rating": "4.9",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/vegetable-soup-recipe.webp"
   },
@@ -12245,7 +12245,7 @@
     "alignmentScore": "13.12",
     "cuisine": "",
     "course": "Salad",
-    "description": "419 ratings",
+    "description": "This broccoli salad recipe is the best! It's healthy, too, thanks to the delicious honey-mustard vinaigrette (no mayo). This broccoli salad packs great for lunch and potlucks.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/favorite-broccoli-salad-recipe.webp"
   },
@@ -12256,7 +12256,7 @@
     "alignmentScore": "12.62",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "554 ratings",
+    "description": "This crispy baked falafel recipe is so easy to make and tastes incredible! Serve your falafel in pita sandwiches or salads. Gluten free.",
     "rating": "4.6",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/crispy-falafel-recipe.webp"
   },
@@ -12267,7 +12267,7 @@
     "alignmentScore": "10.55",
     "cuisine": "",
     "course": "Salad",
-    "description": "157 ratings",
+    "description": "Healthy kale and quinoa power salad with spicy sweet potato, black beans and creamy avocado sauce. This gluten-free salad packs well for lunch, too!",
     "rating": "4.8",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/southwestern-kale-power-salad.webp"
   },
@@ -12278,7 +12278,7 @@
     "alignmentScore": "9.76",
     "cuisine": "",
     "course": "Salad",
-    "description": "107 ratings",
+    "description": "This Mediterranean bean salad recipe is so fresh and colorful! It features kidney beans and chickpeas with lemon and fresh herbs. Delicious!",
     "rating": "4.8",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/mediterranean-bean-salad-recipe.webp"
   },
@@ -12289,7 +12289,7 @@
     "alignmentScore": "9.65",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "92 ratings",
+    "description": "This roasted carrot and farro recipe looks gourmet, but it's surprisingly easy to make! This is the perfect holiday vegetarian main dish.",
     "rating": "4.9",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/roasted-carrots-recipe-with-farro-chickpeas.webp"
   },
@@ -12300,7 +12300,7 @@
     "alignmentScore": "6.43",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "24 ratings",
+    "description": "This potatoes au gratin recipe is irresistible! Known as gratin dauphinois in France, this potato gratin features layers of cream and cheese.",
     "rating": "4.6",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/potatoes-au-gratin.webp"
   },
@@ -12311,7 +12311,7 @@
     "alignmentScore": "15.56",
     "cuisine": "",
     "course": "Rice",
-    "description": "1500 ratings",
+    "description": "This easy fried rice recipe only takes 15 minutes to make, it's easy to customize with your favorite add-ins, and it's SO delicious!",
     "rating": "4.9",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/the-best-fried-rice.webp"
   },
@@ -12322,7 +12322,7 @@
     "alignmentScore": "12.43",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "440 ratings",
+    "description": "This scalloped potatoes recipe is creamy, cheesy, and irresistibly delicious. Yet it's made lighter with a few simple tweaks!",
     "rating": "4.7",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/scalloped-potatoes-recipe.webp"
   },
@@ -12333,7 +12333,7 @@
     "alignmentScore": "11.93",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "305 ratings",
+    "description": "The best baked potato recipe -- perfectly crispy and flavorful on the outside, soft and fluffy on the inside, and SO flavorful and delicious!",
     "rating": "4.8",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/baked-potato.webp"
   },
@@ -12344,7 +12344,7 @@
     "alignmentScore": "11.57",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "229 ratings",
+    "description": "These amazing homemade mashed potatoes are perfectly rich and creamy, full of great flavor, easy to make, and always a crowd fave!",
     "rating": "4.9",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/best-mashed-potatoes-recipe.webp"
   },
@@ -12355,7 +12355,7 @@
     "alignmentScore": "11.06",
     "cuisine": "",
     "course": "Salad",
-    "description": "180 ratings",
+    "description": "This classic potato salad recipe is easy to make and tossed with the most delicious zesty and creamy dressing. Always a crowd favorite!",
     "rating": "4.9",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/best-potato-salad.webp"
   },
@@ -12366,7 +12366,7 @@
     "alignmentScore": "10.94",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "153 ratings",
+    "description": "Learn how to make homemade croutons from scratch with this simple, customizable croutons recipe. Perfect for soups, salads and more!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/how-to-make-homemade-croutons.webp"
   },
@@ -12377,7 +12377,7 @@
     "alignmentScore": "10.19",
     "cuisine": "",
     "course": "Dip/Appetizer",
-    "description": "108 ratings",
+    "description": "The BEST quick pickled red onions recipe -- easy to make with just 4 ingredients in about 30 minutes, and perfectly crispy, tangy and delicious.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/quick-pickled-red-onions.webp"
   },
@@ -12388,7 +12388,7 @@
     "alignmentScore": "10.08",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "125 ratings",
+    "description": "No joke — this truly is the most amazing roasted artichokes recipe. They’re easy to make, full of big and fresh flavors,…",
     "rating": "4.8",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/amazing-roasted-artichokes.webp"
   },
@@ -12399,7 +12399,7 @@
     "alignmentScore": "9.55",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "88 ratings",
+    "description": "This refrigerator pickles recipe only takes 5 minutes to prep and can be customized with your favorite seasonings. So crisp and delicious!",
     "rating": "4.9",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/easy-refrigerator-pickles-recipe.webp"
   },
@@ -12410,7 +12410,7 @@
     "alignmentScore": "6.87",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "26 ratings",
+    "description": "The BEST roasted cauliflower recipe!! It's super easy to make, full of great nutrients, and totally customizable with your favorite seasonings.",
     "rating": "4.8",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/roasted-cauliflower.webp"
   },
@@ -12421,7 +12421,7 @@
     "alignmentScore": "9.98",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "108 ratings",
+    "description": "These oven roasted mini potatoes are crispy on the outside, creamy within, and seasoned perfectly! Easy enough for weeknights and good enough for Sunday dinner.",
     "rating": "4.9",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/roasted-mini-potatoes.webp"
   },
@@ -12432,7 +12432,7 @@
     "alignmentScore": "9.4",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "75 ratings",
+    "description": "This quick and easy air fryer broccoli is the absolute BEST. It's tossed with olive oil, garlic salt, and nutritional yeast. Vegan friendly!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/easy-air-fryer-broccoli.webp"
   },
@@ -12443,7 +12443,7 @@
     "alignmentScore": "8.62",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "52 ratings",
+    "description": "These Air Fryer Green Beans are full of garlicky goodness, finished off with freshly grated parm and fresh lemon. A great side for any main!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/air-fryer-green-beans.webp"
   },
@@ -12454,7 +12454,7 @@
     "alignmentScore": "8.01",
     "cuisine": "",
     "course": "Rice",
-    "description": "39 ratings",
+    "description": "Whether you use it as a side dish or devour it as a main, this flavor-filled Instant Pot Mexican Rice is a total hit. It's ready in less than 30 minutes and it's perfect for weeknights.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/instant-pot-mexican-rice.webp"
   },
@@ -12465,7 +12465,7 @@
     "alignmentScore": "7.24",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "27 ratings",
+    "description": "This quick and easy Grilled Asparagus Recipe With Charred Lemon is sure to become your go-to summer side dish.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/easy-grilled-asparagus-recipe-with-charred-lemon.webp"
   },
@@ -12476,7 +12476,7 @@
     "alignmentScore": "7.07",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "25 ratings",
+    "description": "These Air Fryer Sweet Potatoes shake things up with sweet and tangy honey lime dressing. They make for a great side, especially Taco Tuesday!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/air-fryer-sweet-potatoes.webp"
   },
@@ -12487,7 +12487,7 @@
     "alignmentScore": "6.31",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "19 ratings",
+    "description": "These Chili + Honey Roasted Sweet Potatoes With Lime Juice are sweet, savory, and the perfect side dish or pre-run snack.",
     "rating": "4.85",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chili-honey-roasted-sweet-potatoes.webp"
   },
@@ -12498,7 +12498,7 @@
     "alignmentScore": "5.4",
     "cuisine": "",
     "course": "Salad",
-    "description": "11 ratings",
+    "description": "Inspired by local pizza joints, this salad is brimming with crisp textures and fresh flavors. It's truly the best salad for pizza night!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/side-salad-for-pizza.webp"
   },
@@ -12509,7 +12509,7 @@
     "alignmentScore": "5.21",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "10 ratings",
+    "description": "These hot honey roasted carrots bring some sweet and heat to your plate and might just become your new favorite veg side.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/hot-honey-roasted-carrots.webp"
   },
@@ -12520,7 +12520,7 @@
     "alignmentScore": "4.52",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "7 ratings",
+    "description": "These tasty air fryer baby potatoes are dressed in a tangy lemon pepper blend and pair with just about any main dish!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/lemon-pepper-air-fryer-baby-potatoes.webp"
   },
@@ -12531,7 +12531,7 @@
     "alignmentScore": "13.41",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "2006 ratings",
+    "description": "Make ahead Bourbon Sweet Potato Casserole with Sweet 'n' Savory Bacon Pecans. The classic we know and love, but topped with sweet and savory bacon pecans.",
     "rating": "4.06",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/bourbon-sweet-potato-casserole-sweet-n-savory-bacon-pecans.webp"
   },
@@ -12542,7 +12542,7 @@
     "alignmentScore": "13.28",
     "cuisine": "",
     "course": "Salad",
-    "description": "893 ratings",
+    "description": "Autumn Harvest Honeycrisp Apple and Feta Salad...all tossed with a warming apple cider vinaigrette...healthy, simple, and so delicious!",
     "rating": "4.5",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/autumn-harvest-honeycrisp-apple-and-feta-salad.webp"
   },
@@ -12553,7 +12553,7 @@
     "alignmentScore": "12.9",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "609 ratings",
+    "description": "Make Ahead Roasted Garlic Mashed Potatoes: Perfectly flavored creamy mashed potatoes...each bite is smooth, creamy, and so delicious!",
     "rating": "4.63",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/make-ahead-roasted-garlic-mashed-potatoes.webp"
   },
@@ -12564,7 +12564,7 @@
     "alignmentScore": "12.63",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "1979 ratings",
+    "description": "Crispy Cheesy Potatoes Stacks - Thinly sliced potatoes makes these stacks extra crisp, but the center remains a soft cheesy goodness.",
     "rating": "3.83",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/crispy-cheesy-potatoes-stacks.webp"
   },
@@ -12575,7 +12575,7 @@
     "alignmentScore": "12.58",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "1527 ratings",
+    "description": "Slow Cooker Cheesy Garlic Herb Mashed Potatoes...this slow cooker method makes for the creamiest, most flavorful mashed potatoes...delicious!",
     "rating": "3.95",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/garlic-herb-mashed-potatoes.webp"
   },
@@ -12586,7 +12586,7 @@
     "alignmentScore": "12.54",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "676 ratings",
+    "description": "Cheesy Scalloped Potatoes with Caramelized Onions: these creamy crunchy potatoes are delicious...simple to make and always a crowd favorite!",
     "rating": "4.43",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cheesy-scalloped-potatoes.webp"
   },
@@ -12597,7 +12597,7 @@
     "alignmentScore": "12.49",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "594 ratings",
+    "description": "Souper Creamy Lemon Butter Cheesy Zucchini Orzo!! Kind of like risotto, kind of like soup, made in under 30 minutes, using just one skillet",
     "rating": "4.5",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/souper-creamy-lemon-butter-cheesy-zucchini-orzo-orzo.webp"
   },
@@ -12608,7 +12608,7 @@
     "alignmentScore": "6.28",
     "cuisine": "",
     "course": "Salad",
-    "description": "17 ratings",
+    "description": "Harvest Brie and Cheddar Apple Kale Salad: Perfect seasonal salad with creamy cheeses and a balance of savory, sweet, and salty fall flavors!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/harvest-brie-and-cheddar-apple-kale-salad.webp"
   },
@@ -12619,7 +12619,7 @@
     "alignmentScore": "5.11",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "12 ratings",
+    "description": "Your new favorite holiday side! Fluffy mashed potatoes baked with butter, cream cheese, and Gruyère for the dreamiest, cheesiest casserole. Make it ahead, bake, and serve warm for pure cozy comfort.",
     "rating": "4.59",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cheesy-mashed-potato-casserole.webp"
   },
@@ -12630,7 +12630,7 @@
     "alignmentScore": "4.85",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "26 ratings",
+    "description": "Crispy topping, creamy sauce, and all homemade — no canned soup, no oven! The easiest holiday side dish, made fresh and so delicious!",
     "rating": "3.39",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/crockpot-green-bean-casserole.webp"
   },
@@ -12751,7 +12751,7 @@
     "alignmentScore": "16.43",
     "cuisine": "",
     "course": "Soup",
-    "description": "2051 ratings",
+    "description": "This butternut squash soup recipe is the best! Made with squash, ginger, rosemary & sage, it's super creamy and full of cozy fall flavor.",
     "rating": "4.96",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/butternut-squash-soup.webp"
   },
@@ -12762,7 +12762,7 @@
     "alignmentScore": "14.29",
     "cuisine": "",
     "course": "Soup",
-    "description": "845 ratings",
+    "description": "This broccoli cheddar soup recipe is easy to make in 30 minutes! Hearty, rich and creamy, it's the perfect comfort food. Better than Panera!",
     "rating": "4.88",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/broccoli-cheddar-soup.webp"
   },
@@ -12773,7 +12773,7 @@
     "alignmentScore": "13.7",
     "cuisine": "",
     "course": "Soup",
-    "description": "608 ratings",
+    "description": "An EASY, delicious, 7-ingredient carrot ginger soup! Creamy, warming, and bright, it's a great way to warm up on cold nights.",
     "rating": "4.92",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/carrot-ginger-soup.webp"
   },
@@ -12784,7 +12784,7 @@
     "alignmentScore": "13.52",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "588 ratings",
+    "description": "This classic basil pesto recipe is bright and nutty, delicious on summer pastas, pizzas, and more. Easy pesto sauce variations included!",
     "rating": "4.88",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/pesto-recipe.webp"
   },
@@ -12795,7 +12795,7 @@
     "alignmentScore": "13.51",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "529 ratings",
+    "description": "A perfect baked potato has crispy skin and fluffy insides. This method for how to bake a potato works every time! Add your favorite toppings, and dig in!",
     "rating": "4.96",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/baked-potato.webp"
   },
@@ -12806,7 +12806,7 @@
     "alignmentScore": "13.49",
     "cuisine": "",
     "course": "Salad",
-    "description": "505 ratings",
+    "description": "This easy Greek salad recipe is refreshing & delicious! Made with cucumber, tomatoes, olives, peppers & feta, Greek salad is the best summer side dish.",
     "rating": "4.99",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/greek-salad.webp"
   },
@@ -12817,7 +12817,7 @@
     "alignmentScore": "13.47",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "526 ratings",
+    "description": "Learn how to bake sweet potatoes with these tips & tricks! Enjoy them with butter, salt & pepper, or use them in your favorite baked sweet potato recipes.",
     "rating": "4.95",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/baked-sweet-potato.webp"
   },
@@ -12828,7 +12828,7 @@
     "alignmentScore": "13.44",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "512 ratings",
+    "description": "Learn how to cook spaghetti squash in the oven! This easy method yields perfect al dente strands every time. Serve as a side dish or use in your favorite spaghetti squash recipes!",
     "rating": "4.96",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/how-to-cook-spaghetti-squash.webp"
   },
@@ -12839,7 +12839,7 @@
     "alignmentScore": "13.33",
     "cuisine": "",
     "course": "Salad",
-    "description": "475 ratings",
+    "description": "This easy broccoli salad recipe is a classic party side dish! It's made with cranberries, red onion, almonds, and a creamy homemade dressing.",
     "rating": "4.98",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/broccoli-salad.webp"
   },
@@ -12850,7 +12850,7 @@
     "alignmentScore": "3.89",
     "cuisine": "",
     "course": "Rice",
-    "description": "5 ratings",
+    "description": "Baking rice might be the easiest way to make it, ever. Throw all your ingredients into an oven dish, pour hot stock on top, cover and pop into the oven.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/loaded-baked-rice.webp"
   },
@@ -12861,7 +12861,7 @@
     "alignmentScore": "3.49",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "4 ratings",
+    "description": "Make soft, fluffy bao buns at home in under an hour! This easy recipe uses a fast-rising dough with yeast AND baking powder, so you skip the long wait but still get perfectly pillowy steamed buns.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/how-to-make-bao-buns.webp"
   },
@@ -12872,7 +12872,7 @@
     "alignmentScore": "3.01",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "3 ratings",
+    "description": "These mozzarella stuffed arancini are the PERFECT use for any leftover risotto. Just form into balls, coat in breadcrumbs and fry (or air-fry) until golden and crispy.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/mozzarella-stuffed-arancini.webp"
   },
@@ -12883,7 +12883,7 @@
     "alignmentScore": "2.39",
     "cuisine": "",
     "course": "Salad",
-    "description": "2 ratings",
+    "description": "This vibrant roasted butternut squash salad is PACKED with colours and flavour. Creamy feta, juicy pomegranate seeds, a punchy miso dressing and crunchy pumpkin seeds make it a serious winner.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/butternut-squash-salad-with-feta.webp"
   },
@@ -12894,7 +12894,7 @@
     "alignmentScore": "2.39",
     "cuisine": "",
     "course": "Salad",
-    "description": "2 ratings",
+    "description": "This spicy gochujang potato salad is perfect for summer BBQs and is an easy prep ahead side that everyone loves. And a real bonus? No potato peeling required.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/creamy-gochujang-potato-salad.webp"
   },
@@ -12905,7 +12905,7 @@
     "alignmentScore": "2.39",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "2 ratings",
+    "description": "This whole roasted cauliflower makes a seriously spectacular vegetarian centrepiece. It's loaded with a punchy Asian-style marinade and served on top of an addictive tomato pesto you're going to love.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/whole-roasted-cauliflower-recipe-with-miso-and-tomato-pesto.webp"
   },
@@ -12916,7 +12916,7 @@
     "alignmentScore": "2.39",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "2 ratings",
+    "description": "Your new favorite weeknight dinner: creamy white beans, rich tomato sauce, and melty cheese, all in one pan!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cheesy-white-bean-tomato-bake.webp"
   },
@@ -12927,7 +12927,7 @@
     "alignmentScore": "1.51",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "1 ratings",
+    "description": "You CAN get super crispy roast potatoes without peeling them. This skin on roast potatoes recipe saves so much time, you'll never go back. Just chop, parboil, roast and you're done!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/skin-on-potatoes.webp"
   },
@@ -12960,7 +12960,7 @@
     "alignmentScore": "8.34",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "47 ratings",
+    "description": "Warm roasted carrots sit atop a bed of creamy whipped feta for a Thanksgiving side dish that will please both the vegetarians and meat-eaters alike, at",
     "rating": "4.96",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/spiced-roasted-carrots-with-lemony-whipped-feta.webp"
   },
@@ -12971,7 +12971,7 @@
     "alignmentScore": "7.53",
     "cuisine": "",
     "course": "Salad",
-    "description": "31 ratings",
+    "description": "When the spring and summer months roll around, there's nothing that I want to eat more than a crunchy and refreshing salad. After all, a salad that is",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/10-minute-crazy-good-italian-chopped-salad.webp"
   },
@@ -12982,7 +12982,7 @@
     "alignmentScore": "7.15",
     "cuisine": "",
     "course": "Salad",
-    "description": "31 ratings",
+    "description": "Are you in need of a quick and healthy lunch option that doesn't skimp on flavor? Well, then look no further than The Ultimate Healthy Chicken Salad! This",
     "rating": "4.75",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/the-ultimate-healthy-chicken-salad.webp"
   },
@@ -12993,7 +12993,7 @@
     "alignmentScore": "6.02",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "15 ratings",
+    "description": "Your traditional green bean casserole called, and it got a massively delicious upgrade. Introducing my Brown Butter Green Beans with Toasted Pistachios",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/brown-butter-green-beans-with-toasted-pistachios-and-lemony-whipped-feta.webp"
   },
@@ -13004,7 +13004,7 @@
     "alignmentScore": "5.63",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "14 ratings",
+    "description": "Sometimes, the best things come in small packages - at least, that's the case when it comes to this recipe! My Viral Crispy Garlic Parmesan Crusted",
     "rating": "4.79",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/viral-crispy-garlic-parmesan-crusted-potatoes.webp"
   },
@@ -13015,7 +13015,7 @@
     "alignmentScore": "5.57",
     "cuisine": "",
     "course": "Salad",
-    "description": "12 ratings",
+    "description": "Welcome to one of the best salads that you will ever eat in your LIFE! My Copycat Erewhon Cabbage Slaw is a riff off of my favorite salad from LA's most",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/copycat-erewhon-cabbage-slaw.webp"
   },
@@ -13026,7 +13026,7 @@
     "alignmentScore": "5.21",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "10 ratings",
+    "description": "There is no side dish better than a creamy bowl of potatoes au gratin. Translating to \"potatoes topped with cheese,\" this dish is made from layers of",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/the-ultimate-sheet-pan-potatoes-au-gratin.webp"
   },
@@ -13037,7 +13037,7 @@
     "alignmentScore": "3.49",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "4 ratings",
+    "description": "Meet your new go-to side dish that somehow manages to be both effortless and impressive: Miso Maple Sweet Potato Stacks. These gorgeous little towers are",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/miso-maple-sweet-potato-stacks.webp"
   },
@@ -13048,7 +13048,7 @@
     "alignmentScore": "2.39",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "2 ratings",
+    "description": "Golden, crispy, and layered with garlicky butter and herbs, these Herby Potato Stacks are the kind of side dish that makes everything else on the plate",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/herby-potato-stacks.webp"
   },
@@ -13059,7 +13059,7 @@
     "alignmentScore": "1.51",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "1 ratings",
+    "description": "If you know that glossy, crave-worthy broccoli from a Chinese restaurant — the kind that's coated in a rich, garlicky sauce and somehow makes veggies the",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/better-than-takeout-broccoli.webp"
   },
@@ -13070,7 +13070,7 @@
     "alignmentScore": "5.4",
     "cuisine": "",
     "course": "Salad",
-    "description": "11 ratings",
+    "description": "This Spicy Quinoa Crunch Salad is as flavorful as it is colorful! Tossed with addictive spicy cashews, this recipe is ideal for meal prep.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/spicy-cashew-quinoa-crunch-salad.webp"
   },
@@ -13081,7 +13081,7 @@
     "alignmentScore": "5.21",
     "cuisine": "",
     "course": "Salad",
-    "description": "10 ratings",
+    "description": "This Avocado Corn Chicken Salad will become your summertime staple! Healthy, protein-packed, and mayo-free, it’s a crowd-pleasing dish!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/avocado-corn-chicken-salad.webp"
   },
@@ -13092,7 +13092,7 @@
     "alignmentScore": "4.52",
     "cuisine": "",
     "course": "Salad",
-    "description": "7 ratings",
+    "description": "Packed with flavor AND color, this Curry Chicken Salad will brighten up your lunches for the entire week.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/easy-healthy-curry-chicken-salad.webp"
   },
@@ -13103,7 +13103,7 @@
     "alignmentScore": "4.23",
     "cuisine": "",
     "course": "Salad",
-    "description": "6 ratings",
+    "description": "Loaded with flavor, this colorful Southwestern Micro-Chopped Salad with Cilantro Lime Dressing is anything but boring!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/southwest-chopped-salad.webp"
   },
@@ -13114,7 +13114,7 @@
     "alignmentScore": "3.49",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "4 ratings",
+    "description": "An easy sheet pan side recipe that will impress all of your guests. Try my honey glazed carrots and be prepared to be wowed!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/honey-glazed-carrots.webp"
   },
@@ -13125,7 +13125,7 @@
     "alignmentScore": "3.01",
     "cuisine": "",
     "course": "Salad",
-    "description": "3 ratings",
+    "description": "This easy broccoli crunch salad makes a regular appearance in my weekday lunches. It’s non-mayo based so great for meal prep too!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/broccoli-crunch-salad.webp"
   },
@@ -13136,7 +13136,7 @@
     "alignmentScore": "3.01",
     "cuisine": "",
     "course": "Rice",
-    "description": "3 ratings",
+    "description": "A copycat Sweetgreen Harvest Bowl salad with a twist! This gluten-free, dairy-free salad will come to the rescue whenever you crave this salad chain bowl.",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/crispy-wild-rice-harvest-salad.webp"
   },
@@ -13147,7 +13147,7 @@
     "alignmentScore": "2.39",
     "cuisine": "",
     "course": "Salad",
-    "description": "2 ratings",
+    "description": "You NEED to make this Candied Bacon Walnut Shaved Brussels Sprout Salad for your next holiday! Crunchy, vibrant, and incredibly delicious",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/bacon-walnut-shaved-brussels-sprout-salad.webp"
   },
@@ -13180,7 +13180,7 @@
     "alignmentScore": "9.03",
     "cuisine": "",
     "course": "Salad",
-    "description": "63 ratings",
+    "description": "This Roasted Broccoli Salad is EVERYTHING! Bright lemon, crisped-up bacon, tangy feta, and it's all built around a big bowl of roasted broccoli. A true hero of a meal!",
     "rating": "5.0",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/lizs-roasted-broccoli-salad.webp"
   },
@@ -13191,7 +13191,7 @@
     "alignmentScore": "8.78",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "80 ratings",
+    "description": "Mashed Potatoes made in the Instant Pot! they are so creamy, so fluffy, and SO GOOD. from start to finish in 30 minutes, all in one pot!",
     "rating": "4.6",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/the-best-instant-pot-mashed-potatoes.webp"
   },
@@ -13202,7 +13202,7 @@
     "alignmentScore": "8.77",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "66 ratings",
+    "description": "Sweet Potato Casserole with a crunchy brown sugar topping that will give you life. A Thanksgiving recipe classic!",
     "rating": "4.8",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/sweet-potato-casserole-with-brown-sugar-topping.webp"
   },
