@@ -304,10 +304,10 @@ function buildCard(r){
     <div class="card-body">
       <div class="card-cuisine">${escHtml(r.cuisine)}${r.course?' &middot; '+escHtml(r.course):''}</div>
       <div class="card-name">${escHtml(r.name)}</div>
-      <div class="card-desc">${escHtml(isRatingCount(r.description) ? '' : r.description)}</div>
+      <div class="card-desc">${buildDesc(r)}</div>
       <div class="card-source">
         ${domain?`<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><a href="${escHtml(r.url)}" target="_blank">${escHtml(domain)}</a>`:''}
-        ${formatRating(r.rating, r.description)}
+        ${isRatingCount(r.description) ? '' : formatRating(r.rating, '')}
       </div>
     </div>`;
   return card;
@@ -316,6 +316,20 @@ function buildCard(r){
 function escHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
 function isRatingCount(s){ return /^\d[\d,]*\s+ratings?$/i.test(String(s||'').trim()); }
+
+function buildDesc(r){
+  const desc = r.description || '';
+  // If description is just "X ratings", build a formatted rating line instead
+  if(isRatingCount(desc)){
+    const countM = desc.match(/(\d[\d,]*)/);
+    const score  = parseFloat(r.rating);
+    if(score && countM){
+      return escHtml(`${score}/5 \u00b7 ${Number(countM[1].replace(/,/g,'')).toLocaleString()} ratings`);
+    }
+    return '';
+  }
+  return escHtml(desc);
+}
 
 function formatRating(raw, desc){
   if(!raw) return '';
