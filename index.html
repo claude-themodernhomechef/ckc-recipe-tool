@@ -307,7 +307,7 @@ function buildCard(r){
       <div class="card-desc">${buildDesc(r)}</div>
       <div class="card-source">
         ${domain?`<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><a href="${escHtml(r.url)}" target="_blank">${escHtml(domain)}</a>`:''}
-        ${isRatingCount(r.description) ? '' : formatRating(r.rating, '')}
+        ${isRatingCount(r.description) ? '' : formatRating(r.rating, r.description)}
       </div>
     </div>`;
   return card;
@@ -319,12 +319,12 @@ function isRatingCount(s){ return /^\d[\d,]*\s+ratings?$/i.test(String(s||'').tr
 
 function buildDesc(r){
   const desc = r.description || '';
-  // If description is just "X ratings", build a formatted rating line instead
   if(isRatingCount(desc)){
+    // description is just "X ratings" — show as "score/5 from X reviews"
     const countM = desc.match(/(\d[\d,]*)/);
     const score  = parseFloat(r.rating);
     if(score && countM){
-      return escHtml(`${score}/5 \u00b7 ${Number(countM[1].replace(/,/g,'')).toLocaleString()} ratings`);
+      return escHtml(`${score}/5 from ${Number(countM[1].replace(/,/g,'')).toLocaleString()} reviews`);
     }
     return '';
   }
@@ -335,12 +335,12 @@ function formatRating(raw, desc){
   if(!raw) return '';
   // Format: "4.9 (180 ratings)"
   const full = String(raw).match(/([\d.]+)\s*\((\d+)\s*ratings?\)/i);
-  if(full) return `<span style="margin-left:auto">${full[1]}/5 &middot; ${Number(full[2]).toLocaleString()} ratings</span>`;
-  // Format: score only "4.9", count may be in desc ("180 ratings")
+  if(full) return `<span style="margin-left:auto">${full[1]}/5 from ${Number(full[2]).toLocaleString()} reviews</span>`;
+  // Format: score only e.g. "4.9" — count may be in desc ("180 ratings")
   const score = parseFloat(raw);
   if(score){
     const countMatch = isRatingCount(desc) && String(desc).match(/(\d[\d,]*)/);
-    const count = countMatch ? ` &middot; ${Number(countMatch[1].replace(/,/g,'')).toLocaleString()} ratings` : '';
+    const count = countMatch ? ` from ${Number(countMatch[1].replace(/,/g,'')).toLocaleString()} reviews` : '';
     return `<span style="margin-left:auto">${score}/5${count}</span>`;
   }
   return '';
