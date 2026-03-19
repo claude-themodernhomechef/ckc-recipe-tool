@@ -176,6 +176,7 @@ tbody td.td-img{width:56px;padding:6px 10px}
     <select class="filter-select" id="filter-cuisine"><option value="">All cuisines</option></select>
     <select class="filter-select" id="filter-course"><option value="">All meal types</option></select>
     <select class="filter-select" id="filter-blogger"><option value="">All bloggers</option></select>
+    <select class="filter-select" id="filter-protein"><option value="">All proteins</option><option value="chicken">Chicken</option><option value="fish">Fish</option><option value="seafood">Seafood</option><option value="meat">Meat</option><option value="lamb">Lamb</option><option value="pork">Pork</option><option value="pasta">Pasta</option><option value="tofu">Tofu</option><option value="vegetables">Vegetables</option></select>
     <select class="filter-select" id="filter-diet"><option value="">All diets</option><option value="V">V – Vegan</option><option value="Vg">Vg – Vegetarian</option><option value="GF">GF – Gluten-free</option><option value="DF">DF – Dairy-free</option><option value="LH">LH – Low-histamine</option><option value="LF">LF – Low-FODMAP</option><option value="AIP">AIP – Autoimmune Protocol</option><option value="K">K – Keto</option></select>
   </div>
 
@@ -193,6 +194,7 @@ tbody td.td-img{width:56px;padding:6px 10px}
           <th class="th-img" style="cursor:default"></th>
           <th data-col="name">Recipe <span class="sort-icon">↕</span></th>
           <th data-col="decision">Decision <span class="sort-icon">↕</span></th>
+          <th data-col="protein">Protein <span class="sort-icon">↕</span></th>
           <th data-col="blogger">Blogger <span class="sort-icon">↕</span></th>
           <th data-col="alignmentScore">Score <span class="sort-icon">↕</span></th>
           <th data-col="mealType">Meal Type <span class="sort-icon">↕</span></th>
@@ -274,7 +276,7 @@ const DIET_TAGS = [
 let allRows = [];      // {id, ...fields}
 let sortCol = 'decidedAt', sortDir = -1;
 let activeDecisions = new Set();
-let filterCuisine = '', filterCourse = '', filterBlogger = '', filterDiet = '';
+let filterCuisine = '', filterCourse = '', filterBlogger = '', filterDiet = '', filterProtein = '';
 let searchQuery = '';
 
 async function loadCatalog(){
@@ -313,6 +315,7 @@ function getFiltered(){
     if(filterCuisine && r.cuisineStyle !== filterCuisine) return false;
     if(filterCourse  && r.mealType    !== filterCourse)   return false;
     if(filterBlogger && r.blogger     !== filterBlogger)  return false;
+    if(filterProtein && r.protein !== filterProtein) return false;
     if(filterDiet && !(r.dietTags && filterDiet in r.dietTags)) return false;
     if(q && ![ r.name, r.blogger, r.cuisineStyle, r.mealType, r.notes, r.rating ]
               .some(v=>(v||'').toLowerCase().includes(q))) return false;
@@ -372,6 +375,7 @@ function renderTable(){
           <option value="MAYBE"${row.decision==='MAYBE'?'selected':''}>MAYBE</option>
         </select>
       </td>
+      <td style="text-transform:capitalize;white-space:nowrap">${escHtml(row.protein||'')}</td>
       <td>${escHtml(row.blogger||'')}</td>
       <td>${score!=null?`<span class="score-pill ${scoreClass}">${score}</span>`:'—'}</td>
       <td>${escHtml(row.mealType||'')}</td>
@@ -599,6 +603,7 @@ document.querySelectorAll('#decision-chips .chip').forEach(chip=>{
 document.getElementById('filter-cuisine').addEventListener('change', e=>{ filterCuisine=e.target.value; renderTable(); });
 document.getElementById('filter-course').addEventListener('change',  e=>{ filterCourse=e.target.value;  renderTable(); });
 document.getElementById('filter-blogger').addEventListener('change', e=>{ filterBlogger=e.target.value; renderTable(); });
+document.getElementById('filter-protein').addEventListener('change', e=>{ filterProtein=e.target.value; renderTable(); });
 document.getElementById('filter-diet').addEventListener('change',   e=>{ filterDiet=e.target.value;    renderTable(); });
 
 // ── Search ──────────────────────────────────────────────────
