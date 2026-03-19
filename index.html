@@ -332,14 +332,18 @@ function buildDesc(r){
 }
 
 function formatRating(raw, desc){
-  if(!raw) return '';
-  // Format: "4.9 (180 ratings)"
-  const full = String(raw).match(/([\d.]+)\s*\((\d+)\s*ratings?\)/i);
-  if(full) return `<span style="margin-left:auto">${full[1]}/5 from ${Number(full[2]).toLocaleString()} reviews</span>`;
-  // Format: score only e.g. "4.9" — count may be in desc ("180 ratings")
-  const score = parseFloat(raw);
+  if(!raw || raw==='NR') return '';
+  const s = String(raw);
+  // Handles: "4.79 (519 ratings)", "5.00/5 (6,265 reviews)", "4.9 (180 ratings)"
+  const full = s.match(/([\d.]+)(?:\/5)?\s*\(([\d,]+)\s*(?:ratings?|reviews?)\)/i);
+  if(full){
+    const count = Number(full[2].replace(/,/g,''));
+    return `<span style="margin-left:auto">${parseFloat(full[1])}/5 from ${count.toLocaleString()} reviews</span>`;
+  }
+  // Plain score only e.g. "4.9"
+  const score = parseFloat(s);
   if(score){
-    const countMatch = isRatingCount(desc) && String(desc).match(/(\d[\d,]*)/);
+    const countMatch = isRatingCount(desc) && String(desc).match(/([\d,]+)/);
     const count = countMatch ? ` from ${Number(countMatch[1].replace(/,/g,'')).toLocaleString()} reviews` : '';
     return `<span style="margin-left:auto">${score}/5${count}</span>`;
   }
