@@ -61,7 +61,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:var(--bg);color:var(
 .card-cuisine{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;font-weight:500}
 .card-name{font-family:var(--font-display);font-size:1.7rem;font-weight:500;line-height:1.15;color:var(--text-primary);margin-bottom:10px}
 .card-desc{font-size:13px;color:var(--text-secondary);line-height:1.55;font-weight:300}
-.card-source{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px}
+.card-source{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;justify-content:space-between}
 .card-source a{color:var(--text-muted);text-decoration:none}
 .swipe-label{position:absolute;font-family:var(--font-display);font-size:2rem;font-weight:600;font-style:italic;letter-spacing:.05em;text-transform:uppercase;opacity:0;pointer-events:none;border:3px solid currentColor;padding:4px 14px;border-radius:6px}
 .label-yes{top:20px;left:20px;color:var(--green)}.label-no{top:20px;right:20px;color:var(--red)}.label-maybe{left:50%;transform:translateX(-50%);bottom:20px;color:var(--yellow)}
@@ -305,12 +305,22 @@ function buildCard(r){
       <div class="card-cuisine">${escHtml(r.cuisine)}${r.course?' &middot; '+escHtml(r.course):''}</div>
       <div class="card-name">${escHtml(r.name)}</div>
       <div class="card-desc">${escHtml(r.description)}</div>
-      ${domain?`<div class="card-source"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><a href="${escHtml(r.url)}" target="_blank">${escHtml(domain)}</a></div>`:''}
+      <div class="card-source">
+        ${domain?`<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><a href="${escHtml(r.url)}" target="_blank">${escHtml(domain)}</a>`:''}
+        ${formatRating(r.rating)}
+      </div>
     </div>`;
   return card;
 }
 
 function escHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function formatRating(raw){
+  if(!raw) return '';
+  const m = String(raw).match(/([\d.]+)\s*\((\d+)\s*ratings?\)/i);
+  if(m) return `<span style="margin-left:auto">${m[1]}/5 &middot; ${Number(m[2]).toLocaleString()} ratings</span>`;
+  return `<span style="margin-left:auto">${escHtml(raw)}</span>`;
+}
 
 // ── Drag / swipe ──────────────────────────────────────
 function setupDrag(card){card.addEventListener('mousedown',onStart);card.addEventListener('touchstart',onStart,{passive:true});}
