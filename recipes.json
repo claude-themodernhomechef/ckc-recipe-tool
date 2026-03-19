@@ -695,9 +695,10 @@
     "url": "https://www.loveandlemons.com/minestrone-soup/",
     "cuisine": "Italian",
     "course": "Entree",
-    "description": "Vegetarian; veggie-packed; Italian comfort",
+    "description": "A warming, comforting soup with deep flavor — perfect as a starter or light meal alongside crusty bread.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/minestrone-soup.webp",
-    "protein": "vegetables"
+    "protein": "vegetables",
+    "rating": "4.96 (662 ratings)"
   },
   {
     "name": "Zucchini Pasta",
@@ -11453,8 +11454,8 @@
     "alignmentScore": "12.11",
     "cuisine": "",
     "course": "Rice",
-    "description": "(TESTED & PERFECTED RECIPE) This Chinese-style cauliflower fried rice is a healthy, low-carb dish that's hearty enough to serve as a main course.",
-    "rating": "4.87",
+    "description": "A healthy, low-carb spin on classic fried rice: cauliflower florets stir-fried with eggs, soy sauce, and vegetables for a satisfying weeknight side.",
+    "rating": "4.87 (306 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cauliflower-fried-rice.webp"
   },
   {
@@ -11464,8 +11465,8 @@
     "alignmentScore": "12.04",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "These roasted Brussels sprouts are crispy and caramelized, finished with balsamic vinegar and honey—an easy side for weeknights or holidays.",
-    "rating": "4.78",
+    "description": "Oven-roasted Brussels sprouts turn golden and caramelized, then get finished with a glossy drizzle of balsamic vinegar and honey.",
+    "rating": "4.78 (329 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/roasted-brussels-sprouts-with-balsamic-vinegar-and-honey.webp"
   },
   {
@@ -11475,8 +11476,8 @@
     "alignmentScore": "11.75",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "This classic ratatouille recipe is the best way to use summer produce—slow-cooked veggies with olive oil, garlic, and fresh herbs.",
-    "rating": "4.91",
+    "description": "A classic Provençal vegetable stew of zucchini, eggplant, tomatoes, and bell peppers slow-cooked in olive oil and fresh herbs.",
+    "rating": "4.91 (246 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/ratatouille.webp"
   },
   {
@@ -11486,8 +11487,8 @@
     "alignmentScore": "11.47",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "TESTED & PERFECTED RECIPE – These crispy zucchini fritters make a wonderful starter or side, and they're a delicious way to use up your summer zucchini.",
-    "rating": "4.8",
+    "description": "Crispy golden fritters made with shredded zucchini, feta cheese, and fresh dill — delicious as a starter or light vegetable side.",
+    "rating": "4.80 (244 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/zucchini-fritters-with-feta-and-dill.webp"
   },
   {
@@ -11497,8 +11498,8 @@
     "alignmentScore": "10.12",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Make your Hanukkah celebration extra special with golden crispy latkes. You can fry them on the stovetop or in the oven—your choice!",
-    "rating": "4.81",
+    "description": "Classic crispy potato pancakes with shredded potato and onion, fried until deep golden and served with sour cream or applesauce.",
+    "rating": "4.81 (126 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/crispy-latkes.webp"
   },
   {
@@ -11508,8 +11509,8 @@
     "alignmentScore": "6.35",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "A bubbling, golden gratin that’s creamy, cheesy, and impossible to resist.",
-    "rating": "4.8",
+    "description": "Tender cauliflower florets baked in a cheesy béchamel sauce, topped with a golden breadcrumb crust for a rich and satisfying side.",
+    "rating": "4.80 (20 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cauliflower-gratin.webp"
   },
   {
@@ -11519,8 +11520,8 @@
     "alignmentScore": "5.57",
     "cuisine": "",
     "course": "Salad",
-    "description": "This classic potato salad is a guaranteed crowd-pleaser—creamy, tangy, and just the right amount of crunch.",
-    "rating": "5.0",
+    "description": "A creamy, tangy classic with tender potatoes, hard-boiled eggs, celery, and a mustard-mayo dressing — the ultimate crowd-pleasing picnic side.",
+    "rating": "5.00 (12 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/all-american-potato-salad.webp"
   },
   {
@@ -11530,8 +11531,8 @@
     "alignmentScore": "5.4",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Learn the foolproof method for making crispy baked potato wedges with golden edges and fluffy centers—every time.",
-    "rating": "5.0",
+    "description": "Thick-cut potato wedges roasted until shatteringly crispy on the outside and fluffy inside, seasoned simply with olive oil and sea salt.",
+    "rating": "5.00 (11 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/crispy-potato-wedges.webp"
   },
   {
@@ -11541,8 +11542,8 @@
     "alignmentScore": "9.13",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "These fried and delicious Sopapillas are a puffed dough straight from New Mexico. Serve them warm with a drizzle of honey.",
-    "rating": "4.8",
+    "description": "Light, pillowy fried dough puffs from New Mexico, served warm with a drizzle of honey — a traditional accompaniment to Southwestern meals.",
+    "rating": "4.80 (79 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/new-mexico-sopapillas.webp"
   },
   {
@@ -11552,8 +11553,8 @@
     "alignmentScore": "6.51",
     "cuisine": "",
     "course": "Dip/Appetizer",
-    "description": "This Spinach Artichoke Dip recipe is so easy to throw together and bake it until all cheesy and bubbly. The perfect appetizer for Game Day.",
-    "rating": "5.0",
+    "description": "A warm, bubbly dip loaded with spinach, artichoke hearts, cream cheese, and melted mozzarella — perfect for sharing with chips or bread.",
+    "rating": "5.00 (19 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/spinach-artichoke-dip.webp"
   },
   {
@@ -11563,8 +11564,8 @@
     "alignmentScore": "5.4",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "The best Creamy Mashed Potatoes consists of russet potatoes, melted butter, heavy cream and a touch of tartness like crème fraîche.",
-    "rating": "5.0",
+    "description": "Pillowy, buttery mashed potatoes whipped to perfection with cream cheese and butter for an irresistibly fluffy texture.",
+    "rating": "5.00 (11 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/fluffy-creamy-mashed-potatoes.webp"
   },
   {
@@ -11574,8 +11575,8 @@
     "alignmentScore": "5.4",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "This Goat Cheese Potato Gratin is a tangy twist on the classic. Yukon gold potatoes are layered with the goat cheese and a gruyere béchamel.",
-    "rating": "5.0",
+    "description": "Thinly sliced potatoes baked in cream with tangy goat cheese and roasted garlic for a sophisticated, deeply savory gratin.",
+    "rating": "5.00 (11 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/goat-cheese-potato-gratin.webp"
   },
   {
@@ -11585,8 +11586,8 @@
     "alignmentScore": "5.21",
     "cuisine": "",
     "course": "Salad",
-    "description": "Copycat Sweetgreen Kale Caesar Salad is a mix of kale and romaine lettuce, tossed in a caesar dressing with tomatoes and parmesan crisps.",
-    "rating": "5.0",
+    "description": "A copycat of the cult Sweetgreen Caesar, packed with shaved Brussels sprouts, romaine, and a bright, lemony parmesan dressing.",
+    "rating": "5.00 (10 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/copycat-sweetgreen-caesar-salad.webp"
   },
   {
@@ -11596,8 +11597,8 @@
     "alignmentScore": "4.89",
     "cuisine": "",
     "course": "Salad",
-    "description": "This Brussels Sprout Salad is full of flavor and texture. Tossed with pecans, apples, pomegranate seeds and pecorino romano.",
-    "rating": "4.89",
+    "description": "Shaved Brussels sprouts tossed with crunchy pecans, fresh apple, pomegranate seeds, and pecorino Romano for a vibrant winter salad.",
+    "rating": "4.89 (9 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/crunchy-brussels-sprout-salad.webp"
   },
   {
@@ -11607,8 +11608,8 @@
     "alignmentScore": "4.77",
     "cuisine": "",
     "course": "Salad",
-    "description": "The Best Caesar Salad consists of a thick dressing made up of egg yolks, anchovy fillets, olive oil, parmesan and lemon juice.",
-    "rating": "5.0",
+    "description": "A true from-scratch Caesar salad with a bold anchovy-parmesan dressing, crisp romaine, and homemade croutons.",
+    "rating": "5.00 (8 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/how-to-make-caesar-salad.webp"
   },
   {
@@ -11618,8 +11619,8 @@
     "alignmentScore": "4.23",
     "cuisine": "",
     "course": "Salad",
-    "description": "This Fall Harvest Salad is bright, full of nourishing autumnal ingredients like kale and squash. Make it in less than 20 minutes!",
-    "rating": "5.0",
+    "description": "Roasted delicata squash and hearty kale massaged with a warm, toasty dressing — a gorgeous autumn harvest salad.",
+    "rating": "5.00 (6 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/fall-harvest-salad.webp"
   },
   {
@@ -11629,8 +11630,8 @@
     "alignmentScore": "4.23",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Papa a la Huancaina is a Peruvian appetizer from the region of Huancayo. The creamy spicy sauce is poured over cold slices of potato.",
-    "rating": "5.0",
+    "description": "A beloved Peruvian street food of cold potato slices blanketed in a creamy, spicy ají amarillo and queso fresco sauce.",
+    "rating": "5.00 (6 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/papa-a-la-huancaina.webp"
   },
   {
@@ -11651,8 +11652,8 @@
     "alignmentScore": "8.1",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "This easy recipe for borracho beans is made by simmering dried pinto beans in a flavorful beer broth. \"Drunken\" beans are a great side dish!",
-    "rating": "4.96",
+    "description": "Pinto beans slow-simmered with crispy bacon, beer, jalapeños, and tomatoes in a richly seasoned broth — a Tex-Mex classic.",
+    "rating": "4.96 (42 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/borracho-beans.webp"
   },
   {
@@ -11662,8 +11663,8 @@
     "alignmentScore": "7.6",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Caramelized onion potatoes au gratin are the perfect Thanksgiving potato side dish recipe and you can make them ahead of time!",
-    "rating": "4.92",
+    "description": "Thinly sliced potatoes layered in a rich, garlicky cream sauce and baked under a bubbling blanket of Gruyère — the ultimate comfort side dish.",
+    "rating": "4.92 (34 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/caramelized-onion-potatoes-au-gratin.webp"
   },
   {
@@ -11673,8 +11674,8 @@
     "alignmentScore": "6.99",
     "cuisine": "",
     "course": "Soup",
-    "description": "This easy recipe walks you through the steps to making restaurant-quality French onion soup, totally from scratch!",
-    "rating": "5.0",
+    "description": "A classic bistro soup of slowly caramelized onions in a rich beef broth, topped with a crusty baguette round and bubbling melted Gruyère.",
+    "rating": "5.00 (24 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/french-onion-soup.webp"
   },
   {
@@ -11684,8 +11685,8 @@
     "alignmentScore": "6.9",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Here's what you can add to canned baked beans to make them taste SO much better! Perfect for bbqs, potlucks, and summer dinners!",
-    "rating": "5.0",
+    "description": "Classic baked beans dressed up with smoky bacon, brown sugar, and a touch of apple cider vinegar for a sweet, tangy depth.",
+    "rating": "5.00 (23 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/dressed-up-baked-beans.webp"
   },
   {
@@ -11695,8 +11696,8 @@
     "alignmentScore": "6.51",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Everyone needs the perfect mashed potato recipe and these creme fraiche mashed potatoes are the best ever! Creamy, easy, perfect every time!",
-    "rating": "5.0",
+    "description": "Velvety mashed potatoes enriched with tangy crème fraîche and a generous handful of fresh chives for a chic, simple side.",
+    "rating": "5.00 (19 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/creme-fraiche-chive-mashed-potatoes.webp"
   },
   {
@@ -11706,8 +11707,8 @@
     "alignmentScore": "6.02",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Ultra creamy mashed potatoes are swirled with a super quick homemade bacon and onion jam to create THE BEST mashed potatoes ever.",
-    "rating": "5.0",
+    "description": "Creamy mashed potatoes swirled with jammy caramelized onions and crispy bacon bits — an indulgent upgrade to a dinner staple.",
+    "rating": "5.00 (15 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/caramelized-onion-bacon-mashed-potatoes.webp"
   },
   {
@@ -11717,8 +11718,8 @@
     "alignmentScore": "5.57",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Making restaurant quality refried beans couldn't be easier! This Instant Pot refried beans recipe is so creamy, flavorful, and quick to make!",
-    "rating": "5.0",
+    "description": "Pressure-cooked pinto beans mashed with lard, cumin, and garlic into silky, restaurant-style refried beans in under an hour.",
+    "rating": "5.00 (12 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/instant-pot-refried-beans.webp"
   },
   {
@@ -11728,8 +11729,8 @@
     "alignmentScore": "5.4",
     "cuisine": "",
     "course": "Salad",
-    "description": "This Hawaiian-style mac salad is tossed with a creamy dressing and comes together in just 30 minutes. Can be made up to 1 day in advance!",
-    "rating": "5.0",
+    "description": "The quintessential Hawaiian plate-lunch side — elbow macaroni in a rich, creamy mayo dressing with shredded carrots and onion.",
+    "rating": "5.00 (11 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/hawaiian-style-mac-salad.webp"
   },
   {
@@ -11739,8 +11740,8 @@
     "alignmentScore": "5.0",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "These Roasted Carrots with Whipped Feta are the elegant side dish you need! Perfectly spiced and tender with creamy lemon-y feta sauce.",
-    "rating": "5.0",
+    "description": "Caramelized honey-roasted carrots served over a cloud of whipped feta and finished with fresh herbs and a drizzle of olive oil.",
+    "rating": "5.00 (9 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/roasted-carrots-with-whipped-feta.webp"
   },
   {
@@ -11750,8 +11751,8 @@
     "alignmentScore": "4.23",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "This extra-cheesy and luscious Brussels Sprouts Gratin is a must for Thanksgiving. The best way to serve brussels that everyone will love.",
-    "rating": "5.0",
+    "description": "Tender Brussels sprouts baked in a velvety cream sauce with Gruyère and a crunchy panko topping — a showstopping holiday side.",
+    "rating": "5.00 (6 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/brussels-sprouts-gratin.webp"
   },
   {
@@ -11761,8 +11762,8 @@
     "alignmentScore": "9.9",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "The very best Garlic-Parmesan Roasted Cauliflower recipe that pairs well with ANY entree or protein. Minimal ingredients yet with big flavor.",
-    "rating": "4.97",
+    "description": "Cauliflower florets roasted until golden and nutty, then finished with a shower of salty Parmesan — simple, crispy, and addictive.",
+    "rating": "4.97 (97 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/parmesan-roasted-cauliflower.webp"
   },
   {
@@ -11772,8 +11773,8 @@
     "alignmentScore": "9.59",
     "cuisine": "",
     "course": "Salad",
-    "description": "Moroccan Couscous Salad with spice-roasted cauliflower, almonds, and dried fruit tossed in a lemony paprika dressing. Perfect for weekday lunches.",
-    "rating": "4.97",
+    "description": "Fluffy couscous tossed with roasted vegetables, chickpeas, dried apricots, and warm Moroccan spices for a vibrant, filling salad.",
+    "rating": "4.97 (84 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/moroccan-couscous-salad.webp"
   },
   {
@@ -11783,8 +11784,8 @@
     "alignmentScore": "9.16",
     "cuisine": "",
     "course": "Salad",
-    "description": "Enjoy this 10 Minute Chickpea Tuna Salad for a wholesome, make-ahead lunch or satiating snack. Easy to make and filled with protein-rich ingredients.",
-    "rating": "4.98",
+    "description": "A protein-packed salad of chickpeas and tuna with celery, red onion, and a bright lemony herb dressing — great for meal prep.",
+    "rating": "4.98 (68 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chickpea-tuna-salad.webp"
   },
   {
@@ -11794,8 +11795,8 @@
     "alignmentScore": "9.14",
     "cuisine": "",
     "course": "Salad",
-    "description": "Roasted Broccoli Salad with bacon, shallots, and crispy Panko in a Miso-Caesar dressing. Full of bold flavor and satisfying textures.",
-    "rating": "4.99",
+    "description": "Deeply caramelized roasted broccoli tossed with almonds, cranberries, and a tangy honey-mustard dressing for a salad with serious depth.",
+    "rating": "4.99 (67 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/roasted-broccoli-salad.webp"
   },
   {
@@ -11805,8 +11806,8 @@
     "alignmentScore": "9.11",
     "cuisine": "",
     "course": "Salad",
-    "description": "Quinoa Southwest Salad with Creamy Chipotle Dressing is a protein-packed, make ahead-friendly meal. Gluten free, vegetarian, and ready in 30 minutes.",
-    "rating": "4.99",
+    "description": "A hearty southwest salad with fluffy quinoa, black beans, sweet corn, avocado, and a smoky cumin-lime dressing.",
+    "rating": "4.99 (66 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/quinoa-southwest-salad.webp"
   },
   {
@@ -11816,8 +11817,8 @@
     "alignmentScore": "8.93",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Moroccan Cauliflower with Tahini-Honey is a 5 ingredient side dish with fiery flavor and a sweet sesame finish. Serve with your protein of choice!",
-    "rating": "5.0",
+    "description": "Whole roasted cauliflower florets spiced with ras el hanout and finished with tahini, honey, and fresh herbs — bold and impressive.",
+    "rating": "5.00 (60 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/moroccan-cauliflower-with-tahini-honey-5-ingredients.webp"
   },
   {
@@ -11827,8 +11828,8 @@
     "alignmentScore": "8.75",
     "cuisine": "",
     "course": "Salad",
-    "description": "Mediterranean Lentil Salad with sautéed veggies, feta, dill, and a simple lemon-Dijon vinaigrette. Make-ahead friendly and perfect for weekday lunches",
-    "rating": "4.94",
+    "description": "Tender green lentils tossed with cucumbers, cherry tomatoes, kalamata olives, and a bright lemon-herb vinaigrette.",
+    "rating": "4.94 (58 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/mediterranean-lentil-salad.webp"
   },
   {
@@ -11838,8 +11839,8 @@
     "alignmentScore": "8.74",
     "cuisine": "",
     "course": "Salad",
-    "description": "Thai Quinoa Salad with butternut squash, kale, and creamy ginger dressing. This easy quinoa salad is vegan, gluten free, and great for meal prep!",
-    "rating": "5.0",
+    "description": "Roasted butternut squash and quinoa tossed in a spicy peanut-lime dressing with fresh herbs and crunchy cashews.",
+    "rating": "5.00 (55 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/thai-butternut-quinoa-salad-gluten-free.webp"
   },
   {
@@ -11849,8 +11850,8 @@
     "alignmentScore": "8.72",
     "cuisine": "",
     "course": "Salad",
-    "description": "Fiesta Avocado Corn Salad with herbs, pumpkin seeds, and creamy shallot dressing. A slam-dunk summer side dish that will be the star of any cookout.",
-    "rating": "4.99",
+    "description": "Sweet summer corn tossed with creamy avocado, red onion, jalapeño, and fresh lime juice for a bright, refreshing salad.",
+    "rating": "4.99 (55 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/avocado-corn-salad.webp"
   },
   {
@@ -11860,8 +11861,8 @@
     "alignmentScore": "8.06",
     "cuisine": "",
     "course": "Salad",
-    "description": "Autumn Delicata Squash Salad with sweet and spicy roasted squash, crisp greens, avocado, and pomegranate tossed in a lively maple-mustard dressing.",
-    "rating": "5.0",
+    "description": "A fresh, vibrant salad with a bright dressing and satisfying mix of textures — a versatile side for any meal.",
+    "rating": "5.00 (40 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/autumn-delicata-squash-salad.webp"
   },
   {
@@ -11882,8 +11883,8 @@
     "alignmentScore": "18.05",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Loaded with cheesy goodness and crispy topping, this retro favorite is the unexpected hit that turns family dinners into modern nostalgia.",
-    "rating": "4.99",
+    "description": "A delicious funeral potatoes recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "4.99/5 (4,132 reviews)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/funeral-potatoes.webp"
   },
   {
@@ -11893,8 +11894,8 @@
     "alignmentScore": "14.8",
     "cuisine": "",
     "course": "Salad",
-    "description": "The best and easiest Potato Salad recipe, perfect for any BBQ! This creamy and delicious side dish is made with Yukon Gold Potatoes, hard boiled eggs, pickles, celery, and a homemade dressing.",
-    "rating": "4.99",
+    "description": "A creamy, crowd-pleasing potato salad with a well-balanced tangy dressing — perfect for cookouts and picnics.",
+    "rating": "4.99 (925 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/traditional-potato-salad.webp"
   },
   {
@@ -11904,8 +11905,8 @@
     "alignmentScore": "14.72",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "This Fresh Cranberry Relish with oranges is the perfect combination of tart and sweet for your Thanksgiving table.",
-    "rating": "4.99",
+    "description": "A delicious fresh cranberry relish recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "4.99 (890 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/fresh-cranberry-relish.webp"
   },
   {
@@ -11915,8 +11916,8 @@
     "alignmentScore": "14.67",
     "cuisine": "",
     "course": "Dip/Appetizer",
-    "description": "You know the deviled eggs that disappear first at the cookout? These are those—with a smooth, savory filling, a little crunch, and just enough spice to surprise your taste buds.",
-    "rating": "4.92",
+    "description": "A delicious traditional deviled eggs recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "4.92 (957 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/traditional-deviled-eggs.webp"
   },
   {
@@ -11926,8 +11927,8 @@
     "alignmentScore": "14.34",
     "cuisine": "",
     "course": "Salad",
-    "description": "Channel vintage charm and bright flavors in one bowl—whipped cream, marshmallows, and tropical fruit deliver that wow factor guests will love.",
-    "rating": "5.0",
+    "description": "A fresh, vibrant salad with a bright dressing and satisfying mix of textures — a versatile side for any meal.",
+    "rating": "5.00 (737 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/ambrosia-fruit-salad.webp"
   },
   {
@@ -11937,8 +11938,8 @@
     "alignmentScore": "12.7",
     "cuisine": "",
     "course": "Salad",
-    "description": "This easy Cranberry Salad combines fresh cranberries, pineapple, cream cheese, and whipped cream for a light and fluffy holiday side dish or dessert! It’s a favorite at Thanksgiving gatherings and a p",
-    "rating": "5.0",
+    "description": "A fresh, vibrant salad with a bright dressing and satisfying mix of textures — a versatile side for any meal.",
+    "rating": "5.00 (345 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cranberry-fluff-salad.webp"
   },
   {
@@ -11948,8 +11949,8 @@
     "alignmentScore": "12.4",
     "cuisine": "",
     "course": "Dip/Appetizer",
-    "description": "This classic party dip has been showing up at gatherings since the '80s, and it's still the first thing to disappear.",
-    "rating": "5.0",
+    "description": "A delicious 7 layer bean dip recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "5.00 (301 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/7-layer-bean-dip.webp"
   },
   {
@@ -11959,8 +11960,8 @@
     "alignmentScore": "12.1",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "These potatoes au gratin come out luxuriously creamy with tender layers and a golden, bubbly top. It’s the kind of cozy side dish that makes ham, steak, or roasted chicken feel instantly special.",
-    "rating": "4.96",
+    "description": "Thinly sliced potatoes layered in a rich, garlicky cream sauce and baked under a bubbling blanket of Gruyère — the ultimate comfort side dish.",
+    "rating": "4.96 (274 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/potatoes-au-gratin.webp"
   },
   {
@@ -11970,8 +11971,8 @@
     "alignmentScore": "11.61",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "A foolproof way to get light, fluffy mashed potatoes every time! Made with Yukon Gold or russet potatoes, butter, milk, and sour cream - and don't skip the key tips like draining and steaming to avoid",
-    "rating": "5.0",
+    "description": "Creamy, buttery mashed potatoes — a beloved comfort food side dish that pairs with virtually any main.",
+    "rating": "5.00 (209 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/perfect-mashed-potatoes.webp"
   },
   {
@@ -11981,8 +11982,8 @@
     "alignmentScore": "10.09",
     "cuisine": "",
     "course": "Salad",
-    "description": "This easy Cherry Plum Goat Cheese Salad is the BEST for summer! Crunchy, sweet, and creamy, it comes together in just 20 minutes!",
-    "rating": "5.0",
+    "description": "A fresh, vibrant salad with a bright dressing and satisfying mix of textures — a versatile side for any meal.",
+    "rating": "5.00 (103 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cherry-plum-goat-cheese-summer-salad.webp"
   },
   {
@@ -11992,8 +11993,8 @@
     "alignmentScore": "10.02",
     "cuisine": "",
     "course": "Salad",
-    "description": "This roasted pumpkin salad combines sweet roasted pumpkin, candied nuts, and pomegranate with balsamic dressing for the perfect fall side!",
-    "rating": "4.97",
+    "description": "A fresh, vibrant salad with a bright dressing and satisfying mix of textures — a versatile side for any meal.",
+    "rating": "4.97 (103 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/roasted-pumpkin-salad.webp"
   },
   {
@@ -12003,8 +12004,8 @@
     "alignmentScore": "9.01",
     "cuisine": "",
     "course": "Salad",
-    "description": "These Mediterranean Salad Bowls w/ Lebanese Meatballs have 37 g protein and next-are SO good! This healthy dinner idea is made in 30 minutes.",
-    "rating": "4.79",
+    "description": "A fresh, vibrant salad with a bright dressing and satisfying mix of textures — a versatile side for any meal.",
+    "rating": "4.79 (75 ratings)",
     "image": null
   },
   {
@@ -12014,8 +12015,8 @@
     "alignmentScore": "8.99",
     "cuisine": "",
     "course": "Salad",
-    "description": "This Chick-Fil-A Spicy Southwest Salad copycat recipe tastes just like the real one! Make this easy salad for a healthy weeknight meal.",
-    "rating": "4.7",
+    "description": "A fresh, vibrant salad with a bright dressing and satisfying mix of textures — a versatile side for any meal.",
+    "rating": "4.70 (81 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/spicy-southwest-salad.webp"
   },
   {
@@ -12025,8 +12026,8 @@
     "alignmentScore": "7.21",
     "cuisine": "",
     "course": "Salad",
-    "description": "This Chicken Cobb Salad Recipe is easy, quick, and the best healthy dinner. Make it in under 40 minutes for the most flavorful hearty salad!",
-    "rating": "4.93",
+    "description": "A fresh, vibrant salad with a bright dressing and satisfying mix of textures — a versatile side for any meal.",
+    "rating": "4.93 (28 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/healthy-chicken-cobb-salad-recipe.webp"
   },
   {
@@ -12036,8 +12037,8 @@
     "alignmentScore": "5.88",
     "cuisine": "",
     "course": "Salad",
-    "description": "This easy Chicken Salad Recipe is made in just 15 minutes! It's healthy, high-protein, and perfect in sandwiches, wraps, or over lettuce.",
-    "rating": "5.0",
+    "description": "A fresh, vibrant salad with a bright dressing and satisfying mix of textures — a versatile side for any meal.",
+    "rating": "5.00 (14 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/healthy-chicken-salad-recipe.webp"
   },
   {
@@ -12047,8 +12048,8 @@
     "alignmentScore": "5.73",
     "cuisine": "",
     "course": "Salad",
-    "description": "This Watermelon Feta Chicken Salad is my go-to summer lunch or dinner obsession! No cooking and 15 minutes, this salad recipe is so easy.",
-    "rating": "5.0",
+    "description": "A fresh, vibrant salad with a bright dressing and satisfying mix of textures — a versatile side for any meal.",
+    "rating": "5.00 (13 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/watermelon-feta-chicken-salad.webp"
   },
   {
@@ -12058,8 +12059,8 @@
     "alignmentScore": "5.21",
     "cuisine": "",
     "course": "Salad",
-    "description": "This protein-packed cucumber salad with chicken, edamame, & a spicy chili crunch dressing is quick, refreshing, and ready in just 15 minutes!",
-    "rating": "5.0",
+    "description": "Cool, crisp cucumber slices in a light, tangy dressing — a refreshing palate cleanser alongside any meal.",
+    "rating": "5.00 (10 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cucumber-salad.webp"
   },
   {
@@ -12069,8 +12070,8 @@
     "alignmentScore": "5.0",
     "cuisine": "",
     "course": "Salad",
-    "description": "Fresh, colorful, veggie-filled chicken mason jar salads are made in just 10 minutes, with no cooking. Perfect for meal prep!",
-    "rating": "5.0",
+    "description": "A fresh, vibrant salad with a bright dressing and satisfying mix of textures — a versatile side for any meal.",
+    "rating": "5.00 (9 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/mason-jar-salad.webp"
   },
   {
@@ -12080,8 +12081,8 @@
     "alignmentScore": "4.77",
     "cuisine": "",
     "course": "Salad",
-    "description": "Make this fresh black bean salad in five minutes using seven fresh ingredients for a vibrant, filling appetizer, side dish, or condiment!",
-    "rating": "5.0",
+    "description": "Savory, well-seasoned black beans simmered with aromatics for a simple, protein-rich side dish.",
+    "rating": "5.00 (8 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/black-bean-salad.webp"
   },
   {
@@ -12091,8 +12092,8 @@
     "alignmentScore": "11.79",
     "cuisine": "",
     "course": "Salad",
-    "description": "Watermelon salad with feta, cucumber, fresh mint, and honey-lime dressing. Watermelon feta salad is the perfect sweet and salty summer salad!",
-    "rating": "4.97",
+    "description": "A fresh, vibrant salad with a bright dressing and satisfying mix of textures — a versatile side for any meal.",
+    "rating": "4.97 (235 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/watermelon-salad-with-cucumber-feta.webp"
   },
   {
@@ -12102,8 +12103,8 @@
     "alignmentScore": "11.15",
     "cuisine": "",
     "course": "Salad",
-    "description": "10-minute Mediterranean tuna salad without mayo! With vegetables, herbs, and a Dijon dressing, this healthy tuna salad recipe is a must-try!",
-    "rating": "4.95",
+    "description": "A fresh, vibrant salad with a bright dressing and satisfying mix of textures — a versatile side for any meal.",
+    "rating": "4.95 (178 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/mediterranean-tuna-salad.webp"
   },
   {
@@ -12113,8 +12114,8 @@
     "alignmentScore": "11.04",
     "cuisine": "",
     "course": "Salad",
-    "description": "This Mediterranean salad is an all-star cucumber tomato salad that you can serve on its own or used as a topping to savory dishes.",
-    "rating": "4.95",
+    "description": "A fresh, vibrant salad with a bright dressing and satisfying mix of textures — a versatile side for any meal.",
+    "rating": "4.95 (169 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/3-ingredient-mediterranean-salad.webp"
   },
   {
@@ -12124,8 +12125,8 @@
     "alignmentScore": "10.71",
     "cuisine": "",
     "course": "Salad",
-    "description": "This healthy chicken salad recipe takes on a Mediterranean twist with sundried tomatoes, artichokes, a zippy Dijon dressing, and no mayo!",
-    "rating": "4.91",
+    "description": "A fresh, vibrant salad with a bright dressing and satisfying mix of textures — a versatile side for any meal.",
+    "rating": "4.91 (151 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/healthy-chicken-salad-mediterranean.webp"
   },
   {
@@ -12135,8 +12136,8 @@
     "alignmentScore": "10.47",
     "cuisine": "",
     "course": "Salad",
-    "description": "Easy lettuce salad recipe you'll be making on repeat! It takes 5 minutes and 7 ingredients, and you'll love the bold Parmesan and lemon flavors!",
-    "rating": "4.96",
+    "description": "A fresh, vibrant salad with a bright dressing and satisfying mix of textures — a versatile side for any meal.",
+    "rating": "4.96 (128 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/lettuce-salad-recipe.webp"
   },
   {
@@ -12146,8 +12147,8 @@
     "alignmentScore": "10.19",
     "cuisine": "",
     "course": "Salad",
-    "description": "Healthy and bright mustard potato salad, prepared Mediterranean-style with dill, capers, and a bright Dijon mustard dressing. Tips & video included.",
-    "rating": "4.87",
+    "description": "A creamy, crowd-pleasing potato salad with a well-balanced tangy dressing — perfect for cookouts and picnics.",
+    "rating": "4.87 (123 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/mustard-potato-salad.webp"
   },
   {
@@ -12157,8 +12158,8 @@
     "alignmentScore": "10.07",
     "cuisine": "",
     "course": "Salad",
-    "description": "Cabbage salad recipe with parsley, dill, carrots, bell pepper, radish, and Dijon-Lime Vinaigrette. This crunchy cabbage salad keeps for days!",
-    "rating": "4.87",
+    "description": "A fresh, vibrant salad with a bright dressing and satisfying mix of textures — a versatile side for any meal.",
+    "rating": "4.87 (116 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/mediterranean-cabbage-salad.webp"
   },
   {
@@ -12168,8 +12169,8 @@
     "alignmentScore": "9.98",
     "cuisine": "",
     "course": "Salad",
-    "description": "Greek potato salad with no mayo, easy vinaigrette, and fresh herbs is a lighter, healthier, and flavorful version of the classic side dish.",
-    "rating": "4.99",
+    "description": "A creamy, crowd-pleasing potato salad with a well-balanced tangy dressing — perfect for cookouts and picnics.",
+    "rating": "4.99 (99 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/greek-potato-salad.webp"
   },
   {
@@ -12179,8 +12180,8 @@
     "alignmentScore": "9.88",
     "cuisine": "",
     "course": "Salad",
-    "description": "Greek salad, or Horiatiki, with feta, olives, bell peppers, tomatoes, cucumbers, oil and vinegar in this traditional recipe.",
-    "rating": "4.86",
+    "description": "The quintessential Greek salad of tomatoes, cucumbers, Kalamata olives, and feta dressed simply with olive oil and oregano.",
+    "rating": "4.86 (107 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/traditional-greek-salad-recipe.webp"
   },
   {
@@ -12190,8 +12191,8 @@
     "alignmentScore": "9.73",
     "cuisine": "",
     "course": "Salad",
-    "description": "A light lemony dressing, fresh herbs, and chopped veggies give this raw cauliflower salad a delicious and bright Mediterranean twist everyone loves. Low carb. GF",
-    "rating": "4.92",
+    "description": "A fresh, vibrant salad with a bright dressing and satisfying mix of textures — a versatile side for any meal.",
+    "rating": "4.92 (94 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cauliflower-salad.webp"
   },
   {
@@ -12201,8 +12202,8 @@
     "alignmentScore": "15.28",
     "cuisine": "",
     "course": "Soup",
-    "description": "This simple homemade butternut squash soup is the best I've ever tasted! It's super creamy (yet cream-less) and full of delicious roasted butternut flavor.",
-    "rating": "4.8",
+    "description": "Silky, warming butternut squash soup with just the right balance of sweet and savory, finished with a swirl of cream.",
+    "rating": "4.80/5 (1,522 reviews)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/roasted-butternut-squash-soup.webp"
   },
   {
@@ -12212,8 +12213,8 @@
     "alignmentScore": "15.21",
     "cuisine": "",
     "course": "Soup",
-    "description": "This cauliflower soup recipe is the BEST! Roasted cauliflower makes it taste amazing, and a little butter (instead of cream) makes it luxuriously creamy.",
-    "rating": "4.8",
+    "description": "Silky roasted cauliflower soup blended with garlic and topped with crispy capers and a drizzle of golden olive oil.",
+    "rating": "4.80/5 (1,473 reviews)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/creamy-roasted-cauliflower-soup-recipe.webp"
   },
   {
@@ -12223,8 +12224,8 @@
     "alignmentScore": "14.3",
     "cuisine": "",
     "course": "Salad",
-    "description": "This quinoa salad recipe is the best! Everyone loves this healthy quinoa salad made with quinoa, chickpeas, red bell pepper, cucumber, parsley and lemon.",
-    "rating": "4.9",
+    "description": "A hearty, protein-packed quinoa salad with roasted vegetables, fresh herbs, and a bright dressing.",
+    "rating": "4.90 (826 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/best-quinoa-salad-recipe.webp"
   },
   {
@@ -12234,8 +12235,8 @@
     "alignmentScore": "13.94",
     "cuisine": "",
     "course": "Soup",
-    "description": "This vegetable soup recipe is seriously so good! It's easy to make, and full of healthy vegetables and fresh flavor. There's nothing \"blah\" about it!",
-    "rating": "4.9",
+    "description": "A warming, comforting soup with deep flavor — perfect as a starter or light meal alongside crusty bread.",
+    "rating": "4.90 (699 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/vegetable-soup-recipe.webp"
   },
   {
@@ -12245,8 +12246,8 @@
     "alignmentScore": "13.12",
     "cuisine": "",
     "course": "Salad",
-    "description": "This broccoli salad recipe is the best! It's healthy, too, thanks to the delicious honey-mustard vinaigrette (no mayo). This broccoli salad packs great for lunch and potlucks.",
-    "rating": "5.0",
+    "description": "A crunchy raw broccoli salad with a sweet-tangy dressing and mix-ins like bacon, seeds, or cranberries.",
+    "rating": "5.00 (419 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/favorite-broccoli-salad-recipe.webp"
   },
   {
@@ -12256,8 +12257,8 @@
     "alignmentScore": "12.62",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "This crispy baked falafel recipe is so easy to make and tastes incredible! Serve your falafel in pita sandwiches or salads. Gluten free.",
-    "rating": "4.6",
+    "description": "Crispy, golden-fried chickpea fritters seasoned with fresh herbs and warm spices — the perfect protein-packed bite.",
+    "rating": "4.60 (554 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/crispy-falafel-recipe.webp"
   },
   {
@@ -12267,8 +12268,8 @@
     "alignmentScore": "10.55",
     "cuisine": "",
     "course": "Salad",
-    "description": "Healthy kale and quinoa power salad with spicy sweet potato, black beans and creamy avocado sauce. This gluten-free salad packs well for lunch, too!",
-    "rating": "4.8",
+    "description": "A fresh, vibrant salad with a bright dressing and satisfying mix of textures — a versatile side for any meal.",
+    "rating": "4.80 (157 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/southwestern-kale-power-salad.webp"
   },
   {
@@ -12278,8 +12279,8 @@
     "alignmentScore": "9.76",
     "cuisine": "",
     "course": "Salad",
-    "description": "This Mediterranean bean salad recipe is so fresh and colorful! It features kidney beans and chickpeas with lemon and fresh herbs. Delicious!",
-    "rating": "4.8",
+    "description": "A fresh, vibrant salad with a bright dressing and satisfying mix of textures — a versatile side for any meal.",
+    "rating": "4.80 (107 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/mediterranean-bean-salad-recipe.webp"
   },
   {
@@ -12289,8 +12290,8 @@
     "alignmentScore": "9.65",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "This roasted carrot and farro recipe looks gourmet, but it's surprisingly easy to make! This is the perfect holiday vegetarian main dish.",
-    "rating": "4.9",
+    "description": "Tender oven-roasted carrots caramelized in olive oil and seasoned to perfection — a naturally sweet side.",
+    "rating": "4.90 (92 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/roasted-carrots-recipe-with-farro-chickpeas.webp"
   },
   {
@@ -12300,8 +12301,8 @@
     "alignmentScore": "6.43",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "This potatoes au gratin recipe is irresistible! Known as gratin dauphinois in France, this potato gratin features layers of cream and cheese.",
-    "rating": "4.6",
+    "description": "Thinly sliced potatoes layered in a rich, garlicky cream sauce and baked under a bubbling blanket of Gruyère — the ultimate comfort side dish.",
+    "rating": "4.60 (24 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/potatoes-au-gratin.webp"
   },
   {
@@ -12311,8 +12312,8 @@
     "alignmentScore": "15.56",
     "cuisine": "",
     "course": "Rice",
-    "description": "This easy fried rice recipe only takes 15 minutes to make, it's easy to customize with your favorite add-ins, and it's SO delicious!",
-    "rating": "4.9",
+    "description": "Classic wok-style fried rice with egg, soy sauce, and vegetables — better than takeout and ready in minutes.",
+    "rating": "4.90/5 (1,500 reviews)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/the-best-fried-rice.webp"
   },
   {
@@ -12322,8 +12323,8 @@
     "alignmentScore": "12.43",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "This scalloped potatoes recipe is creamy, cheesy, and irresistibly delicious. Yet it's made lighter with a few simple tweaks!",
-    "rating": "4.7",
+    "description": "A delicious scalloped potatoes recipe recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "4.70 (440 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/scalloped-potatoes-recipe.webp"
   },
   {
@@ -12344,8 +12345,8 @@
     "alignmentScore": "11.57",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "These amazing homemade mashed potatoes are perfectly rich and creamy, full of great flavor, easy to make, and always a crowd fave!",
-    "rating": "4.9",
+    "description": "Creamy, buttery mashed potatoes — a beloved comfort food side dish that pairs with virtually any main.",
+    "rating": "4.90 (229 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/best-mashed-potatoes-recipe.webp"
   },
   {
@@ -12355,8 +12356,8 @@
     "alignmentScore": "11.06",
     "cuisine": "",
     "course": "Salad",
-    "description": "This classic potato salad recipe is easy to make and tossed with the most delicious zesty and creamy dressing. Always a crowd favorite!",
-    "rating": "4.9",
+    "description": "A creamy, dill-forward potato salad with hard-boiled eggs, celery, and red onion — the perfect companion to any summer cookout.",
+    "rating": "4.90 (180 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/best-potato-salad.webp"
   },
   {
@@ -12366,8 +12367,8 @@
     "alignmentScore": "10.94",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Learn how to make homemade croutons from scratch with this simple, customizable croutons recipe. Perfect for soups, salads and more!",
-    "rating": "5.0",
+    "description": "A delicious how to make homemade croutons recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "5.00 (153 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/how-to-make-homemade-croutons.webp"
   },
   {
@@ -12377,8 +12378,8 @@
     "alignmentScore": "10.19",
     "cuisine": "",
     "course": "Dip/Appetizer",
-    "description": "The BEST quick pickled red onions recipe -- easy to make with just 4 ingredients in about 30 minutes, and perfectly crispy, tangy and delicious.",
-    "rating": "5.0",
+    "description": "A delicious quick pickled red onions recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "5.00 (108 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/quick-pickled-red-onions.webp"
   },
   {
@@ -12388,8 +12389,8 @@
     "alignmentScore": "10.08",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "No joke — this truly is the most amazing roasted artichokes recipe. They’re easy to make, full of big and fresh flavors,…",
-    "rating": "4.8",
+    "description": "Oven-roasted to bring out deep, caramelized flavor — a simple technique that elevates any vegetable side.",
+    "rating": "4.80 (125 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/amazing-roasted-artichokes.webp"
   },
   {
@@ -12399,8 +12400,8 @@
     "alignmentScore": "9.55",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "This refrigerator pickles recipe only takes 5 minutes to prep and can be customized with your favorite seasonings. So crisp and delicious!",
-    "rating": "4.9",
+    "description": "A delicious easy refrigerator pickles recipe recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "4.90 (88 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/easy-refrigerator-pickles-recipe.webp"
   },
   {
@@ -12410,8 +12411,8 @@
     "alignmentScore": "6.87",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "The BEST roasted cauliflower recipe!! It's super easy to make, full of great nutrients, and totally customizable with your favorite seasonings.",
-    "rating": "4.8",
+    "description": "Cauliflower roasted until golden-brown and nutty, with crispy floret edges that make it endlessly snackable.",
+    "rating": "4.80 (26 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/roasted-cauliflower.webp"
   },
   {
@@ -12421,8 +12422,8 @@
     "alignmentScore": "9.98",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "These oven roasted mini potatoes are crispy on the outside, creamy within, and seasoned perfectly! Easy enough for weeknights and good enough for Sunday dinner.",
-    "rating": "4.9",
+    "description": "Baby potatoes roasted until crispy and golden with olive oil and fresh rosemary — an effortless and satisfying side.",
+    "rating": "4.90 (108 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/roasted-mini-potatoes.webp"
   },
   {
@@ -12432,8 +12433,8 @@
     "alignmentScore": "9.4",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "This quick and easy air fryer broccoli is the absolute BEST. It's tossed with olive oil, garlic salt, and nutritional yeast. Vegan friendly!",
-    "rating": "5.0",
+    "description": "Broccoli florets air-fried in minutes until bright and tender-crisp with lightly charred edges and a big garlic flavor.",
+    "rating": "5.00 (75 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/easy-air-fryer-broccoli.webp"
   },
   {
@@ -12443,8 +12444,8 @@
     "alignmentScore": "8.62",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "These Air Fryer Green Beans are full of garlicky goodness, finished off with freshly grated parm and fresh lemon. A great side for any main!",
-    "rating": "5.0",
+    "description": "Tender-crisp green beans made lightning-fast in the air fryer with olive oil, garlic, and a finishing squeeze of lemon.",
+    "rating": "5.00 (52 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/air-fryer-green-beans.webp"
   },
   {
@@ -12454,8 +12455,8 @@
     "alignmentScore": "8.01",
     "cuisine": "",
     "course": "Rice",
-    "description": "Whether you use it as a side dish or devour it as a main, this flavor-filled Instant Pot Mexican Rice is a total hit. It's ready in less than 30 minutes and it's perfect for weeknights.",
-    "rating": "5.0",
+    "description": "Fluffy, tomato-seasoned Mexican rice cooked effortlessly in the Instant Pot — the perfect side for tacos and enchiladas.",
+    "rating": "5.00 (39 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/instant-pot-mexican-rice.webp"
   },
   {
@@ -12465,8 +12466,8 @@
     "alignmentScore": "7.24",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "This quick and easy Grilled Asparagus Recipe With Charred Lemon is sure to become your go-to summer side dish.",
-    "rating": "5.0",
+    "description": "Fresh asparagus charred over an open flame with a bright hit of charred lemon — a simple, elegant warm-weather side.",
+    "rating": "5.00 (27 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/easy-grilled-asparagus-recipe-with-charred-lemon.webp"
   },
   {
@@ -12476,8 +12477,8 @@
     "alignmentScore": "7.07",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "These Air Fryer Sweet Potatoes shake things up with sweet and tangy honey lime dressing. They make for a great side, especially Taco Tuesday!",
-    "rating": "5.0",
+    "description": "Cubed sweet potatoes cooked in the air fryer until caramelized and fork-tender in under 20 minutes.",
+    "rating": "5.00 (25 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/air-fryer-sweet-potatoes.webp"
   },
   {
@@ -12487,8 +12488,8 @@
     "alignmentScore": "6.31",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "These Chili + Honey Roasted Sweet Potatoes With Lime Juice are sweet, savory, and the perfect side dish or pre-run snack.",
-    "rating": "4.85",
+    "description": "Perfectly caramelized cubed sweet potatoes roasted with olive oil and a touch of cinnamon — a naturally sweet and simple side.",
+    "rating": "4.85 (19 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chili-honey-roasted-sweet-potatoes.webp"
   },
   {
@@ -12498,8 +12499,8 @@
     "alignmentScore": "5.4",
     "cuisine": "",
     "course": "Salad",
-    "description": "Inspired by local pizza joints, this salad is brimming with crisp textures and fresh flavors. It's truly the best salad for pizza night!",
-    "rating": "5.0",
+    "description": "A crisp, classic green side salad with Italian vinaigrette — the perfect fresh counterpoint to a slice of pizza.",
+    "rating": "5.00 (11 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/side-salad-for-pizza.webp"
   },
   {
@@ -12509,8 +12510,8 @@
     "alignmentScore": "5.21",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "These hot honey roasted carrots bring some sweet and heat to your plate and might just become your new favorite veg side.",
-    "rating": "5.0",
+    "description": "Whole roasted carrots glazed in spicy-sweet hot honey and finished with flaky sea salt for a showstopping side.",
+    "rating": "5.00 (10 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/hot-honey-roasted-carrots.webp"
   },
   {
@@ -12520,8 +12521,8 @@
     "alignmentScore": "4.52",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "These tasty air fryer baby potatoes are dressed in a tangy lemon pepper blend and pair with just about any main dish!",
-    "rating": "5.0",
+    "description": "Baby potatoes air-fried until perfectly crispy and coated in zippy lemon pepper seasoning — a quick weeknight side.",
+    "rating": "5.00 (7 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/lemon-pepper-air-fryer-baby-potatoes.webp"
   },
   {
@@ -12531,8 +12532,8 @@
     "alignmentScore": "13.41",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Make ahead Bourbon Sweet Potato Casserole with Sweet 'n' Savory Bacon Pecans. The classic we know and love, but topped with sweet and savory bacon pecans.",
-    "rating": "4.06",
+    "description": "A classic sweet potato casserole with a sweet, crunchy topping — an indulgent and beloved holiday side dish.",
+    "rating": "4.06/5 (2,006 reviews)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/bourbon-sweet-potato-casserole-sweet-n-savory-bacon-pecans.webp"
   },
   {
@@ -12542,8 +12543,8 @@
     "alignmentScore": "13.28",
     "cuisine": "",
     "course": "Salad",
-    "description": "Autumn Harvest Honeycrisp Apple and Feta Salad...all tossed with a warming apple cider vinaigrette...healthy, simple, and so delicious!",
-    "rating": "4.5",
+    "description": "A fresh, vibrant salad with a bright dressing and satisfying mix of textures — a versatile side for any meal.",
+    "rating": "4.50 (893 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/autumn-harvest-honeycrisp-apple-and-feta-salad.webp"
   },
   {
@@ -12553,8 +12554,8 @@
     "alignmentScore": "12.9",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Make Ahead Roasted Garlic Mashed Potatoes: Perfectly flavored creamy mashed potatoes...each bite is smooth, creamy, and so delicious!",
-    "rating": "4.63",
+    "description": "Creamy, buttery mashed potatoes — a beloved comfort food side dish that pairs with virtually any main.",
+    "rating": "4.63 (609 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/make-ahead-roasted-garlic-mashed-potatoes.webp"
   },
   {
@@ -12564,8 +12565,8 @@
     "alignmentScore": "12.63",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Crispy Cheesy Potatoes Stacks - Thinly sliced potatoes makes these stacks extra crisp, but the center remains a soft cheesy goodness.",
-    "rating": "3.83",
+    "description": "A delicious crispy cheesy potatoes stacks recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "3.83/5 (1,979 reviews)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/crispy-cheesy-potatoes-stacks.webp"
   },
   {
@@ -12575,8 +12576,8 @@
     "alignmentScore": "12.58",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Slow Cooker Cheesy Garlic Herb Mashed Potatoes...this slow cooker method makes for the creamiest, most flavorful mashed potatoes...delicious!",
-    "rating": "3.95",
+    "description": "Creamy, buttery mashed potatoes — a beloved comfort food side dish that pairs with virtually any main.",
+    "rating": "3.95/5 (1,527 reviews)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/garlic-herb-mashed-potatoes.webp"
   },
   {
@@ -12586,8 +12587,8 @@
     "alignmentScore": "12.54",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Cheesy Scalloped Potatoes with Caramelized Onions: these creamy crunchy potatoes are delicious...simple to make and always a crowd favorite!",
-    "rating": "4.43",
+    "description": "A delicious cheesy scalloped potatoes recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "4.43 (676 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cheesy-scalloped-potatoes.webp"
   },
   {
@@ -12597,8 +12598,8 @@
     "alignmentScore": "12.49",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Souper Creamy Lemon Butter Cheesy Zucchini Orzo!! Kind of like risotto, kind of like soup, made in under 30 minutes, using just one skillet",
-    "rating": "4.5",
+    "description": "A warming, comforting soup with deep flavor — perfect as a starter or light meal alongside crusty bread.",
+    "rating": "4.50 (594 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/souper-creamy-lemon-butter-cheesy-zucchini-orzo-orzo.webp"
   },
   {
@@ -12608,8 +12609,8 @@
     "alignmentScore": "6.28",
     "cuisine": "",
     "course": "Salad",
-    "description": "Harvest Brie and Cheddar Apple Kale Salad: Perfect seasonal salad with creamy cheeses and a balance of savory, sweet, and salty fall flavors!",
-    "rating": "5.0",
+    "description": "Hearty massaged kale tossed with a bright, savory dressing and crunchy toppings — a nutritious make-ahead salad.",
+    "rating": "5.00 (17 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/harvest-brie-and-cheddar-apple-kale-salad.webp"
   },
   {
@@ -12619,8 +12620,8 @@
     "alignmentScore": "5.11",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Your new favorite holiday side! Fluffy mashed potatoes baked with butter, cream cheese, and Gruyère for the dreamiest, cheesiest casserole. Make it ahead, bake, and serve warm for pure cozy comfort.",
-    "rating": "4.59",
+    "description": "Creamy, buttery mashed potatoes — a beloved comfort food side dish that pairs with virtually any main.",
+    "rating": "4.59 (12 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cheesy-mashed-potato-casserole.webp"
   },
   {
@@ -12630,8 +12631,8 @@
     "alignmentScore": "4.85",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Crispy topping, creamy sauce, and all homemade — no canned soup, no oven! The easiest holiday side dish, made fresh and so delicious!",
-    "rating": "3.39",
+    "description": "Fresh green beans cooked until crisp-tender and finished with garlic, butter, or a bright vinaigrette.",
+    "rating": "3.39 (26 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/crockpot-green-bean-casserole.webp"
   },
   {
@@ -12641,8 +12642,8 @@
     "alignmentScore": "10.67",
     "cuisine": "",
     "course": "Salad",
-    "description": "145 ratings",
-    "rating": "4.93",
+    "description": "A light, crunchy coleslaw made without mayo — shredded cabbage and carrots tossed in a tangy apple cider vinegar slaw.",
+    "rating": "4.93 (145 ratings)",
     "image": null
   },
   {
@@ -12652,8 +12653,8 @@
     "alignmentScore": "10.46",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "147 ratings",
-    "rating": "4.82",
+    "description": "Thinly sliced potatoes baked in a velvety homemade cheddar and cream sauce until tender and golden — comfort food at its finest.",
+    "rating": "4.82 (147 ratings)",
     "image": null
   },
   {
@@ -12663,8 +12664,8 @@
     "alignmentScore": "10.42",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "125 ratings",
-    "rating": "4.96",
+    "description": "Orzo pasta tossed with charred seasonal vegetables, lemon zest, and fresh herbs for a vibrant, satisfying warm salad.",
+    "rating": "4.96 (125 ratings)",
     "image": null
   },
   {
@@ -12674,8 +12675,8 @@
     "alignmentScore": "10.26",
     "cuisine": "",
     "course": "Soup",
-    "description": "114 ratings",
-    "rating": "4.98",
+    "description": "A creamy, velvety cheddar soup packed with broccoli and cauliflower — hearty enough to stand as a main dish.",
+    "rating": "4.98 (114 ratings)",
     "image": null
   },
   {
@@ -12685,8 +12686,8 @@
     "alignmentScore": "10.2",
     "cuisine": "",
     "course": "Salad",
-    "description": "115 ratings",
-    "rating": "4.94",
+    "description": "Shaved or roasted Brussels sprouts transformed into a crunchy, flavorful salad with a bright dressing.",
+    "rating": "4.94 (115 ratings)",
     "image": null
   },
   {
@@ -12696,8 +12697,8 @@
     "alignmentScore": "9.83",
     "cuisine": "",
     "course": "Salad",
-    "description": "96 ratings",
-    "rating": "4.95",
+    "description": "A protein-rich salad of quinoa, chickpeas, and roasted cashews tossed in a warm, aromatic curry dressing.",
+    "rating": "4.95 (96 ratings)",
     "image": null
   },
   {
@@ -12707,8 +12708,8 @@
     "alignmentScore": "9.76",
     "cuisine": "",
     "course": "Salad",
-    "description": "91 ratings",
-    "rating": "4.97",
+    "description": "Crisp raw broccoli florets in a bold Thai-inspired peanut-lime dressing with shredded cabbage and fresh herbs.",
+    "rating": "4.97 (91 ratings)",
     "image": null
   },
   {
@@ -12718,8 +12719,8 @@
     "alignmentScore": "9.64",
     "cuisine": "",
     "course": "Salad",
-    "description": "86 ratings",
-    "rating": "4.97",
+    "description": "Roasted cauliflower and sweet potato tossed with golden raisins, almonds, and a warming curry-honey dressing.",
+    "rating": "4.97 (86 ratings)",
     "image": null
   },
   {
@@ -12729,8 +12730,8 @@
     "alignmentScore": "9.52",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "80 ratings",
-    "rating": "4.99",
+    "description": "A classic sweet potato casserole with a sweet, crunchy topping — an indulgent and beloved holiday side dish.",
+    "rating": "4.99 (80 ratings)",
     "image": null
   },
   {
@@ -12740,8 +12741,8 @@
     "alignmentScore": "9.52",
     "cuisine": "",
     "course": "Salad",
-    "description": "79 ratings",
-    "rating": "5.0",
+    "description": "Roasted sweet potato and massaged kale tossed with chickpeas, dried cranberries, and a tahini-lemon dressing.",
+    "rating": "5.00 (79 ratings)",
     "image": null
   },
   {
@@ -12751,8 +12752,8 @@
     "alignmentScore": "16.43",
     "cuisine": "",
     "course": "Soup",
-    "description": "This butternut squash soup recipe is the best! Made with squash, ginger, rosemary & sage, it's super creamy and full of cozy fall flavor.",
-    "rating": "4.96",
+    "description": "Silky, warming butternut squash soup with just the right balance of sweet and savory, finished with a swirl of cream.",
+    "rating": "4.96/5 (2,051 reviews)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/butternut-squash-soup.webp"
   },
   {
@@ -12762,8 +12763,8 @@
     "alignmentScore": "14.29",
     "cuisine": "",
     "course": "Soup",
-    "description": "This broccoli cheddar soup recipe is easy to make in 30 minutes! Hearty, rich and creamy, it's the perfect comfort food. Better than Panera!",
-    "rating": "4.88",
+    "description": "A warming, comforting soup with deep flavor — perfect as a starter or light meal alongside crusty bread.",
+    "rating": "4.88 (845 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/broccoli-cheddar-soup.webp"
   },
   {
@@ -12773,8 +12774,8 @@
     "alignmentScore": "13.7",
     "cuisine": "",
     "course": "Soup",
-    "description": "An EASY, delicious, 7-ingredient carrot ginger soup! Creamy, warming, and bright, it's a great way to warm up on cold nights.",
-    "rating": "4.92",
+    "description": "A velvety, vibrant soup of roasted carrots pureed with fresh ginger, coconut milk, and warming spices.",
+    "rating": "4.92 (608 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/carrot-ginger-soup.webp"
   },
   {
@@ -12784,8 +12785,8 @@
     "alignmentScore": "13.52",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "This classic basil pesto recipe is bright and nutty, delicious on summer pastas, pizzas, and more. Easy pesto sauce variations included!",
-    "rating": "4.88",
+    "description": "A delicious pesto recipe recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "4.88 (588 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/pesto-recipe.webp"
   },
   {
@@ -12795,8 +12796,8 @@
     "alignmentScore": "13.51",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "A perfect baked potato has crispy skin and fluffy insides. This method for how to bake a potato works every time! Add your favorite toppings, and dig in!",
-    "rating": "4.96",
+    "description": "Fluffy-centered baked potatoes with perfectly crispy skin — a satisfying, versatile side loaded with toppings.",
+    "rating": "4.96 (529 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/baked-potato.webp"
   },
   {
@@ -12806,8 +12807,8 @@
     "alignmentScore": "13.49",
     "cuisine": "",
     "course": "Salad",
-    "description": "This easy Greek salad recipe is refreshing & delicious! Made with cucumber, tomatoes, olives, peppers & feta, Greek salad is the best summer side dish.",
-    "rating": "4.99",
+    "description": "The quintessential Greek salad of tomatoes, cucumbers, Kalamata olives, and feta dressed simply with olive oil and oregano.",
+    "rating": "4.99 (505 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/greek-salad.webp"
   },
   {
@@ -12817,8 +12818,8 @@
     "alignmentScore": "13.47",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Learn how to bake sweet potatoes with these tips & tricks! Enjoy them with butter, salt & pepper, or use them in your favorite baked sweet potato recipes.",
-    "rating": "4.95",
+    "description": "Fluffy, caramelized baked sweet potatoes with naturally crispy skin — ready in under an hour with minimal effort.",
+    "rating": "4.95 (526 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/baked-sweet-potato.webp"
   },
   {
@@ -12828,8 +12829,8 @@
     "alignmentScore": "13.44",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Learn how to cook spaghetti squash in the oven! This easy method yields perfect al dente strands every time. Serve as a side dish or use in your favorite spaghetti squash recipes!",
-    "rating": "4.96",
+    "description": "Halved spaghetti squash roasted until the strands pull apart easily, served as a versatile low-carb pasta alternative.",
+    "rating": "4.96 (512 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/how-to-cook-spaghetti-squash.webp"
   },
   {
@@ -12839,8 +12840,8 @@
     "alignmentScore": "13.33",
     "cuisine": "",
     "course": "Salad",
-    "description": "This easy broccoli salad recipe is a classic party side dish! It's made with cranberries, red onion, almonds, and a creamy homemade dressing.",
-    "rating": "4.98",
+    "description": "A crunchy raw broccoli salad with a sweet-tangy dressing and mix-ins like bacon, seeds, or cranberries.",
+    "rating": "4.98 (475 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/broccoli-salad.webp"
   },
   {
@@ -12850,8 +12851,8 @@
     "alignmentScore": "3.89",
     "cuisine": "",
     "course": "Rice",
-    "description": "Baking rice might be the easiest way to make it, ever. Throw all your ingredients into an oven dish, pour hot stock on top, cover and pop into the oven.",
-    "rating": "5.0",
+    "description": "A delicious loaded baked rice recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "5.00 (5 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/loaded-baked-rice.webp"
   },
   {
@@ -12861,8 +12862,8 @@
     "alignmentScore": "3.49",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Make soft, fluffy bao buns at home in under an hour! This easy recipe uses a fast-rising dough with yeast AND baking powder, so you skip the long wait but still get perfectly pillowy steamed buns.",
-    "rating": "5.0",
+    "description": "A delicious how to make bao buns recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "5.00 (4 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/how-to-make-bao-buns.webp"
   },
   {
@@ -12872,8 +12873,8 @@
     "alignmentScore": "3.01",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "These mozzarella stuffed arancini are the PERFECT use for any leftover risotto. Just form into balls, coat in breadcrumbs and fry (or air-fry) until golden and crispy.",
-    "rating": "5.0",
+    "description": "A delicious mozzarella stuffed arancini recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "5.00 (3 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/mozzarella-stuffed-arancini.webp"
   },
   {
@@ -12883,8 +12884,8 @@
     "alignmentScore": "2.39",
     "cuisine": "",
     "course": "Salad",
-    "description": "This vibrant roasted butternut squash salad is PACKED with colours and flavour. Creamy feta, juicy pomegranate seeds, a punchy miso dressing and crunchy pumpkin seeds make it a serious winner.",
-    "rating": "5.0",
+    "description": "A fresh, vibrant salad with a bright dressing and satisfying mix of textures — a versatile side for any meal.",
+    "rating": "5.00 (2 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/butternut-squash-salad-with-feta.webp"
   },
   {
@@ -12894,8 +12895,8 @@
     "alignmentScore": "2.39",
     "cuisine": "",
     "course": "Salad",
-    "description": "This spicy gochujang potato salad is perfect for summer BBQs and is an easy prep ahead side that everyone loves. And a real bonus? No potato peeling required.",
-    "rating": "5.0",
+    "description": "A creamy, crowd-pleasing potato salad with a well-balanced tangy dressing — perfect for cookouts and picnics.",
+    "rating": "5.00 (2 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/creamy-gochujang-potato-salad.webp"
   },
   {
@@ -12905,8 +12906,8 @@
     "alignmentScore": "2.39",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "This whole roasted cauliflower makes a seriously spectacular vegetarian centrepiece. It's loaded with a punchy Asian-style marinade and served on top of an addictive tomato pesto you're going to love.",
-    "rating": "5.0",
+    "description": "Cauliflower roasted until golden-brown and nutty, with crispy floret edges that make it endlessly snackable.",
+    "rating": "5.00 (2 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/whole-roasted-cauliflower-recipe-with-miso-and-tomato-pesto.webp"
   },
   {
@@ -12916,8 +12917,8 @@
     "alignmentScore": "2.39",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Your new favorite weeknight dinner: creamy white beans, rich tomato sauce, and melty cheese, all in one pan!",
-    "rating": "5.0",
+    "description": "A delicious cheesy white bean tomato bake recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "5.00 (2 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cheesy-white-bean-tomato-bake.webp"
   },
   {
@@ -12927,8 +12928,8 @@
     "alignmentScore": "1.51",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "You CAN get super crispy roast potatoes without peeling them. This skin on roast potatoes recipe saves so much time, you'll never go back. Just chop, parboil, roast and you're done!",
-    "rating": "5.0",
+    "description": "A delicious skin on potatoes recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "5.00 (1 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/skin-on-potatoes.webp"
   },
   {
@@ -12938,7 +12939,7 @@
     "alignmentScore": "0.0",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "No ratings",
+    "description": "Perfectly caramelized cubed sweet potatoes roasted with olive oil and a touch of cinnamon — a naturally sweet and simple side.",
     "rating": "NR",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/miso-roasted-sweet-potatoes-with-labneh-and-chilli-lime-salsa.webp"
   },
@@ -12949,7 +12950,7 @@
     "alignmentScore": "0.0",
     "cuisine": "",
     "course": "Salad",
-    "description": "No ratings",
+    "description": "A satisfying raw broccoli salad with sunflower seeds, cranberries, and a sweet, creamy apple cider dressing.",
     "rating": "NR",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/grilled-broccoli-crunch-salad.webp"
   },
@@ -12960,8 +12961,8 @@
     "alignmentScore": "8.34",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Warm roasted carrots sit atop a bed of creamy whipped feta for a Thanksgiving side dish that will please both the vegetarians and meat-eaters alike, at",
-    "rating": "4.96",
+    "description": "Whole roasted carrots spiced with cumin and coriander, plated over a cloud of lemony whipped feta.",
+    "rating": "4.96 (47 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/spiced-roasted-carrots-with-lemony-whipped-feta.webp"
   },
   {
@@ -12971,8 +12972,8 @@
     "alignmentScore": "7.53",
     "cuisine": "",
     "course": "Salad",
-    "description": "When the spring and summer months roll around, there's nothing that I want to eat more than a crunchy and refreshing salad. After all, a salad that is",
-    "rating": "5.0",
+    "description": "A big, crunchy Italian chopped salad loaded with salami, provolone, chickpeas, and pepperoncini in a zesty dressing.",
+    "rating": "5.00 (31 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/10-minute-crazy-good-italian-chopped-salad.webp"
   },
   {
@@ -12982,8 +12983,8 @@
     "alignmentScore": "7.15",
     "cuisine": "",
     "course": "Salad",
-    "description": "Are you in need of a quick and healthy lunch option that doesn't skimp on flavor? Well, then look no further than The Ultimate Healthy Chicken Salad! This",
-    "rating": "4.75",
+    "description": "A fresh, vibrant salad with a bright dressing and satisfying mix of textures — a versatile side for any meal.",
+    "rating": "4.75 (31 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/the-ultimate-healthy-chicken-salad.webp"
   },
   {
@@ -12993,8 +12994,8 @@
     "alignmentScore": "6.02",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Your traditional green bean casserole called, and it got a massively delicious upgrade. Introducing my Brown Butter Green Beans with Toasted Pistachios",
-    "rating": "5.0",
+    "description": "Crisp-tender green beans tossed in nutty brown butter with toasted pistachios and lemony whipped feta.",
+    "rating": "5.00 (15 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/brown-butter-green-beans-with-toasted-pistachios-and-lemony-whipped-feta.webp"
   },
   {
@@ -13004,8 +13005,8 @@
     "alignmentScore": "5.63",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Sometimes, the best things come in small packages - at least, that's the case when it comes to this recipe! My Viral Crispy Garlic Parmesan Crusted",
-    "rating": "4.79",
+    "description": "A delicious viral crispy garlic parmesan crusted potatoes recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "4.79 (14 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/viral-crispy-garlic-parmesan-crusted-potatoes.webp"
   },
   {
@@ -13015,8 +13016,8 @@
     "alignmentScore": "5.57",
     "cuisine": "",
     "course": "Salad",
-    "description": "Welcome to one of the best salads that you will ever eat in your LIFE! My Copycat Erewhon Cabbage Slaw is a riff off of my favorite salad from LA's most",
-    "rating": "5.0",
+    "description": "A copycat of the famous Erewhon market slaw — shredded cabbage tossed in a sesame-ginger dressing with toasted seeds.",
+    "rating": "5.00 (12 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/copycat-erewhon-cabbage-slaw.webp"
   },
   {
@@ -13026,8 +13027,8 @@
     "alignmentScore": "5.21",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "There is no side dish better than a creamy bowl of potatoes au gratin. Translating to \"potatoes topped with cheese,\" this dish is made from layers of",
-    "rating": "5.0",
+    "description": "Thinly sliced potatoes layered in a rich, garlicky cream sauce and baked under a bubbling blanket of Gruyère — the ultimate comfort side dish.",
+    "rating": "5.00 (10 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/the-ultimate-sheet-pan-potatoes-au-gratin.webp"
   },
   {
@@ -13037,8 +13038,8 @@
     "alignmentScore": "3.49",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Meet your new go-to side dish that somehow manages to be both effortless and impressive: Miso Maple Sweet Potato Stacks. These gorgeous little towers are",
-    "rating": "5.0",
+    "description": "Sweet potato stacks brushed with a sweet-savory miso-maple glaze and baked until caramelized and tender.",
+    "rating": "5.00 (4 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/miso-maple-sweet-potato-stacks.webp"
   },
   {
@@ -13048,8 +13049,8 @@
     "alignmentScore": "2.39",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Golden, crispy, and layered with garlicky butter and herbs, these Herby Potato Stacks are the kind of side dish that makes everything else on the plate",
-    "rating": "5.0",
+    "description": "Thinly sliced potatoes stacked with garlic butter and fresh herbs, roasted until crispy-edged and deeply golden.",
+    "rating": "5.00 (2 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/herby-potato-stacks.webp"
   },
   {
@@ -13059,8 +13060,8 @@
     "alignmentScore": "1.51",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "If you know that glossy, crave-worthy broccoli from a Chinese restaurant — the kind that's coated in a rich, garlicky sauce and somehow makes veggies the",
-    "rating": "5.0",
+    "description": "Crispy roasted broccoli glazed in a sweet, garlicky soy sauce — a wildly satisfying side that rivals restaurant takeout.",
+    "rating": "5.00 (1 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/better-than-takeout-broccoli.webp"
   },
   {
@@ -13070,8 +13071,8 @@
     "alignmentScore": "5.4",
     "cuisine": "",
     "course": "Salad",
-    "description": "This Spicy Quinoa Crunch Salad is as flavorful as it is colorful! Tossed with addictive spicy cashews, this recipe is ideal for meal prep.",
-    "rating": "5.0",
+    "description": "Spiced quinoa, cashews, and crunchy vegetables tossed in a bright, herbaceous dressing for a hearty texture-packed salad.",
+    "rating": "5.00 (11 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/spicy-cashew-quinoa-crunch-salad.webp"
   },
   {
@@ -13081,8 +13082,8 @@
     "alignmentScore": "5.21",
     "cuisine": "",
     "course": "Salad",
-    "description": "This Avocado Corn Chicken Salad will become your summertime staple! Healthy, protein-packed, and mayo-free, it’s a crowd-pleasing dish!",
-    "rating": "5.0",
+    "description": "Grilled chicken, sweet corn, and creamy avocado tossed with cilantro and a zippy lime dressing.",
+    "rating": "5.00 (10 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/avocado-corn-chicken-salad.webp"
   },
   {
@@ -13092,8 +13093,8 @@
     "alignmentScore": "4.52",
     "cuisine": "",
     "course": "Salad",
-    "description": "Packed with flavor AND color, this Curry Chicken Salad will brighten up your lunches for the entire week.",
-    "rating": "5.0",
+    "description": "A fresh, vibrant salad with a bright dressing and satisfying mix of textures — a versatile side for any meal.",
+    "rating": "5.00 (7 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/easy-healthy-curry-chicken-salad.webp"
   },
   {
@@ -13103,8 +13104,8 @@
     "alignmentScore": "4.23",
     "cuisine": "",
     "course": "Salad",
-    "description": "Loaded with flavor, this colorful Southwestern Micro-Chopped Salad with Cilantro Lime Dressing is anything but boring!",
-    "rating": "5.0",
+    "description": "A loaded chopped salad with black beans, corn, jicama, and avocado in a smoky cumin-lime dressing.",
+    "rating": "5.00 (6 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/southwest-chopped-salad.webp"
   },
   {
@@ -13125,8 +13126,8 @@
     "alignmentScore": "3.01",
     "cuisine": "",
     "course": "Salad",
-    "description": "This easy broccoli crunch salad makes a regular appearance in my weekday lunches. It’s non-mayo based so great for meal prep too!",
-    "rating": "5.0",
+    "description": "A satisfying raw broccoli salad with sunflower seeds, cranberries, and a sweet, creamy apple cider dressing.",
+    "rating": "5.00 (3 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/broccoli-crunch-salad.webp"
   },
   {
@@ -13136,8 +13137,8 @@
     "alignmentScore": "3.01",
     "cuisine": "",
     "course": "Rice",
-    "description": "A copycat Sweetgreen Harvest Bowl salad with a twist! This gluten-free, dairy-free salad will come to the rescue whenever you crave this salad chain bowl.",
-    "rating": "5.0",
+    "description": "A gorgeous fall salad with roasted apples, candied pecans, blue cheese, and arugula in a sweet maple-Dijon dressing.",
+    "rating": "5.00 (3 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/crispy-wild-rice-harvest-salad.webp"
   },
   {
@@ -13147,8 +13148,8 @@
     "alignmentScore": "2.39",
     "cuisine": "",
     "course": "Salad",
-    "description": "You NEED to make this Candied Bacon Walnut Shaved Brussels Sprout Salad for your next holiday! Crunchy, vibrant, and incredibly delicious",
-    "rating": "5.0",
+    "description": "Shaved or roasted Brussels sprouts transformed into a crunchy, flavorful salad with a bright dressing.",
+    "rating": "5.00 (2 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/bacon-walnut-shaved-brussels-sprout-salad.webp"
   },
   {
@@ -13158,7 +13159,7 @@
     "alignmentScore": "0.0",
     "cuisine": "",
     "course": "Rice",
-    "description": "No ratings",
+    "description": "Fluffy jasmine rice cooked in coconut milk and finished with toasted coconut flakes for a fragrant, lightly sweet side.",
     "rating": "NR",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/easy-toasted-coconut-rice.webp"
   },
@@ -13169,7 +13170,7 @@
     "alignmentScore": "0.0",
     "cuisine": "",
     "course": "Salad",
-    "description": "No ratings",
+    "description": "A light, refreshing potato salad tossed with fresh basil, lemon zest, olive oil, and capers — no mayo needed.",
     "rating": "NR",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/lemon-basil-potato-salad.webp"
   },
@@ -13180,8 +13181,8 @@
     "alignmentScore": "9.03",
     "cuisine": "",
     "course": "Salad",
-    "description": "This Roasted Broccoli Salad is EVERYTHING! Bright lemon, crisped-up bacon, tangy feta, and it's all built around a big bowl of roasted broccoli. A true hero of a meal!",
-    "rating": "5.0",
+    "description": "Deeply caramelized roasted broccoli tossed with almonds, cranberries, and a tangy honey-mustard dressing for a salad with serious depth.",
+    "rating": "5.00 (63 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/lizs-roasted-broccoli-salad.webp"
   },
   {
@@ -13191,8 +13192,8 @@
     "alignmentScore": "8.78",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Mashed Potatoes made in the Instant Pot! they are so creamy, so fluffy, and SO GOOD. from start to finish in 30 minutes, all in one pot!",
-    "rating": "4.6",
+    "description": "Perfectly fluffy mashed potatoes made in the Instant Pot — buttery, creamy, and ready in a fraction of the time.",
+    "rating": "4.60 (80 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/the-best-instant-pot-mashed-potatoes.webp"
   },
   {
@@ -13202,8 +13203,8 @@
     "alignmentScore": "8.77",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Sweet Potato Casserole with a crunchy brown sugar topping that will give you life. A Thanksgiving recipe classic!",
-    "rating": "4.8",
+    "description": "A classic sweet potato casserole with a sweet, crunchy topping — an indulgent and beloved holiday side dish.",
+    "rating": "4.80 (66 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/sweet-potato-casserole-with-brown-sugar-topping.webp"
   },
   {
@@ -13213,8 +13214,8 @@
     "alignmentScore": "8.57",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Shredded roasty brussels sprouts flecked with toasted walnuts and bites of plumped dried cranberries, and blanketed with a luscious sheen of gochujang garlic butter sauce.",
-    "rating": "4.9",
+    "description": "Brussels sprouts roasted until deeply caramelized with crispy outer leaves — the side dish that wins over every skeptic.",
+    "rating": "4.90 (55 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/brussels-sprouts-with-gochujang-butter.webp"
   },
   {
@@ -13224,8 +13225,8 @@
     "alignmentScore": "8.22",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "These House Favorite Brussels Sprouts are the best side veg and are speckled with bright bursts of cranberries and nutty walnuts. The perfect addition to any meal!",
-    "rating": "5.0",
+    "description": "Brussels sprouts roasted until deeply caramelized with crispy outer leaves — the side dish that wins over every skeptic.",
+    "rating": "5.00 (43 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/house-favorite-roasted-brussels-sprouts.webp"
   },
   {
@@ -13235,8 +13236,8 @@
     "alignmentScore": "8.05",
     "cuisine": "",
     "course": "Salad",
-    "description": "The perfect summery quinoa salad - fresh corn, buttery avocado, nutty quinoa, juicy marinated tomatoes, and tons of fresh herbs.",
-    "rating": "4.9",
+    "description": "A vibrant, summery salad of sweet corn and creamy avocado with a bright lime dressing.",
+    "rating": "4.90 (43 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/corn-avocado-and-quinoa-salad-with-marinated-tomatoes.webp"
   },
   {
@@ -13246,8 +13247,8 @@
     "alignmentScore": "7.57",
     "cuisine": "",
     "course": "Salad",
-    "description": "OOOH BABY, this salad is so good! Crunchy kale and cabbage, fresh herbs and fresno peppers, chopped peanuts, and a perfect roasted peanut vinaigrette that tucks into all the salad nooks and crannies.",
-    "rating": "4.9",
+    "description": "Hearty kale, crunchy roasted peanuts, and shredded cabbage tossed in a bold, savory ginger dressing.",
+    "rating": "4.90 (34 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/roasted-peanut-kale-crunch-salad.webp"
   },
   {
@@ -13257,8 +13258,8 @@
     "alignmentScore": "7.53",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Corn Casserole all zazzed up! Bursty bites of cream-style corn and sweet corn plus garlic, bacon, and cheese throughout - so you know it's really, really good!",
-    "rating": "4.7",
+    "description": "A creamy, slightly sweet corn casserole made with whole kernel and creamed corn — a beloved potluck staple.",
+    "rating": "4.70 (39 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/everybodys-favorite-corn-casserole.webp"
   },
   {
@@ -13268,8 +13269,8 @@
     "alignmentScore": "6.63",
     "cuisine": "",
     "course": "Rice",
-    "description": "This green rice is my FAVORITE! It's packed with spinach and cilantro, perfectly spicy, nutritious, and goes with just about everything.",
-    "rating": "4.8",
+    "description": "Fluffy rice blended with fresh herbs and spinach for a vibrant, flavor-packed green rice side dish.",
+    "rating": "4.80 (23 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/amazing-green-rice.webp"
   },
   {
@@ -13279,8 +13280,8 @@
     "alignmentScore": "5.76",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "We're taking these Loaded BBQ Baked Potatoes to the max! Perfectly overstuffed with a creamy garlic herb spinach and potato mixture and loaded up with BBQ chicken, pan-roasted mushrooms, bleu cheese c",
-    "rating": "4.9",
+    "description": "Baked potatoes loaded with smoky BBQ-seasoned toppings — a hearty, crowd-pleasing comfort food classic.",
+    "rating": "4.90 (14 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/loaded-bbq-baked-potatoes.webp"
   },
   {
@@ -13290,8 +13291,8 @@
     "alignmentScore": "12.43",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "Potatoes au Gratin is the ultimate potato recipe! French classic with layers of thinly sliced potato, cream, butter, garlic and cheese, you can't go wrong!",
-    "rating": "4.97",
+    "description": "Thinly sliced potatoes layered in a rich, garlicky cream sauce and baked under a bubbling blanket of Gruyère — the ultimate comfort side dish.",
+    "rating": "4.97 (316 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/potatoes-au-gratin-dauphinoise.webp"
   },
   {
@@ -13301,8 +13302,8 @@
     "alignmentScore": "12.4",
     "cuisine": "",
     "course": "Rice",
-    "description": "Simple, fluffy coconut rice! Fantastic side with any South East Asian food - Thai, Malaysia, Vietnamese - as well as Caribbean and tropical foods.",
-    "rating": "4.95",
+    "description": "Fluffy jasmine rice cooked in coconut milk and finished with toasted coconut flakes for a fragrant, lightly sweet side.",
+    "rating": "4.95 (319 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/restaurant-style-coconut-rice.webp"
   },
   {
@@ -13312,8 +13313,8 @@
     "alignmentScore": "12.21",
     "cuisine": "",
     "course": "Rice",
-    "description": "This is THE Fried Rice recipe that will make you wonder why you ever paid for takeout! The secret is the Chinese restaurant fried rice sauce. Quick, easy!",
-    "rating": "4.99",
+    "description": "Classic wok-style fried rice with egg, soy sauce, and vegetables — better than takeout and ready in minutes.",
+    "rating": "4.99 (279 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/fried-rice.webp"
   },
   {
@@ -13323,8 +13324,8 @@
     "alignmentScore": "11.94",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "257 ratings",
-    "rating": "4.95",
+    "description": "Creamy, buttery mashed potatoes — a beloved comfort food side dish that pairs with virtually any main.",
+    "rating": "4.95 (257 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/ultra-crispy-smashed-potatoes.webp"
   },
   {
@@ -13334,8 +13335,8 @@
     "alignmentScore": "11.93",
     "cuisine": "",
     "course": "Rice",
-    "description": "245 ratings",
-    "rating": "4.99",
+    "description": "A delicious mushroom rice recipe recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "4.99 (245 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/mushroom-rice-recipe.webp"
   },
   {
@@ -13345,8 +13346,8 @@
     "alignmentScore": "11.55",
     "cuisine": "",
     "course": "Rice",
-    "description": "203 ratings",
-    "rating": "5.0",
+    "description": "A delicious how to cook jasmine rice recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "5.00 (203 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/how-to-cook-jasmine-rice.webp"
   },
   {
@@ -13356,8 +13357,8 @@
     "alignmentScore": "11.43",
     "cuisine": "",
     "course": "Rice",
-    "description": "207 ratings",
-    "rating": "4.93",
+    "description": "Classic wok-style fried rice with egg, soy sauce, and vegetables — better than takeout and ready in minutes.",
+    "rating": "4.93 (207 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/emergency-dump-n-bake-fried-rice.webp"
   },
   {
@@ -13367,8 +13368,8 @@
     "alignmentScore": "9.35",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "77 ratings",
-    "rating": "4.94",
+    "description": "Wedges of pumpkin roasted in maple syrup with a sprinkle of chili flakes and salty crumbled feta.",
+    "rating": "4.94 (77 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/maple-roasted-pumpkin-with-chili-and-feta.webp"
   },
   {
@@ -13378,8 +13379,8 @@
     "alignmentScore": "9.13",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "67 ratings",
-    "rating": "4.98",
+    "description": "Mini Greek-style fritters of zucchini, feta, and herbs — crispy little bites perfect as a starter or side.",
+    "rating": "4.98 (67 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/greek-zucchini-tots-mini-fritters.webp"
   },
   {
@@ -13389,8 +13390,8 @@
     "alignmentScore": "8.82",
     "cuisine": "",
     "course": "Rice",
-    "description": "61 ratings",
-    "rating": "4.92",
+    "description": "A delicious garlic rice recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "4.92 (61 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/garlic-rice.webp"
   },
   {
@@ -13400,8 +13401,8 @@
     "alignmentScore": "11.47",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "204 ratings",
-    "rating": "4.96",
+    "description": "Mini potatoes roasted with olive oil, garlic, and fresh rosemary until golden and crispy — simple and irresistible.",
+    "rating": "4.96 (204 ratings)",
     "image": null
   },
   {
@@ -13411,8 +13412,8 @@
     "alignmentScore": "10.99",
     "cuisine": "",
     "course": "Soup",
-    "description": "178 ratings",
-    "rating": "4.88",
+    "description": "A velvety, comforting soup of leeks and potatoes pureed until silky smooth — lightened up but deeply satisfying.",
+    "rating": "4.88 (178 ratings)",
     "image": null
   },
   {
@@ -13422,8 +13423,8 @@
     "alignmentScore": "10.69",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "145 ratings",
-    "rating": "4.94",
+    "description": "Fluffy, caramelized baked sweet potatoes with naturally crispy skin — ready in under an hour with minimal effort.",
+    "rating": "4.94 (145 ratings)",
     "image": null
   },
   {
@@ -13433,8 +13434,8 @@
     "alignmentScore": "10.53",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "147 ratings",
-    "rating": "4.85",
+    "description": "Hearty, well-seasoned beans slow-cooked until creamy and deeply flavorful — a nourishing, satisfying side.",
+    "rating": "4.85 (147 ratings)",
     "image": null
   },
   {
@@ -13444,8 +13445,8 @@
     "alignmentScore": "10.48",
     "cuisine": "",
     "course": "Salad",
-    "description": "131 ratings",
-    "rating": "4.94",
+    "description": "A protein-packed chickpea salad with fresh vegetables, herbs, and a lemony dressing — great for meal prep.",
+    "rating": "4.94 (131 ratings)",
     "image": null
   },
   {
@@ -13455,8 +13456,8 @@
     "alignmentScore": "10.45",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "146 ratings",
-    "rating": "4.82",
+    "description": "Soft, pull-apart garlic knots brushed with garlicky herb butter — a lighter version of the pizzeria classic.",
+    "rating": "4.82 (146 ratings)",
     "image": null
   },
   {
@@ -13466,8 +13467,8 @@
     "alignmentScore": "10.39",
     "cuisine": "",
     "course": "Salad",
-    "description": "121 ratings",
-    "rating": "4.98",
+    "description": "A vibrant, no-cook summer salad of sweet corn, ripe tomatoes, and creamy avocado with a lime dressing.",
+    "rating": "4.98 (121 ratings)",
     "image": null
   },
   {
@@ -13488,8 +13489,8 @@
     "alignmentScore": "9.96",
     "cuisine": "",
     "course": "Salad",
-    "description": "135 ratings",
-    "rating": "4.67",
+    "description": "A satisfying potato salad made with cauliflower for a lower-carb twist, with all the creamy, tangy flavor of the original.",
+    "rating": "4.67 (135 ratings)",
     "image": null
   },
   {
@@ -13499,8 +13500,8 @@
     "alignmentScore": "9.88",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "98 ratings",
-    "rating": "4.95",
+    "description": "Instant Pot pinto beans seasoned with chipotle, cumin, and garlic — deeply flavorful and a perfect Tex-Mex side.",
+    "rating": "4.95 (98 ratings)",
     "image": null
   },
   {
@@ -13510,7 +13511,7 @@
     "alignmentScore": "0.0",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "No ratings",
+    "description": "Charred aubergine and creamy butter beans braised together in a fragrant, fiery chilli pesto — bold, plant-forward Ottolenghi.",
     "rating": "NR",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/roasted-aubergines-and-butter-beans-in-chilli-pesto.webp"
   },
@@ -13521,7 +13522,7 @@
     "alignmentScore": "0.0",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "No ratings",
+    "description": "Whole roasted leeks with a tangy crème fraîche and hazelnut dressing, dusted with sumac — elegant and deeply savory.",
     "rating": "NR",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/roasted-leeks-with-cr%C3%A8me-fra%C3%AEche-hazelnuts-and-sumac.webp"
   },
@@ -13532,7 +13533,7 @@
     "alignmentScore": "0.0",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "No ratings",
+    "description": "Pillowy spinach and feta dumplings poached in a bright, lemon-herb broth — a stunning Ottolenghi showstopper.",
     "rating": "NR",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/spinach-and-feta-dumplings-in-lemon-butter.webp"
   },
@@ -13543,7 +13544,7 @@
     "alignmentScore": "0.0",
     "cuisine": "",
     "course": "Salad",
-    "description": "No ratings",
+    "description": "A hearty, nutritious lentil salad with crisp vegetables and a bright, herby vinaigrette.",
     "rating": "NR",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/warm-green-bean-and-lentil-salad.webp"
   },
@@ -13554,7 +13555,7 @@
     "alignmentScore": "0.0",
     "cuisine": "",
     "course": "Dip/Appetizer",
-    "description": "No ratings",
+    "description": "Oven-roasted Brussels sprouts turn golden and caramelized, then get finished with a glossy drizzle of balsamic vinegar and honey.",
     "rating": "NR",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/festive-hummus-with-roasted-brussels-sprouts-and-chestnuts.webp"
   },
@@ -13565,7 +13566,7 @@
     "alignmentScore": "0.0",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "No ratings",
+    "description": "Whole carrots glazed in bourbon, brown sugar, and warm spices until lacquered and deeply caramelized.",
     "rating": "NR",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/bourbon-glazed-carrots-with-ginger-and-rosemary.webp"
   },
@@ -13576,7 +13577,7 @@
     "alignmentScore": "0.0",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "No ratings",
+    "description": "A modern twist on green bean casserole with blistered beans, crispy shallots, Parmesan, and rosemary.",
     "rating": "NR",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/blistered-green-bean-casserole-with-parmesan-and-rosemary.webp"
   },
@@ -13587,7 +13588,7 @@
     "alignmentScore": "0.0",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "No ratings",
+    "description": "Vibrant roasted squash drizzled with a brilliant green pepita and herb pesto — a stunning vegetarian side.",
     "rating": "NR",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/roasted-squash-with-pepita-pesto.webp"
   },
@@ -13598,7 +13599,7 @@
     "alignmentScore": "0.0",
     "cuisine": "",
     "course": "Salad",
-    "description": "No ratings",
+    "description": "A fragrant Middle Eastern dish of lentils and rice topped with deeply caramelized onions and warm spices.",
     "rating": "NR",
     "image": null
   },
@@ -13609,7 +13610,7 @@
     "alignmentScore": "0.0",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "No ratings",
+    "description": "Cauliflower roasted until golden-brown and nutty, with crispy floret edges that make it endlessly snackable.",
     "rating": "NR",
     "image": null
   },
@@ -13620,8 +13621,8 @@
     "alignmentScore": "12.57",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "441 ratings",
-    "rating": "4.75",
+    "description": "A creamy, slightly sweet corn casserole made with whole kernel and creamed corn — a beloved potluck staple.",
+    "rating": "4.75 (441 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/creamed-corn-casserole.webp"
   },
   {
@@ -13631,8 +13632,8 @@
     "alignmentScore": "10.7",
     "cuisine": "",
     "course": "Salad",
-    "description": "155 ratings",
-    "rating": "4.88",
+    "description": "A classic broccoli salad with crispy bacon, sunflower seeds, dried cranberries, and a creamy sweet-tangy dressing.",
+    "rating": "4.88 (155 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/broccoli-salad-with-bacon-recipe.webp"
   },
   {
@@ -13642,8 +13643,8 @@
     "alignmentScore": "10.3",
     "cuisine": "",
     "course": "Soup",
-    "description": "133 ratings",
-    "rating": "4.84",
+    "description": "A deeply flavorful, roasted tomato soup blended to a velvety consistency and served with a swirl of cream.",
+    "rating": "4.84 (133 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/homemade-tomato-soup.webp"
   },
   {
@@ -13653,8 +13654,8 @@
     "alignmentScore": "10.23",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "137 ratings",
-    "rating": "4.78",
+    "description": "Oven-roasted to bring out deep, caramelized flavor — a simple technique that elevates any vegetable side.",
+    "rating": "4.78 (137 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/oven-roasted-red-potato-recipe.webp"
   },
   {
@@ -13664,8 +13665,8 @@
     "alignmentScore": "9.88",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "111 ratings",
-    "rating": "4.82",
+    "description": "Perfectly caramelized cubed sweet potatoes roasted with olive oil and a touch of cinnamon — a naturally sweet and simple side.",
+    "rating": "4.82 (111 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/oven-roasted-sweet-potatoes-and-brussels-sprouts.webp"
   },
   {
@@ -13675,8 +13676,8 @@
     "alignmentScore": "9.54",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "98 ratings",
-    "rating": "4.78",
+    "description": "A delicious homemade scalloped potatoes with cheese recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "4.78 (98 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/homemade-scalloped-potatoes-with-cheese.webp"
   },
   {
@@ -13686,8 +13687,8 @@
     "alignmentScore": "8.17",
     "cuisine": "",
     "course": "Rice",
-    "description": "52 ratings",
-    "rating": "4.74",
+    "description": "A Cajun classic of creamy, deeply spiced red kidney beans slow-simmered with the holy trinity and served over fluffy rice.",
+    "rating": "4.74 (52 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/red-beans-and-rice-recipe.webp"
   },
   {
@@ -13697,8 +13698,8 @@
     "alignmentScore": "7.39",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "31 ratings",
-    "rating": "4.91",
+    "description": "Traditional Mexican-American pinto beans slow-cooked with smoky bacon and warm spices — soul-satisfying and authentic.",
+    "rating": "4.91 (31 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/traditional-tejano-beans-mexican-pinto-beans.webp"
   },
   {
@@ -13708,8 +13709,8 @@
     "alignmentScore": "6.94",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "26 ratings",
-    "rating": "4.85",
+    "description": "A delicious funeral potatoes (cheesy potato casserole) recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "4.85 (26 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/funeral-potatoes-cheesy-potato-casserole.webp"
   },
   {
@@ -13719,8 +13720,8 @@
     "alignmentScore": "3.01",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "3 ratings",
-    "rating": "5.0",
+    "description": "Traditional Irish mashed potatoes loaded with wilted cabbage or kale, spring onions, and plenty of butter and cream.",
+    "rating": "5.00 (3 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/colcannon.webp"
   },
   {
@@ -13730,8 +13731,8 @@
     "alignmentScore": "7.88",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "56 ratings",
-    "rating": "4.49",
+    "description": "Crispy baked or air-fried zucchini sticks coated in seasoned almond flour — a lighter, healthier fry alternative.",
+    "rating": "4.49 (56 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/baked-zucchini-fries.webp"
   },
   {
@@ -13741,8 +13742,8 @@
     "alignmentScore": "7.49",
     "cuisine": "",
     "course": "Rice",
-    "description": "43 ratings",
-    "rating": "4.56",
+    "description": "Cauliflower rice seasoned with tomato, cumin, and garlic in the style of Spanish rice — a quick low-carb side.",
+    "rating": "4.56 (43 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/15-minute-flavorful-spanish-cauliflower-rice.webp"
   },
   {
@@ -13752,8 +13753,8 @@
     "alignmentScore": "6.94",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "26 ratings",
-    "rating": "4.85",
+    "description": "Sweet potatoes roasted until caramelized and fork-tender — a simple, nourishing side dish.",
+    "rating": "4.85 (26 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/crispy-ranch-roasted-sweet-potatoes.webp"
   },
   {
@@ -13763,8 +13764,8 @@
     "alignmentScore": "6.88",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "24 ratings",
-    "rating": "4.92",
+    "description": "Brussels sprouts roasted until deeply caramelized with crispy outer leaves — the side dish that wins over every skeptic.",
+    "rating": "4.92 (24 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/ghee-roasted-brussels-sprouts.webp"
   },
   {
@@ -13774,8 +13775,8 @@
     "alignmentScore": "6.82",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "27 ratings",
-    "rating": "4.71",
+    "description": "Oven-roasted to bring out deep, caramelized flavor — a simple technique that elevates any vegetable side.",
+    "rating": "4.71 (27 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/roasted-maduros-sweet-plantains.webp"
   },
   {
@@ -13785,8 +13786,8 @@
     "alignmentScore": "6.74",
     "cuisine": "",
     "course": "Rice",
-    "description": "28 ratings",
-    "rating": "4.61",
+    "description": "Finely riced cauliflower cooked as a light, grain-free alternative to traditional rice.",
+    "rating": "4.61 (28 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/easy-homemade-cauliflower-rice.webp"
   },
   {
@@ -13796,8 +13797,8 @@
     "alignmentScore": "6.58",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "42 ratings",
-    "rating": "4.03",
+    "description": "A delicious creamy mashed cauliflower recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "4.03 (42 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/creamy-mashed-cauliflower.webp"
   },
   {
@@ -13807,8 +13808,8 @@
     "alignmentScore": "6.15",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "16 ratings",
-    "rating": "5.0",
+    "description": "Traditional Irish mashed potatoes loaded with wilted cabbage or kale, spring onions, and plenty of butter and cream.",
+    "rating": "5.00 (16 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/paleo-mashed-cauliflower-parsnip-colcannon-with-bacon.webp"
   },
   {
@@ -13818,8 +13819,8 @@
     "alignmentScore": "5.86",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "15 ratings",
-    "rating": "4.87",
+    "description": "Oven-roasted to bring out deep, caramelized flavor — a simple technique that elevates any vegetable side.",
+    "rating": "4.87 (15 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/30-minute-crispy-roasted-radishes.webp"
   },
   {
@@ -13829,8 +13830,8 @@
     "alignmentScore": "5.78",
     "cuisine": "",
     "course": "Rice",
-    "description": "15 ratings",
-    "rating": "4.8",
+    "description": "Raw broccoli florets pulsed into grain-sized pieces for a fresh, nutritious rice alternative packed with flavor.",
+    "rating": "4.80 (15 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/how-to-make-broccoli-rice.webp"
   },
   {
@@ -13840,8 +13841,8 @@
     "alignmentScore": "9.35",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "73 ratings",
-    "rating": "5.0",
+    "description": "Oven-roasted to bring out deep, caramelized flavor — a simple technique that elevates any vegetable side.",
+    "rating": "5.00 (73 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/4-ingredient-balsamic-roasted-mini-peppers.webp"
   },
   {
@@ -13849,9 +13850,10 @@
     "url": "https://alexandracooks.com/2021/09/29/baked-feta-with-cherry-tomatoes/",
     "cuisine": "Mediterranean",
     "course": "Side Dish",
-    "description": "Viral recipe; serve with crusty bread or toss with pasta",
+    "description": "A delicious baked feta with cherry tomatoes recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/baked-feta-with-cherry-tomatoes.webp",
-    "protein": "vegetables"
+    "protein": "vegetables",
+    "rating": "5.00 (65 ratings)"
   },
   {
     "name": "Simplest Slow Cooker Black Beans",
@@ -13860,8 +13862,8 @@
     "alignmentScore": "8.49",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "49 ratings",
-    "rating": "5.0",
+    "description": "Set-it-and-forget-it black beans cooked from dry in the slow cooker — creamy, deeply flavored, and freezer-friendly.",
+    "rating": "5.00 (49 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/simplest-slow-cooker-black-beans.webp"
   },
   {
@@ -13871,8 +13873,8 @@
     "alignmentScore": "8.45",
     "cuisine": "",
     "course": "Salad",
-    "description": "52 ratings",
-    "rating": "4.9",
+    "description": "A fresh, vibrant salad with a bright dressing and satisfying mix of textures — a versatile side for any meal.",
+    "rating": "4.90 (52 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/swiss-chard-salad-with-lemon-parmesan-bread-crumbs.webp"
   },
   {
@@ -13882,8 +13884,8 @@
     "alignmentScore": "8.17",
     "cuisine": "",
     "course": "Salad",
-    "description": "42 ratings",
-    "rating": "5.0",
+    "description": "A simple, elegant salad of creamy cannellini beans, sun-dried tomatoes, capers, and fresh herbs in a bright lemon dressing.",
+    "rating": "5.00 (42 ratings)",
     "image": null
   },
   {
@@ -13893,8 +13895,8 @@
     "alignmentScore": "7.46",
     "cuisine": "",
     "course": "Salad",
-    "description": "30 ratings",
-    "rating": "5.0",
+    "description": "A three-ingredient Trader Joe's lentil salad that is somehow mind-blowingly good — a genius weeknight shortcut.",
+    "rating": "5.00 (30 ratings)",
     "image": null
   },
   {
@@ -13904,8 +13906,8 @@
     "alignmentScore": "6.9",
     "cuisine": "",
     "course": "Salad",
-    "description": "23 ratings",
-    "rating": "5.0",
+    "description": "Pearl couscous with roasted cauliflower, toasted almonds, dried cherries, and fresh herbs in a bright dressing.",
+    "rating": "5.00 (23 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cauliflower-couscous-salad-with-almonds-herbs-and-cherries.webp"
   },
   {
@@ -13915,8 +13917,8 @@
     "alignmentScore": "6.28",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "17 ratings",
-    "rating": "5.0",
+    "description": "A colorful medley of Mediterranean vegetables roasted with olive oil, garlic, and fresh herbs until tender and caramelized.",
+    "rating": "5.00 (17 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/roasted-vegetables-with-tahini-lemon-zaatar.webp"
   },
   {
@@ -13926,8 +13928,8 @@
     "alignmentScore": "6.03",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "16 ratings",
-    "rating": "4.9",
+    "description": "Fresh green beans cooked until crisp-tender and finished with garlic, butter, or a bright vinaigrette.",
+    "rating": "4.90 (16 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/5-ingredient-8-minute-glazed-green-beans.webp"
   },
   {
@@ -13937,8 +13939,8 @@
     "alignmentScore": "5.76",
     "cuisine": "",
     "course": "Salad",
-    "description": "14 ratings",
-    "rating": "4.9",
+    "description": "Chickpeas tossed with halved cherry tomatoes, cucumber, toasted pine nuts, and a fresh herb-lemon dressing.",
+    "rating": "4.90 (14 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/herby-chickpea-salad-with-tomatoes-cucumbers-toasted-pine-nuts.webp"
   },
   {
@@ -13948,8 +13950,8 @@
     "alignmentScore": "10.5",
     "cuisine": "",
     "course": "Dip/Appetizer",
-    "description": "212 ratings",
-    "rating": "4.51",
+    "description": "Creamy whipped feta blended until silky and topped with spicy honey and crispy herbs — an irresistible dip.",
+    "rating": "4.51 (212 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/whipped-feta-dip-with-spicy-honey.webp"
   },
   {
@@ -13959,8 +13961,8 @@
     "alignmentScore": "6.8",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "31 ratings",
-    "rating": "4.52",
+    "description": "Thinly sliced potatoes baked in cream with a generous topping of melted cheese until golden and bubbling.",
+    "rating": "4.52 (31 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cheesy-potato-gratin.webp"
   },
   {
@@ -13970,8 +13972,8 @@
     "alignmentScore": "5.83",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "20 ratings",
-    "rating": "4.41",
+    "description": "A crispy, golden-fried dish cooked to perfection — flavorful and satisfying as a starter or side.",
+    "rating": "4.41 (20 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/pan-fried-halloumi-with-peppered-honey.webp"
   },
   {
@@ -13981,8 +13983,8 @@
     "alignmentScore": "3.8",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "6 ratings",
-    "rating": "4.5",
+    "description": "A classic French gratin with layers of vegetables baked in cream and melted cheese until beautifully golden.",
+    "rating": "4.50 (6 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/potato-and-vegetable-gratin.webp"
   },
   {
@@ -13992,8 +13994,8 @@
     "alignmentScore": "3.01",
     "cuisine": "",
     "course": "Dip/Appetizer",
-    "description": "3 ratings",
-    "rating": "5.0",
+    "description": "A delicious date and pecan baked brie in puff pastry recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "5.00 (3 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/date-and-pecan-baked-brie-in-puff-pastry.webp"
   },
   {
@@ -14003,8 +14005,8 @@
     "alignmentScore": "2.81",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "3 ratings",
-    "rating": "4.67",
+    "description": "Baby potatoes crushed and pan-fried in garlic-herb butter until shatteringly crispy on every surface.",
+    "rating": "4.67 (3 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/crispy-garlic-butter-potatoes.webp"
   },
   {
@@ -14014,8 +14016,8 @@
     "alignmentScore": "2.39",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "2 ratings",
-    "rating": "5.0",
+    "description": "Hearty baked beans loaded with smoky bacon, ground beef, brown sugar, and tangy mustard — a BBQ staple.",
+    "rating": "5.00 (2 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cowboy-beans.webp"
   },
   {
@@ -14025,8 +14027,8 @@
     "alignmentScore": "2.39",
     "cuisine": "",
     "course": "Salad",
-    "description": "2 ratings",
-    "rating": "5.0",
+    "description": "Cool, crisp cucumber slices in a light, tangy dressing — a refreshing palate cleanser alongside any meal.",
+    "rating": "5.00 (2 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/asian-cucumber-salad.webp"
   },
   {
@@ -14036,7 +14038,7 @@
     "alignmentScore": "0.0",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "No ratings",
+    "description": "Silky mashed potatoes inspired by the Roman pasta classic, loaded with freshly cracked black pepper and plenty of Pecorino Romano.",
     "rating": "NR",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/cacio-e-pepe-mashed-potatoes.webp"
   },
@@ -14047,7 +14049,7 @@
     "alignmentScore": "0.0",
     "cuisine": "",
     "course": "Salad",
-    "description": "No ratings",
+    "description": "Shaved or roasted Brussels sprouts transformed into a crunchy, flavorful salad with a bright dressing.",
     "rating": "NR",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/shaved-brussels-sprouts-salad.webp"
   },
@@ -14058,8 +14060,8 @@
     "alignmentScore": "11.26",
     "cuisine": "",
     "course": "Salad",
-    "description": "193 ratings",
-    "rating": "4.92",
+    "description": "A crunchy, tangy slaw with shredded cabbage and a well-seasoned dressing — a refreshing, versatile side.",
+    "rating": "4.92 (193 ratings)",
     "image": null
   },
   {
@@ -14069,8 +14071,8 @@
     "alignmentScore": "11.0",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "161 ratings",
-    "rating": "4.98",
+    "description": "Oven-roasted to bring out deep, caramelized flavor — a simple technique that elevates any vegetable side.",
+    "rating": "4.98 (161 ratings)",
     "image": null
   },
   {
@@ -14080,8 +14082,8 @@
     "alignmentScore": "10.48",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "134 ratings",
-    "rating": "4.92",
+    "description": "A delicious honey glazed carrots recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "4.92 (134 ratings)",
     "image": null
   },
   {
@@ -14091,8 +14093,8 @@
     "alignmentScore": "10.15",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "109 ratings",
-    "rating": "4.97",
+    "description": "A crispy, golden-fried dish cooked to perfection — flavorful and satisfying as a starter or side.",
+    "rating": "4.97 (109 ratings)",
     "image": null
   },
   {
@@ -14102,8 +14104,8 @@
     "alignmentScore": "9.6",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "83 ratings",
-    "rating": "4.99",
+    "description": "A delicious sautéed cabbage (easy & healthy) recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "4.99 (83 ratings)",
     "image": null
   },
   {
@@ -14113,8 +14115,8 @@
     "alignmentScore": "9.41",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "76 ratings",
-    "rating": "4.99",
+    "description": "Perfectly caramelized cubed sweet potatoes roasted with olive oil and a touch of cinnamon — a naturally sweet and simple side.",
+    "rating": "4.99 (76 ratings)",
     "image": null
   },
   {
@@ -14124,8 +14126,8 @@
     "alignmentScore": "9.29",
     "cuisine": "",
     "course": "Rice",
-    "description": "77 ratings",
-    "rating": "4.91",
+    "description": "Fluffy, herby cilantro-lime rice inspired by Chipotle — zesty, bright, and the perfect taco bowl base.",
+    "rating": "4.91 (77 ratings)",
     "image": null
   },
   {
@@ -14135,8 +14137,8 @@
     "alignmentScore": "9.23",
     "cuisine": "",
     "course": "Rice",
-    "description": "73 ratings",
-    "rating": "4.94",
+    "description": "A delicious mexican rice recipe (easy and flavorful) recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "4.94 (73 ratings)",
     "image": null
   },
   {
@@ -14146,8 +14148,8 @@
     "alignmentScore": "9.08",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "65 ratings",
-    "rating": "4.99",
+    "description": "Brussels sprouts roasted until deeply caramelized with crispy outer leaves — the side dish that wins over every skeptic.",
+    "rating": "4.99 (65 ratings)",
     "image": null
   },
   {
@@ -14157,8 +14159,8 @@
     "alignmentScore": "8.72",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "55 ratings",
-    "rating": "4.99",
+    "description": "A classic sweet potato casserole with a sweet, crunchy topping — an indulgent and beloved holiday side dish.",
+    "rating": "4.99 (55 ratings)",
     "image": null
   },
   {
@@ -14168,8 +14170,8 @@
     "alignmentScore": "8.14",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "46 ratings",
-    "rating": "4.87",
+    "description": "Fresh green beans cooked until crisp-tender and finished with garlic, butter, or a bright vinaigrette.",
+    "rating": "4.87 (46 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/sichuan-dry-fried-green-beans.webp"
   },
   {
@@ -14179,8 +14181,8 @@
     "alignmentScore": "7.72",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "36 ratings",
-    "rating": "4.92",
+    "description": "Hard-boiled eggs marbled in a fragrant soy-tea-spice brine until steeped with deep flavor and a stunning crackled pattern.",
+    "rating": "4.92 (36 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chinese-tea-eggs.webp"
   },
   {
@@ -14190,8 +14192,8 @@
     "alignmentScore": "6.81",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "22 ratings",
-    "rating": "5.0",
+    "description": "Crisp-tender green beans stir-fried over high heat with garlic and a splash of soy sauce for a simple, addictive side.",
+    "rating": "5.00 (22 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chinese-garlic-green-beans.webp"
   },
   {
@@ -14201,8 +14203,8 @@
     "alignmentScore": "6.51",
     "cuisine": "",
     "course": "Rice",
-    "description": "19 ratings",
-    "rating": "5.0",
+    "description": "Simple, fragrant fried rice made with soy sauce, egg, and scallions — a beloved Chinese comfort food staple.",
+    "rating": "5.00 (19 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/soy-sauce-fried-rice.webp"
   },
   {
@@ -14212,8 +14214,8 @@
     "alignmentScore": "6.44",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "19 ratings",
-    "rating": "4.95",
+    "description": "A crispy, golden-fried dish cooked to perfection — flavorful and satisfying as a starter or side.",
+    "rating": "4.95 (19 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chinese-4-ingredient-fried-cabbage.webp"
   },
   {
@@ -14223,8 +14225,8 @@
     "alignmentScore": "6.28",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "17 ratings",
-    "rating": "5.0",
+    "description": "A delicious teriyaki king oyster mushroom recipe — a crowd-pleasing side dish perfect for weeknight dinners and special occasions alike.",
+    "rating": "5.00 (17 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/teriyaki-king-oyster-mushroom.webp"
   },
   {
@@ -14234,8 +14236,8 @@
     "alignmentScore": "6.23",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "19 ratings",
-    "rating": "4.79",
+    "description": "Light and crunchy bean sprouts flash-stir-fried with garlic and ginger — a classic, quick Chinese vegetable side.",
+    "rating": "4.79 (19 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/bean-sprout-stir-fry.webp"
   },
   {
@@ -14245,8 +14247,8 @@
     "alignmentScore": "6.15",
     "cuisine": "",
     "course": "Side Dish",
-    "description": "16 ratings",
-    "rating": "5.0",
+    "description": "Chinese soy-marinated eggs with a silky, jammy yolk and a rich, spiced soy-ginger brine — the perfect ramen topper.",
+    "rating": "5.00 (16 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/soy-sauce-eggs.webp"
   },
   {
@@ -14256,8 +14258,8 @@
     "alignmentScore": "6.02",
     "cuisine": "",
     "course": "Rice",
-    "description": "15 ratings",
-    "rating": "5.0",
+    "description": "Classic wok-style fried rice with egg, soy sauce, and vegetables — better than takeout and ready in minutes.",
+    "rating": "5.00 (15 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/easy-egg-fried-rice.webp"
   },
   {
@@ -14267,8 +14269,8 @@
     "alignmentScore": "5.11",
     "cuisine": "",
     "course": "Salad",
-    "description": "10 ratings",
-    "rating": "4.91",
+    "description": "Crunchy cabbage and carrots tossed in a light, savory sesame-soy dressing for a refreshing Asian-style slaw.",
+    "rating": "4.91 (10 ratings)",
     "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/chinese-coleslaw.webp"
   }
 ]
