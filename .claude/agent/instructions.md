@@ -65,8 +65,34 @@ For each new recipe URL found, visit the page and collect the following informat
 | Cuisine Style | One of the standard cuisine categories (see below) |
 | Rating | Format: `4.8 (120 ratings)` — pull from the page if shown. Use `N/A` if not available |
 | Notes | 1–2 sentence description. Highlight: technique, key flavors, dietary notes, prep time, why it's CKC-relevant |
-| Diet Tags | Comma-separated codes from: `GF`, `DF`, `V`, `Vg`, `LH`, `LF`, `AIP`, `K`. Leave blank if none apply natively |
-| Compliance Notes | How to modify the recipe for diet compliance where applicable. E.g. "Sub soy sauce for coconut aminos for AIP/GF. Omit cheese for DF." Leave blank if not applicable |
+| V | `1` if recipe is **natively vegan** (no modifications needed), else `0` |
+| V Mod | `1` if recipe **can be made vegan** with simple modifications, else `0` |
+| V Mod Notes | How to modify the recipe to be vegan (leave blank if V=1 or not achievable) |
+| Vg | `1` if recipe is **natively vegetarian**, else `0` |
+| Vg Mod | `1` if recipe **can be made vegetarian** with simple modifications, else `0` |
+| Vg Mod Notes | How to modify the recipe to be vegetarian |
+| GF | `1` if recipe is **natively gluten-free**, else `0` |
+| GF Mod | `1` if recipe **can be made gluten-free** with simple modifications, else `0` |
+| GF Mod Notes | How to modify the recipe to be GF (e.g. "Sub soy sauce → tamari") |
+| DF | `1` if recipe is **natively dairy-free**, else `0` |
+| DF Mod | `1` if recipe **can be made dairy-free** with simple modifications, else `0` |
+| DF Mod Notes | How to modify the recipe to be DF (e.g. "Sub butter → olive oil") |
+| LH | `1` if recipe is **natively low-histamine**, else `0` |
+| LH Mod | `1` if recipe **can be made low-histamine** with simple modifications, else `0` |
+| LH Mod Notes | How to modify the recipe to be LH |
+| LF | `1` if recipe is **natively low-FODMAP**, else `0` |
+| LF Mod | `1` if recipe **can be made low-FODMAP** with simple modifications, else `0` |
+| LF Mod Notes | How to modify the recipe to be LF |
+| AIP | `1` if recipe is **natively AIP-compliant**, else `0` |
+| AIP Mod | `1` if recipe **can be made AIP** with simple modifications, else `0` |
+| AIP Mod Notes | How to modify the recipe to be AIP |
+| K | `1` if recipe is **natively keto**, else `0` |
+| K Mod | `1` if recipe **can be made keto** with simple modifications, else `0` |
+| K Mod Notes | How to modify the recipe to be keto |
+
+**Diet tag rules** — see `diet-compliance-rules.md` for full compliance criteria per tag.
+
+**Key principle:** Only apply a Mod tag if the modification leaves the dish recognizably the same recipe. If removing or swapping an ingredient guts the dish (e.g., garlic from Honey Garlic Chicken), leave the tag at 0.
 
 ### Cuisine Style Options
 Use one of these values exactly:
@@ -93,8 +119,9 @@ If the blog is not in `blog-scores.md`, assess it using this rubric:
 
 1. **Write incrementally** — do not wait until all 10 recipes are researched. Append the first 5 rows as soon as they are ready, then research and append the next 5.
 2. Append new rows at the bottom of `recipes_source.csv` (after all existing content).
-3. Follow the exact column order: `Recipe Title,URL,Blogger Name,Alignment Score,Meal Type,Cuisine Style,Rating,Notes,Diet Tags,Compliance Notes`
-4. Use exactly **10 columns per row** — do not add extra columns.
+3. Follow the exact column order: `Recipe Title,URL,Blogger Name,Alignment Score,Meal Type,Cuisine Style,Rating,Notes,V,V Mod,V Mod Notes,Vg,Vg Mod,Vg Mod Notes,GF,GF Mod,GF Mod Notes,DF,DF Mod,DF Mod Notes,LH,LH Mod,LH Mod Notes,LF,LF Mod,LF Mod Notes,AIP,AIP Mod,AIP Mod Notes,K,K Mod,K Mod Notes,Protein,Entree Type`
+4. Use exactly **34 columns per row** — do not add extra columns.
+5. For all diet binary columns (`V`, `V Mod`, `Vg`, `Vg Mod`, etc.) use `1` or `0`. For notes columns (`V Mod Notes`, `Vg Mod Notes`, etc.) use the modification text or leave blank.
 5. Properly quote any field that contains commas.
 6. Do NOT modify existing rows.
 7. Do NOT add blank rows between entries.
