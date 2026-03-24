@@ -1,8 +1,8 @@
-name: Weekly Recipe Sourcing
+name: Daily Recipe Sourcing
 
 on:
   schedule:
-    - cron: '0 9 * * 5'   # Every Friday at 9am UTC
+    - cron: '0 9 * * *'   # Every day at 9am UTC
   workflow_dispatch:        # Manual trigger from GitHub UI
 
 jobs:
@@ -38,29 +38,32 @@ jobs:
             - blog-scores.md
             - approved-sources.md
 
-          Step 2: Read recipes_source.csv and extract all existing URLs to avoid duplicates.
+          Step 2: Read urls.txt (one URL per line) to get all existing URLs — use this for duplicate checking instead of reading the full CSV.
 
-          Step 3: Find 20-25 new recipes following the instructions exactly.
-            - Crawl at least 4 Tier 1/2 approved sources
-            - Run at least 3 open web searches
+          Step 3: Find exactly 10 new recipes following the instructions exactly.
+            - Crawl 2-3 Tier 1/2 approved sources
+            - Run at least 2 open web searches
             - Visit each recipe page and read the full ingredient list
             - Fill all 10 columns for every recipe
             - Apply GF and DF tags proactively from ingredients — do not wait for the blogger to label them
             - Balance protein types and cuisine styles
+            - After every 5 recipes found, append them to recipes_source.csv immediately (do not wait until all 10 are done)
 
           Step 4: Append all new rows to recipes_source.csv.
             Column order: Recipe Title,URL,Blogger Name,Alignment Score,Meal Type,Cuisine Style,Rating,Notes,Diet Tags,Compliance Notes
 
-          Do not modify existing rows. Quote any field containing commas.
+          Do not modify existing rows. Quote any field containing commas. Use exactly 10 columns per row — do not add extra columns.
           "
+
+      - name: Regenerate urls.txt
+        run: cut -d',' -f2 recipes_source.csv | tail -n +2 > urls.txt
 
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add recipes_source.csv
+          git add recipes_source.csv urls.txt
           git diff --staged --quiet || (
-            COUNT=$(git diff HEAD~1 --stat 2>/dev/null | grep -oP '^\d+(?= insertion)' || echo "new")
-            git commit -m "feat: weekly recipe sourcing — $(date +%Y-%m-%d)"
+            git commit -m "feat: daily recipe sourcing — $(date +%Y-%m-%d)"
             git push
           )
