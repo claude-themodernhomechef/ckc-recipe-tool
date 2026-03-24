@@ -26,6 +26,12 @@ jobs:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: python3 scrape.py
 
+      - name: Classify proteins
+        run: python3 classify_protein.py
+
+      - name: Fetch missing descriptions
+        run: python3 fetch_descriptions.py
+
       - name: Commit updated recipes.json
         run: |
           git config user.name "github-actions[bot]"

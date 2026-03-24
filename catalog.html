@@ -204,6 +204,7 @@ tbody td.td-img{width:56px;padding:6px 10px}
           <th data-col="notes" style="min-width:200px">Description <span class="sort-icon">↕</span></th>
           <th data-col="chefNotes" style="min-width:220px">Chef's Notes <span class="sort-icon">↕</span></th>
           <th style="min-width:140px;cursor:default">Diet Tags</th>
+          <th style="min-width:180px;cursor:default">Compliance Notes</th>
           <th data-col="decidedAt">Date <span class="sort-icon">↕</span></th>
         </tr>
       </thead>
@@ -282,8 +283,20 @@ let searchQuery = '';
 
 async function loadCatalog(){
   try{
-    const snap = await db.collection('decisions').orderBy('decidedAt','desc').get();
-    allRows = snap.docs.map(d=>({id:d.id, ...d.data()}));
+    const [snap, recipesJson] = await Promise.all([
+      db.collection('decisions').orderBy('decidedAt','desc').get(),
+      fetch('recipes.json').then(r=>r.json()).catch(()=>[]),
+    ]);
+    const recipeMap = {};
+    recipesJson.forEach(r=>{ recipeMap[r.name] = r; });
+
+    allRows = snap.docs.map(d=>{
+      const row = {id:d.id, ...d.data()};
+      const base = recipeMap[row.name] || {};
+      if(!row.dietTags || !Object.keys(row.dietTags).length) row.dietTags = base.dietTags || {};
+      if(!row.complianceNotes) row.complianceNotes = base.complianceNotes || '';
+      return row;
+    });
     populateFilters();
     renderTable();
     document.getElementById('loading').style.display='none';
@@ -385,6 +398,7 @@ function renderTable(){
       <td><span contenteditable="true" data-field="notes" data-id="${row.id}">${escHtml(row.notes||'')}</span></td>
       <td><span contenteditable="true" data-field="chefNotes" data-id="${row.id}">${escHtml(row.chefNotes||'')}</span></td>
       <td class="td-diet" data-id="${row.id}">${renderDietPills(row.dietTags||{})}</td>
+      <td style="font-size:12px;color:var(--text-secondary)">${escHtml(row.complianceNotes||'')}</td>
       <td style="white-space:nowrap;color:var(--text-muted);font-size:12px">${dateStr}</td>
     `;
     tbody.appendChild(tr);

@@ -155,14 +155,19 @@ def main():
     new_count = 0
 
     for i, row in enumerate(rows):
-        name           = (row.get('Recipe Title') or '').strip()
-        url            = (row.get('URL') or '').strip()
-        cuisine        = (row.get('Cuisine Style') or '').strip()
-        course         = (row.get('Meal Type') or '').strip()
-        description    = (row.get('Notes') or '').strip()
-        blogger        = (row.get('Blogger Name') or '').strip()
-        alignment      = (row.get('Alignment Score') or '').strip()
-        rating         = (row.get('Rating') or '').strip()
+        name              = (row.get('Recipe Title') or '').strip()
+        url               = (row.get('URL') or '').strip()
+        cuisine           = (row.get('Cuisine Style') or '').strip()
+        course            = (row.get('Meal Type') or '').strip()
+        description       = (row.get('Notes') or '').strip()
+        blogger           = (row.get('Blogger Name') or '').strip()
+        alignment         = (row.get('Alignment Score') or '').strip()
+        rating            = (row.get('Rating') or '').strip()
+        compliance_notes  = (row.get('Compliance Notes') or '').strip()
+
+        # Parse "GF,DF,AIP" → {"GF": True, "DF": True, "AIP": True}
+        raw_tags = (row.get('Diet Tags') or '').strip()
+        diet_tags = {t.strip(): True for t in raw_tags.split(',') if t.strip()} if raw_tags else {}
 
         if not name:
             continue
@@ -170,8 +175,19 @@ def main():
         slug = slugify(name)
         ex   = existing.get(name)
 
-        # Already has Firebase Storage URL — skip entirely
+        # Already has Firebase Storage URL — update mutable fields but preserve image + protein
         if ex and is_storage_url(ex.get('image')):
+            ex.update({
+                'url':              url,
+                'blogger':          blogger,
+                'alignmentScore':   int(alignment) if alignment.isdigit() else (alignment or None),
+                'cuisine':          cuisine,
+                'course':           course,
+                'description':      description,
+                'rating':           rating,
+                'dietTags':         diet_tags,
+                'complianceNotes':  compliance_notes,
+            })
             recipes.append(ex)
             print(f'[{i+1}/{len(rows)}] {name[:60]:<60} ✓')
             continue
@@ -186,15 +202,17 @@ def main():
             print(f'    → no image')
 
         recipes.append({
-            'name':           name,
-            'url':            url,
-            'blogger':        blogger,
-            'alignmentScore': int(alignment) if alignment.isdigit() else (alignment or None),
-            'cuisine':        cuisine,
-            'course':         course,
-            'description':    description,
-            'rating':         rating,
-            'image':          image_url,
+            'name':             name,
+            'url':              url,
+            'blogger':          blogger,
+            'alignmentScore':   int(alignment) if alignment.isdigit() else (alignment or None),
+            'cuisine':          cuisine,
+            'course':           course,
+            'description':      description,
+            'rating':           rating,
+            'dietTags':         diet_tags,
+            'complianceNotes':  compliance_notes,
+            'image':            image_url,
         })
 
         # Save progress after every recipe so it's resumable

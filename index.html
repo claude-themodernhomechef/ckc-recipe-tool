@@ -195,7 +195,8 @@ function fsWriteDecision(recipe, action){
     rating:         recipe.rating||'',
     notes:          recipe.description||'',
     image:          recipe.image||'',
-    tags:           [],
+    dietTags:       recipe.dietTags||{},
+    complianceNotes:recipe.complianceNotes||'',
     decidedAt:      firebase.firestore.FieldValue.serverTimestamp(),
   }).catch(()=>{});
 }
