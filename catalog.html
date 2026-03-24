@@ -98,7 +98,7 @@ tbody td.td-img{width:56px;padding:6px 10px}
 .dtag-K  {color:#9b8ee0;border-color:rgba(155,142,224,.4);background:rgba(155,142,224,.1)}
 
 /* ── Tag editor panel ── */
-#tag-editor{position:fixed;z-index:500;background:#1e1e1a;border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:16px;box-shadow:0 12px 40px rgba(0,0,0,.6);width:300px;display:none}
+#tag-editor{position:fixed;z-index:500;background:#1e1e1a;border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:16px;box-shadow:0 12px 40px rgba(0,0,0,.6);width:300px;display:none;max-height:540px;overflow-y:auto}
 #tag-editor.open{display:block}
 .te-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .te-title{font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
@@ -113,7 +113,13 @@ tbody td.td-img{width:56px;padding:6px 10px}
 .te-tag-name{font-size:12px;color:var(--text-secondary);flex:1}
 .te-check{width:14px;height:14px;border-radius:3px;border:1.5px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;transition:all .12s}
 .te-toggle.active .te-check{background:var(--text-primary);border-color:var(--text-primary);color:var(--bg)}
-.te-mod-input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:5px 10px;color:var(--text-secondary);font-family:var(--font-body);font-size:11px;outline:none;display:none;margin-left:22px}
+.te-sub{display:none;padding:4px 0 4px 10px;border-left:2px solid var(--border);margin-left:8px}
+.te-sub.visible{display:block}
+.te-type-btns{display:flex;gap:6px;margin-bottom:6px}
+.te-type-btn{background:none;border:1px solid var(--border);border-radius:100px;padding:3px 11px;font-size:10px;font-weight:500;color:var(--text-muted);cursor:pointer;transition:all .12s;letter-spacing:.04em}
+.te-type-btn:hover{border-color:rgba(255,255,255,.2);color:var(--text-secondary)}
+.te-type-btn.active{background:var(--surface2);border-color:rgba(255,255,255,.3);color:var(--text-primary)}
+.te-mod-input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:5px 10px;color:var(--text-secondary);font-family:var(--font-body);font-size:11px;outline:none;display:none}
 .te-mod-input.visible{display:block}
 .te-mod-input:focus{border-color:rgba(255,255,255,.2);color:var(--text-primary)}
 .te-mod-input::placeholder{color:var(--text-muted)}
@@ -178,7 +184,29 @@ tbody td.td-img{width:56px;padding:6px 10px}
     <select class="filter-select" id="filter-course"><option value="">All meal types</option></select>
     <select class="filter-select" id="filter-blogger"><option value="">All bloggers</option></select>
     <select class="filter-select" id="filter-protein"><option value="">All proteins</option><option value="chicken">Chicken</option><option value="fish">Fish</option><option value="seafood">Seafood</option><option value="meat">Meat</option><option value="lamb">Lamb</option><option value="pork">Pork</option><option value="pasta">Pasta</option><option value="tofu">Tofu</option><option value="vegetables">Vegetables</option></select>
-    <select class="filter-select" id="filter-diet"><option value="">All diets</option><option value="V">V – Vegan</option><option value="Vg">Vg – Vegetarian</option><option value="GF">GF – Gluten-free</option><option value="DF">DF – Dairy-free</option><option value="LH">LH – Low-histamine</option><option value="LF">LF – Low-FODMAP</option><option value="AIP">AIP – Autoimmune Protocol</option><option value="K">K – Keto</option></select>
+    <select class="filter-select" id="filter-diet">
+      <option value="">All diets</option>
+      <optgroup label="Any (native or with mods)">
+        <option value="V">V – Vegan</option>
+        <option value="Vg">Vg – Vegetarian</option>
+        <option value="GF">GF – Gluten-free</option>
+        <option value="DF">DF – Dairy-free</option>
+        <option value="LH">LH – Low-histamine</option>
+        <option value="LF">LF – Low-FODMAP</option>
+        <option value="AIP">AIP – Autoimmune Protocol</option>
+        <option value="K">K – Keto</option>
+      </optgroup>
+      <optgroup label="Native only (no mods needed)">
+        <option value="V:native">V – Vegan (native)</option>
+        <option value="Vg:native">Vg – Vegetarian (native)</option>
+        <option value="GF:native">GF – Gluten-free (native)</option>
+        <option value="DF:native">DF – Dairy-free (native)</option>
+        <option value="LH:native">LH – Low-histamine (native)</option>
+        <option value="LF:native">LF – Low-FODMAP (native)</option>
+        <option value="AIP:native">AIP – Autoimmune Protocol (native)</option>
+        <option value="K:native">K – Keto (native)</option>
+      </optgroup>
+    </select>
   </div>
 
   <div class="stats-bar" id="stats-bar"></div>
@@ -203,8 +231,7 @@ tbody td.td-img{width:56px;padding:6px 10px}
           <th data-col="rating">Rating <span class="sort-icon">↕</span></th>
           <th data-col="notes" style="min-width:200px">Description <span class="sort-icon">↕</span></th>
           <th data-col="chefNotes" style="min-width:220px">Chef's Notes <span class="sort-icon">↕</span></th>
-          <th style="min-width:140px;cursor:default">Diet Tags</th>
-          <th style="min-width:180px;cursor:default">Compliance Notes</th>
+          <th style="min-width:160px;cursor:default">Diet Tags</th>
           <th data-col="decidedAt">Date <span class="sort-icon">↕</span></th>
         </tr>
       </thead>
@@ -294,7 +321,7 @@ async function loadCatalog(){
       const row = {id:d.id, ...d.data()};
       const base = recipeMap[row.name] || {};
       if(!row.dietTags || !Object.keys(row.dietTags).length) row.dietTags = base.dietTags || {};
-      if(!row.complianceNotes) row.complianceNotes = base.complianceNotes || '';
+      row.dietTags = normalizeDietTags(row.dietTags);
       return row;
     });
     populateFilters();
@@ -330,7 +357,14 @@ function getFiltered(){
     if(filterCourse  && r.mealType    !== filterCourse)   return false;
     if(filterBlogger && r.blogger     !== filterBlogger)  return false;
     if(filterProtein && r.protein !== filterProtein) return false;
-    if(filterDiet && !(r.dietTags && filterDiet in r.dietTags)) return false;
+    if(filterDiet){
+      const [code, type] = filterDiet.split(':');
+      const dt = r.dietTags || {};
+      const t  = dt[code];
+      if(!t) return false;
+      if(type === 'native' && !t.native) return false;
+      if(!type && !t.native && !t.mod) return false;
+    }
     if(q && ![ r.name, r.blogger, r.cuisineStyle, r.mealType, r.notes, r.rating ]
               .some(v=>(v||'').toLowerCase().includes(q))) return false;
     return true;
@@ -398,7 +432,6 @@ function renderTable(){
       <td><span contenteditable="true" data-field="notes" data-id="${row.id}">${escHtml(row.notes||'')}</span></td>
       <td><span contenteditable="true" data-field="chefNotes" data-id="${row.id}">${escHtml(row.chefNotes||'')}</span></td>
       <td class="td-diet" data-id="${row.id}">${renderDietPills(row.dietTags||{})}</td>
-      <td style="font-size:12px;color:var(--text-secondary)">${escHtml(row.complianceNotes||'')}</td>
       <td style="white-space:nowrap;color:var(--text-muted);font-size:12px">${dateStr}</td>
     `;
     tbody.appendChild(tr);
@@ -467,15 +500,33 @@ function attachEditListeners(){
   });
 }
 
+// ── Normalize dietTags to {code: {native, mod, notes}} ──────
+function normalizeDietTags(dietTags){
+  if(!dietTags) return {};
+  const out = {};
+  for(const [code, val] of Object.entries(dietTags)){
+    if(val && typeof val === 'object' && ('native' in val || 'mod' in val)){
+      out[code] = {native:!!val.native, mod:!!val.mod, notes:val.notes||''};
+    } else if(typeof val === 'string'){
+      const hasNote = val.trim().length > 0;
+      out[code] = {native:!hasNote, mod:hasNote, notes:val.trim()};
+    } else if(val){
+      out[code] = {native:true, mod:false, notes:''};
+    }
+  }
+  return out;
+}
+
 // ── Diet tag rendering ───────────────────────────────────────
 function renderDietPills(dietTags){
-  const keys = Object.keys(dietTags||{});
+  const dt = normalizeDietTags(dietTags);
+  const keys = Object.keys(dt);
   if(!keys.length) return '<div class="diet-pills"><span class="diet-empty">+ add tags</span></div>';
   const pills = keys.map(k=>{
-    const mod = dietTags[k];
-    const hasMod = mod && mod.trim();
-    const tooltip = hasMod ? ` title="${escHtml(mod)}"` : '';
-    return `<span class="diet-pill dtag-${k}"${tooltip}>${escHtml(k)}${hasMod?'<span class="mod-dot"></span>':''}</span>`;
+    const {native, mod, notes} = dt[k];
+    const isModOnly = mod && !native;
+    const tooltip = notes ? ` title="${escHtml(notes)}"` : '';
+    return `<span class="diet-pill dtag-${k}"${tooltip}>${escHtml(k)}${isModOnly?'<span class="mod-dot"></span>':''}</span>`;
   }).join('');
   return `<div class="diet-pills">${pills}</div>`;
 }
@@ -488,27 +539,84 @@ function openTagEditor(rowId, anchorEl){
   const row = allRows.find(r=>r.id===rowId);
   if(!row) return;
   teRowId = rowId;
-  teData  = Object.assign({}, row.dietTags||{});
+  teData  = normalizeDietTags(row.dietTags||{});
 
-  // Build editor rows
   const container = document.getElementById('te-tags');
   container.innerHTML = '';
   DIET_TAGS.forEach(({code, label})=>{
-    const isActive = code in teData;
-    const modVal   = teData[code]||'';
+    const d        = teData[code] || null;
+    const isActive = !!d;
+    const isNative = isActive && d.native;
+    const isMod    = isActive && d.mod;
+    const notes    = (d && d.notes) || '';
 
     const rowEl = document.createElement('div');
     rowEl.className = 'te-row';
+    rowEl.dataset.code = code;
     rowEl.innerHTML = `
       <div class="te-toggle${isActive?' active':''}" data-code="${code}">
         <span class="te-tag-pill dtag-${code}">${code}</span>
         <span class="te-tag-name">${label}</span>
         <span class="te-check">${isActive?'✓':''}</span>
       </div>
-      <input class="te-mod-input${isActive?' visible':''}" data-code="${code}"
-             placeholder="modification note (optional)"
-             value="${escHtml(modVal)}">
+      <div class="te-sub${isActive?' visible':''}">
+        <div class="te-type-btns">
+          <button class="te-type-btn${isNative?' active':''}" data-code="${code}" data-type="native">Native</button>
+          <button class="te-type-btn${isMod?' active':''}" data-code="${code}" data-type="mod">With mods</button>
+        </div>
+        <input class="te-mod-input${isMod?' visible':''}" data-code="${code}"
+               placeholder="e.g. Sub soy sauce → tamari"
+               value="${escHtml(notes)}">
+      </div>
     `;
+
+    // Toggle enable/disable tag entirely
+    rowEl.querySelector('.te-toggle').addEventListener('click', ()=>{
+      if(code in teData){
+        delete teData[code];
+        rowEl.querySelector('.te-toggle').classList.remove('active');
+        rowEl.querySelector('.te-check').textContent = '';
+        rowEl.querySelector('.te-sub').classList.remove('visible');
+      } else {
+        teData[code] = {native:true, mod:false, notes:''};
+        rowEl.querySelector('.te-toggle').classList.add('active');
+        rowEl.querySelector('.te-check').textContent = '✓';
+        rowEl.querySelector('.te-sub').classList.add('visible');
+        rowEl.querySelector('[data-type="native"]').classList.add('active');
+        rowEl.querySelector('[data-type="mod"]').classList.remove('active');
+        rowEl.querySelector('.te-mod-input').classList.remove('visible');
+      }
+    });
+
+    // Native / With mods type buttons
+    rowEl.querySelectorAll('.te-type-btn').forEach(btn=>{
+      btn.addEventListener('click', e=>{
+        e.stopPropagation();
+        const type = btn.dataset.type;
+        const isOn = btn.classList.contains('active');
+        if(isOn){
+          btn.classList.remove('active');
+          if(teData[code]) teData[code][type] = false;
+          if(type === 'mod') rowEl.querySelector('.te-mod-input').classList.remove('visible');
+        } else {
+          btn.classList.add('active');
+          if(!teData[code]) teData[code] = {native:false, mod:false, notes:''};
+          teData[code][type] = true;
+          if(type === 'mod'){
+            rowEl.querySelector('.te-mod-input').classList.add('visible');
+            rowEl.querySelector('.te-mod-input').focus();
+          }
+        }
+      });
+    });
+
+    // Notes input
+    rowEl.querySelector('.te-mod-input').addEventListener('input', e=>{
+      if(!teData[code]) teData[code] = {native:false, mod:true, notes:''};
+      teData[code].notes = e.target.value;
+    });
+    rowEl.querySelector('.te-mod-input').addEventListener('keydown', e=>{ if(e.key==='Enter') e.preventDefault(); });
+
     container.appendChild(rowEl);
   });
 
@@ -516,39 +624,13 @@ function openTagEditor(rowId, anchorEl){
   const editor = document.getElementById('tag-editor');
   editor.classList.add('open');
   const rect = anchorEl.getBoundingClientRect();
-  const panelH = 420, panelW = 300;
+  const panelH = 500, panelW = 300;
   let top  = rect.bottom + 8;
   let left = rect.left;
   if(top + panelH > window.innerHeight - 20) top = rect.top - panelH - 8;
   if(left + panelW > window.innerWidth  - 16) left = window.innerWidth - panelW - 16;
   editor.style.top  = Math.max(8, top)  + 'px';
   editor.style.left = Math.max(8, left) + 'px';
-
-  // Toggle listener
-  container.querySelectorAll('.te-toggle').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      const code  = btn.dataset.code;
-      const input = container.querySelector(`.te-mod-input[data-code="${code}"]`);
-      if(code in teData){
-        delete teData[code];
-        btn.classList.remove('active');
-        btn.querySelector('.te-check').textContent='';
-        input.classList.remove('visible');
-      } else {
-        teData[code]='';
-        btn.classList.add('active');
-        btn.querySelector('.te-check').textContent='✓';
-        input.classList.add('visible');
-        input.focus();
-      }
-    });
-  });
-
-  // Mod input listeners — update working copy live
-  container.querySelectorAll('.te-mod-input').forEach(input=>{
-    input.addEventListener('input', ()=>{ teData[input.dataset.code]=input.value; });
-    input.addEventListener('keydown', e=>{ if(e.key==='Enter') e.preventDefault(); });
-  });
 }
 
 function closeTagEditor(){
@@ -558,9 +640,12 @@ function closeTagEditor(){
   if(!teRowId) return;
 
   // Flush mod input values into teData
-  document.querySelectorAll('#te-tags .te-mod-input.visible').forEach(inp=>{
-    teData[inp.dataset.code] = inp.value.trim();
+  document.querySelectorAll('#te-tags .te-mod-input').forEach(inp=>{
+    if(teData[inp.dataset.code]) teData[inp.dataset.code].notes = inp.value.trim();
   });
+
+  // Remove tags where neither native nor mod is set
+  Object.keys(teData).forEach(code=>{ const d = teData[code]; if(d && !d.native && !d.mod) delete teData[code]; });
 
   // Save to Firestore + local cache
   const row = allRows.find(r=>r.id===teRowId);

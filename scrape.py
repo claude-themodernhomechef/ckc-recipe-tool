@@ -163,11 +163,14 @@ def main():
         blogger           = (row.get('Blogger Name') or '').strip()
         alignment         = (row.get('Alignment Score') or '').strip()
         rating            = (row.get('Rating') or '').strip()
-        compliance_notes  = (row.get('Compliance Notes') or '').strip()
-
-        # Parse "GF,DF,AIP" → {"GF": True, "DF": True, "AIP": True}
-        raw_tags = (row.get('Diet Tags') or '').strip()
-        diet_tags = {t.strip(): True for t in raw_tags.split(',') if t.strip()} if raw_tags else {}
+        # Build diet tags from per-column native/mod structure
+        diet_tags = {}
+        for _tag in ['V', 'Vg', 'GF', 'DF', 'LH', 'LF', 'AIP', 'K']:
+            _native = (row.get(_tag) or '').strip() == '1'
+            _mod    = (row.get(f'{_tag} Mod') or '').strip() == '1'
+            _notes  = (row.get(f'{_tag} Mod Notes') or '').strip()
+            if _native or _mod:
+                diet_tags[_tag] = {'native': _native, 'mod': _mod, 'notes': _notes}
 
         if not name:
             continue
@@ -186,7 +189,6 @@ def main():
                 'description':      description,
                 'rating':           rating,
                 'dietTags':         diet_tags,
-                'complianceNotes':  compliance_notes,
             })
             recipes.append(ex)
             print(f'[{i+1}/{len(rows)}] {name[:60]:<60} ✓')
@@ -211,7 +213,6 @@ def main():
             'description':      description,
             'rating':           rating,
             'dietTags':         diet_tags,
-            'complianceNotes':  compliance_notes,
             'image':            image_url,
         })
 
