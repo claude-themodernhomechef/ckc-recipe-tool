@@ -163,6 +163,7 @@ def main():
         blogger           = (row.get('Blogger Name') or '').strip()
         alignment         = (row.get('Alignment Score') or '').strip()
         rating            = (row.get('Rating') or '').strip()
+        protein           = (row.get('Protein') or '').strip()
         # Build diet tags from per-column native/mod structure
         diet_tags = {}
         for _tag in ['V', 'Vg', 'GF', 'DF', 'LH', 'LF', 'AIP', 'K']:
@@ -188,6 +189,7 @@ def main():
                 'course':           course,
                 'description':      description,
                 'rating':           rating,
+                'protein':          protein,
                 'dietTags':         diet_tags,
             })
             recipes.append(ex)
@@ -212,6 +214,7 @@ def main():
             'course':           course,
             'description':      description,
             'rating':           rating,
+            'protein':          protein,
             'dietTags':         diet_tags,
             'image':            image_url,
         })
