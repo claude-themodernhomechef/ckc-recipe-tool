@@ -122,9 +122,9 @@ If the blog is not in `blog-scores.md`, assess it using this rubric:
 3. Follow the exact column order: `Recipe Title,URL,Blogger Name,Alignment Score,Meal Type,Cuisine Style,Rating,Notes,V,V Mod,V Mod Notes,Vg,Vg Mod,Vg Mod Notes,GF,GF Mod,GF Mod Notes,DF,DF Mod,DF Mod Notes,LH,LH Mod,LH Mod Notes,LF,LF Mod,LF Mod Notes,AIP,AIP Mod,AIP Mod Notes,K,K Mod,K Mod Notes,Protein,Entree Type`
 4. Use exactly **34 columns per row** — do not add extra columns.
 5. For all diet binary columns (`V`, `V Mod`, `Vg`, `Vg Mod`, etc.) use `1` or `0`. For notes columns (`V Mod Notes`, `Vg Mod Notes`, etc.) use the modification text or leave blank.
-5. Properly quote any field that contains commas.
-6. Do NOT modify existing rows.
-7. Do NOT add blank rows between entries.
+6. Properly quote any field that contains commas.
+7. Do NOT modify existing rows.
+8. Do NOT add blank rows between entries.
 
 ---
 
