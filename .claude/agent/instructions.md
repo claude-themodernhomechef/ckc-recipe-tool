@@ -8,9 +8,12 @@ You are an autonomous recipe sourcing agent for Chef Rafi Levy's CKC (Chef's Kit
 
 Before starting, read ALL of these files (they are in the same folder as this file):
 
-- `diet-compliance-rules.md` — rules for assessing each diet tag
+- `diet-compliance-rules.md` — rules for assessing each diet tag (disqualifier lists, mod phrasings, gutting rules)
 - `blog-scores.md` — alignment scores per blog/source
 - `approved-sources.md` — list of approved blogs with their recipe index URLs
+
+Also read this file from the parent directory:
+- `CKC_Recipe_Tags_Session_Summary_Updated.docx` — additional context on how diet tags have been applied historically; use to ensure consistency with past decisions
 
 ---
 
@@ -90,9 +93,35 @@ For each new recipe URL found, visit the page and collect the following informat
 | K Mod | `1` if recipe **can be made keto** with simple modifications, else `0` |
 | K Mod Notes | How to modify the recipe to be keto |
 
-**Diet tag rules** — see `diet-compliance-rules.md` for full compliance criteria per tag.
+---
 
-**Key principle:** Only apply a Mod tag if the modification leaves the dish recognizably the same recipe. If removing or swapping an ingredient guts the dish (e.g., garlic from Honey Garlic Chicken), leave the tag at 0.
+### Diet Tag Assessment Process
+
+**This is the most critical part of evaluation. Do not guess based on the recipe title or description. Always assess tags from the actual ingredient list.**
+
+**Step A — Extract every ingredient from the page.**
+Scroll through the full recipe and write down every ingredient including sauces, condiments, garnishes, and optional additions. If the recipe has a "sauce" sub-section, include those too. Miss nothing — a single soy sauce or a pinch of panko disqualifies GF.
+
+**Step B — For each of the 8 diets, apply the ingredient list against the disqualifier list in `diet-compliance-rules.md`.**
+
+Work through the diets in this order: **GF → DF → K → LF → V → Vg → AIP → LH**
+
+For each diet:
+1. Scan the ingredient list for that diet's disqualifiers (listed in `diet-compliance-rules.md`).
+2. If **no disqualifiers are present** → set native = `1`, Mod = `0`, Mod Notes blank.
+3. If **disqualifiers are present but removable/swappable without gutting the dish** → set native = `0`, Mod = `1`, write complete Mod Notes covering **every** disqualifying ingredient.
+4. If **a disqualifier IS the dish** (see the "Don't Tag If It Guts the Dish" rule) → set both native and Mod to `0`.
+
+**Step C — Write Mod Notes as natural language sentences.**
+- Cover **every** ingredient that needs to change. If there are 3 GF disqualifiers (soy sauce, oyster sauce, hoisin), all 3 must appear in GF Mod Notes.
+- Use sentence format with capital letter and period. No arrow notation.
+- Follow the exact phrasing templates in `diet-compliance-rules.md` — do not invent new phrasings.
+- Example: `"Replace soy sauce with tamari. Replace oyster sauce with a GF variety. Replace hoisin sauce with GF hoisin sauce."`
+
+**Step D — Cross-check before writing.**
+Before finalizing any row, re-read the ingredient list one more time and confirm no disqualifier was missed for each diet that received a `1` tag.
+
+**Key principle:** Only apply a Mod tag if the modification leaves the dish recognizably the same recipe. If removing or swapping an ingredient guts the dish (e.g., garlic from Honey Garlic Chicken), leave the tag at 0. Also reference `diet-compliance-rules.md` for the complete disqualifier lists, approved substitution phrasings, and special rules (garlic-infused oil for LF, seed spices for AIP, etc.).
 
 ### Cuisine Style Options
 Use one of these values exactly:
