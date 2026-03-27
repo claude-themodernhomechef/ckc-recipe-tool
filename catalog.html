@@ -38,7 +38,7 @@ html,body{min-height:100%;background:var(--bg);color:var(--text-primary);font-fa
 .page-title{font-size:12px;color:var(--text-muted);letter-spacing:.08em;text-transform:uppercase}
 .header-right{margin-left:auto;display:flex;gap:10px;align-items:center}
 .nav-toggle{display:flex;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:100px;overflow:hidden}
-.nav-toggle a{padding:5px 14px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:var(--text-muted);transition:all .15s}
+.nav-toggle a{padding:5px 11px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--text-muted);transition:all .15s;white-space:nowrap}
 .nav-toggle a.active{background:var(--text-primary);color:var(--bg);font-weight:500}
 
 /* ── Toolbar ── */
@@ -231,7 +231,8 @@ tbody td.td-img{width:56px;padding:6px 10px}
           <th data-col="rating">Rating <span class="sort-icon">↕</span></th>
           <th data-col="notes" style="min-width:200px">Description <span class="sort-icon">↕</span></th>
           <th data-col="chefNotes" style="min-width:220px">Chef's Notes <span class="sort-icon">↕</span></th>
-          <th style="min-width:160px;cursor:default">Diet Tags</th>
+          <th style="min-width:140px;cursor:default">Native Diet Tags</th>
+          <th style="min-width:140px;cursor:default">Modified Diet Tags</th>
           <th data-col="decidedAt">Date <span class="sort-icon">↕</span></th>
         </tr>
       </thead>
@@ -431,7 +432,8 @@ function renderTable(){
       <td>${escHtml(row.rating||'')}</td>
       <td><span contenteditable="true" data-field="notes" data-id="${row.id}">${escHtml(row.notes||'')}</span></td>
       <td><span contenteditable="true" data-field="chefNotes" data-id="${row.id}">${escHtml(row.chefNotes||'')}</span></td>
-      <td class="td-diet" data-id="${row.id}">${renderDietPills(row.dietTags||{})}</td>
+      <td class="td-diet" data-id="${row.id}">${renderDietPills(row.dietTags||{}, 'native')}</td>
+      <td class="td-diet" data-id="${row.id}">${renderDietPills(row.dietTags||{}, 'mod')}</td>
       <td style="white-space:nowrap;color:var(--text-muted);font-size:12px">${dateStr}</td>
     `;
     tbody.appendChild(tr);
@@ -518,15 +520,16 @@ function normalizeDietTags(dietTags){
 }
 
 // ── Diet tag rendering ───────────────────────────────────────
-function renderDietPills(dietTags){
+function renderDietPills(dietTags, filter){
   const dt = normalizeDietTags(dietTags);
-  const keys = Object.keys(dt);
-  if(!keys.length) return '<div class="diet-pills"><span class="diet-empty">+ add tags</span></div>';
+  let keys = Object.keys(dt);
+  if(filter === 'native') keys = keys.filter(k => dt[k].native);
+  if(filter === 'mod')    keys = keys.filter(k => dt[k].mod);
+  if(!keys.length) return '<div class="diet-pills"><span class="diet-empty">—</span></div>';
   const pills = keys.map(k=>{
-    const {native, mod, notes} = dt[k];
-    const isModOnly = mod && !native;
+    const {notes} = dt[k];
     const tooltip = notes ? ` title="${escHtml(notes)}"` : '';
-    return `<span class="diet-pill dtag-${k}"${tooltip}>${escHtml(k)}${isModOnly?'<span class="mod-dot"></span>':''}</span>`;
+    return `<span class="diet-pill dtag-${k}"${tooltip}>${escHtml(k)}</span>`;
   }).join('');
   return `<div class="diet-pills">${pills}</div>`;
 }
