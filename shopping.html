@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CKC — Meal Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f0f0d;--surface:#1a1a16;--surface2:#222220;--surface3:#2a2a26;
+  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.13);
+  --text-primary:#f5f3ee;--text-secondary:rgba(245,243,238,0.55);--text-muted:rgba(245,243,238,0.28);
+  --green:#7cb87a;--green-bg:rgba(124,184,122,0.12);
+  --red:#c96b6b;--accent:#c9a96b;--accent-bg:rgba(201,169,107,0.10);
+  --font-display:'Cormorant Garamond',Georgia,serif;--font-body:'DM Sans',system-ui,sans-serif;
+  --left-w:420px;--header-h:56px;
+}
+html,body{height:100%;background:var(--bg);color:var(--text-primary);font-family:var(--font-body);font-size:14px;overflow:hidden}
+
+/* ── Login ── */
+#login-screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;padding:2rem;z-index:200;background:var(--bg)}
+.login-logo{font-family:var(--font-display);font-size:2.2rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase}
+.login-tagline{font-size:11px;color:var(--text-muted);letter-spacing:.12em;text-transform:uppercase;margin-top:-.8rem}
+.login-form{display:flex;flex-direction:column;gap:10px;width:100%;max-width:260px}
+.login-input{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text-primary);font-family:var(--font-body);font-size:14px;outline:none}
+.login-input:focus{border-color:rgba(255,255,255,.2)}
+.login-input::placeholder{color:var(--text-muted)}
+.login-btn{background:var(--text-primary);color:var(--bg);border:none;border-radius:100px;padding:12px;font-family:var(--font-body);font-size:14px;font-weight:500;cursor:pointer}
+.login-error{font-size:12px;color:var(--red);text-align:center;min-height:16px}
+
+/* ── App shell ── */
+#app{display:none;height:100%;flex-direction:column}
+#app.visible{display:flex}
+
+/* ── Top header ── */
+#header{display:flex;align-items:center;gap:12px;padding:0 20px;height:var(--header-h);border-bottom:1px solid var(--border);flex-shrink:0}
+.header-logo{font-family:var(--font-display);font-size:1.4rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;margin-right:4px}
+.header-title{font-size:13px;color:var(--text-secondary);font-weight:300;letter-spacing:.06em;text-transform:uppercase}
+.header-sep{width:1px;height:20px;background:var(--border);margin:0 4px}
+.nav-toggle{display:flex;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:100px;overflow:hidden;margin-left:auto}
+.nav-toggle a{padding:5px 14px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:var(--text-muted);transition:all .15s}
+.nav-toggle a.active{background:var(--text-primary);color:var(--bg);font-weight:500}
+
+/* ── Two-panel layout ── */
+#panels{display:flex;flex:1;overflow:hidden}
+
+/* ── LEFT: Recipe Picker ── */
+#picker-panel{width:var(--left-w);min-width:var(--left-w);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+
+#picker-toolbar{padding:14px 16px 12px;display:flex;flex-direction:column;gap:10px;border-bottom:1px solid var(--border);flex-shrink:0}
+#picker-toolbar .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+.search-wrap{position:relative;flex:1;min-width:180px}
+.search-wrap input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px 8px 32px;color:var(--text-primary);font-family:var(--font-body);font-size:13px;outline:none}
+.search-wrap input:focus{border-color:var(--border2)}
+.search-wrap input::placeholder{color:var(--text-muted)}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:13px;pointer-events:none}
+
+.filter-select{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:7px 10px;color:var(--text-secondary);font-family:var(--font-body);font-size:12px;outline:none;cursor:pointer}
+.filter-select:focus{border-color:var(--border2)}
+
+.picker-count{font-size:11px;color:var(--text-muted);letter-spacing:.04em}
+
+#recipe-list{flex:1;overflow-y:auto;padding:8px}
+#recipe-list::-webkit-scrollbar{width:4px}
+#recipe-list::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+
+.recipe-card{display:flex;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;border:1px solid transparent;transition:background .12s,border-color .12s;align-items:center;margin-bottom:2px}
+.recipe-card:hover{background:var(--surface)}
+.recipe-card.in-menu{background:var(--green-bg);border-color:rgba(124,184,122,0.25)}
+.recipe-card.in-menu .rc-name{color:var(--green)}
+.recipe-thumb{width:54px;height:40px;border-radius:5px;object-fit:cover;background:var(--surface2);flex-shrink:0}
+.rc-info{flex:1;min-width:0}
+.rc-name{font-size:13px;font-weight:400;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rc-meta{font-size:11px;color:var(--text-muted);margin-top:2px;display:flex;gap:6px}
+.rc-protein{color:var(--accent);font-weight:500}
+.rc-add-btn{width:28px;height:28px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--text-muted);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .12s;line-height:1}
+.recipe-card.in-menu .rc-add-btn{border-color:var(--green);color:var(--green);font-size:14px}
+.recipe-card:hover .rc-add-btn{border-color:var(--border2);color:var(--text-primary)}
+
+/* ── RIGHT: Meal Plan + Shopping List ── */
+#plan-panel{flex:1;display:flex;flex-direction:column;overflow:hidden}
+
+/* Menu strip */
+#menu-strip{border-bottom:1px solid var(--border);flex-shrink:0}
+#menu-header{display:flex;align-items:center;gap:10px;padding:14px 20px 10px}
+.menu-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted)}
+#menu-count{font-size:11px;letter-spacing:.06em;color:var(--accent);margin-left:auto}
+#clear-menu-btn{font-size:11px;color:var(--text-muted);cursor:pointer;background:none;border:none;font-family:var(--font-body);padding:0;transition:color .12s}
+#clear-menu-btn:hover{color:var(--red)}
+
+#menu-cards{display:flex;gap:10px;padding:0 20px 14px;overflow-x:auto;min-height:92px;align-items:flex-start}
+#menu-cards::-webkit-scrollbar{height:3px}
+#menu-cards::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+.menu-empty{font-size:12px;color:var(--text-muted);display:flex;align-items:center;gap:6px;height:70px;margin-top:0}
+
+.menu-card{position:relative;flex-shrink:0;width:110px;border-radius:8px;overflow:hidden;border:1px solid var(--border);background:var(--surface);cursor:default}
+.menu-card img{width:100%;height:62px;object-fit:cover;display:block;background:var(--surface2)}
+.menu-card-name{font-size:10px;padding:5px 6px;line-height:1.3;height:34px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.menu-card-remove{position:absolute;top:4px;right:4px;width:18px;height:18px;border-radius:50%;background:rgba(0,0,0,0.7);border:none;color:#fff;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;transition:background .12s}
+.menu-card-remove:hover{background:var(--red)}
+.menu-servings{display:flex;align-items:center;gap:4px;padding:4px 6px 5px;border-top:1px solid var(--border)}
+.srv-btn{background:none;border:none;color:var(--text-muted);font-size:14px;cursor:pointer;padding:0 2px;line-height:1;transition:color .12s}
+.srv-btn:hover{color:var(--text-primary)}
+.srv-label{font-size:10px;color:var(--text-secondary);flex:1;text-align:center}
+
+/* ── Shopping list ── */
+#list-panel{flex:1;display:flex;flex-direction:column;overflow:hidden}
+#list-header{display:flex;align-items:center;gap:10px;padding:14px 20px 10px;border-bottom:1px solid var(--border);flex-shrink:0}
+.list-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted)}
+#list-actions{display:flex;gap:8px;margin-left:auto}
+.action-btn{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:5px 12px;font-size:11px;color:var(--text-secondary);cursor:pointer;font-family:var(--font-body);transition:all .12s;display:flex;align-items:center;gap:5px;letter-spacing:.04em}
+.action-btn:hover{border-color:var(--border2);color:var(--text-primary)}
+.action-btn.clear-btn:hover{color:var(--red);border-color:rgba(201,107,107,0.3)}
+
+#shopping-list{flex:1;overflow-y:auto;padding:12px 20px 40px}
+#shopping-list::-webkit-scrollbar{width:4px}
+#shopping-list::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+
+.list-empty{padding:60px 0;text-align:center;color:var(--text-muted)}
+.list-empty-icon{font-size:32px;margin-bottom:12px}
+.list-empty-text{font-size:13px;line-height:1.6}
+
+/* Category sections */
+.cat-section{margin-bottom:18px}
+.cat-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;cursor:pointer;user-select:none}
+.cat-icon{font-size:14px}
+.cat-name{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);font-weight:500}
+.cat-badge{font-size:10px;color:var(--text-muted);background:var(--surface2);border-radius:100px;padding:1px 7px}
+.cat-toggle{margin-left:auto;font-size:10px;color:var(--text-muted)}
+.cat-items{display:flex;flex-direction:column;gap:2px}
+
+/* Shopping item */
+.shop-item{display:flex;align-items:flex-start;gap:10px;padding:7px 10px;border-radius:7px;transition:background .1s;cursor:pointer}
+.shop-item:hover{background:var(--surface)}
+.shop-item.checked{opacity:.4}
+.shop-item.checked .item-name{text-decoration:line-through}
+.item-check{width:16px;height:16px;border-radius:4px;border:1px solid var(--border2);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .12s;color:var(--green);font-size:11px}
+.shop-item.checked .item-check{background:var(--green-bg);border-color:var(--green)}
+.item-body{flex:1;min-width:0}
+.item-qty{font-size:12px;font-weight:500;color:var(--accent);min-width:60px;display:inline}
+.item-name{font-size:13px;color:var(--text-primary);display:inline;margin-left:6px}
+.item-sources{font-size:10px;color:var(--text-muted);margin-top:2px;line-height:1.4}
+
+/* No data banner */
+.no-data-banner{background:var(--accent-bg);border:1px solid rgba(201,169,107,0.2);border-radius:8px;padding:12px 16px;margin:12px 20px;display:flex;align-items:flex-start;gap:10px}
+.no-data-banner .icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.no-data-banner p{font-size:12px;color:var(--accent);line-height:1.5}
+.no-data-banner code{font-family:monospace;background:rgba(201,169,107,0.15);padding:1px 5px;border-radius:3px;font-size:11px}
+</style>
+</head>
+<body>
+
+<!-- Login -->
+<div id="login-screen">
+  <div class="login-logo">CKC</div>
+  <div class="login-tagline">Meal Planner</div>
+  <div class="login-form">
+    <input class="login-input" id="login-user" type="text" placeholder="Username" autocomplete="username">
+    <input class="login-input" id="login-pass" type="password" placeholder="Password" autocomplete="current-password">
+    <button class="login-btn" id="login-btn">Sign in</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<!-- App -->
+<div id="app">
+
+  <!-- Header -->
+  <div id="header">
+    <div class="header-logo">CKC</div>
+    <div class="header-sep"></div>
+    <div class="header-title">Meal Planner</div>
+    <div class="nav-toggle" style="margin-left:auto">
+      <a href="/">Swipe</a>
+      <a href="/catalog">Catalog</a>
+      <a href="/shopping" class="active">Planner</a>
+    </div>
+  </div>
+
+  <div id="panels">
+
+    <!-- LEFT: Recipe Picker -->
+    <div id="picker-panel">
+      <div id="picker-toolbar">
+        <div class="row">
+          <div class="search-wrap">
+            <span class="search-icon">⌕</span>
+            <input type="text" id="recipe-search" placeholder="Search recipes…" oninput="filterRecipes()">
+          </div>
+        </div>
+        <div class="row">
+          <select class="filter-select" id="filter-protein" onchange="filterRecipes()">
+            <option value="">All proteins</option>
+          </select>
+          <select class="filter-select" id="filter-cuisine" onchange="filterRecipes()">
+            <option value="">All cuisines</option>
+          </select>
+          <select class="filter-select" id="filter-diet" onchange="filterRecipes()">
+            <option value="">Any diet</option>
+            <option value="GF">Gluten-Free</option>
+            <option value="DF">Dairy-Free</option>
+            <option value="V">Vegan</option>
+            <option value="Vg">Vegetarian</option>
+            <option value="K">Keto</option>
+            <option value="LF">Low-FODMAP</option>
+            <option value="AIP">AIP</option>
+            <option value="LH">Low-Histamine</option>
+          </select>
+        </div>
+        <div class="picker-count" id="picker-count">Loading…</div>
+      </div>
+      <div id="recipe-list"></div>
+    </div>
+
+    <!-- RIGHT: Plan + List -->
+    <div id="plan-panel">
+
+      <!-- Menu strip -->
+      <div id="menu-strip">
+        <div id="menu-header">
+          <span class="menu-label">This Week's Menu</span>
+          <span id="menu-count">0 recipes</span>
+          <button id="clear-menu-btn" onclick="clearMenu()">Clear all</button>
+        </div>
+        <div id="menu-cards">
+          <span class="menu-empty">← Pick recipes from the left to build your menu</span>
+        </div>
+      </div>
+
+      <!-- Shopping list -->
+      <div id="list-panel">
+        <div id="list-header">
+          <span class="list-label">Shopping List</span>
+          <div id="list-actions">
+            <button class="action-btn" onclick="toggleChecked()">Hide checked</button>
+            <button class="action-btn" onclick="copyList()">📋 Copy</button>
+            <button class="action-btn" onclick="printList()">🖨 Print</button>
+            <button class="action-btn clear-btn" onclick="uncheckAll()">Uncheck all</button>
+          </div>
+        </div>
+        <div id="shopping-list">
+          <div class="list-empty">
+            <div class="list-empty-icon">🛒</div>
+            <div class="list-empty-text">Add recipes to your menu<br>to generate a shopping list</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// Auth
+// ─────────────────────────────────────────────
+const LOGIN_KEY = 'ckc_auth';
+document.getElementById('login-btn').addEventListener('click', doLogin);
+document.getElementById('login-pass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+
+function doLogin() {
+  const u = document.getElementById('login-user').value.trim();
+  const p = document.getElementById('login-pass').value;
+  if(u === 'admin' && p === 'prince') {
+    localStorage.setItem(LOGIN_KEY, '1');
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').classList.add('visible');
+    initApp();
+  } else {
+    document.getElementById('login-error').textContent = 'Incorrect username or password';
+  }
+}
+
+if(localStorage.getItem(LOGIN_KEY)) {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').classList.add('visible');
+  initApp();
+}
+
+// ─────────────────────────────────────────────
+// State
+// ─────────────────────────────────────────────
+let allRecipes   = [];
+let ingredients  = {};    // { "Recipe Name": ["raw ingredient", ...] }
+let menuItems    = [];    // Array of { recipe, servings }
+let checkedItems = new Set();
+let hideChecked  = false;
+let hasIngredients = false;
+
+// ─────────────────────────────────────────────
+// Init
+// ─────────────────────────────────────────────
+async function initApp() {
+  // Load recipes
+  const rRes = await fetch('recipes.json').catch(()=>null);
+  if(rRes && rRes.ok) allRecipes = await rRes.json();
+
+  // Load ingredients (may not exist yet)
+  const iRes = await fetch('ingredients.json').catch(()=>null);
+  if(iRes && iRes.ok) {
+    ingredients = await iRes.json();
+    hasIngredients = Object.keys(ingredients).length > 0;
+  }
+
+  populateFilters();
+  filterRecipes();
+  restoreMenu();
+}
+
+// ─────────────────────────────────────────────
+// Filters
+// ─────────────────────────────────────────────
+function populateFilters() {
+  const proteins = [...new Set(allRecipes.map(r => r.protein).filter(Boolean))].sort();
+  const cuisines = [...new Set(allRecipes.map(r => r.cuisine).filter(Boolean))].sort();
+
+  const pSel = document.getElementById('filter-protein');
+  proteins.forEach(p => { const o = document.createElement('option'); o.value = p; o.textContent = p; pSel.appendChild(o); });
+
+  const cSel = document.getElementById('filter-cuisine');
+  cuisines.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; cSel.appendChild(o); });
+}
+
+function filterRecipes() {
+  const q    = document.getElementById('recipe-search').value.toLowerCase();
+  const prot = document.getElementById('filter-protein').value;
+  const cui  = document.getElementById('filter-cuisine').value;
+  const diet = document.getElementById('filter-diet').value;
+
+  const filtered = allRecipes.filter(r => {
+    if(q && !r.name.toLowerCase().includes(q) && !((r.blogger||'').toLowerCase().includes(q))) return false;
+    if(prot && r.protein !== prot) return false;
+    if(cui && r.cuisine !== cui) return false;
+    if(diet) {
+      const tag = r.dietTags && r.dietTags[diet];
+      if(!tag || (!tag.native && !tag.mod)) return false;
+    }
+    return true;
+  });
+
+  document.getElementById('picker-count').textContent = `${filtered.length} of ${allRecipes.length} recipes`;
+  renderRecipeList(filtered);
+}
+
+// ─────────────────────────────────────────────
+// Recipe list
+// ─────────────────────────────────────────────
+function renderRecipeList(recipes) {
+  const container = document.getElementById('recipe-list');
+  const inMenuSet = new Set(menuItems.map(m => m.recipe.name));
+
+  container.innerHTML = recipes.map(r => {
+    const inMenu = inMenuSet.has(r.name);
+    const rating = r.rating && r.rating !== 'NR' ? `⭐ ${r.rating.split(' ')[0]}` : '';
+    return `
+    <div class="recipe-card ${inMenu ? 'in-menu' : ''}" data-name="${esc(r.name)}">
+      <img class="recipe-thumb" src="${esc(r.image||'')}" alt="" loading="lazy" onerror="this.style.background='var(--surface2)';this.src=''">
+      <div class="rc-info">
+        <div class="rc-name">${esc(r.name)}</div>
+        <div class="rc-meta">
+          <span class="rc-protein">${esc(r.protein||'')}</span>
+          <span>${esc(r.blogger||'')}</span>
+          ${rating ? `<span>${rating}</span>` : ''}
+        </div>
+      </div>
+      <button class="rc-add-btn" title="${inMenu ? 'Remove from menu' : 'Add to menu'}">${inMenu ? '✓' : '+'}</button>
+    </div>`;
+  }).join('');
+
+  // Event delegation — avoids all quote-escaping issues in inline onclick
+  container.onclick = e => {
+    const card = e.target.closest('.recipe-card');
+    if(card) toggleRecipe(card.dataset.name);
+  };
+}
+
+function toggleRecipe(name) {
+  const recipe = allRecipes.find(r => r.name === name);
+  if(!recipe) return;
+  const idx = menuItems.findIndex(m => m.recipe.name === name);
+  if(idx >= 0) {
+    menuItems.splice(idx, 1);
+  } else {
+    menuItems.push({ recipe, servings: 1 });
+  }
+  saveMenu();
+  updateMenuStrip();
+  buildShoppingList();
+  // Re-render list to update checkmarks
+  filterRecipes();
+}
+
+// ─────────────────────────────────────────────
+// Menu strip
+// ─────────────────────────────────────────────
+function updateMenuStrip() {
+  const container = document.getElementById('menu-cards');
+  const countEl   = document.getElementById('menu-count');
+  countEl.textContent = `${menuItems.length} recipe${menuItems.length !== 1 ? 's' : ''}`;
+
+  if(menuItems.length === 0) {
+    container.innerHTML = '<span class="menu-empty">← Pick recipes from the left to build your menu</span>';
+    return;
+  }
+
+  container.innerHTML = menuItems.map((m, i) => `
+    <div class="menu-card">
+      <img src="${esc(m.recipe.image||'')}" alt="" onerror="this.style.background='var(--surface2)';this.src=''">
+      <button class="menu-card-remove" onclick="removeFromMenu(${i})">×</button>
+      <div class="menu-card-name">${esc(m.recipe.name)}</div>
+      <div class="menu-servings">
+        <button class="srv-btn" onclick="changeServings(${i},-1)">−</button>
+        <span class="srv-label">${m.servings}× servings</span>
+        <button class="srv-btn" onclick="changeServings(${i},1)">+</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function removeFromMenu(idx) {
+  menuItems.splice(idx, 1);
+  saveMenu();
+  updateMenuStrip();
+  buildShoppingList();
+  filterRecipes();
+}
+
+function changeServings(idx, delta) {
+  menuItems[idx].servings = Math.max(1, Math.min(8, menuItems[idx].servings + delta));
+  saveMenu();
+  buildShoppingList();
+  // Update just the label
+  updateMenuStrip();
+}
+
+function clearMenu() {
+  if(menuItems.length === 0) return;
+  menuItems = [];
+  checkedItems.clear();
+  saveMenu();
+  updateMenuStrip();
+  buildShoppingList();
+  filterRecipes();
+}
+
+// ─────────────────────────────────────────────
+// Shopping List Generation
+// ─────────────────────────────────────────────
+
+// ── 4 grocery categories ──────────────────────────────────────────────────
+const CATEGORIES = [
+  { key: 'protein', icon: '🥩', label: 'Protein' },
+  { key: 'produce', icon: '🥬', label: 'Produce' },
+  { key: 'dairy',   icon: '🥛', label: 'Dairy & Eggs' },
+  { key: 'pantry',  icon: '🛒', label: 'Pantry' },
+];
+
+// Comprehensive ingredient → category database (used for fuzzy matching)
+const INGREDIENT_DB = {
+  // ── Direct from CKC Items sheet (source of truth) ──
+  'acini de pepe':'pantry',
+  'acini de pepe pasta':'pantry',
+  'all-purpose flour':'pantry',
+  'anchovy':'pantry',
+  'apple':'produce',
+  'apple butter':'pantry',
+  'apple cider vinegar':'pantry',
+  'arrowroot powder':'pantry',
+  'asian cucumber':'produce',
+  'asparagus spears':'produce',
+  'avocado':'produce',
+  'avocado oil':'pantry',
+  'baby bok choy':'produce',
+  'baby corn':'pantry',
+  'bacon':'protein',
+  'baking powder':'pantry',
+  'balsamic vinegar':'pantry',
+  'basil':'produce',
+  'basmati rice':'pantry',
+  'bay leaves':'pantry',
+  'beef':'protein',
+  'beet':'produce',
+  'bell peppers':'produce',
+  'black beans':'pantry',
+  'black rice':'pantry',
+  'black sesame seeds':'pantry',
+  'bone-in chicken thigh':'protein',
+  'bone-in pork chops':'protein',
+  'boneless chicken breast':'protein',
+  'boneless chicken thigh':'protein',
+  'broccoli crown':'produce',
+  'broccolini':'produce',
+  'brown rice':'pantry',
+  'brown sugar':'pantry',
+  'brussels sprouts':'produce',
+  'butter':'dairy',
+  'butternut squash':'produce',
+  'cannellini beans':'pantry',
+  'capers':'pantry',
+  'cara cara orange':'produce',
+  'carrot':'produce',
+  'carrot tops':'produce',
+  'castelvetrano olives':'pantry',
+  'cauliflower':'produce',
+  'cayenne':'pantry',
+  'cayenne pepper':'pantry',
+  'celery bunch':'produce',
+  'celery ribs':'produce',
+  'celery root':'produce',
+  'cheddar cheese':'dairy',
+  'cherry tomatoes':'produce',
+  'chicken bone broth':'pantry',
+  'chicken broth':'pantry',
+  'chickpeas':'pantry',
+  'chickpeas/garbanzo beans':'pantry',
+  'chili powder':'pantry',
+  'chipotle pepper in adobo':'pantry',
+  'chipotle powder':'pantry',
+  'chuck roast':'protein',
+  'cilantro':'produce',
+  'cinnamon':'pantry',
+  'coconut milk':'pantry',
+  'cod filets':'protein',
+  'corn':'produce',
+  'corn kernel':'produce',
+  'corn tortilla':'pantry',
+  'cornstarch':'pantry',
+  'cotija cheese':'dairy',
+  'cream cheese':'dairy',
+  'crema':'dairy',
+  'crème fraîche':'dairy',
+  'crushed tomatoes':'pantry',
+  'curry powder':'pantry',
+  'diced green chilies':'pantry',
+  'dijon':'pantry',
+  'dried cranberries':'pantry',
+  'dried oregano':'pantry',
+  'dried pinto beans':'pantry',
+  'dried rosemary':'pantry',
+  'dried thyme':'pantry',
+  'edamame':'produce',
+  'eggs':'protein',
+  'enchilada sauce':'pantry',
+  'extra virgin olive oil':'pantry',
+  'fennel bulbs':'pantry',
+  'fennel seeds':'pantry',
+  'feta cheese':'dairy',
+  'fig jam':'pantry',
+  'fire-roasted diced tomatoes':'pantry',
+  'fish sauce':'pantry',
+  'flaky salt':'pantry',
+  'flank steak':'protein',
+  'flour':'pantry',
+  'fresh basil':'produce',
+  'fresh cilantro':'produce',
+  'fresh dill':'produce',
+  'fresh ginger':'produce',
+  'fresh grapefruit':'produce',
+  'fresh mint':'pantry',
+  'fresh orange juice':'pantry',
+  'fresh oregano':'pantry',
+  'fresh parsley':'produce',
+  'fresh rosemary':'produce',
+  'fresh sage':'produce',
+  'fresh spinach':'produce',
+  'fresh thyme':'produce',
+  'frozen peas':'pantry',
+  'fuji apple':'produce',
+  'garlic clove':'produce',
+  'garlic head':'produce',
+  'garlic powder':'pantry',
+  'ginger':'pantry',
+  'gnocchi':'pantry',
+  'grainy mustard':'pantry',
+  'grated parmesan':'dairy',
+  'green onion':'produce',
+  'ground beef (85% lean)':'protein',
+  'ground beef (90% lean)':'protein',
+  'ground black pepper':'pantry',
+  'ground chicken':'protein',
+  'ground cinnamon':'pantry',
+  'ground coriander':'produce',
+  'ground cumin':'pantry',
+  'ground flaxseed':'pantry',
+  'ground ginger':'pantry',
+  'ground lamb':'protein',
+  'ground nutmeg':'pantry',
+  'ground pork':'protein',
+  'ground turkey':'protein',
+  'ground turmeric':'pantry',
+  'gruyere':'dairy',
+  'half and half':'dairy',
+  'halibut filet':'protein',
+  'hanger steak':'protein',
+  'harissa':'pantry',
+  'hazelnuts':'pantry',
+  'heavy cream':'dairy',
+  'hoisin sauce':'pantry',
+  'honey':'pantry',
+  'honey crisp apple':'produce',
+  'iceberg':'produce',
+  'italian bread crumbs':'pantry',
+  'italian herb seasoning':'pantry',
+  'italian sausage':'protein',
+  'jalapeños':'produce',
+  'jalapeño':'produce',
+  'kabocha squash':'produce',
+  'kale':'produce',
+  'kiwi':'produce',
+  'kosher salt':'pantry',
+  'leafy greens':'pantry',
+  'leeks':'produce',
+  'lemon':'produce',
+  'lemon juice':'produce',
+  'lemon zest & juice':'pantry',
+  'lemongrass stalk':'produce',
+  'lentils':'pantry',
+  'light coconut milk':'pantry',
+  'lime':'produce',
+  'liquid smoke':'pantry',
+  'long-grain white rice':'pantry',
+  'macadamia nuts':'pantry',
+  'madras curry powder':'pantry',
+  'mango':'produce',
+  'maple syrup':'pantry',
+  'mayonnaise':'pantry',
+  'mexican beer':'pantry',
+  'mexican cheese':'dairy',
+  'microgreens':'produce',
+  'mini bell peppers':'produce',
+  'mushrooms':'produce',
+  'navel orange':'produce',
+  'navy beans':'pantry',
+  'new york strip':'protein',
+  'nori sheets':'pantry',
+  'nutmeg':'pantry',
+  'nutritional yeast':'pantry',
+  'oil-packed sun-dried tomatoes':'pantry',
+  'onion powder':'pantry',
+  'orecchiette pasta':'pantry',
+  'oregano':'pantry',
+  'oyster mushrooms':'produce',
+  'panko':'pantry',
+  'paprika':'pantry',
+  'parmesan':'dairy',
+  'parmigiano reggiano':'dairy',
+  'peaches':'pantry',
+  'peanut butter':'pantry',
+  'pearl couscous':'pantry',
+  'peas':'produce',
+  'peperoncini':'pantry',
+  'pepperoncini':'pantry',
+  'persian cucumber':'produce',
+  'pickled ginger':'pantry',
+  'pickled jalapeno':'pantry',
+  'pickled onion':'pantry',
+  'pickles':'pantry',
+  'pineapple':'produce',
+  'pinto beans':'pantry',
+  'pita breads':'pantry',
+  'plain greek yogurt':'dairy',
+  'poblano chili':'pantry',
+  'poblano pepper':'produce',
+  'polenta':'pantry',
+  'pomegranate juice':'pantry',
+  'pomegranate molasses':'pantry',
+  'pomegranate seeds':'produce',
+  'potato':'produce',
+  'pumpkin beer':'pantry',
+  'quinoa':'pantry',
+  'radishes':'produce',
+  'raw cashews':'pantry',
+  'red bell pepper':'produce',
+  'red cabbage':'produce',
+  'red chili flakes':'pantry',
+  'red chillies':'produce',
+  'red enchilada sauce':'pantry',
+  'red onion':'produce',
+  'red wine vinegar':'pantry',
+  'rice':'pantry',
+  'rice vinegar':'pantry',
+  'roasted beet':'produce',
+  'roma tomatoes':'produce',
+  'romaine lettuce':'produce',
+  'salmon filet':'protein',
+  'salsa verde':'pantry',
+  'salted butter':'dairy',
+  'sambal oelek':'pantry',
+  'scallions':'produce',
+  'sea salt':'pantry',
+  'serrano pepper':'produce',
+  'sesame oil':'pantry',
+  'shallot':'produce',
+  'short cut pasta':'pantry',
+  'shredded cheddar cheese':'dairy',
+  'shredded pepper jack cheese':'dairy',
+  'shredded sharp cheddar':'dairy',
+  'sliced almonds':'pantry',
+  'smoked paprika':'pantry',
+  'sour cream':'dairy',
+  'soy milk':'pantry',
+  'soy sauce':'pantry',
+  'spinach':'produce',
+  'sriracha':'pantry',
+  'sticks celery':'produce',
+  'sugar':'pantry',
+  'sugar snap peas':'produce',
+  'sumac':'pantry',
+  'sushi rice':'pantry',
+  'sweet potato':'produce',
+  'swiss chard':'produce',
+  'taco shells':'pantry',
+  'tahini':'pantry',
+  'tamari':'pantry',
+  'tarragon':'produce',
+  'thai red curry paste':'pantry',
+  'toasted sesame oil':'pantry',
+  'toasted sesame seeds':'pantry',
+  'tofu':'protein',
+  'tomatillos':'pantry',
+  'tomato paste':'pantry',
+  'tomato puree':'pantry',
+  'tomatoes':'produce',
+  'tortilla':'pantry',
+  'turmeric':'pantry',
+  'tzatziki sauce':'dairy',
+  'unsalted butter':'dairy',
+  'unsweetened non-dairy creamer':'pantry',
+  'vegan mayo':'pantry',
+  'vegetable oil':'pantry',
+  'vegetable stock':'pantry',
+  'vine tomatoes':'produce',
+  'water chestnuts':'pantry',
+  'white cheddar':'dairy',
+  'white miso':'pantry',
+  'white onion':'produce',
+  'white rice':'pantry',
+  'white wine':'pantry',
+  'white wine vinegar':'pantry',
+  'whole grain bread':'pantry',
+  'whole milk':'dairy',
+  'whole wheat elbows or shells':'pantry',
+  'worcestershire sauce':'pantry',
+  'yellow bell pepper':'produce',
+  'yellow onion':'produce',
+  'yellow peach':'produce',
+  'yogurt':'dairy',
+  'zucchini':'produce',
+  'all-spice':'pantry',
+  'tequila':'pantry',
+  'marinara sauce':'pantry',
+  'dried basil':'pantry',
+  'lasagna noodles':'pantry',
+  'ricotta cheese':'dairy',
+  'shredded mozzarella':'dairy',
+  'beef tenderloin':'protein',
+  'green apple':'produce',
+  'dried shiitake mushrooms':'pantry',
+  'bean sprouts':'produce',
+  'gochujang paste':'pantry',
+  'mirin':'pantry',
+  'garam masala':'pantry',
+  'full-fat coconut milk':'pantry',
+  'naan bread':'pantry',
+  'purple sweet potatoes':'produce',
+  'canned pinto beans':'pantry',
+  'white sugar':'pantry',
+  'fresh red fresno':'produce',
+  'rice wine vinegar':'pantry',
+  'limes':'produce',
+  'clementines':'produce',
+  'saffron threads':'pantry',
+  'dried barberries':'pantry',
+  'fresh tarragon':'produce',
+  'shelled pistachios':'pantry',
+  'cumin seeds':'pantry',
+  'coriander seeds':'pantry',
+  'pork baby back ribs':'protein',
+  'granny smith apple':'produce',
+  'cheese tortellini':'pantry',
+  'lamb shanks':'protein',
+  'ground allspice':'pantry',
+  'beef broth':'pantry',
+  'pomegranate arils':'produce',
+  'yukon gold potato':'produce',
+  'salt':'pantry',
+  'eggplant':'produce',
+  'golden raisin':'pantry',
+  'spaghetti squash':'produce',
+  'wild mushrooms':'produce',
+  'ground polenta':'pantry',
+  'beef tenderloin filet':'protein',
+  'chicken or vegetable broth':'pantry',
+  'milk':'dairy',
+  'cooked bacon':'protein',
+  'fresh cauliflower rice':'produce',
+  'walnut halves':'pantry',
+  'pumpkin puree':'pantry',
+  'green beans':'produce',
+  'bone-in, english-style beef short ribs':'protein',
+  'whole peeled italian tomatoes':'pantry',
+  'spaghetti pasta':'pantry',
+  'crushed fire-roasted tomatoes':'pantry',
+  'shredded cooked chicken':'protein',
+  'english cucumber':'produce',
+  'dry red wine':'pantry',
+  'orzo':'pantry',
+  'golden balsamic vinegar':'pantry',
+  'butter lettuce':'produce',
+  'almond flour':'pantry',
+  'seafood seasoning':'pantry',
+  'coconut aminos':'pantry',
+  'cholula hot sauce':'pantry',
+  'sweet potatoes':'produce',
+  'tomato sauce':'pantry',
+  'shredded monterey jack cheese':'dairy',
+  'cooked white rice':'pantry',
+  'broccoli florets':'produce',
+  'shredded cabbage':'produce',
+  'julienned carrots':'produce',
+  'snow peas':'produce',
+  'pork shoulder roast':'protein',
+  'apple cider':'pantry',
+  'dehydrated minced onion':'pantry',
+  'fresh chives':'produce',
+  'lacinato kale':'produce',
+  'radicchio':'produce',
+  'hot sauce':'pantry',
+  'chipotle chili powder':'pantry',
+  'cooked rice':'pantry',
+  'whole chicken':'protein',
+  'white vinegar':'pantry',
+  'baby arugula':'produce',
+  'blue cheese':'dairy',
+  "za'atar":'pantry',
+  'bone-in lamb leg':'protein',
+  'slivered almonds':'pantry',
+  'dried raisins':'pantry',
+  'dried apricots':'pantry',
+  'ground cardamom':'pantry',
+  'whole grain elbow pasta':'pantry',
+  'parmesan cheese rind':'dairy',
+  'orange zest & juice':'produce',
+  'jarred roasted red bell pepper':'pantry',
+  'green bell pepper':'pantry',
+  'canned green chilis':'pantry',
+  'purple cabbage':'produce',
+  'green cabbage':'produce',
+  'extra firm tofu':'protein',
+  'uncooked black rice':'pantry',
+  'snap peas':'produce',
+  'fresh sunflower sprouts':'produce',
+  'frozen english peas':'produce',
+  'kashmiri red chili powder':'pantry',
+  'kasuri methi':'pantry',
+  'raw peeled deveined shrimp':'protein',
+  'raw scallops':'protein',
+  'thick loaf of bread':'pantry',
+  'green pitted olives':'pantry',
+  'ketchup':'pantry',
+  'mustard powder':'pantry',
+  'cremini mushrooms':'produce',
+  'beef boullion':'pantry',
+  'bone-in chicken breast':'protein',
+  'canned hominy':'pantry',
+  'tortilla chips':'pantry',
+  'shiitake mushrooms':'produce',
+  'red swiss chard':'produce',
+  'green swiss chard':'produce',
+  'escarole':'produce',
+  'ras el hanout':'pantry',
+  'preserved lemon':'pantry',
+  'boneless pork shoulder roast':'protein',
+  'agave nectar':'pantry',
+  'shredded lettuce':'produce',
+  'egg white':'protein',
+  'mixed sesame seeds':'pantry',
+  'chili sauce':'pantry',
+  'queso fresco':'dairy',
+  'achiote paste':'pantry',
+  'ancho chili powder':'pantry',
+  'russet potato':'produce',
+  'clam juice':'pantry',
+  'canned chopped clams':'pantry',
+  'ground veal':'protein',
+  'white bread':'pantry',
+  'chianti red wine':'pantry',
+  'anchovy paste':'pantry',
+  'bouillon cube':'pantry',
+  'aleppo pepper':'pantry',
+  'yellow mustard seeds':'pantry',
+  'medjool dates':'pantry',
+  'cauliflower florets':'produce',
+  'sharp white cheddar':'dairy',
+  'molasses':'pantry',
+  'ground mustard':'pantry',
+  'coleslaw mix':'produce',
+  'baking soda':'pantry',
+  'thai basil leaves':'produce',
+  'sundried tomatoes':'pantry',
+  'fresh mozzarella':'dairy',
+  'provolone cheese':'dairy',
+  'smoked ham bone':'protein',
+  'dried white beans':'pantry',
+  'pecorino romano':'dairy',
+  'boneless beef chuck roast':'protein',
+  'white sweet potatoes':'produce',
+  'unsweetened almond milk':'pantry',
+  'fat free cream cheese':'dairy',
+  'baby gold potatoes':'produce',
+  'rice flour':'pantry',
+  'wild rice blend':'pantry',
+  'canned chunk chicken breast':'pantry',
+  'cream of chicken soup':'pantry',
+  'frozen peas and carrots':'produce',
+  'egg noodles':'pantry',
+  'beef shanks':'protein',
+  'fine ground cornmeal':'pantry',
+  'kecap manis':'pantry',
+  'boiled eggs':'protein',
+  'prawn crackers':'pantry',
+  'vegetable or peanut oil':'pantry',
+  'tempeh':'protein',
+  'peanuts':'pantry',
+  'red chilli':'produce',
+  'champagne vinegar':'pantry',
+  'avocados':'produce',
+  'bread crumbs':'pantry',
+  'ground cardamon':'pantry',
+  'hummus':'pantry',
+  'garlic sauce':'dairy',
+  'chicken drumsticks':'protein',
+  'white mushrooms':'produce',
+  'buttermilk':'dairy',
+  'dried parsley':'pantry',
+  'frozen peas & carrots':'pantry',
+  'frozen corn kernels':'pantry',
+  'tapioca starch':'pantry',
+  'unsweetened shredded coconut':'pantry',
+  'peeled and deveined shrimp':'protein',
+  'bottom round roast':'protein',
+  'belgian style ale':'pantry',
+  'pumpkin seeds':'pantry',
+  'canned cannellini beans':'pantry',
+  'paccheri':'pantry',
+  'vegan yogurt':'dairy',
+  'cottage cheese':'dairy',
+  'shredded mozzarella cheese':'dairy',
+  'sweet thai chili sauce':'pantry',
+  'apple juice':'pantry',
+  'creamy peanut butter':'pantry',
+  'coconut sugar':'pantry',
+  'baby eggplants':'pantry',
+  'thai glutinous rice':'pantry',
+  'mexican oregano':'pantry',
+  'plantain chips':'pantry',
+  'ground cloves':'pantry',
+  'instant yeast':'pantry',
+  'pitted and halved kalamata olives':'pantry',
+  'bone-in lamb shoulder bone-in':'protein',
+  'roasted pistachios':'pantry',
+  'sundried tomatoes in oil':'pantry',
+  'hard shell tacos':'pantry',
+  'chopped pancetta':'protein',
+  'anchovy fillets':'pantry',
+  'canned whole tomatoes':'pantry',
+  'bocconcini':'pantry',
+  'canned black beans':'pantry',
+  'oat flour':'pantry',
+  'barbecue sauce':'pantry',
+  'vegan worcestershire sauce':'pantry',
+  'cooked mashed potato':'pantry',
+  'burger buns':'pantry',
+  'salt pork':'protein',
+  'cognac':'pantry',
+  'whole grain dijon mustard':'pantry',
+  'pinenuts':'pantry',
+  'cinnamon stick':'pantry',
+  'boneless pork tenderloin':'protein',
+  'pita chips':'pantry',
+  'sweetened condensed milk':'pantry',
+  'large flake dried unsweetened coconut':'pantry',
+  'long pasta':'pantry',
+  'chili crisp':'pantry',
+  'cajun seasoning':'pantry',
+  'beef brisket':'protein',
+  'bone broth':'pantry',
+  'parsnips':'produce',
+  'dried tarragon':'pantry',
+  'raw pecans':'pantry',
+  'mixed greens salad':'produce',
+  'strawberry':'produce',
+  'cashew butter':'pantry',
+  'rice noodles':'pantry',
+  'daikon':'produce',
+  'lo mein egg noodles':'pantry',
+  'dark soy sauce':'pantry',
+  'white pepper':'pantry',
+  'chinese 5 spice':'pantry',
+  'cooked brown rice':'pantry',
+  'red thai chiles':'produce',
+  'black peppercorns':'pantry',
+  'fennel':'produce',
+  'fresh english peas':'produce',
+  'italian vinaigrette':'pantry',
+  'burrata cheese':'dairy',
+  'goat cheese':'dairy',
+  'chicken bouillon cubes':'pantry',
+  'cream-style corn':'pantry',
+  'cornbread mix':'pantry',
+  'romano cheese':'dairy',
+  'frozen sweet peas':'produce',
+  'pea shoots':'produce',
+  'petite potatoes':'produce',
+  'grape tomatoes':'produce',
+  'fresh cherries':'produce',
+  'calabrian chili':'pantry',
+  'frozen cherries':'produce',
+  'vegan butter':'dairy',
+  'kohlrabi':'produce',
+  'watercress':'produce',
+  'white sesame seeds':'pantry',
+  'king oyster mushrooms':'produce',
+  'vegetable broth':'pantry',
+  'old bay seasoning':'pantry',
+  'tagliatelle pasta':'pantry',
+  'sunflower seeds':'pantry',
+  'corn on the cob':'produce',
+  'chaat masala':'pantry',
+  'whole branzino':'protein',
+  'dry ramen noodles':'pantry',
+  'fresh prawns':'protein',
+  'oyster sauce':'pantry',
+  'shichimi togarashi':'pantry',
+  'furikake':'pantry',
+  'green enchilada sauce':'pantry',
+  'chopped green chiles':'pantry',
+  'baby kale':'produce',
+  'pickled jalapeño brine':'pantry',
+  'ranch seasoning':'pantry',
+  'refried beans':'pantry',
+  'taco seasoning':'pantry',
+  '6- inch flour tortillas':'pantry',
+  'blackening seasoning':'pantry',
+  'seafood stock':'pantry',
+  'marinated jarred artichoke hearts':'pantry',
+  'vegan parmesan':'dairy',
+  'skin-on sea bass':'protein',
+  'crusty torn bread':'pantry',
+  'garlic-infused oil':'pantry',
+  'zhoug sauce':'pantry',
+  'wonton strips':'pantry',
+  'yuzu juice':'pantry',
+  'heirloom tomatoes':'produce',
+  'ciabatta bread':'pantry',
+  'coconut butter':'pantry',
+  'burrito wraps':'pantry',
+  'pico de gallo':'produce',
+  'guacamole':'produce',
+  'shredded vegan cheese':'dairy',
+  'vegan sour cream':'dairy',
+  'mango salsa':'produce',
+  'racks of lamb':'protein',
+  'couscous':'pantry',
+  'bavette steak':'protein',
+  'onion soup mix':'pantry',
+  // ── Common aliases and variants not in Items sheet ──
+  'egg':'protein',
+  'egg yolk':'protein',
+  'chicken':'protein',
+  'salmon':'protein',
+  'shrimp':'protein',
+  'scallop':'protein',
+  'ground beef':'protein',
+  'pork':'protein',
+  'lamb':'protein',
+  'turkey':'protein',
+  'onion':'produce',
+  'garlic':'produce',
+  'ginger root':'produce',
+  'parsley':'produce',
+  'dill':'produce',
+  'mint':'produce',
+  'thyme':'produce',
+  'rosemary':'produce',
+  'sage':'produce',
+  'chive':'produce',
+  'chives':'produce',
+  'leek':'produce',
+  'tomato':'produce',
+  'cucumber':'produce',
+  'zucchini':'produce',
+  'pepper':'produce',
+  'carrot':'produce',
+  'celery':'produce',
+  'potato':'produce',
+  'onions':'produce',
+  'garlic cloves':'produce',
+  'olive oil':'pantry',
+  'salt and pepper':'pantry',
+  'black pepper':'pantry',
+  'chicken stock':'pantry',
+  'chicken broth/stock':'pantry',
+  'beef stock':'pantry',
+  'beef broth/stock':'pantry',
+  'vegetable broth/stock':'pantry',
+  'olive oil':'pantry',
+  'neutral oil':'pantry',
+  'canola oil':'pantry',
+  'pasta':'pantry',
+  'spaghetti':'pantry',
+  'cheese':'dairy',
+  'cream':'dairy',
+};
+
+// Pre-sorted DB keys (longest first) for containment matching
+const DB_KEYS_BY_LENGTH = Object.keys(INGREDIENT_DB).sort((a, b) => b.length - a.length);
+
+// Levenshtein distance for fuzzy ingredient matching (from Apps Script approach)
+function levenshteinDistance(a, b) {
+  a = a.toLowerCase(); b = b.toLowerCase();
+  const matrix = [];
+  for (let i = 0; i <= b.length; i++) matrix[i] = [i];
+  for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      if (b.charAt(i-1) === a.charAt(j-1)) matrix[i][j] = matrix[i-1][j-1];
+      else matrix[i][j] = Math.min(matrix[i-1][j-1]+1, matrix[i][j-1]+1, matrix[i-1][j]+1);
+    }
+  }
+  return matrix[b.length][a.length];
+}
+
+function findClosestMatch(ingredient) {
+  let bestMatch = null, bestDist = Infinity;
+  for (const key of DB_KEYS_BY_LENGTH) {
+    const dist = levenshteinDistance(ingredient, key);
+    if (dist < bestDist) { bestDist = dist; bestMatch = key; }
+    if (bestDist === 0) break;
+  }
+  return [bestMatch, bestDist];
+}
+
+// Dairy internal sort: eggs first, then cheese, then sour cream/yogurt, then milks/cream/butter
+function getDairyGroup(name) {
+  const n = name.toLowerCase();
+  if (n.includes('egg')) return 1;
+  const cheeses = ['parmesan','parmigiano','pecorino','romano','mozzarella','burrata','feta','cotija',
+    'queso','cheddar','jack','gruyere','gruyère','brie','camembert','goat cheese','chèvre','blue cheese',
+    'gorgonzola','provolone','fontina','havarti','gouda','halloumi','paneer','ricotta','mascarpone',
+    'cream cheese','cottage cheese','cheese'];
+  if (cheeses.some(c => n.includes(c))) return 2;
+  if (n.includes('sour cream') || n.includes('crème') || n.includes('creme fraiche') || n.includes('yogurt')) return 3;
+  return 4;
+}
+
+function categorizeIngredient(name) {
+  const lower = name.toLowerCase();
+
+  // 1. Direct lookup
+  if (INGREDIENT_DB[lower]) return INGREDIENT_DB[lower];
+
+  // 2. Containment match — check if name contains a DB key at word boundaries (longest keys first)
+  for (const key of DB_KEYS_BY_LENGTH) {
+    const escaped = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const re = new RegExp('(?:^|\\s)' + escaped + '(?:\\s|$)');
+    if (re.test(lower)) return INGREDIENT_DB[key];
+  }
+
+  // 3. Fuzzy match via Levenshtein (catches typos and minor variants)
+  const [match, distance] = findClosestMatch(lower);
+  if (distance <= 2) return INGREDIENT_DB[match];
+
+  return 'pantry'; // default
+}
+
+// Ingredient parsing
+const FRACTION_MAP = {'½':'1/2','⅓':'1/3','⅔':'2/3','¼':'1/4','¾':'3/4','⅛':'1/8','⅜':'3/8','⅝':'5/8','⅞':'7/8','⅙':'1/6','⅚':'5/6','⅕':'1/5','⅘':'4/5'};
+const UNITS = {
+  'cups':'cup','cup':'cup','c.':'cup',
+  'tablespoons':'tbsp','tablespoon':'tbsp','tbsp':'tbsp','tbs':'tbsp','tbsps':'tbsp',
+  'teaspoons':'tsp','teaspoon':'tsp','tsp':'tsp','tsps':'tsp',
+  'ounces':'oz','ounce':'oz','oz':'oz','fl oz':'oz',
+  'pounds':'lb','pound':'lb','lb':'lb','lbs':'lb',
+  'grams':'g','gram':'g','g':'g',
+  'kilograms':'kg','kilogram':'kg','kg':'kg',
+  'milliliters':'ml','milliliter':'ml','ml':'ml',
+  'liters':'l','liter':'l',
+  'cloves':'clove','clove':'clove',
+  'heads':'head','head':'head',
+  'bunches':'bunch','bunch':'bunch',
+  'cans':'can','can':'can',
+  'packages':'pkg','package':'pkg','pkg':'pkg',
+  'slices':'slice','slice':'slice',
+  'pieces':'piece','piece':'piece','pcs':'piece',
+  'sprigs':'sprig','sprig':'sprig',
+  'stalks':'stalk','stalk':'stalk',
+  'pinches':'pinch','pinch':'pinch',
+  'dashes':'dash','dash':'dash',
+  'inches':'inch','inch':'inch','"':'inch',
+  'quarts':'qt','quart':'qt','qt':'qt',
+  'pints':'pt','pint':'pt','pt':'pt',
+};
+const STOP_WORDS = [
+  // existing
+  'freshly','ground','dried','fresh','frozen','large','medium','small','whole',
+  'boneless','skinless','extra','firm','soft','ripe','packed','heaping','leveled',
+  'rounded','about','approximately','roughly','chopped','diced','minced','sliced',
+  'grated','shredded','peeled','crushed','halved','quartered','optional','or more',
+  'to taste','divided','room temperature','softened','melted','cooled','drained','rinsed',
+  // prep methods
+  'torn','trimmed','julienned','cubed','zested','deveined','deboned','pitted','cored',
+  'seeded','deseeded','blanched','seared','caramelized','roasted','toasted','grilled',
+  'charred','smoked','pickled','marinated','brined','cured',
+  // size/shape
+  'thin','thick','fine','finely','coarsely','thinly','bite-sized','bite-size',
+  // temperature/state
+  'warm','hot','cold','chilled','thawed',
+  // qualifiers
+  'good','quality','best','organic','store-bought','homemade','low-sodium',
+  'unsweetened','reduced-fat','full-fat','light','dark','raw','uncooked','cooked',
+  'leftover','day-old','for garnish','for serving','for topping','as needed','to coat',
+  'plus more','garnish','serving',
+];
+
+// Synonym/alias map — collapses variants into one canonical shopping name
+const INGREDIENT_ALIASES = {
+  // Herbs
+  'flat-leaf parsley':'parsley','italian parsley':'parsley','curly parsley':'parsley',
+  'thai basil':'basil','sweet basil':'basil','holy basil':'basil',
+  'fresh cilantro':'cilantro','coriander leaves':'cilantro','coriander':'cilantro',
+  'fresh dill':'dill','dill weed':'dill',
+  'fresh mint':'mint','spearmint':'mint',
+  'fresh thyme':'thyme','thyme leaves':'thyme','thyme sprig':'thyme',
+  'rosemary sprig':'rosemary','fresh rosemary':'rosemary',
+  'sage leaf':'sage','fresh sage':'sage',
+  // Onion family
+  'green onion':'scallion','spring onion':'scallion','scallions':'scallion','green onions':'scallion',
+  // Garlic — keep cloves vs heads distinct
+  'garlic clove':'garlic cloves','garlic cloves':'garlic cloves',
+  'clove garlic':'garlic cloves','cloves garlic':'garlic cloves',
+  'garlic head':'garlic (whole head)','garlic bulb':'garlic (whole head)',
+  'head garlic':'garlic (whole head)','heads garlic':'garlic (whole head)',
+  'garlic':'garlic cloves', // bare "garlic" in recipes almost always means cloves
+  // Citrus — keep juice/zest separate so buyer knows what form they need
+  'lemon juice':'lemon juice','lime juice':'lime juice','orange juice':'orange juice',
+  'lemon zest':'lemon','lime zest':'lime','orange zest':'orange',
+  // Pepper (the spice) — consolidate all to "black pepper"
+  'cracked pepper':'black pepper','cracked black pepper':'black pepper',
+  'ground pepper':'black pepper','ground black pepper':'black pepper',
+  'freshly cracked pepper':'black pepper','freshly ground pepper':'black pepper',
+  'freshly ground black pepper':'black pepper',
+  // Salt — consolidate all to "salt"
+  'kosher salt':'salt','sea salt':'salt','fine salt':'salt',
+  'flaky salt':'salt','table salt':'salt','coarse salt':'salt',
+  // Broth/stock — combine all variants
+  'chicken broth':'chicken broth/stock','chicken stock':'chicken broth/stock',
+  'vegetable broth':'vegetable broth/stock','vegetable stock':'vegetable broth/stock',
+  'beef broth':'beef broth/stock','beef stock':'beef broth/stock',
+  'fish stock':'fish stock','seafood stock':'fish stock',
+  // Oils
+  'extra virgin olive oil':'olive oil','extra-virgin olive oil':'olive oil','evoo':'olive oil',
+  'vegetable oil':'neutral oil','canola oil':'neutral oil',
+  'grapeseed oil':'neutral oil','avocado oil':'neutral oil',
+  // Rice
+  'sushi rice':'white rice','jasmine rice':'white rice',
+  'basmati rice':'white rice','long grain rice':'white rice',
+  // Dairy
+  'unsalted butter':'butter','salted butter':'butter',
+};
+
+function parseQty(str) {
+  // Normalize unicode fractions
+  for(const [k,v] of Object.entries(FRACTION_MAP)) str = str.split(k).join(v);
+  str = str.trim();
+  // Mixed: "2 1/2" or "1 3/4"
+  let m = str.match(/^(\d+)\s+(\d+)\/(\d+)/);
+  if(m) return parseInt(m[1]) + parseInt(m[2])/parseInt(m[3]);
+  // Simple fraction: "1/2"
+  m = str.match(/^(\d+)\/(\d+)/);
+  if(m) return parseInt(m[1])/parseInt(m[2]);
+  // Range: "2-3" → average
+  m = str.match(/^(\d+\.?\d*)\s*[-–]\s*(\d+\.?\d*)/);
+  if(m) return (parseFloat(m[1]) + parseFloat(m[2])) / 2;
+  // Plain number
+  m = str.match(/^(\d+\.?\d*)/);
+  if(m) return parseFloat(m[1]);
+  return 0;
+}
+
+function parseIngredient(raw) {
+  if(!raw) return { qty:0, unit:'', name:raw, category:'pantry', raw };
+  let str = raw;
+  // Normalize fractions
+  for(const [k,v] of Object.entries(FRACTION_MAP)) str = str.split(k).join(v);
+  str = str.trim();
+
+  // Extract quantity
+  let qty = 0;
+  const qtyPat = /^((?:\d+\s+)?\d+\/\d+|\d+\.?\d*(?:\s*[-–]\s*\d+\.?\d*)?)/;
+  const qtyM = str.match(qtyPat);
+  if(qtyM) {
+    qty = parseQty(qtyM[1]);
+    str = str.slice(qtyM[0].length).trim();
+  }
+
+  // Extract unit (try longest match first)
+  let unit = '';
+  const unitKeys = Object.keys(UNITS).sort((a,b)=>b.length-a.length);
+  for(const uk of unitKeys) {
+    const pat = new RegExp('^'+uk.replace('.','\\.')+'(?:\\b|\\s|,|$)','i');
+    if(pat.test(str)) {
+      unit = UNITS[uk];
+      str = str.slice(uk.length).trim();
+      if(str.startsWith('of ')) str = str.slice(3).trim();
+      break;
+    }
+  }
+
+  // Look up category from pre-stripped name (handles "ground ginger" → pantry,
+  // "fresh ginger" → produce before stop words strip those qualifier signals)
+  const preCleanLower = str.toLowerCase()
+    .replace(/\(.*?\)/g,'').replace(/\).*$/,'').replace(/,.*$/,'').trim();
+  let forcedCategory = INGREDIENT_DB[preCleanLower] || null;
+  if (!forcedCategory) {
+    for (const key of DB_KEYS_BY_LENGTH) {
+      const escaped = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const re = new RegExp('(?:^|\\s)' + escaped + '(?:\\s|$)');
+      if (re.test(preCleanLower)) { forcedCategory = INGREDIENT_DB[key]; break; }
+    }
+  }
+
+  // Clean name: remove parentheticals, trailing descriptors
+  let name = str
+    .replace(/\(.*?\)/g,'')
+    .replace(/\).*$/,'')
+    .replace(/,.*$/,'')
+    // Handle "juice of 1 lemon" → "lemon juice"
+    .replace(/^juice of\s+\d*\s*/i, '')
+    .replace(/^zest of\s+\d*\s*/i, '')
+    .split(/\s+/)
+    .filter(w => !STOP_WORDS.includes(w.toLowerCase()))
+    .join(' ')
+    .trim()
+    .replace(/\s+/g,' ')
+    .toLowerCase();
+
+  // Remove leading "of" / articles
+  name = name.replace(/^(of|a|an|the)\s+/, '');
+
+  // Handle "X or Y" alternatives — keep only the first option so items combine
+  // e.g. "sour cream or creme fraiche" → "sour cream"
+  if (name.includes(' or ')) {
+    const parts = name.split(' or ');
+    // Pick whichever part is in the DB; fall back to first part
+    name = parts.find(p => INGREDIENT_DB[p.trim()]) || parts[0].trim();
+  }
+
+  // Special cases BEFORE alias map — unit+name combos that need remapping
+  if (unit === 'clove' && (name === 'garlic' || name === 'garlic cloves')) { name = 'garlic cloves'; unit = ''; }
+  if (unit === 'head'  && name === 'garlic') { name = 'garlic (whole head)'; unit = ''; }
+
+  // Apply alias map — collapse variants to canonical name
+  name = INGREDIENT_ALIASES[name] || name;
+
+  // If forcedCategory was set (holds pre-clean string), resolve to pantry sub-category now
+  const category = forcedCategory || categorizeIngredient(name || raw);
+  return { qty, unit, name: name || raw.toLowerCase(), category, raw };
+}
+
+function fmtQty(qty, unit) {
+  if(!qty) return unit || '';
+  const fmtNum = n => {
+    if(n === Math.floor(n)) return String(n);
+    const frac = { 0.5:'½', 0.25:'¼', 0.75:'¾', 0.333:'⅓', 0.667:'⅔', 0.125:'⅛' };
+    const whole = Math.floor(n), rem = parseFloat((n - whole).toFixed(3));
+    const fr = frac[rem];
+    if(fr) return whole > 0 ? `${whole} ${fr}` : fr;
+    return n.toFixed(1);
+  };
+  return unit ? `${fmtNum(qty)} ${unit}` : fmtNum(qty);
+}
+
+// Aggregate ingredients from all menu recipes
+function aggregateIngredients() {
+  // Map: canonical name → { qty by unit, sources, category, raw examples }
+  const map = new Map();
+
+  for(const {recipe, servings} of menuItems) {
+    const ings = ingredients[recipe.name] || [];
+    for(const raw of ings) {
+      const p = parseIngredient(raw);
+      if(!p.name || p.name.length < 2) continue;
+
+      // Create key: normalize name
+      const key = p.name.replace(/\s+/g,' ').trim();
+      if(!map.has(key)) {
+        map.set(key, { name: key, category: p.category, unitQtys: {}, sources: [], raws:[] });
+      }
+      const entry = map.get(key);
+      const u = p.unit || 'count';
+      entry.unitQtys[u] = (entry.unitQtys[u] || 0) + p.qty * servings;
+      if(!entry.sources.includes(recipe.name)) entry.sources.push(recipe.name);
+      if(entry.raws.length < 3) entry.raws.push(raw);
+    }
+  }
+
+  return map;
+}
+
+function buildShoppingList() {
+  const listEl = document.getElementById('shopping-list');
+
+  if(menuItems.length === 0) {
+    listEl.innerHTML = `<div class="list-empty">
+      <div class="list-empty-icon">🛒</div>
+      <div class="list-empty-text">Add recipes to your menu<br>to generate a shopping list</div>
+    </div>`;
+    return;
+  }
+
+  // Show "no ingredients" banner if data missing
+  const missingIngredients = menuItems.filter(m => !ingredients[m.recipe.name] || !ingredients[m.recipe.name].length);
+  let html = '';
+
+  if(!hasIngredients) {
+    html += `<div class="no-data-banner">
+      <span class="icon">ℹ️</span>
+      <p>Ingredient data hasn't been generated yet. Run <code>python3 scrape_ingredients.py</code> once to scrape all recipe pages, then refresh. Recipes from blogs that don't provide JSON-LD (Half Baked Harvest, etc.) will show a link to the original recipe instead.</p>
+    </div>`;
+  } else if(missingIngredients.length > 0) {
+    html += `<div class="no-data-banner">
+      <span class="icon">⚠️</span>
+      <p>${missingIngredients.length} recipe${missingIngredients.length>1?'s':''} don't have ingredient data (blog may use JavaScript rendering): ${missingIngredients.map(m=>`<b>${m.recipe.name}</b>`).join(', ')}. Visit the original recipe for their ingredients.</p>
+    </div>`;
+  }
+
+  // Build category sections
+  const aggregated = aggregateIngredients();
+  const byCat = {};
+  for(const cat of CATEGORIES) byCat[cat.key] = [];
+
+  for(const [key, entry] of aggregated) {
+    const cat = entry.category in byCat ? entry.category : 'pantry';
+    byCat[cat].push(entry);
+  }
+
+  for(const cat of CATEGORIES) {
+    const items = byCat[cat.key];
+    if(!items || items.length === 0) continue;
+
+    if (cat.key === 'dairy') {
+      items.sort((a,b) => {
+        const ga = getDairyGroup(a.name), gb = getDairyGroup(b.name);
+        return ga !== gb ? ga - gb : a.name.localeCompare(b.name);
+      });
+    } else {
+      items.sort((a,b) => a.name.localeCompare(b.name));
+    }
+
+    html += `<div class="cat-section">
+      <div class="cat-header">
+        <span class="cat-icon">${cat.icon}</span>
+        <span class="cat-name">${cat.label}</span>
+        <span class="cat-badge">${items.length}</span>
+      </div>
+      <div class="cat-items">`;
+
+    for(const entry of items) {
+      const itemKey = entry.name;
+      const isChecked = checkedItems.has(itemKey);
+      if(hideChecked && isChecked) continue;
+
+      // Format quantities (may have multiple units)
+      const qtyParts = Object.entries(entry.unitQtys)
+        .filter(([u, q]) => q > 0)
+        .map(([u, q]) => u === 'count' ? fmtQty(q,'') : fmtQty(q, u));
+      const qtyStr = qtyParts.join(' + ');
+
+      const sources = entry.sources.length > 1
+        ? `Used in: ${entry.sources.map(s => shortenTitle(s)).join(', ')}`
+        : '';
+
+      html += `<div class="shop-item ${isChecked ? 'checked' : ''}" data-key="${esc(itemKey)}">
+        <div class="item-check">${isChecked ? '✓' : ''}</div>
+        <div class="item-body">
+          <span class="item-qty">${qtyStr}</span>
+          <span class="item-name">${esc(capFirst(entry.name))}</span>
+          ${sources ? `<div class="item-sources">${esc(sources)}</div>` : ''}
+        </div>
+      </div>`;
+    }
+
+    html += `</div></div>`;
+  }
+
+  // Recipes with no ingredient data — show links
+  if(missingIngredients.length > 0 && hasIngredients) {
+    html += `<div class="cat-section">
+      <div class="cat-header"><span class="cat-icon">🔗</span><span class="cat-name">Visit Original Recipes</span></div>
+      <div class="cat-items">`;
+    for(const {recipe} of missingIngredients) {
+      if(recipe.url) {
+        html += `<div class="shop-item" style="cursor:default">
+          <div class="item-check"></div>
+          <div class="item-body">
+            <span class="item-name"><a href="${esc(recipe.url)}" target="_blank" style="color:var(--accent)">${esc(recipe.name)}</a></span>
+            <div class="item-sources">Ingredient list available on the original blog post</div>
+          </div>
+        </div>`;
+      }
+    }
+    html += `</div></div>`;
+  }
+
+  listEl.innerHTML = html;
+
+  // Event delegation for check-off items
+  listEl.onclick = e => {
+    const item = e.target.closest('.shop-item');
+    if(item && item.dataset.key) toggleCheck(item.dataset.key);
+  };
+}
+
+// ─────────────────────────────────────────────
+// Interactions
+// ─────────────────────────────────────────────
+function toggleCheck(key) {
+  if(checkedItems.has(key)) checkedItems.delete(key);
+  else checkedItems.add(key);
+  saveMenu();
+  buildShoppingList();
+}
+
+function toggleChecked() {
+  hideChecked = !hideChecked;
+  const btn = document.querySelector('#list-actions button');
+  btn.textContent = hideChecked ? 'Show all' : 'Hide checked';
+  buildShoppingList();
+}
+
+function uncheckAll() {
+  checkedItems.clear();
+  saveMenu();
+  buildShoppingList();
+}
+
+function copyList() {
+  if(menuItems.length === 0) return;
+  const aggregated = aggregateIngredients();
+  const lines = [`CKC Shopping List — ${menuItems.map(m=>m.recipe.name).join(', ')}`, ''];
+
+  for(const cat of CATEGORIES) {
+    const items = [...aggregated.values()].filter(e => (e.category === cat.key) || (cat.key === 'pantry' && !CATEGORIES.find(c=>c.key===e.category))).sort((a,b)=>a.name.localeCompare(b.name));
+    if(items.length === 0) continue;
+    lines.push(`${cat.icon} ${cat.label.toUpperCase()}`);
+    for(const entry of items) {
+      const qtyParts = Object.entries(entry.unitQtys).filter(([u,q])=>q>0).map(([u,q])=>u==='count'?fmtQty(q,''):fmtQty(q,u));
+      lines.push(`  □ ${qtyParts.join(' + ')} ${capFirst(entry.name)}`);
+    }
+    lines.push('');
+  }
+
+  navigator.clipboard.writeText(lines.join('\n')).then(()=>{
+    const btn = [...document.querySelectorAll('.action-btn')].find(b=>b.textContent.includes('Copy'));
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copied!';
+    setTimeout(()=>btn.textContent=orig, 2000);
+  });
+}
+
+function printList() {
+  window.print();
+}
+
+// ─────────────────────────────────────────────
+// Persistence
+// ─────────────────────────────────────────────
+function saveMenu() {
+  const data = {
+    menu: menuItems.map(m => ({ name: m.recipe.name, servings: m.servings })),
+    checked: [...checkedItems],
+  };
+  localStorage.setItem('ckc_menu', JSON.stringify(data));
+}
+
+function restoreMenu() {
+  const raw = localStorage.getItem('ckc_menu');
+  if(!raw) return;
+  try {
+    const data = JSON.parse(raw);
+    menuItems = (data.menu || []).map(m => {
+      const recipe = allRecipes.find(r => r.name === m.name);
+      return recipe ? { recipe, servings: m.servings || 1 } : null;
+    }).filter(Boolean);
+    checkedItems = new Set(data.checked || []);
+    updateMenuStrip();
+    buildShoppingList();
+    filterRecipes();
+  } catch(e) {}
+}
+
+// ─────────────────────────────────────────────
+// Helpers
+// ─────────────────────────────────────────────
+function esc(s) {
+  if(!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function capFirst(s) {
+  if(!s) return '';
+  return s[0].toUpperCase() + s.slice(1);
+}
+
+function shortenTitle(t) {
+  return t.length > 30 ? t.slice(0,28)+'…' : t;
+}
+</script>
+
+<!-- Print styles -->
+<style media="print">
+  #login-screen, #header, #picker-panel, #menu-strip, #list-header { display:none!important }
+  #plan-panel, #list-panel, #shopping-list { overflow:visible!important; height:auto!important }
+  body { background:white!important; color:black!important; font-size:12pt }
+  .cat-name { font-weight:bold; text-transform:uppercase; font-size:10pt; color:#333 }
+  .shop-item { padding:4px 0 }
+  .item-qty { color:#444; font-weight:bold }
+  .item-name { color:#000 }
+  .item-check { border:1px solid #999; width:12px; height:12px; display:inline-block; margin-right:6px }
+  .no-data-banner, .action-btn { display:none!important }
+</style>
+</body>
+</html>

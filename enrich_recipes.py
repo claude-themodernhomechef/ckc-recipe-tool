@@ -423,7 +423,7 @@ def classify_diet_tags(ingredients, recipe_title='', blogger_name=''):
                 elif contains_any(str(easy_hits), ['sugar', 'brown sugar', 'maple syrup']):
                     subs.append('replace the sweetener with allulose')
             # Grain/starch swaps (only if not in title)
-            if contains_any(ing_text, ['rice']) and 'rice' not in keto_in_title:
+            if contains_any(ing_text, ['rice']) and not title_contains_any(title_lower, ['rice', 'risotto']):
                 subs.append('substitute white rice with cauliflower rice')
             if contains_any(ing_text, ['quinoa']):
                 subs.append('serve over cooked vegetables instead of quinoa')
