@@ -174,9 +174,9 @@ html,body{height:100%;background:var(--bg);color:var(--text-primary);font-family
     <div class="header-sep"></div>
     <div class="header-title">Meal Planner</div>
     <div class="nav-toggle" style="margin-left:auto">
-      <a href="/">Swipe</a>
-      <a href="/catalog">Catalog</a>
-      <a href="/shopping" class="active">Planner</a>
+      <a href="/index.html">Swipe</a>
+      <a href="/catalog.html">Catalog</a>
+      <a href="/shopping.html" class="active">Shopping List</a>
     </div>
   </div>
 
@@ -1268,7 +1268,17 @@ const INGREDIENT_ALIASES = {
   'sushi rice':'white rice','jasmine rice':'white rice',
   'basmati rice':'white rice','long grain rice':'white rice',
   // Dairy
-  'unsalted butter':'butter','salted butter':'butter',
+  'unsalted butter':'butter','salted butter':'butter','vegan butter':'butter',
+  'sour cream or creme fraiche':'sour cream','sour cream or crème fraîche':'sour cream',
+  'creme fraiche':'sour cream','crème fraîche':'sour cream',
+  'sour cream or yogurt':'sour cream','greek yogurt':'plain greek yogurt',
+  'plain yogurt':'plain greek yogurt','non-fat greek yogurt':'plain greek yogurt',
+  'whole milk mozzarella':'mozzarella','fresh mozzarella':'mozzarella','shredded mozzarella':'mozzarella',
+  'parmesan cheese':'parmesan','grated parmesan':'parmesan','parmigiano reggiano':'parmesan',
+  'pecorino romano':'parmesan','romano cheese':'parmesan',
+  'mexican cheese or colby jack or pepper jack':'mexican cheese',
+  'mexican cheese blend':'mexican cheese','colby jack':'mexican cheese',
+  'heavy whipping cream':'heavy cream','whipping cream':'heavy cream',
 };
 
 function parseQty(str) {
