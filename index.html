@@ -167,7 +167,7 @@ async function loadRecipes(){
 
     recipes = snap.docs.map(d => ({_docId: d.id, ...d.data()}));
 
-    if(!recipes.length){ showDone(); return; }
+    if(!recipes.length){ hideLoading(); showDone(); return; }
     currentIndex = 0;
     hideLoading();
     showMain();
