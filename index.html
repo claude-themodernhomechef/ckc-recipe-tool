@@ -139,127 +139,40 @@ firebase.initializeApp({
 const db = firebase.firestore();
 
 // ── State ─────────────────────────────────────────────
+// recipes[] stores {_docId, ...firestoreFields} so we can update the right doc
 let recipes = [], currentIndex = 0, counts = {yes:0, maybe:0, no:0};
 let animating = false, isDragging = false;
 let startX = 0, startY = 0, currentX = 0, currentY = 0, topCard = null;
 
 const $ = id => document.getElementById(id);
 
-// ── localStorage fallback helpers ─────────────────────
-const LS_REVIEWED  = 'ckc_reviewed';
-const LS_POSITION  = 'ckc_position';
-const LS_DECISIONS = 'ckc_decisions';
-
-function lsGetReviewed(){try{return new Set(JSON.parse(localStorage.getItem(LS_REVIEWED)||'[]'));}catch(e){return new Set();}}
-function lsAddReviewed(name){try{const s=lsGetReviewed();s.add(name);localStorage.setItem(LS_REVIEWED,JSON.stringify([...s]));}catch(e){}}
-function lsSavePosition(name){try{localStorage.setItem(LS_POSITION,name);}catch(e){}}
-function lsGetPosition(){try{return localStorage.getItem(LS_POSITION)||'';}catch(e){return '';}}
-function lsSaveDecision(recipe,action){
-  try{
-    const all=JSON.parse(localStorage.getItem(LS_DECISIONS)||'[]');
-    all.push({
-      name:recipe.name, decision:action.toUpperCase(), url:recipe.url,
-      blogger:recipe.blogger||'', alignmentScore:recipe.alignmentScore||null,
-      mealType:recipe.course||'', cuisineStyle:recipe.cuisine||'',
-      rating:recipe.rating||'', notes:recipe.description||'', image:recipe.image||'',
-      decidedAt:new Date().toISOString(),
-    });
-    localStorage.setItem(LS_DECISIONS,JSON.stringify(all));
-  }catch(e){}
-}
-
 // ── Firestore helpers ─────────────────────────────────
-const progressRef = db.collection('progress').doc('state');
-
-async function fsGetState(){
-  try{
-    const snap = await progressRef.get();
-    if(snap.exists){
-      const d = snap.data();
-      return {reviewed: new Set(d.reviewed||[]), position: d.position||''};
-    }
-  }catch(e){}
-  return {reviewed: new Set(), position: ''};
-}
-
 function fsWriteDecision(recipe, action){
-  db.collection('decisions').add({
-    name:           recipe.name,
-    decision:       action.toUpperCase(),
-    url:            recipe.url||'',
-    blogger:        recipe.blogger||'',
-    alignmentScore: recipe.alignmentScore||null,
-    protein:        recipe.protein||null,
-    mealType:       recipe.course||'',
-    cuisineStyle:   recipe.cuisine||'',
-    rating:         recipe.rating||'',
-    notes:          recipe.description||'',
-    image:          recipe.image||'',
-    dietTags:       recipe.dietTags||{},
-    complianceNotes:recipe.complianceNotes||'',
-    decidedAt:      firebase.firestore.FieldValue.serverTimestamp(),
+  // Update status on the existing recipe doc (no new decisions collection)
+  if(!recipe._docId) return;
+  db.collection('recipes').doc(recipe._docId).update({
+    status:    action,
+    decidedAt: firebase.firestore.FieldValue.serverTimestamp(),
   }).catch(()=>{});
 }
 
-function fsUpdateProgress(name){
-  progressRef.set({
-    position: name,
-    reviewed: firebase.firestore.FieldValue.arrayUnion(name),
-    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-  }, {merge: true}).catch(()=>{});
-}
-
 // ── Load recipes ──────────────────────────────────────
-let _allRecipes = [];  // full list kept for background reconcile
-
 async function loadRecipes(){
   showLoading('Loading...');
   try{
-    // 1. Fast path — recipes.json (browser-cached after first load) + localStorage
-    const all = await fetch('recipes.json').then(r=>{
-      if(!r.ok) throw new Error('recipes.json not found — run scrape.py first');
-      return r.json();
-    });
-    _allRecipes = all;
+    // Load pending recipes from unified recipes collection
+    const snap = await db.collection('recipes')
+      .where('status', '==', 'pending')
+      .get();
 
-    const lsReviewed = lsGetReviewed();
-    const lsPosition = lsGetPosition();
+    recipes = snap.docs.map(d => ({_docId: d.id, ...d.data()}));
 
-    recipes = all.filter(r => r.name && !lsReviewed.has(r.name));
     if(!recipes.length){ showDone(); return; }
-
-    if(lsPosition){
-      const idx = recipes.findIndex(r => r.name === lsPosition);
-      if(idx > 0) currentIndex = idx;
-    }
-
+    currentIndex = 0;
     hideLoading();
     showMain();
     renderCards();
     preloadImages();
-
-    // 2. Background — reconcile with Firestore without blocking cards
-    fsGetState().then(fsState=>{
-      const merged = new Set([...lsReviewed, ...fsState.reviewed]);
-      if(merged.size === lsReviewed.size) return; // nothing new
-
-      // Firestore knew about more reviewed recipes — update queue silently
-      localStorage.setItem(LS_REVIEWED, JSON.stringify([...merged]));
-      const newRecipes = _allRecipes.filter(r => r.name && !merged.has(r.name));
-
-      // Only re-render if it changes what the user sees ahead
-      const needsUpdate = newRecipes.length < recipes.length - currentIndex;
-      recipes = newRecipes;
-
-      // Advance past any newly-discovered reviewed items
-      if(fsState.position){
-        const idx = recipes.findIndex(r => r.name === fsState.position);
-        if(idx > currentIndex) currentIndex = idx;
-      }
-
-      if(needsUpdate){ renderCards(); preloadImages(); }
-    }).catch(()=>{});
-
   }catch(e){ showError(e.message); }
 }
 
@@ -402,21 +315,17 @@ function decide(action){
   }
   showToast(action==='yes'?'Yes ✓':action==='maybe'?'Maybe':'No');
 
-  // Write to both localStorage and Firestore
-  lsAddReviewed(recipe.name);
-  lsSavePosition(recipe.name);
-  lsSaveDecision(recipe, action);
+  // Update status on the recipe doc in Firestore
   fsWriteDecision(recipe, action);
-  fsUpdateProgress(recipe.name);
 }
 
-// ── Export CSV ────────────────────────────────────────
+// ── Export CSV (session decisions only) ───────────────
 function exportCSV(){
   try{
-    const decisions=JSON.parse(localStorage.getItem(LS_DECISIONS)||'[]');
-    if(!decisions.length){showToast('No decisions yet');return;}
-    const header=['Recipe Name','Decision','Cuisine','Course','URL','Timestamp'];
-    const rows=decisions.map(d=>[d.name,d.decision,d.cuisine,d.course,d.url,d.timestamp].map(v=>'"'+(v||'').replace(/"/g,'""')+'"').join(','));
+    const decided = recipes.slice(0, currentIndex);
+    if(!decided.length){showToast('No decisions yet');return;}
+    const header=['Recipe Name','Status','Cuisine','Course','URL'];
+    const rows=decided.map(d=>[d.name,d.status||'',d.cuisine||'',d.course||'',d.url||''].map(v=>'"'+(v||'').replace(/"/g,'""')+'"').join(','));
     const csv=[header.join(','),...rows].join('\n');
     const blob=new Blob([csv],{type:'text/csv'});
     const a=document.createElement('a');
@@ -444,7 +353,7 @@ function showToast(msg){const t=$('toast');t.textContent=msg;t.classList.add('sh
 $('export-btn').addEventListener('click',exportCSV);
 $('error-retry').addEventListener('click',()=>{$('error-screen').style.display='none';loadRecipes();});
 $('reset-btn').addEventListener('click',()=>{
-  currentIndex=0;counts={yes:0,maybe:0,no:0};
+  counts={yes:0,maybe:0,no:0};
   $('done-screen').classList.remove('visible');
   loadRecipes();
 });

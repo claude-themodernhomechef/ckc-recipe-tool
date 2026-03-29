@@ -176,9 +176,9 @@ tbody td.td-img{width:56px;padding:6px 10px}
   <div class="toolbar">
     <input class="search-box" id="search" type="search" placeholder="Search recipes, blogger, cuisine…">
     <div class="filter-group" id="decision-chips">
-      <button class="chip" data-decision="YES">Yes</button>
-      <button class="chip" data-decision="NO">No</button>
-      <button class="chip" data-decision="MAYBE">Maybe</button>
+      <button class="chip" data-decision="yes">Yes</button>
+      <button class="chip" data-decision="no">No</button>
+      <button class="chip" data-decision="maybe">Maybe</button>
     </div>
     <select class="filter-select" id="filter-cuisine"><option value="">All cuisines</option></select>
     <select class="filter-select" id="filter-course"><option value="">All meal types</option></select>
@@ -226,11 +226,11 @@ tbody td.td-img{width:56px;padding:6px 10px}
           <th data-col="protein">Protein <span class="sort-icon">↕</span></th>
           <th data-col="blogger">Blogger <span class="sort-icon">↕</span></th>
           <th data-col="alignmentScore">Score <span class="sort-icon">↕</span></th>
-          <th data-col="mealType">Meal Type <span class="sort-icon">↕</span></th>
-          <th data-col="cuisineStyle">Cuisine <span class="sort-icon">↕</span></th>
+          <th data-col="course">Meal Type <span class="sort-icon">↕</span></th>
+          <th data-col="cuisine">Cuisine <span class="sort-icon">↕</span></th>
           <th data-col="rating">Rating <span class="sort-icon">↕</span></th>
-          <th data-col="notes" style="min-width:200px">Description <span class="sort-icon">↕</span></th>
-          <th data-col="chefNotes" style="min-width:220px">Chef's Notes <span class="sort-icon">↕</span></th>
+          <th data-col="menuDescription" style="min-width:200px">Menu Description <span class="sort-icon">↕</span></th>
+          <th data-col="chefsNotes" style="min-width:220px">Chef's Notes <span class="sort-icon">↕</span></th>
           <th style="min-width:140px;cursor:default">Native Diet Tags</th>
           <th style="min-width:140px;cursor:default">Modified Diet Tags</th>
           <th data-col="decidedAt">Date <span class="sort-icon">↕</span></th>
@@ -267,7 +267,7 @@ firebase.initializeApp({
 });
 const db = firebase.firestore();
 
-// ── Auth ────────────────────────────────────────────────────
+// ── UI login (username/password gate) ────────────────────────
 const LOGIN_KEY = 'ckc_auth';
 document.getElementById('login-btn').addEventListener('click', doLogin);
 document.getElementById('login-pass').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
@@ -311,18 +311,14 @@ let searchQuery = '';
 
 async function loadCatalog(){
   try{
-    const [snap, recipesJson] = await Promise.all([
-      db.collection('decisions').orderBy('decidedAt','desc').get(),
-      fetch('recipes.json').then(r=>r.json()).catch(()=>[]),
-    ]);
-    const recipeMap = {};
-    recipesJson.forEach(r=>{ recipeMap[r.name] = r; });
+    // Read unified recipes collection — show all decided recipes (yes/no/maybe)
+    const snap = await db.collection('recipes')
+      .where('status', 'in', ['yes', 'no', 'maybe'])
+      .get();
 
     allRows = snap.docs.map(d=>{
       const row = {id:d.id, ...d.data()};
-      const base = recipeMap[row.name] || {};
-      if(!row.dietTags || !Object.keys(row.dietTags).length) row.dietTags = base.dietTags || {};
-      row.dietTags = normalizeDietTags(row.dietTags);
+      row.dietTags = normalizeDietTags(row.dietTags || {});
       return row;
     });
     populateFilters();
@@ -335,8 +331,8 @@ async function loadCatalog(){
 }
 
 function populateFilters(){
-  const cuisines = [...new Set(allRows.map(r=>r.cuisineStyle).filter(Boolean))].sort();
-  const courses  = [...new Set(allRows.map(r=>r.mealType).filter(Boolean))].sort();
+  const cuisines = [...new Set(allRows.map(r=>r.cuisine).filter(Boolean))].sort();
+  const courses  = [...new Set(allRows.map(r=>r.course).filter(Boolean))].sort();
   const bloggers = [...new Set(allRows.map(r=>r.blogger).filter(Boolean))].sort();
   fillSelect('filter-cuisine', cuisines);
   fillSelect('filter-course',  courses);
@@ -353,11 +349,11 @@ function fillSelect(id, opts){
 function getFiltered(){
   const q = searchQuery.toLowerCase();
   return allRows.filter(r=>{
-    if(activeDecisions.size && !activeDecisions.has(r.decision)) return false;
-    if(filterCuisine && r.cuisineStyle !== filterCuisine) return false;
-    if(filterCourse  && r.mealType    !== filterCourse)   return false;
-    if(filterBlogger && r.blogger     !== filterBlogger)  return false;
-    if(filterProtein && r.protein !== filterProtein) return false;
+    if(activeDecisions.size && !activeDecisions.has(r.status)) return false;
+    if(filterCuisine && r.cuisine  !== filterCuisine) return false;
+    if(filterCourse  && r.course   !== filterCourse)  return false;
+    if(filterBlogger && r.blogger  !== filterBlogger) return false;
+    if(filterProtein && r.protein  !== filterProtein) return false;
     if(filterDiet){
       const [code, type] = filterDiet.split(':');
       const dt = r.dietTags || {};
@@ -366,7 +362,7 @@ function getFiltered(){
       if(type === 'native' && !t.native) return false;
       if(!type && !t.native && !t.mod) return false;
     }
-    if(q && ![ r.name, r.blogger, r.cuisineStyle, r.mealType, r.notes, r.rating ]
+    if(q && ![ r.name, r.blogger, r.cuisine, r.course, r.description, r.menuDescription, r.rating ]
               .some(v=>(v||'').toLowerCase().includes(q))) return false;
     return true;
   });
@@ -408,6 +404,7 @@ function renderTable(){
     const score = row.alignmentScore;
     const scoreClass = score>=90?'score-high':score>=70?'score-mid':'';
 
+    const statusUpper = (row.status||'').toUpperCase();
     tr.innerHTML=`
       <td class="td-img">
         ${row.image
@@ -418,20 +415,20 @@ function renderTable(){
         ${row.url ? `<a href="${escHtml(row.url)}" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px solid var(--border)">${escHtml(row.name)}</a>` : escHtml(row.name)}
       </td>
       <td class="decision-cell">
-        <select data-field="decision" data-id="${row.id}" title="Change decision">
-          <option value="YES"  ${row.decision==='YES'  ?'selected':''}>YES</option>
-          <option value="NO"   ${row.decision==='NO'   ?'selected':''}>NO</option>
-          <option value="MAYBE"${row.decision==='MAYBE'?'selected':''}>MAYBE</option>
+        <select data-field="status" data-id="${row.id}" title="Change decision">
+          <option value="yes"  ${row.status==='yes'  ?'selected':''}>YES</option>
+          <option value="no"   ${row.status==='no'   ?'selected':''}>NO</option>
+          <option value="maybe"${row.status==='maybe'?'selected':''}>MAYBE</option>
         </select>
       </td>
       <td style="text-transform:capitalize;white-space:nowrap">${escHtml(row.protein||'')}</td>
       <td>${escHtml(row.blogger||'')}</td>
       <td>${score!=null?`<span class="score-pill ${scoreClass}">${score}</span>`:'—'}</td>
-      <td>${escHtml(row.mealType||'')}</td>
-      <td>${escHtml(row.cuisineStyle||'')}</td>
+      <td>${escHtml(row.course||'')}</td>
+      <td>${escHtml(row.cuisine||'')}</td>
       <td>${escHtml(row.rating||'')}</td>
-      <td><span contenteditable="true" data-field="notes" data-id="${row.id}">${escHtml(row.notes||'')}</span></td>
-      <td><span contenteditable="true" data-field="chefNotes" data-id="${row.id}">${escHtml(row.chefNotes||'')}</span></td>
+      <td><span contenteditable="true" data-field="menuDescription" data-id="${row.id}">${escHtml(row.menuDescription||'')}</span></td>
+      <td><span contenteditable="true" data-field="chefsNotes" data-id="${row.id}">${escHtml(row.chefsNotes||'')}</span></td>
       <td class="td-diet" data-id="${row.id}">${renderDietPills(row.dietTags||{}, 'native')}</td>
       <td class="td-diet" data-id="${row.id}">${renderDietPills(row.dietTags||{}, 'mod')}</td>
       <td style="white-space:nowrap;color:var(--text-muted);font-size:12px">${dateStr}</td>
@@ -451,9 +448,9 @@ function renderTable(){
 }
 
 function updateStats(filtered){
-  const yes   = filtered.filter(r=>r.decision==='YES').length;
-  const no    = filtered.filter(r=>r.decision==='NO').length;
-  const maybe = filtered.filter(r=>r.decision==='MAYBE').length;
+  const yes   = filtered.filter(r=>r.status==='yes').length;
+  const no    = filtered.filter(r=>r.status==='no').length;
+  const maybe = filtered.filter(r=>r.status==='maybe').length;
   document.getElementById('stats-bar').innerHTML=
     `<span><b>${filtered.length}</b> recipes</span>
      <span style="color:var(--green)"><b>${yes}</b> yes</span>
@@ -480,23 +477,23 @@ function attachEditListeners(){
       // Update local cache
       const row = allRows.find(r=>r.id===id);
       if(row) row[field]=val;
-      // Save to Firestore
-      db.collection('decisions').doc(id).update({[field]:val}).catch(()=>{});
+      // Save to unified recipes collection
+      db.collection('recipes').doc(id).update({[field]:val}).catch(()=>{});
       flashSaving();
     });
     el.addEventListener('keydown', e=>{ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); el.blur(); } });
   });
 
   // Decision select dropdowns
-  document.querySelectorAll('select[data-field="decision"]').forEach(sel=>{
+  document.querySelectorAll('select[data-field="status"]').forEach(sel=>{
     sel.addEventListener('change', ()=>{
       const id  = sel.dataset.id;
       const val = sel.value;
       const row = allRows.find(r=>r.id===id);
-      if(row) row.decision=val;
-      db.collection('decisions').doc(id).update({decision:val}).catch(()=>{});
+      if(row) row.status=val;
+      db.collection('recipes').doc(id).update({status:val}).catch(()=>{});
       flashSaving();
-      // Re-render only if a decision filter is active
+      // Re-render only if a status filter is active
       if(activeDecisions.size) renderTable();
     });
   });
@@ -650,10 +647,10 @@ function closeTagEditor(){
   // Remove tags where neither native nor mod is set
   Object.keys(teData).forEach(code=>{ const d = teData[code]; if(d && !d.native && !d.mod) delete teData[code]; });
 
-  // Save to Firestore + local cache
+  // Save to unified recipes collection + local cache
   const row = allRows.find(r=>r.id===teRowId);
   if(row) row.dietTags = {...teData};
-  db.collection('decisions').doc(teRowId).update({dietTags: {...teData}}).catch(()=>{});
+  db.collection('recipes').doc(teRowId).update({dietTags: {...teData}}).catch(()=>{});
   flashSaving();
 
   // Refresh just the diet cell (no full re-render needed)
@@ -697,7 +694,7 @@ document.querySelectorAll('#decision-chips .chip').forEach(chip=>{
   chip.addEventListener('click', ()=>{
     const d = chip.dataset.decision;
     if(activeDecisions.has(d)){ activeDecisions.delete(d); chip.className='chip'; }
-    else{ activeDecisions.add(d); chip.className=`chip active-${d.toLowerCase()}`; }
+    else{ activeDecisions.add(d); chip.className=`chip active-${d}`; }
     renderTable();
   });
 });
