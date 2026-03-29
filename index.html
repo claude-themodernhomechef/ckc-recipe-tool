@@ -167,7 +167,7 @@ async function loadRecipes(){
 
     recipes = snap.docs.map(d => ({_docId: d.id, ...d.data()}));
 
-    if(!recipes.length){ hideLoading(); showDone(); return; }
+    if(!recipes.length){ hideLoading(); showMain(); showEmptyQueue(); return; }
     currentIndex = 0;
     hideLoading();
     showMain();
@@ -341,13 +341,15 @@ function hideMain(){$('header').classList.remove('visible');$('card-area').class
 function showLoading(t){$('loading-text').textContent=t||'Loading...';$('loading').style.display='flex';}
 function hideLoading(){$('loading').style.display='none';}
 function showError(msg){hideLoading();$('error-msg').textContent=msg;$('error-screen').style.display='flex';}
+function showEmptyQueue(){
+  $('card-stack').innerHTML = '<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:2rem;"><div style="font-family:var(--font-display);font-size:2rem;font-weight:500;font-style:italic;color:var(--text-primary)">Queue empty.</div><p style="font-size:13px;color:var(--text-secondary);text-align:center">No new recipes to review.<br>Add some with the scraper.</p></div>';
+}
 function showDone(){
   hideMain();
   $('final-yes').textContent=counts.yes;$('final-maybe').textContent=counts.maybe;$('final-no').textContent=counts.no;
-  const queueEmpty = counts.yes===0 && counts.maybe===0 && counts.no===0;
-  document.querySelector('.done-title').textContent = queueEmpty ? 'Queue empty.' : 'All done.';
-  document.querySelector('.done-subtitle').textContent = queueEmpty ? 'No new recipes to review.' : 'Session complete.';
-  $('reset-btn').textContent = queueEmpty ? 'Check for new recipes' : 'Back to start';
+  document.querySelector('.done-title').textContent = 'All done.';
+  document.querySelector('.done-subtitle').textContent = 'Session complete.';
+  $('reset-btn').textContent = 'Back to start';
   $('done-screen').classList.add('visible');
 }
 let toastTimer;
