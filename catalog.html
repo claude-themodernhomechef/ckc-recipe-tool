@@ -226,6 +226,7 @@ tbody td.td-img{width:56px;padding:6px 10px}
           <th data-col="protein">Protein <span class="sort-icon">↕</span></th>
           <th data-col="blogger">Blogger <span class="sort-icon">↕</span></th>
           <th data-col="alignmentScore">Score <span class="sort-icon">↕</span></th>
+          <th data-col="totalTime">Time <span class="sort-icon">↕</span></th>
           <th data-col="course">Meal Type <span class="sort-icon">↕</span></th>
           <th data-col="cuisine">Cuisine <span class="sort-icon">↕</span></th>
           <th data-col="rating">Rating <span class="sort-icon">↕</span></th>
@@ -424,6 +425,7 @@ function renderTable(){
       <td style="text-transform:capitalize;white-space:nowrap">${escHtml(row.protein||'')}</td>
       <td>${escHtml(row.blogger||'')}</td>
       <td>${score!=null?`<span class="score-pill ${scoreClass}">${score}</span>`:'—'}</td>
+      <td style="white-space:nowrap;color:var(--text-secondary)">${escHtml(row.totalTime||'')}</td>
       <td>${escHtml(row.course||'')}</td>
       <td>${escHtml(row.cuisine||'')}</td>
       <td>${escHtml(row.rating||'')}</td>
