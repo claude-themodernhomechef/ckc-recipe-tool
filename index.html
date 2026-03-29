@@ -344,6 +344,10 @@ function showError(msg){hideLoading();$('error-msg').textContent=msg;$('error-sc
 function showDone(){
   hideMain();
   $('final-yes').textContent=counts.yes;$('final-maybe').textContent=counts.maybe;$('final-no').textContent=counts.no;
+  const queueEmpty = counts.yes===0 && counts.maybe===0 && counts.no===0;
+  document.querySelector('.done-title').textContent = queueEmpty ? 'Queue empty.' : 'All done.';
+  document.querySelector('.done-subtitle').textContent = queueEmpty ? 'No new recipes to review.' : 'Session complete.';
+  $('reset-btn').textContent = queueEmpty ? 'Check for new recipes' : 'Back to start';
   $('done-screen').classList.add('visible');
 }
 let toastTimer;
