@@ -236,14 +236,14 @@ html,body{height:100%;background:var(--bg);color:var(--text-primary);font-family
           <span class="list-label">Shopping List</span>
           <div id="list-actions">
             <button class="action-btn" onclick="toggleChecked()">Hide checked</button>
-            <button class="action-btn" onclick="copyList()">📋 Copy</button>
-            <button class="action-btn" onclick="printList()">🖨 Print</button>
+            <button class="action-btn" onclick="copyList()">Copy</button>
+            <button class="action-btn" onclick="printList()">Print</button>
             <button class="action-btn clear-btn" onclick="uncheckAll()">Uncheck all</button>
           </div>
         </div>
         <div id="shopping-list">
           <div class="list-empty">
-            <div class="list-empty-icon">🛒</div>
+            <div class="list-empty-icon"></div>
             <div class="list-empty-text">Add recipes to your menu<br>to generate a shopping list</div>
           </div>
         </div>
@@ -417,7 +417,7 @@ function renderRecipeList(recipes) {
 
   container.innerHTML = recipes.map(r => {
     const inMenu = inMenuSet.has(r.name);
-    const rating = r.rating && r.rating !== 'NR' ? `⭐ ${r.rating.split(' ')[0]}` : '';
+    const rating = r.rating && r.rating !== 'NR' ? `★ ${r.rating.split(' ')[0]}` : '';
     return `
     <div class="recipe-card ${inMenu ? 'in-menu' : ''}" data-name="${esc(r.name)}">
       <img class="recipe-thumb" src="${esc(r.image||'')}" alt="" loading="lazy" onerror="this.style.background='var(--surface2)';this.src=''">
@@ -518,12 +518,12 @@ function clearMenu() {
 
 // ── 6 grocery categories ──────────────────────────────────────────────────
 const CATEGORIES = [
-  { key: 'protein',           icon: '🥩', label: 'Protein' },
-  { key: 'produce',           icon: '🥬', label: 'Produce' },
-  { key: 'dairy',             icon: '🥛', label: 'Dairy & Eggs' },
-  { key: 'pantry-staples',    icon: '🫙', label: 'Pantry Staples' },
-  { key: 'pantry-consumables',icon: '🥫', label: 'Pantry Consumables' },
-  { key: 'frozen',            icon: '❄️', label: 'Frozen' },
+  { key: 'protein',           icon: '', label: 'Protein' },
+  { key: 'produce',           icon: '', label: 'Produce' },
+  { key: 'dairy',             icon: '', label: 'Dairy & Eggs' },
+  { key: 'pantry-staples',    icon: '', label: 'Pantry Staples' },
+  { key: 'pantry-consumables',icon: '', label: 'Pantry Consumables' },
+  { key: 'frozen',            icon: '', label: 'Frozen' },
 ];
 
 // Comprehensive ingredient → category database (used for fuzzy matching)
@@ -1711,12 +1711,12 @@ function buildShoppingList() {
 
   if(!hasIngredients) {
     html += `<div class="no-data-banner">
-      <span class="icon">ℹ️</span>
+      <span class="icon"></span>
       <p>Ingredient data hasn't been generated yet. Run <code>python3 scrape_ingredients.py</code> once to scrape all recipe pages, then refresh. Recipes from blogs that don't provide JSON-LD (Half Baked Harvest, etc.) will show a link to the original recipe instead.</p>
     </div>`;
   } else if(missingIngredients.length > 0) {
     html += `<div class="no-data-banner">
-      <span class="icon">⚠️</span>
+      <span class="icon"></span>
       <p>${missingIngredients.length} recipe${missingIngredients.length>1?'s':''} don't have ingredient data (blog may use JavaScript rendering): ${missingIngredients.map(m=>`<b>${m.recipe.name}</b>`).join(', ')}. Visit the original recipe for their ingredients.</p>
     </div>`;
   }
@@ -1783,7 +1783,7 @@ function buildShoppingList() {
   // Recipes with no ingredient data — show links
   if(missingIngredients.length > 0 && hasIngredients) {
     html += `<div class="cat-section">
-      <div class="cat-header"><span class="cat-icon">🔗</span><span class="cat-name">Visit Original Recipes</span></div>
+      <div class="cat-header"><span class="cat-icon"></span><span class="cat-name">Visit Original Recipes</span></div>
       <div class="cat-items">`;
     for(const {recipe} of missingIngredients) {
       if(recipe.url) {
@@ -1839,7 +1839,7 @@ function copyList() {
   for(const cat of CATEGORIES) {
     const items = [...aggregated.values()].filter(e => (e.category === cat.key) || (cat.key === 'pantry-staples' && !CATEGORIES.find(c=>c.key===e.category))).sort((a,b)=>a.name.localeCompare(b.name));
     if(items.length === 0) continue;
-    lines.push(`${cat.icon} ${cat.label.toUpperCase()}`);
+    lines.push(`${cat.label.toUpperCase()}`);
     for(const entry of items) {
       const qtyParts = Object.entries(entry.unitQtys).filter(([u,q])=>q>0).map(([u,q])=>u==='count'?fmtQty(q,''):fmtQty(q,u));
       lines.push(`  □ ${qtyParts.join(' + ')} ${capFirst(entry.name)}`);
