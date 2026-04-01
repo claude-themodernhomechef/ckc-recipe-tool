@@ -330,10 +330,54 @@ async function initApp() {
 }
 
 // ─────────────────────────────────────────────
+// Protein tag normalization
+// ─────────────────────────────────────────────
+const PROTEIN_MAP = {
+  // Chicken
+  'chicken':'Chicken',
+  // Beef (generic "meat" tag also maps here — exceptions flagged in protein_tag_review.csv)
+  'beef':'Beef','steak':'Beef','meat':'Beef',
+  // Pork
+  'pork':'Pork',
+  // Turkey
+  'turkey':'Turkey',
+  // Lamb
+  'lamb':'Lamb',
+  // Fish (fin fish)
+  'fish':'Fish','salmon':'Fish','tuna':'Fish','cod':'Fish','halibut':'Fish',
+  'tilapia':'Fish','trout':'Fish','mahi':'Fish','mahi mahi':'Fish',
+  'swordfish':'Fish','branzino':'Fish','bass':'Fish','snapper':'Fish',
+  'barramundi':'Fish','flounder':'Fish','sole':'Fish','whitefish':'Fish',
+  'white fish':'Fish','mackerel':'Fish',
+  // Seafood (shellfish)
+  'seafood':'Seafood','shrimp':'Seafood','prawn':'Seafood','prawns':'Seafood',
+  'scallop':'Seafood','scallops':'Seafood','lobster':'Seafood','crab':'Seafood',
+  'mussels':'Seafood','mussel':'Seafood','clam':'Seafood','clams':'Seafood',
+  'oyster':'Seafood','oysters':'Seafood','squid':'Seafood','octopus':'Seafood',
+  // Egg
+  'egg':'Egg','eggs':'Egg',
+  // Grain (formerly Pasta)
+  'pasta':'Grain','grain':'Grain','grains':'Grain','rice':'Grain',
+  'noodle':'Grain','noodles':'Grain',
+  // Vegetables
+  'vegetable':'Vegetables','vegetables':'Vegetables','veggie':'Vegetables',
+  'veggies':'Vegetables','vegetarian':'Vegetables','vegan':'Vegetables',
+  'salad':'Vegetables','legumes':'Vegetables',
+  // Tofu
+  'tofu':'Tofu',
+};
+
+function normalizeProtein(raw) {
+  if (!raw) return '';
+  const key = raw.trim().toLowerCase();
+  return PROTEIN_MAP[key] || (raw.charAt(0).toUpperCase() + raw.slice(1));
+}
+
+// ─────────────────────────────────────────────
 // Filters
 // ─────────────────────────────────────────────
 function populateFilters() {
-  const proteins = [...new Set(allRecipes.map(r => r.protein).filter(Boolean))].sort();
+  const proteins = [...new Set(allRecipes.map(r => normalizeProtein(r.protein)).filter(Boolean))].sort();
   const cuisines = [...new Set(allRecipes.map(r => r.cuisine).filter(Boolean))].sort();
 
   const pSel = document.getElementById('filter-protein');
@@ -351,7 +395,7 @@ function filterRecipes() {
 
   const filtered = allRecipes.filter(r => {
     if(q && !r.name.toLowerCase().includes(q) && !((r.blogger||'').toLowerCase().includes(q))) return false;
-    if(prot && r.protein !== prot) return false;
+    if(prot && normalizeProtein(r.protein) !== prot) return false;
     if(cui && r.cuisine !== cui) return false;
     if(diet) {
       const tag = r.dietTags && r.dietTags[diet];
@@ -380,7 +424,7 @@ function renderRecipeList(recipes) {
       <div class="rc-info">
         <div class="rc-name">${esc(r.name)}</div>
         <div class="rc-meta">
-          <span class="rc-protein">${esc(r.protein||'')}</span>
+          <span class="rc-protein">${esc(normalizeProtein(r.protein))}</span>
           <span>${esc(r.blogger||'')}</span>
           ${rating ? `<span>${rating}</span>` : ''}
         </div>
@@ -432,7 +476,7 @@ function updateMenuStrip() {
       <div class="menu-card-name">${esc(m.recipe.name)}</div>
       <div class="menu-servings">
         <button class="srv-btn" onclick="changeServings(${i},-1)">−</button>
-        <span class="srv-label">${m.servings}× servings</span>
+        <span class="srv-label">${m.servings}×</span>
         <button class="srv-btn" onclick="changeServings(${i},1)">+</button>
       </div>
     </div>
@@ -448,7 +492,10 @@ function removeFromMenu(idx) {
 }
 
 function changeServings(idx, delta) {
-  menuItems[idx].servings = Math.max(1, Math.min(8, menuItems[idx].servings + delta));
+  const steps = [0.5, 1, 2, 3, 4, 5];
+  const cur = steps.indexOf(menuItems[idx].servings);
+  const next = Math.max(0, Math.min(steps.length - 1, cur + delta));
+  menuItems[idx].servings = steps[next];
   saveMenu();
   buildShoppingList();
   // Update just the label
@@ -1225,26 +1272,108 @@ const UNITS = {
   'pints':'pt','pint':'pt','pt':'pt',
 };
 const STOP_WORDS = [
-  // existing
   'freshly','ground','dried','fresh','frozen','large','medium','small','whole',
-  'boneless','skinless','extra','firm','soft','ripe','packed','heaping','leveled',
+  'extra','firm','soft','ripe','packed','heaping','leveled',
   'rounded','about','approximately','roughly','chopped','diced','minced','sliced',
   'grated','shredded','peeled','crushed','halved','quartered','optional','or more',
   'to taste','divided','room temperature','softened','melted','cooled','drained','rinsed',
-  // prep methods
   'torn','trimmed','julienned','cubed','zested','deveined','deboned','pitted','cored',
   'seeded','deseeded','blanched','seared','caramelized','roasted','toasted','grilled',
   'charred','smoked','pickled','marinated','brined','cured',
-  // size/shape
   'thin','thick','fine','finely','coarsely','thinly','bite-sized','bite-size',
-  // temperature/state
   'warm','hot','cold','chilled','thawed',
-  // qualifiers
   'good','quality','best','organic','store-bought','homemade','low-sodium',
   'unsweetened','reduced-fat','full-fat','light','dark','raw','uncooked','cooked',
   'leftover','day-old','for garnish','for serving','for topping','as needed','to coat',
-  'plus more','garnish','serving',
+  'plus more','garnish','serving','and',
 ];
+// Note: 'boneless' and 'skinless' removed — keep descriptors in name per style guide
+
+// Piece-count words: count is the scalable number; per-piece weight stays as descriptor
+const PIECE_WORDS = new Set([
+  'fillet','fillets','thigh','thighs','breast','breasts','steak','steaks',
+  'chop','chops','leg','legs','wing','wings','drumstick','drumsticks',
+  'cutlet','cutlets','rack','rib','ribs','loin','loins','patty','patties',
+  'burger','burgers','sausage','sausages','link','links',
+]);
+
+// Vague quantities — not scalable, no yellow number
+const VAGUE_WORDS = [
+  'few','handful','pinch','dash','splash','sprinkle','drizzle',
+  'to taste','as needed','some','squeeze','touch','knob',
+];
+
+// Written-out numbers → numeric
+const TEXT_NUMBERS = {
+  'one':1,'two':2,'three':3,'four':4,'five':5,
+  'six':6,'seven':7,'eight':8,'nine':9,'ten':10,'half':0.5,
+};
+
+// Standard fractions for display (1/4, 1/3, 1/2, 2/3, 3/4)
+const STD_FRACS = [
+  {val:0.25,sym:'¼'},{val:1/3,sym:'⅓'},{val:0.5,sym:'½'},
+  {val:2/3,sym:'⅔'},{val:0.75,sym:'¾'},
+];
+
+// Round decimal fraction to nearest standard fraction if within 8%
+function nearestFrac(frac) {
+  let best = null, bestDiff = Infinity;
+  for (const f of STD_FRACS) {
+    const d = Math.abs(frac - f.val);
+    if (d < bestDiff) { bestDiff = d; best = f; }
+  }
+  return (best && frac > 0 && bestDiff / frac <= 0.08) ? best : null;
+}
+
+// Format a number using standard fractions (no decimals)
+function fmtNum(n) {
+  if (!n) return '0';
+  const whole = Math.floor(n);
+  const frac = parseFloat((n - whole).toFixed(6));
+  if (frac < 0.005) return String(whole);
+  const f = nearestFrac(frac);
+  if (f) return whole > 0 ? `${whole} ${f.sym}` : f.sym;
+  const dec = n.toFixed(1);
+  return dec.endsWith('.0') ? String(Math.round(n)) : dec;
+}
+
+// oz → lb when it cleanly hits a standard fraction within 8%
+function normalizeWeight(qty, unit) {
+  if (unit === 'oz' && qty >= 16) {
+    const lbs = qty / 16;
+    const whole = Math.floor(lbs);
+    const frac = parseFloat((lbs - whole).toFixed(6));
+    if (frac < 0.005) return { qty: whole, unit: 'lb' };
+    const f = nearestFrac(frac);
+    if (f) return { qty: whole + f.val, unit: 'lb' };
+  }
+  return { qty, unit };
+}
+
+// tsp → tbsp → cup compound display when scaling
+function normalizeVolume(qty, unit) {
+  if (unit === 'tsp' && qty >= 3) {
+    const tbsps = Math.floor(qty / 3);
+    const remTsp = Math.round((qty - tbsps * 3) * 10) / 10;
+    if (remTsp < 0.05) return [{ qty: tbsps, unit: 'tbsp' }];
+    return [{ qty: tbsps, unit: 'tbsp' }, { qty: remTsp, unit: 'tsp' }];
+  }
+  if (unit === 'tbsp' && qty >= 16) {
+    const cups = Math.floor(qty / 16);
+    const remTbsp = Math.round((qty - cups * 16) * 10) / 10;
+    if (remTbsp < 0.05) return [{ qty: cups, unit: 'cup' }];
+    return [{ qty: cups, unit: 'cup' }, { qty: remTbsp, unit: 'tbsp' }];
+  }
+  // 4+ tbsp → try expressing as clean cup fraction (4tbsp=¼cup, 8tbsp=½cup, etc.)
+  if (unit === 'tbsp' && qty >= 4) {
+    const cupFrac = qty / 16;
+    if (cupFrac < 1) {
+      const f = nearestFrac(cupFrac);
+      if (f && Math.abs(cupFrac - f.val) / cupFrac <= 0.04) return [{ qty: f.val, unit: 'cup' }];
+    }
+  }
+  return [{ qty, unit }];
+}
 
 // Synonym/alias map — collapses variants into one canonical shopping name
 const INGREDIENT_ALIASES = {
@@ -1267,7 +1396,7 @@ const INGREDIENT_ALIASES = {
   'garlic':'garlic cloves', // bare "garlic" in recipes almost always means cloves
   // Citrus — keep juice/zest separate so buyer knows what form they need
   'lemon juice':'lemon juice','lime juice':'lime juice','orange juice':'orange juice',
-  'lemon zest':'lemon','lime zest':'lime','orange zest':'orange',
+  'lemon zest':'lemon zest','lime zest':'lime zest','orange zest':'orange zest',
   // Pepper (the spice) — consolidate all to "black pepper"
   'cracked pepper':'black pepper','cracked black pepper':'black pepper',
   'ground pepper':'black pepper','ground black pepper':'black pepper',
@@ -1324,34 +1453,101 @@ function parseQty(str) {
 function parseIngredient(raw) {
   if(!raw) return { qty:0, unit:'', name:raw, category:'pantry', raw };
   let str = raw;
-  // Normalize fractions
+
+  // 1. Normalize unicode fractions
   for(const [k,v] of Object.entries(FRACTION_MAP)) str = str.split(k).join(v);
   str = str.trim();
 
-  // Extract quantity
-  let qty = 0;
-  const qtyPat = /^((?:\d+\s+)?\d+\/\d+|\d+\.?\d*(?:\s*[-–]\s*\d+\.?\d*)?)/;
-  const qtyM = str.match(qtyPat);
-  if(qtyM) {
-    qty = parseQty(qtyM[1]);
-    str = str.slice(qtyM[0].length).trim();
-  }
+  // 2. Strip long cooking notes in parens (15+ chars) — keep short ones like "(6 oz)" or "(optional)"
+  str = str.replace(/\([^)]{15,}\)/g, '').replace(/\(Note\s*\d*\)/gi, '').trim();
 
-  // Extract unit (try longest match first)
-  let unit = '';
-  const unitKeys = Object.keys(UNITS).sort((a,b)=>b.length-a.length);
-  for(const uk of unitKeys) {
-    const pat = new RegExp('^'+uk.replace('.','\\.')+'(?:\\b|\\s|,|$)','i');
-    if(pat.test(str)) {
-      unit = UNITS[uk];
-      str = str.slice(uk.length).trim();
-      if(str.startsWith('of ')) str = str.slice(3).trim();
-      break;
+  // 3. Vague quantities — return early with no scalable number
+  const strLower = str.toLowerCase();
+  for (const vague of VAGUE_WORDS) {
+    if (strLower.startsWith(vague)) {
+      const vagueNameStr = str.slice(vague.length).replace(/^[,\s:]+/, '').trim();
+      const vagueName = vagueNameStr.replace(/\(.*?\)/g,'').replace(/,.*$/,'').trim().toLowerCase();
+      return { qty: 0, unit: '', name: vagueName || strLower, category: categorizeIngredient(vagueName || strLower), raw };
     }
   }
 
-  // Look up category from pre-stripped name (handles "ground ginger" → pantry,
-  // "fresh ginger" → produce before stop words strip those qualifier signals)
+  // 4. Text numbers: "One lemon" → qty=1, "Half cup" → qty=0.5
+  const textNumM = str.match(/^(one|two|three|four|five|six|seven|eight|nine|ten|half)\s+/i);
+  let qty = 0;
+  if (textNumM) {
+    qty = TEXT_NUMBERS[textNumM[1].toLowerCase()] || 0;
+    str = str.slice(textNumM[0].length).trim();
+  }
+
+  // 5. "N x" or "N ×" piece-count prefix (e.g. "4 x 6oz salmon fillets")
+  let pieceCount = 0;
+  if (!qty) {
+    const piecePrefixM = str.match(/^(\d+)\s*[xX×]\s+/);
+    if (piecePrefixM) {
+      pieceCount = parseInt(piecePrefixM[1]);
+      str = str.slice(piecePrefixM[0].length).trim();
+    }
+  }
+
+  // 6. Strip dual metric/imperial — keep only the imperial part
+  // "200g / 7 oz" → "7 oz", "180g/6 oz" → "6 oz"
+  str = str.replace(/\d+\.?\d*\s*(?:g|kg|ml|l)\s*[\/|]\s*/gi, '');
+
+  // 7. Pre-normalize "zest/juice/peel of/from N ingredient" → "N ingredient zest/juice/peel"
+  //    Handles both digits and written-out numbers: "Zest of one lemon" → "1 lemon zest"
+  str = str.replace(/^(zest|juice|peel|rind)\s+(?:of|from)\s+(\d+\.?\d*|one|two|three|four|five|six|seven|eight|nine|ten|half|a|an)\s+(.+)$/i,
+    (_, prep, num, ing) => {
+      const n = TEXT_NUMBERS[num.toLowerCase()] != null ? TEXT_NUMBERS[num.toLowerCase()] : num;
+      return `${n} ${ing.trim()} ${prep.toLowerCase()}`;
+    });
+
+  // 8. Extract leading quantity (if not already set by text number)
+  const qtyPat = /^((?:\d+\s+)?\d+\/\d+|\d+\.?\d*(?:\s*[-–]\s*\d+\.?\d*)?)/;
+  if (!qty) {
+    const qtyM = str.match(qtyPat);
+    if(qtyM) { qty = parseQty(qtyM[1]); str = str.slice(qtyM[0].length).trim(); }
+  }
+
+  // 9. Compact inline measure right after a leading count — "1 6oz. can" → 6oz
+  // Only when no unit has been identified yet (unit is still '')
+  let unit = '';
+  const compactMeasurePat = /^(\d+\.?\d*)\s*(oz\.?|fl oz|lb\.?|lbs?\.?|g|kg|ml|l)\b/i;
+  const compactM = !unit ? str.match(compactMeasurePat) : null;
+  if(compactM) {
+    const cQty = parseQty(compactM[1]);
+    const cUnitRaw = compactM[2].replace(/\.$/, '').trim().toLowerCase();
+    unit = UNITS[cUnitRaw] || cUnitRaw;
+    qty = (qty || 1) * cQty;
+    str = str.slice(compactM[0].length).replace(/^[.\s]+/, '').trim();
+  }
+
+  // 10. Extract unit (try longest match first)
+  if (!unit) {
+    const unitKeys = Object.keys(UNITS).sort((a,b)=>b.length-a.length);
+    for(const uk of unitKeys) {
+      const pat = new RegExp('^'+uk.replace(/\./g,'\\.')+'(?:\\b|\\s|,|\\.|$)','i');
+      if(pat.test(str)) {
+        unit = UNITS[uk];
+        str = str.slice(uk.length).replace(/^[.\s]+/, '').trim();
+        if(str.startsWith('of ')) str = str.slice(3).trim();
+        break;
+      }
+    }
+  }
+
+  // 11. Strip duplicate qty+unit left in str after extraction
+  //     e.g. "1 1/2 lb 1.5 lb skinless salmon" → after extracting "1 1/2 lb", strip "1.5 lb"
+  if (unit) {
+    str = str.replace(/^\d+\.?\d*\s*(?:oz\.?|lbs?\.?|lb\.?|g|kg|ml|l|cups?|tbsps?|tsps?)\s*/i, '').trim();
+  }
+
+  // 12. Convert metric units to imperial
+  if (unit === 'g')  { qty = Math.round(qty * 0.03527 * 100) / 100; unit = 'oz'; }
+  if (unit === 'kg') { qty = Math.round(qty * 2.20462 * 100) / 100; unit = 'lb'; }
+  if (unit === 'ml') { qty = Math.round(qty * 0.033814 * 100) / 100; unit = 'oz'; }
+  if (unit === 'l')  { qty = Math.round(qty * 33.814 * 100) / 100; unit = 'oz'; }
+
+  // 13. Category lookup from pre-cleaned name
   const preCleanLower = str.toLowerCase()
     .replace(/\(.*?\)/g,'').replace(/\).*$/,'').replace(/,.*$/,'').trim();
   let forcedCategory = INGREDIENT_DB[preCleanLower] || null;
@@ -1363,14 +1559,25 @@ function parseIngredient(raw) {
     }
   }
 
-  // Clean name: remove parentheticals, trailing descriptors
+  // 14. Smart comma: if everything after the first comma is stop words → strip;
+  //     otherwise replace comma with space to preserve descriptors like "skinless, boneless"
+  const commaIdx = str.indexOf(',');
+  if (commaIdx >= 0) {
+    const afterComma = str.slice(commaIdx + 1).trim();
+    const afterWords = afterComma.split(/\s+/).filter(w => w.length > 0);
+    const allStop = afterWords.length > 0 && afterWords.every(w =>
+      STOP_WORDS.includes(w.toLowerCase().replace(/[.,!?]$/, ''))
+    );
+    str = allStop ? str.slice(0, commaIdx).trim() : str.replace(/,\s*/g, ' ').trim();
+  }
+
+  // 15. Clean name
   let name = str
     .replace(/\(.*?\)/g,'')
     .replace(/\).*$/,'')
-    .replace(/,.*$/,'')
-    // Handle "juice of 1 lemon" → "lemon juice"
-    .replace(/^juice of\s+\d*\s*/i, '')
-    .replace(/^zest of\s+\d*\s*/i, '')
+    // Fallback for "juice/zest of lemon" with no number
+    .replace(/^juice (?:of|from)\s+\d*\s*/i, '')
+    .replace(/^zest (?:of|from)\s+\d*\s*/i, '')
     .split(/\s+/)
     .filter(w => !STOP_WORDS.includes(w.toLowerCase()))
     .join(' ')
@@ -1378,41 +1585,87 @@ function parseIngredient(raw) {
     .replace(/\s+/g,' ')
     .toLowerCase();
 
-  // Remove leading "of" / articles
   name = name.replace(/^(of|a|an|the)\s+/, '');
 
-  // Handle "X or Y" alternatives — keep only the first option so items combine
-  // e.g. "sour cream or creme fraiche" → "sour cream"
   if (name.includes(' or ')) {
     const parts = name.split(' or ');
-    // Pick whichever part is in the DB; fall back to first part
     name = parts.find(p => INGREDIENT_DB[p.trim()]) || parts[0].trim();
   }
 
-  // Special cases BEFORE alias map — unit+name combos that need remapping
+  // 16. Apply piece-count logic: if "N x" prefix was found, count is scalable; per-piece weight → descriptor
+  if (pieceCount > 0) {
+    const nameWords = name.split(' ');
+    if (nameWords.some(w => PIECE_WORDS.has(w))) {
+      const perPiece = (qty && unit) ? `${fmtNum(qty)} ${unit} ` : '';
+      const category2 = forcedCategory || categorizeIngredient(name || raw);
+      name = (perPiece + name).trim();
+      return { qty: pieceCount, unit: '', name: INGREDIENT_ALIASES[name] || name, category: category2, raw };
+    }
+  }
+
+  // 17. Special cases & alias map
   if (unit === 'clove' && (name === 'garlic' || name === 'garlic cloves')) { name = 'garlic cloves'; unit = ''; }
   if (unit === 'head'  && name === 'garlic') { name = 'garlic (whole head)'; unit = ''; }
-
-  // Apply alias map — collapse variants to canonical name
   name = INGREDIENT_ALIASES[name] || name;
 
-  // If forcedCategory was set (holds pre-clean string), resolve to pantry sub-category now
   const category = forcedCategory || categorizeIngredient(name || raw);
   return { qty, unit, name: name || raw.toLowerCase(), category, raw };
 }
 
-function fmtQty(qty, unit) {
+// category param: pass entry.category so oz→lb only fires for solid/protein items
+function fmtQty(qty, unit, category) {
   if(!qty) return unit || '';
-  const fmtNum = n => {
-    if(n === Math.floor(n)) return String(n);
-    const frac = { 0.5:'½', 0.25:'¼', 0.75:'¾', 0.333:'⅓', 0.667:'⅔', 0.125:'⅛' };
-    const whole = Math.floor(n), rem = parseFloat((n - whole).toFixed(3));
-    const fr = frac[rem];
-    if(fr) return whole > 0 ? `${whole} ${fr}` : fr;
-    return n.toFixed(1);
-  };
+  // oz → lb only for solid items (protein, produce) — not liquids like broth, oil, cream
+  const solidCategories = new Set(['protein','produce','meat','seafood','frozen']);
+  if (unit === 'lb' || (unit === 'oz' && solidCategories.has(category))) {
+    const n = normalizeWeight(qty, unit);
+    return `${fmtNum(n.qty)} ${n.unit}`;
+  }
+  // Volume: compound display (1 cup + 2 tbsp)
+  if (unit === 'tsp' || unit === 'tbsp') {
+    const parts = normalizeVolume(qty, unit);
+    return parts.map(p => `${fmtNum(p.qty)} ${p.unit}`).join(' + ');
+  }
   return unit ? `${fmtNum(qty)} ${unit}` : fmtNum(qty);
 }
+
+// ─────────────────────────────────────────────
+// Ingredient audit — call auditIngredients() from browser console
+// Downloads a CSV of ingredients the parser flagged as uncertain
+// ─────────────────────────────────────────────
+function auditIngredients() {
+  const issues = [];
+  for (const recipe of allRecipes) {
+    const ings = ingredients[recipe.name] || [];
+    for (const raw of ings) {
+      const p = parseIngredient(raw);
+      const flags = [];
+      if (/\d/.test(p.name)) flags.push('number in name');
+      if (/\b(?:g|kg|ml)\b/.test(p.name)) flags.push('metric in name');
+      if (p.name.length < 2 && raw.length > 3) flags.push('name too short');
+      if (p.qty && !p.unit && p.name && !p.name.split(' ').some(w => PIECE_WORDS.has(w))) {
+        flags.push('qty without unit');
+      }
+      if (flags.length) {
+        issues.push({ recipe: recipe.name, raw, qty: p.qty, unit: p.unit, name: p.name, flags: flags.join('; ') });
+      }
+    }
+  }
+  const header = 'Recipe,Raw Ingredient,Parsed Qty,Parsed Unit,Parsed Name,Issues';
+  const rows = issues.map(i =>
+    [i.recipe, i.raw, i.qty, i.unit, i.name, i.flags]
+    .map(c => `"${String(c||'').replace(/"/g,'""')}"`)
+    .join(',')
+  );
+  const csv = [header, ...rows].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'ingredient_audit.csv'; a.click();
+  URL.revokeObjectURL(url);
+  console.log(`Audit: ${issues.length} flagged ingredients`);
+  return issues.length;
+}
+window.auditIngredients = auditIngredients;
 
 // Aggregate ingredients from all menu recipes
 function aggregateIngredients() {
@@ -1507,7 +1760,7 @@ function buildShoppingList() {
       // Format quantities (may have multiple units)
       const qtyParts = Object.entries(entry.unitQtys)
         .filter(([u, q]) => q > 0)
-        .map(([u, q]) => u === 'count' ? fmtQty(q,'') : fmtQty(q, u));
+        .map(([u, q]) => u === 'count' ? fmtQty(q,'') : fmtQty(q, u, entry.category));
       const qtyStr = qtyParts.join(' + ');
 
       const sources = entry.sources.length > 1
