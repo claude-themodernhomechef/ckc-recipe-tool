@@ -639,6 +639,7 @@ const INGREDIENT_DB = {
   'frozen peas':'frozen',
   'fuji apple':'produce',
   'garlic clove':'produce',
+  'garlic cloves':'produce',
   'garlic head':'produce',
   'garlic powder':'pantry-staples',
   'ginger':'pantry-staples',
@@ -1465,7 +1466,7 @@ function parseIngredient(raw) {
     .replace(/&frac14;/g, '¼').replace(/&frac12;/g, '½').replace(/&frac34;/g, '¾')
     .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
     .replace(/&#\d+;/g, '').replace(/&[a-z]+;/gi, '')
-    .replace(/\s*\*+\s*$/g, '')          // trailing asterisks (footnotes)
+    .replace(/\*/g, '')                   // all asterisks (footnote markers)
     .replace(/\s*\(\*[^)]*\)/g, '')      // (*Note 1) style inline footnotes
     .trim();
 
@@ -1474,7 +1475,7 @@ function parseIngredient(raw) {
   str = str.trim();
 
   // 2. Strip long cooking notes in parens (15+ chars) — keep short ones like "(6 oz)" or "(optional)"
-  str = str.replace(/\([^)]{15,}\)/g, '').replace(/\(Note\s*\d*\)/gi, '').trim();
+  str = str.replace(/\(\([^)]*\)\)/g, '').replace(/\([^)]{15,}\)/g, '').replace(/\(Note\s*\d*\)/gi, '').trim();
 
   // 3. Vague quantities — return early with no scalable number
   const strLower = str.toLowerCase();
@@ -1625,6 +1626,7 @@ function parseIngredient(raw) {
   }
 
   // 17. Special cases & alias map
+  if (unit === 'clove' && !name) name = 'garlic'; // "2 cloves ((optional))" → garlic cloves
   if (unit === 'clove' && (name === 'garlic' || name === 'garlic cloves')) { name = 'garlic cloves'; unit = ''; }
   if (unit === 'head'  && name === 'garlic') { name = 'garlic (whole head)'; unit = ''; }
   // Garlic measured in tsp/tbsp (minced) → convert to clove-equivalent so it aggregates cleanly
@@ -1786,9 +1788,11 @@ function buildShoppingList() {
       const isChecked = checkedItems.has(itemKey);
       if(hideChecked && isChecked) continue;
 
-      // Format quantities (may have multiple units)
+      // Format quantities (may have multiple units) — largest unit first
+      const UNIT_DISPLAY_ORDER = {count:0,lb:1,oz:2,cup:3,tbsp:4,tsp:5,qt:6,pt:7,clove:8,head:9,inch:10,dash:11};
       const qtyParts = Object.entries(entry.unitQtys)
         .filter(([u, q]) => q > 0)
+        .sort(([a],[b]) => (UNIT_DISPLAY_ORDER[a]??99) - (UNIT_DISPLAY_ORDER[b]??99))
         .map(([u, q]) => u === 'count' ? fmtQty(q,'') : fmtQty(q, u, entry.category));
       const qtyStr = qtyParts.join(' + ');
 
