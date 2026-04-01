@@ -1337,7 +1337,7 @@ function fmtNum(n) {
   return dec.endsWith('.0') ? String(Math.round(n)) : dec;
 }
 
-// oz → lb when it cleanly hits a standard fraction within 8%
+// oz → lb when >= 16 oz; use clean fraction if within 8%, otherwise decimal
 function normalizeWeight(qty, unit) {
   if (unit === 'oz' && qty >= 16) {
     const lbs = qty / 16;
@@ -1346,6 +1346,7 @@ function normalizeWeight(qty, unit) {
     if (frac < 0.005) return { qty: whole, unit: 'lb' };
     const f = nearestFrac(frac);
     if (f) return { qty: whole + f.val, unit: 'lb' };
+    return { qty: Math.round(lbs * 10) / 10, unit: 'lb' };
   }
   return { qty, unit };
 }
@@ -1454,6 +1455,20 @@ function parseIngredient(raw) {
   if(!raw) return { qty:0, unit:'', name:raw, category:'pantry', raw };
   let str = raw;
 
+  // 0. Decode HTML entities and strip footnote markers
+  str = str
+    .replace(/\xa0/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&#(?:39|8217|8216|x27);|&apos;/gi, "'")
+    .replace(/&#(?:8220|8221|8243);|&quot;/gi, '"')
+    .replace(/&#8211;/g, '-').replace(/&#8212;/g, ' - ')
+    .replace(/&frac14;/g, '¼').replace(/&frac12;/g, '½').replace(/&frac34;/g, '¾')
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&#\d+;/g, '').replace(/&[a-z]+;/gi, '')
+    .replace(/\s*\*+\s*$/g, '')          // trailing asterisks (footnotes)
+    .replace(/\s*\(\*[^)]*\)/g, '')      // (*Note 1) style inline footnotes
+    .trim();
+
   // 1. Normalize unicode fractions
   for(const [k,v] of Object.entries(FRACTION_MAP)) str = str.split(k).join(v);
   str = str.trim();
@@ -1494,8 +1509,8 @@ function parseIngredient(raw) {
   str = str.replace(/\d+\.?\d*\s*(?:g|kg|ml|l)\s*[\/|]\s*/gi, '');
 
   // 7. Pre-normalize "zest/juice/peel of/from N ingredient" → "N ingredient zest/juice/peel"
-  //    Handles both digits and written-out numbers: "Zest of one lemon" → "1 lemon zest"
-  str = str.replace(/^(zest|juice|peel|rind)\s+(?:of|from)\s+(\d+\.?\d*|one|two|three|four|five|six|seven|eight|nine|ten|half|a|an)\s+(.+)$/i,
+  //    Handles whole numbers, decimals, fractions (1/2), mixed numbers (1 1/2), and words
+  str = str.replace(/^(zest|juice|peel|rind)\s+(?:of|from)\s+((?:\d+\s+)?\d+\/\d+|\d+\.?\d*|one|two|three|four|five|six|seven|eight|nine|ten|half|a|an)\s+(.+)$/i,
     (_, prep, num, ing) => {
       const n = TEXT_NUMBERS[num.toLowerCase()] != null ? TEXT_NUMBERS[num.toLowerCase()] : num;
       return `${n} ${ing.trim()} ${prep.toLowerCase()}`;
@@ -1506,6 +1521,12 @@ function parseIngredient(raw) {
   if (!qty) {
     const qtyM = str.match(qtyPat);
     if(qtyM) { qty = parseQty(qtyM[1]); str = str.slice(qtyM[0].length).trim(); }
+  }
+
+  // 8b. Strip "to N [unit]" range upper-bound — use the lower value already captured
+  //     e.g. "1/2 to 1 teaspoon" → "teaspoon", "1 to 2 green chili" → "green chili"
+  if (qty > 0) {
+    str = str.replace(/^to\s+(?:(?:\d+\s+)?\d+(?:\/\d+)?|\d+\.?\d*)\s*/i, '').trim();
   }
 
   // 9. Compact inline measure right after a leading count — "1 6oz. can" → 6oz
@@ -1575,9 +1596,9 @@ function parseIngredient(raw) {
   let name = str
     .replace(/\(.*?\)/g,'')
     .replace(/\).*$/,'')
-    // Fallback for "juice/zest of lemon" with no number
-    .replace(/^juice (?:of|from)\s+\d*\s*/i, '')
-    .replace(/^zest (?:of|from)\s+\d*\s*/i, '')
+    // Fallback for "juice/zest of lemon" with no number, or leftover after step 7 failed
+    .replace(/^juice (?:of|from)\s+(?:(?:\d+\s+)?\d+(?:\/\d+)?|\d+\.?\d*)?\s*/i, '')
+    .replace(/^zest (?:of|from)\s+(?:(?:\d+\s+)?\d+(?:\/\d+)?|\d+\.?\d*)?\s*/i, '')
     .split(/\s+/)
     .filter(w => !STOP_WORDS.includes(w.toLowerCase()))
     .join(' ')
@@ -1606,6 +1627,14 @@ function parseIngredient(raw) {
   // 17. Special cases & alias map
   if (unit === 'clove' && (name === 'garlic' || name === 'garlic cloves')) { name = 'garlic cloves'; unit = ''; }
   if (unit === 'head'  && name === 'garlic') { name = 'garlic (whole head)'; unit = ''; }
+  // Garlic measured in tsp/tbsp (minced) → convert to clove-equivalent so it aggregates cleanly
+  if ((unit === 'tsp' || unit === 'tbsp') && (name === 'garlic' || name === 'garlic cloves')) {
+    qty = Math.round((unit === 'tbsp' ? qty * 3 : qty) * 10) / 10;
+    unit = '';
+    name = 'garlic cloves';
+  }
+  // Fresh ginger in inches → convert to tsp (1 inch microplaned ≈ 1 tsp) so all ginger aggregates
+  if (unit === 'inch' && (name === 'ginger' || name === 'fresh ginger')) { unit = 'tbsp'; name = 'ginger'; }
   name = INGREDIENT_ALIASES[name] || name;
 
   const category = forcedCategory || categorizeIngredient(name || raw);
