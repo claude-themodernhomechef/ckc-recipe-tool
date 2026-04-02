@@ -28,6 +28,7 @@ import { Colors, Fonts } from '../../constants/theme';
 import { fetchRecipes } from '../../lib/firestore';
 import { Recipe, getComplianceStatus } from '../../data/sampleRecipes';
 import { DIET_COLORS } from '../components/DietTag';
+import { formatRating } from '../../lib/ingredientParser';
 
 const SIDEBAR_WIDTH = 220;
 
@@ -107,7 +108,12 @@ function RecipeRow({ recipe }: { recipe: Recipe }) {
       <View style={row.info}>
         <Text style={row.name} numberOfLines={1}>{recipe.name}</Text>
         <Text style={row.meta} numberOfLines={1}>
-          {[recipe.cuisine, recipe.protein_type, recipe.blogger].filter(Boolean).join('  ·  ')}
+          {[
+            recipe.cuisine,
+            recipe.protein_type,
+            recipe.prep_time ? `${recipe.prep_time} min` : null,
+            recipe.blogger,
+          ].filter(Boolean).join('  ·  ')}
         </Text>
         {activeDietTags.length > 0 && (
           <View style={row.tags}>
@@ -119,8 +125,8 @@ function RecipeRow({ recipe }: { recipe: Recipe }) {
       </View>
 
       {/* Rating */}
-      {recipe.rating && recipe.rating !== 'NR' && recipe.rating !== 'N/A' ? (
-        <Text style={row.rating}>★ {recipe.rating.split(' ')[0]}</Text>
+      {formatRating(recipe.rating) ? (
+        <Text style={row.rating}>★ {formatRating(recipe.rating)}</Text>
       ) : null}
     </TouchableOpacity>
   );

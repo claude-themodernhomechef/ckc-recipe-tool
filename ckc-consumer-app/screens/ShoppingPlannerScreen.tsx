@@ -12,6 +12,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Fonts } from '../constants/theme';
 import { fetchRecipes } from '../lib/firestore';
+import { normalizeIngredient } from '../lib/ingredientParser';
 
 // ── Ingredient categorisation ─────────────────────────────────────────────────
 
@@ -36,7 +37,7 @@ function toShoppingRecipe(r: { id: string; name: string; blogger: string; ingred
     blogger: r.blogger,
     ingredients: r.ingredients
       .filter(i => i && i.trim())
-      .map(i => ({ name: i.trim(), category: categorise(i) })),
+      .map(i => { const norm = normalizeIngredient(i); return { name: norm, category: categorise(norm) }; }),
   };
 }
 
@@ -46,11 +47,11 @@ type Category = 'Protein' | 'Produce' | 'Dairy' | 'Pantry';
 
 const CATEGORY_ORDER: Category[] = ['Protein', 'Produce', 'Dairy', 'Pantry'];
 
-const CATEGORY_ICONS: Record<Category, string> = {
-  Protein: '🥩',
-  Produce: '🥦',
-  Dairy:   '🧀',
-  Pantry:  '🫙',
+const CATEGORY_LABELS: Record<Category, string> = {
+  Protein: 'Protein',
+  Produce: 'Produce',
+  Dairy:   'Dairy',
+  Pantry:  'Pantry',
 };
 
 const CATEGORY_COLORS: Record<Category, string> = {
@@ -230,7 +231,6 @@ export default function ShoppingPlannerScreen() {
         {/* ── Empty state ── */}
         {selectedIds.size === 0 && (
           <View style={styles.emptyState}>
-            <Text style={styles.emptyIcon}>🛒</Text>
             <Text style={styles.emptyTitle}>No recipes selected</Text>
             <Text style={styles.emptyBody}>
               Tap "+ Recipes" above to pick what you're cooking this week. Your shopping list will be built automatically.
@@ -247,9 +247,8 @@ export default function ShoppingPlannerScreen() {
             stickySectionHeadersEnabled={false}
             renderSectionHeader={({ section }) => (
               <View style={styles.sectionHeader}>
-                <Text style={styles.sectionIcon}>{CATEGORY_ICONS[section.title as Category]}</Text>
                 <Text style={[styles.sectionTitle, { color: CATEGORY_COLORS[section.title as Category] }]}>
-                  {section.title}
+                  {CATEGORY_LABELS[section.title as Category]}
                 </Text>
                 <Text style={styles.sectionCount}>{section.data.length}</Text>
               </View>
@@ -441,7 +440,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     gap: 12,
   },
-  emptyIcon: { fontSize: 48 },
   emptyTitle: {
     fontFamily: Fonts.display,
     fontSize: 24,
@@ -465,7 +463,6 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
     gap: 8,
   },
-  sectionIcon: { fontSize: 16 },
   sectionTitle: {
     fontFamily: Fonts.bodyMedium,
     fontSize: 13,

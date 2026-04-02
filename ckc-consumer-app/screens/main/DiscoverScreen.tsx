@@ -41,7 +41,7 @@ import {
 } from '../../data/sampleRecipes';
 import DietTag, { DIET_COLORS } from '../components/DietTag';
 import { fetchRecipes } from '../../lib/firestore';
-import { normalizeProtein } from '../../lib/ingredientParser';
+import { normalizeProtein, formatRating } from '../../lib/ingredientParser';
 
 const SIDEBAR_WIDTH = 220; // desktop sidebar width (matches MainTabs)
 const MAX_CARD_WIDTH = 420; // cap card width on wide screens
@@ -255,14 +255,14 @@ function SwipeCard({ recipe, onSwipeLeft, onSwipeRight, onTap, activeProtocols, 
         <Text style={styles.cardTitle} numberOfLines={2}>{recipe.name}</Text>
         <Text style={styles.cardDesc} numberOfLines={2}>{recipe.menu_description}</Text>
 
-        {(recipe.blogger || recipe.rating) ? (
+        {(recipe.blogger || formatRating(recipe.rating)) ? (
           <View style={styles.cardAttribution}>
             {recipe.blogger ? <Text style={styles.cardBlogger}>{recipe.blogger}</Text> : null}
-            {recipe.blogger && recipe.rating && recipe.rating !== 'NR' ? (
+            {recipe.blogger && formatRating(recipe.rating) ? (
               <Text style={styles.cardRatingSep}>·</Text>
             ) : null}
-            {recipe.rating && recipe.rating !== 'NR' ? (
-              <Text style={styles.cardRating}>★ {recipe.rating.split(' ')[0]}</Text>
+            {formatRating(recipe.rating) ? (
+              <Text style={styles.cardRating}>★ {formatRating(recipe.rating)}</Text>
             ) : null}
           </View>
         ) : null}
