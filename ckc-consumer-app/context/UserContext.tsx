@@ -10,6 +10,7 @@ export interface UserProfile {
   cuisines: string[];    // preferred cuisines from setup
   proteins: string[];    // preferred proteins from setup
   household: number;     // household size
+  savedRecipes: string[]; // saved recipe IDs
 }
 
 interface UserContextValue {
@@ -18,6 +19,7 @@ interface UserContextValue {
   saveRecipe: (recipeId: string) => void;
   unsaveRecipe: (recipeId: string) => void;
   isSaved: (recipeId: string) => boolean;
+  signOut: () => void;
 }
 
 const defaultProfile: UserProfile = {
@@ -26,6 +28,7 @@ const defaultProfile: UserProfile = {
   cuisines: [],
   proteins: [],
   household: 2,
+  savedRecipes: [],
 };
 
 const UserContext = createContext<UserContextValue>({
@@ -34,6 +37,7 @@ const UserContext = createContext<UserContextValue>({
   saveRecipe: () => {},
   unsaveRecipe: () => {},
   isSaved: () => false,
+  signOut: () => {},
 });
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
@@ -52,8 +56,12 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     return savedRecipeIds.includes(recipeId);
   }
 
+  function signOut() {
+    // No-op: auth not wired up in this build
+  }
+
   return (
-    <UserContext.Provider value={{ profile, savedRecipeIds, saveRecipe, unsaveRecipe, isSaved }}>
+    <UserContext.Provider value={{ profile, savedRecipeIds, saveRecipe, unsaveRecipe, isSaved, signOut }}>
       {children}
     </UserContext.Provider>
   );
