@@ -19,7 +19,7 @@ import ProteinScreen         from './screens/ProteinScreen';
 import CuisineScreen         from './screens/CuisineScreen';
 import SetupCompleteScreen   from './screens/SetupCompleteScreen';
 import ShoppingPlannerScreen from './screens/ShoppingPlannerScreen';
-import DiscoverScreen        from './screens/main/DiscoverScreen';
+import MainTabs             from './navigation/MainTabs';
 import RecipeDetailScreen    from './screens/RecipeDetailScreen';
 import AdminScreen           from './screens/admin/AdminScreen';
 
@@ -37,6 +37,7 @@ export type RootStackParamList = {
   Cuisine:         { protocols: string[]; household: number; proteins: string[] };
   SetupComplete:   { protocols: string[]; household: number; proteins: string[]; cuisines: string[] };
   ShoppingPlanner: undefined;
+  MainTabs:        undefined;
   Discover:        undefined;
   RecipeDetail:    { recipeId: string };
   Admin:           undefined;
@@ -91,13 +92,14 @@ export default function App() {
             <Stack.Screen name="Cuisine"         component={CuisineScreen} />
             <Stack.Screen name="SetupComplete"   component={SetupCompleteScreen} />
             <Stack.Screen name="ShoppingPlanner" component={ShoppingPlannerScreen} />
-            <Stack.Screen name="Discover"        component={DiscoverScreen} />
+            <Stack.Screen name="MainTabs"        component={MainTabs} />
+            <Stack.Screen name="Discover"        component={MainTabs} />
             <Stack.Screen name="RecipeDetail"    component={RecipeDetailScreen} />
             <Stack.Screen name="Admin"           component={AdminScreen} />
-            {/* Auth screens — point to Discover until auth is built */}
-            <Stack.Screen name="SignUp"          component={DiscoverScreen} />
-            <Stack.Screen name="Login"           component={DiscoverScreen} />
-            <Stack.Screen name="GuestDiscover"   component={DiscoverScreen} />
+            {/* Auth screens — point to MainTabs until auth is built */}
+            <Stack.Screen name="SignUp"          component={MainTabs} />
+            <Stack.Screen name="Login"           component={MainTabs} />
+            <Stack.Screen name="GuestDiscover"   component={MainTabs} />
           </Stack.Navigator>
         </NavigationContainer>
       </MenuProvider>
