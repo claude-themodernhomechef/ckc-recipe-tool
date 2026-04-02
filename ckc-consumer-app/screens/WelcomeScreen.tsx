@@ -1,6 +1,6 @@
 import {
   View, Text, StyleSheet, TouchableOpacity,
-  ImageBackground, Dimensions, Image,
+  Dimensions, Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -20,14 +20,17 @@ const LOGO_IMAGE   = 'https://www.curatedkitchencollective.com/content/images/20
 
 export default function WelcomeScreen({ navigation }: Props) {
   return (
-    <ImageBackground
-      source={{ uri: HERO_IMAGE }}
-      style={styles.bg}
-      resizeMode="cover"
-    >
-      {/* Dark gradient overlay so text stays readable */}
-      {/* Gradient sits behind all interactive content — pointerEvents="none" on the
-          wrapping View ensures it never intercepts clicks on web */}
+    <View style={styles.bg}>
+      {/* Layer 1 — hero photo, sits behind everything */}
+      <Image
+        source={{ uri: HERO_IMAGE }}
+        style={StyleSheet.absoluteFill}
+        resizeMode="cover"
+      />
+
+      {/* Layer 2 — dark gradient, pointer-events disabled so it never
+          blocks taps on web (absoluteFill would otherwise sit on top
+          of normal-flow children in the browser stacking model) */}
       <View style={StyleSheet.absoluteFill} pointerEvents="none">
         <LinearGradient
           colors={[
@@ -41,7 +44,8 @@ export default function WelcomeScreen({ navigation }: Props) {
         />
       </View>
 
-      <SafeAreaView style={[styles.safe, { zIndex: 1 }]}>
+      {/* Layer 3 — all interactive content, normal flow inside the View */}
+      <SafeAreaView style={styles.safe}>
 
         {/* ── Logo ── */}
         <View style={styles.logoArea}>
@@ -103,7 +107,7 @@ export default function WelcomeScreen({ navigation }: Props) {
         </View>
 
       </SafeAreaView>
-    </ImageBackground>
+    </View>
   );
 }
 
@@ -111,6 +115,8 @@ const styles = StyleSheet.create({
   bg: {
     flex: 1,
     backgroundColor: Colors.bg,
+    // position: relative by default — Image/gradient absoluteFill children
+    // sit behind the SafeAreaView which is in normal flow
   },
   safe: {
     flex: 1,
