@@ -1,4 +1,4 @@
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, LinkingOptions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
 import {
@@ -12,13 +12,19 @@ import {
 import { View } from 'react-native';
 import { Colors } from './constants/theme';
 
-import WelcomeScreen       from './screens/WelcomeScreen';
-import DietProtocolScreen  from './screens/DietProtocolScreen';
-import HouseholdScreen     from './screens/HouseholdScreen';
-import ProteinScreen       from './screens/ProteinScreen';
-import CuisineScreen       from './screens/CuisineScreen';
-import SetupCompleteScreen  from './screens/SetupCompleteScreen';
+import WelcomeScreen         from './screens/WelcomeScreen';
+import DietProtocolScreen    from './screens/DietProtocolScreen';
+import HouseholdScreen       from './screens/HouseholdScreen';
+import ProteinScreen         from './screens/ProteinScreen';
+import CuisineScreen         from './screens/CuisineScreen';
+import SetupCompleteScreen   from './screens/SetupCompleteScreen';
 import ShoppingPlannerScreen from './screens/ShoppingPlannerScreen';
+import DiscoverScreen        from './screens/main/DiscoverScreen';
+import RecipeDetailScreen    from './screens/RecipeDetailScreen';
+import AdminScreen           from './screens/admin/AdminScreen';
+
+import { UserProvider }  from './context/UserContext';
+import { MenuProvider }  from './context/MenuContext';
 
 // ─────────────────────────────────────────────
 //  Route definitions — what data each screen receives
@@ -31,6 +37,24 @@ export type RootStackParamList = {
   Cuisine:         { protocols: string[]; household: number; proteins: string[] };
   SetupComplete:   { protocols: string[]; household: number; proteins: string[]; cuisines: string[] };
   ShoppingPlanner: undefined;
+  Discover:        undefined;
+  RecipeDetail:    { recipeId: string };
+  Admin:           undefined;
+  // Auth screens — not yet built, referenced by WelcomeScreen
+  SignUp:          undefined;
+  Login:           undefined;
+  GuestDiscover:   undefined;
+};
+
+// On web: /admin routes straight to AdminScreen
+const linking: LinkingOptions<RootStackParamList> = {
+  prefixes: [],
+  config: {
+    screens: {
+      Admin:   'admin',
+      Discover: '',
+    },
+  },
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -50,22 +74,33 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-          animation: 'slide_from_right',
-          contentStyle: { backgroundColor: Colors.bg },
-        }}
-      >
-        <Stack.Screen name="Welcome"       component={WelcomeScreen} />
-        <Stack.Screen name="DietProtocol"  component={DietProtocolScreen} />
-        <Stack.Screen name="Household"     component={HouseholdScreen} />
-        <Stack.Screen name="Protein"       component={ProteinScreen} />
-        <Stack.Screen name="Cuisine"       component={CuisineScreen} />
-        <Stack.Screen name="SetupComplete"   component={SetupCompleteScreen} />
-        <Stack.Screen name="ShoppingPlanner" component={ShoppingPlannerScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <UserProvider>
+      <MenuProvider>
+        <NavigationContainer linking={linking}>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+              animation: 'slide_from_right',
+              contentStyle: { backgroundColor: Colors.bg },
+            }}
+          >
+            <Stack.Screen name="Welcome"         component={WelcomeScreen} />
+            <Stack.Screen name="DietProtocol"    component={DietProtocolScreen} />
+            <Stack.Screen name="Household"       component={HouseholdScreen} />
+            <Stack.Screen name="Protein"         component={ProteinScreen} />
+            <Stack.Screen name="Cuisine"         component={CuisineScreen} />
+            <Stack.Screen name="SetupComplete"   component={SetupCompleteScreen} />
+            <Stack.Screen name="ShoppingPlanner" component={ShoppingPlannerScreen} />
+            <Stack.Screen name="Discover"        component={DiscoverScreen} />
+            <Stack.Screen name="RecipeDetail"    component={RecipeDetailScreen} />
+            <Stack.Screen name="Admin"           component={AdminScreen} />
+            {/* Auth screens — point to Discover until auth is built */}
+            <Stack.Screen name="SignUp"          component={DiscoverScreen} />
+            <Stack.Screen name="Login"           component={DiscoverScreen} />
+            <Stack.Screen name="GuestDiscover"   component={DiscoverScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </MenuProvider>
+    </UserProvider>
   );
 }
