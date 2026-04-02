@@ -128,7 +128,7 @@ export default function SetupCompleteScreen({ navigation, route }: Props) {
           <TouchableOpacity
             style={styles.primaryBtn}
             activeOpacity={0.85}
-            onPress={() => navigation.navigate('ShoppingPlanner')}
+            onPress={() => navigation.navigate('MainTabs')}
           >
             <Text style={styles.primaryBtnText}>Start Exploring Recipes</Text>
           </TouchableOpacity>
