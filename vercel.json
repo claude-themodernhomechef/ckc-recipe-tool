@@ -1,10 +1,7 @@
 {
-  "version": 2,
-  "builds": [
-    { "src": "**", "use": "@vercel/static" }
-  ],
-  "routes": [
-    { "src": "/catalog", "dest": "/catalog.html" },
-    { "src": "/shopping", "dest": "/shopping.html" }
+  "buildCommand": "cd ckc-consumer-app && npm install && npx expo export --platform web",
+  "outputDirectory": "ckc-consumer-app/dist",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
