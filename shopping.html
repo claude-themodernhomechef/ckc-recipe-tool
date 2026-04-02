@@ -1581,6 +1581,9 @@ function parseIngredient(raw) {
     }
   }
 
+  // 13b. Strip "plus more if needed/necessary" qualifiers so variants aggregate together
+  str = str.replace(/,?\s*plus more\b.*/i, '').trim();
+
   // 14. Smart comma: if everything after the first comma is stop words → strip;
   //     otherwise replace comma with space to preserve descriptors like "skinless, boneless"
   const commaIdx = str.indexOf(',');
@@ -1796,16 +1799,11 @@ function buildShoppingList() {
         .map(([u, q]) => u === 'count' ? fmtQty(q,'') : fmtQty(q, u, entry.category));
       const qtyStr = qtyParts.join(' + ');
 
-      const sources = entry.sources.length > 1
-        ? `Used in: ${entry.sources.map(s => shortenTitle(s)).join(', ')}`
-        : '';
-
       html += `<div class="shop-item ${isChecked ? 'checked' : ''}" data-key="${esc(itemKey)}">
         <div class="item-check">${isChecked ? '✓' : ''}</div>
         <div class="item-body">
           <span class="item-qty">${qtyStr}</span>
           <span class="item-name">${esc(capFirst(entry.name))}</span>
-          ${sources ? `<div class="item-sources">${esc(sources)}</div>` : ''}
         </div>
       </div>`;
     }
