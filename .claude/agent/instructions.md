@@ -144,33 +144,53 @@ If the blog is not in `blog-scores.md`, assess it using this rubric:
 
 ---
 
-## Step 4 — Write to CSV
+## Step 4 — Write to Firestore
 
-1. **Write incrementally** — do not wait until all 10 recipes are researched. Append the first 5 rows as soon as they are ready, then research and append the next 5.
-2. Append new rows at the bottom of `recipes_source.csv` (after all existing content).
-3. Follow the exact column order: `Recipe Title,URL,Blogger Name,Alignment Score,Meal Type,Cuisine Style,Rating,Notes,V,V Mod,V Mod Notes,Vg,Vg Mod,Vg Mod Notes,GF,GF Mod,GF Mod Notes,DF,DF Mod,DF Mod Notes,LH,LH Mod,LH Mod Notes,LF,LF Mod,LF Mod Notes,AIP,AIP Mod,AIP Mod Notes,K,K Mod,K Mod Notes,Protein,Entree Type`
-4. Use exactly **34 columns per row** — do not add extra columns.
-5. For all diet binary columns (`V`, `V Mod`, `Vg`, `Vg Mod`, etc.) use `1` or `0`. For notes columns (`V Mod Notes`, `Vg Mod Notes`, etc.) use the modification text or leave blank.
-6. Properly quote any field that contains commas.
-7. Do NOT modify existing rows.
-8. Do NOT add blank rows between entries.
+**Write incrementally** — do not wait until all 10 recipes are researched. After every 5 recipes are ready, write them to Firestore, then continue researching the next 5.
+
+For each recipe, call the helper script once:
+
+```bash
+node scripts/add_recipe_to_firestore.js '<JSON>'
+```
+
+The JSON must be a single object with these fields:
+
+```json
+{
+  "name": "Recipe Title",
+  "url": "https://full-url.com/recipe",
+  "blogger": "Blog Name",
+  "alignmentScore": 90,
+  "meal_type": "Entree",
+  "cuisine": "Mediterranean",
+  "rating": "4.8 (120 ratings)",
+  "menu_description": "1–2 sentence description of the recipe.",
+  "protein_type": "Chicken",
+  "GF": 1, "GF_mod": 0, "GF_mod_notes": "",
+  "DF": 1, "DF_mod": 0, "DF_mod_notes": "",
+  "V":  0, "V_mod":  0, "V_mod_notes":  "",
+  "Vg": 0, "Vg_mod": 0, "Vg_mod_notes": "",
+  "K":  0, "K_mod":  1, "K_mod_notes":  "Skip the rice, serve over cauliflower rice.",
+  "AIP":0, "AIP_mod":0, "AIP_mod_notes":"",
+  "LF": 1, "LF_mod": 0, "LF_mod_notes": "",
+  "LH": 0, "LH_mod": 0, "LH_mod_notes": ""
+}
+```
+
+Rules:
+- Run the script **once per recipe** — do not batch multiple recipes in one call.
+- Check the exit code. If the script exits 1, log the error and continue with the next recipe — do not abort the run.
+- If the script prints "Already exists" the URL is a duplicate — count it as skipped, not as one of your 10.
+- Use `0` or `1` for all diet binary fields. Leave `_mod_notes` as an empty string `""` when not applicable.
+- The script handles deduplication and appending to `urls.txt` automatically — you do not need to touch those files.
+- Do NOT modify `recipes_source.csv` or any other file.
 
 ---
 
-## Step 5 — Push to GitHub
+## Step 5 — Done
 
-After writing to the CSV:
-
-```bash
-cd "/path/to/repo"
-git add recipes_source.csv
-git commit -m "feat: add [N] new recipes from [source list] — automated sourcing run [date]"
-git push origin main
-```
-
-Replace `[N]` with the number of recipes added, `[source list]` with the blog names used, and `[date]` with today's date in YYYY-MM-DD format.
-
-If the push fails due to auth, check that GitHub credentials are configured (see `GITHUB_SETUP.md` if present).
+After the final recipe is written, your job is complete. Do not push to GitHub — the workflow handles committing `urls.txt` automatically after your run finishes.
 
 ---
 
