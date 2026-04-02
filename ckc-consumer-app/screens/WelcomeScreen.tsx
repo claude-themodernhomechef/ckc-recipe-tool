@@ -35,6 +35,7 @@ export default function WelcomeScreen({ navigation }: Props) {
         ]}
         locations={[0, 0.25, 0.65, 1]}
         style={StyleSheet.absoluteFill}
+        pointerEvents="none"
       />
 
       <SafeAreaView style={styles.safe}>
@@ -75,14 +76,26 @@ export default function WelcomeScreen({ navigation }: Props) {
         <View style={styles.buttonArea}>
           <TouchableOpacity
             style={styles.primaryBtn}
-            onPress={() => navigation.navigate('DietProtocol')}
+            onPress={() => navigation.navigate('SignUp')}
             activeOpacity={0.88}
           >
             <Text style={styles.primaryBtnText}>Get Started — It's Free</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.secondaryBtn} activeOpacity={0.6}>
+          <TouchableOpacity
+            style={styles.secondaryBtn}
+            activeOpacity={0.6}
+            onPress={() => navigation.navigate('Login')}
+          >
             <Text style={styles.secondaryBtnText}>I already have an account</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.guestBtn}
+            activeOpacity={0.5}
+            onPress={() => navigation.navigate('GuestDiscover')}
+          >
+            <Text style={styles.guestBtnText}>Browse recipes first →</Text>
           </TouchableOpacity>
         </View>
 
@@ -177,5 +190,15 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.body,
     fontSize: 13,
     color: 'rgba(245,243,238,0.45)',
+  },
+  guestBtn: {
+    alignItems: 'center',
+    paddingVertical: 6,
+  },
+  guestBtnText: {
+    fontFamily: Fonts.body,
+    fontSize: 12,
+    color: 'rgba(245,243,238,0.28)',
+    textDecorationLine: 'underline',
   },
 });
