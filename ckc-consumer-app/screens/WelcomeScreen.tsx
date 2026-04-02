@@ -26,19 +26,22 @@ export default function WelcomeScreen({ navigation }: Props) {
       resizeMode="cover"
     >
       {/* Dark gradient overlay so text stays readable */}
-      <LinearGradient
-        colors={[
-          'rgba(15,15,13,0.55)',
-          'rgba(15,15,13,0.30)',
-          'rgba(15,15,13,0.85)',
-          'rgba(15,15,13,0.98)',
-        ]}
-        locations={[0, 0.25, 0.65, 1]}
-        style={StyleSheet.absoluteFill}
-        pointerEvents="none"
-      />
+      {/* Gradient sits behind all interactive content — pointerEvents="none" on the
+          wrapping View ensures it never intercepts clicks on web */}
+      <View style={StyleSheet.absoluteFill} pointerEvents="none">
+        <LinearGradient
+          colors={[
+            'rgba(15,15,13,0.55)',
+            'rgba(15,15,13,0.30)',
+            'rgba(15,15,13,0.85)',
+            'rgba(15,15,13,0.98)',
+          ]}
+          locations={[0, 0.25, 0.65, 1]}
+          style={{ flex: 1 }}
+        />
+      </View>
 
-      <SafeAreaView style={styles.safe}>
+      <SafeAreaView style={[styles.safe, { zIndex: 1 }]}>
 
         {/* ── Logo ── */}
         <View style={styles.logoArea}>
