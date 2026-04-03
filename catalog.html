@@ -30,7 +30,7 @@ html,body{min-height:100%;background:var(--bg);color:var(--text-primary);font-fa
 .login-error{font-size:12px;color:var(--red);text-align:center;min-height:16px}
 
 /* ── Page shell ── */
-#page{display:none;padding:28px 32px 80px;max-width:1600px;margin:0 auto}
+#page{display:none;flex-direction:column;height:100vh;overflow:hidden;padding:28px 32px 0;max-width:1600px;margin:0 auto}
 
 /* ── Header ── */
 .page-header{display:flex;align-items:baseline;gap:20px;margin-bottom:24px}
@@ -61,7 +61,7 @@ select.filter-select:focus{border-color:rgba(255,255,255,.2)}
 .stat-item b{color:var(--text-primary);font-weight:500}
 
 /* ── Table ── */
-.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px}
+.table-wrap{flex:1;overflow:auto;min-height:0;border:1px solid var(--border);border-radius:12px;margin-bottom:20px}
 table{width:100%;border-collapse:collapse;min-width:900px}
 thead th{padding:10px 14px;text-align:left;font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);background:var(--surface);position:sticky;top:0;z-index:10;white-space:nowrap;user-select:none;cursor:pointer;border-bottom:1px solid var(--border)}
 thead th:hover{color:var(--text-secondary)}
@@ -133,7 +133,7 @@ tbody td.td-img{width:56px;padding:6px 10px}
 .decision-cell select{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:4px 8px;color:var(--text-primary);font-family:var(--font-body);font-size:12px;cursor:pointer;outline:none}
 
 /* ── Loading ── */
-#loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:200px;gap:12px}
+#loading{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;min-height:200px;gap:12px}
 .dots{display:flex;gap:6px}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--text-muted);animation:pulse 1.2s ease-in-out infinite}
 .dot:nth-child(2){animation-delay:.2s}.dot:nth-child(3){animation-delay:.4s}
@@ -278,7 +278,7 @@ function doLogin(){
   if(u==='admin' && p==='prince'){
     localStorage.setItem(LOGIN_KEY,'1');
     document.getElementById('login-screen').style.display='none';
-    document.getElementById('page').style.display='block';
+    document.getElementById('page').style.display='flex';
     loadCatalog();
   } else {
     document.getElementById('login-error').textContent='Incorrect username or password';
@@ -287,7 +287,7 @@ function doLogin(){
 }
 if(localStorage.getItem(LOGIN_KEY)==='1'){
   document.getElementById('login-screen').style.display='none';
-  document.getElementById('page').style.display='block';
+  document.getElementById('page').style.display='flex';
   loadCatalog();
 }
 
