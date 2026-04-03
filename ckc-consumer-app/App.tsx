@@ -29,6 +29,7 @@ import GuestDiscoverScreen   from './screens/GuestDiscoverScreen';
 import MainTabs              from './navigation/MainTabs';
 import RecipeDetailScreen    from './screens/RecipeDetailScreen';
 import AdminScreen           from './screens/admin/AdminScreen';
+import DecisionsCatalogScreen from './screens/admin/DecisionsCatalogScreen';
 
 // ─────────────────────────────────────────────
 //  Route type map
@@ -49,7 +50,8 @@ export type RootStackParamList = {
   MainTabs:        undefined;
   Discover:        undefined;
   RecipeDetail:    { recipeId: string };
-  Admin:           undefined;
+  Admin:            undefined;
+  DecisionsCatalog: undefined;
 };
 
 // On web: /admin routes straight to AdminScreen
@@ -57,8 +59,9 @@ const linking: LinkingOptions<RootStackParamList> = {
   prefixes: [],
   config: {
     screens: {
-      Admin:   'admin',
-      Discover: '',
+      Admin:            'admin',
+      DecisionsCatalog: 'catalog/decisions',
+      Discover:         '',
     },
   },
 };
@@ -92,7 +95,8 @@ function AppNavigator() {
       <Stack.Screen name="MainTabs"        component={MainTabs} options={{ animation: 'fade' }} />
       <Stack.Screen name="Discover"        component={MainTabs} />
       <Stack.Screen name="RecipeDetail"    component={RecipeDetailScreen} options={{ animation: 'slide_from_bottom' }} />
-      <Stack.Screen name="Admin"           component={AdminScreen} />
+      <Stack.Screen name="Admin"            component={AdminScreen} />
+      <Stack.Screen name="DecisionsCatalog" component={DecisionsCatalogScreen} />
     </Stack.Navigator>
   );
 }
