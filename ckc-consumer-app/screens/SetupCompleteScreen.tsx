@@ -6,7 +6,6 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../App';
 import { Colors, Fonts } from '../constants/theme';
-import { useUser } from '../context/UserContext';
 import DietTag from './components/DietTag';
 
 type Props = {
@@ -15,9 +14,8 @@ type Props = {
 };
 
 
-export default function SetupCompleteScreen({ route }: Props) {
+export default function SetupCompleteScreen({ navigation, route }: Props) {
   const { protocols, household, proteins, cuisines } = route.params;
-  const { completeOnboarding } = useUser();
   const [loading, setLoading] = useState(false);
 
   // Build a friendly summary line

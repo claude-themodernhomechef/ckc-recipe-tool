@@ -12,7 +12,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { View } from 'react-native';
 import { Colors } from './constants/theme';
-import { UserProvider, useUser } from './context/UserContext';
+import { UserProvider } from './context/UserContext';
 import { MenuProvider } from './context/MenuContext';
 
 import SplashScreen          from './screens/SplashScreen';
@@ -67,18 +67,9 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 // ─────────────────────────────────────────────
 //  AppNavigator
-//
-//  Must be a child of both UserProvider and NavigationContainer
-//  so it can call useUser() and use React Navigation hooks.
 // ─────────────────────────────────────────────
 
 function AppNavigator() {
-  const { authUser, authLoading, onboardingComplete } = useUser();
-
-  if (authLoading) return null;
-
-  const isAuthenticated = !!authUser && onboardingComplete;
-
   return (
     <Stack.Navigator
       screenOptions={{
@@ -87,36 +78,21 @@ function AppNavigator() {
         contentStyle: { backgroundColor: Colors.bg },
       }}
     >
-      {isAuthenticated ? (
-        <>
-          <Stack.Screen
-            name="MainTabs"
-            component={MainTabs}
-            options={{ animation: 'fade' }}
-          />
-          <Stack.Screen
-            name="RecipeDetail"
-            component={RecipeDetailScreen}
-            options={{ animation: 'slide_from_bottom' }}
-          />
-          <Stack.Screen name="Admin" component={AdminScreen} />
-        </>
-      ) : (
-        <>
-          <Stack.Screen name="Splash"        component={SplashScreen} />
-          <Stack.Screen name="Welcome"       component={WelcomeScreen} />
-          <Stack.Screen name="SignUp"        component={SignUpScreen} />
-          <Stack.Screen name="Login"         component={LoginScreen} />
-          <Stack.Screen name="DietProtocol"  component={DietProtocolScreen} />
-          <Stack.Screen name="Household"     component={HouseholdScreen} />
-          <Stack.Screen name="Protein"       component={ProteinScreen} />
-          <Stack.Screen name="Cuisine"       component={CuisineScreen} />
-          <Stack.Screen name="SetupComplete" component={SetupCompleteScreen} />
-          <Stack.Screen name="ShoppingPlanner" component={ShoppingPlannerScreen} />
-          <Stack.Screen name="GuestDiscover" component={GuestDiscoverScreen} options={{ animation: 'slide_from_bottom' }} />
-          <Stack.Screen name="Admin"         component={AdminScreen} />
-        </>
-      )}
+      <Stack.Screen name="Splash"          component={SplashScreen} />
+      <Stack.Screen name="Welcome"         component={WelcomeScreen} />
+      <Stack.Screen name="SignUp"          component={SignUpScreen} />
+      <Stack.Screen name="Login"           component={LoginScreen} />
+      <Stack.Screen name="DietProtocol"    component={DietProtocolScreen} />
+      <Stack.Screen name="Household"       component={HouseholdScreen} />
+      <Stack.Screen name="Protein"         component={ProteinScreen} />
+      <Stack.Screen name="Cuisine"         component={CuisineScreen} />
+      <Stack.Screen name="SetupComplete"   component={SetupCompleteScreen} />
+      <Stack.Screen name="ShoppingPlanner" component={ShoppingPlannerScreen} />
+      <Stack.Screen name="GuestDiscover"   component={GuestDiscoverScreen} options={{ animation: 'slide_from_bottom' }} />
+      <Stack.Screen name="MainTabs"        component={MainTabs} options={{ animation: 'fade' }} />
+      <Stack.Screen name="Discover"        component={MainTabs} />
+      <Stack.Screen name="RecipeDetail"    component={RecipeDetailScreen} options={{ animation: 'slide_from_bottom' }} />
+      <Stack.Screen name="Admin"           component={AdminScreen} />
     </Stack.Navigator>
   );
 }
