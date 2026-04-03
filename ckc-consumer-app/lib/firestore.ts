@@ -83,7 +83,7 @@ export async function updateRecipeStatus(
 // ── Consumer: fetch approved recipes ─────────────────────────────────────────
 
 // Fetch approved recipes from Firestore.
-// Falls back to SAMPLE_RECIPES if the query fails.
+// Discover feed — entrees only, capped. Falls back to SAMPLE_RECIPES.
 export async function fetchRecipes(limitCount: number = 200): Promise<Recipe[]> {
   try {
     const q = query(
@@ -101,5 +101,21 @@ export async function fetchRecipes(limitCount: number = 200): Promise<Recipe[]> 
   } catch (err) {
     console.warn('Firestore fetch failed, using sample data:', err);
     return SAMPLE_RECIPES;
+  }
+}
+
+// Catalog — ALL yes recipes, no meal_type filter, no cap (up to 2000).
+export async function fetchCatalogRecipes(): Promise<Recipe[]> {
+  try {
+    const q = query(
+      collection(db, 'recipes'),
+      where('status', '==', 'yes'),
+      limit(2000),
+    );
+    const snap = await getDocs(q);
+    return snap.docs.map(d => docToRecipe(d.id, d.data() as Record<string, unknown>));
+  } catch (err) {
+    console.warn('Firestore catalog fetch failed:', err);
+    return [];
   }
 }
