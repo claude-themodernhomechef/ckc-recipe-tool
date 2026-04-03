@@ -42,6 +42,9 @@ functions/.env
 # OS
 .DS_Store
 
+# Docs (build plans, specs — local only)
+docs/
+
 # Claude
 .claude/
 .vercel
