@@ -26,6 +26,7 @@ ak_side_dish_images.json
 *.log
 rescrape_log.txt
 top_side_dishes.csv
+data-exports/
 
 # Local images (served from Firebase Storage in production)
 images/
