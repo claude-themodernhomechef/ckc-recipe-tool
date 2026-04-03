@@ -11,7 +11,7 @@ jobs:
     timeout-minutes: 60
 
     permissions:
-      contents: write
+      contents: write       # needed to commit urls.txt
 
     steps:
       - name: Checkout repo
@@ -25,9 +25,13 @@ jobs:
       - name: Install Claude Code
         run: npm install -g @anthropic-ai/claude-code
 
+      - name: Install script dependencies
+        run: cd scripts && npm install --omit=dev
+
       - name: Run recipe sourcing agent
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
           claude --dangerously-skip-permissions -p "
           You are the CKC Recipe Sourcing Agent. Your working directory is the repo root.
@@ -38,32 +42,30 @@ jobs:
             - blog-scores.md
             - approved-sources.md
 
-          Step 2: Read urls.txt (one URL per line) to get all existing URLs — use this for duplicate checking instead of reading the full CSV.
+          Step 2: Read urls.txt (one URL per line) to get all existing URLs — use this for duplicate checking.
 
           Step 3: Find exactly 10 new recipes following the instructions exactly.
             - Crawl 2-3 Tier 1/2 approved sources
             - Run at least 2 open web searches
             - Visit each recipe page and read the full ingredient list
-            - Fill all 10 columns for every recipe
+            - Fill all fields for every recipe
             - Apply GF and DF tags proactively from ingredients — do not wait for the blogger to label them
             - Balance protein types and cuisine styles
-            - After every 5 recipes found, append them to recipes_source.csv immediately (do not wait until all 10 are done)
 
-          Step 4: Append all new rows to recipes_source.csv.
-            Column order: Recipe Title,URL,Blogger Name,Alignment Score,Meal Type,Cuisine Style,Rating,Notes,Diet Tags,Compliance Notes
+          Step 4: After every 5 recipes researched, write them to Firestore using:
+            node scripts/add_recipe_to_firestore.js '<JSON>'
+          See instructions.md Step 4 for the exact JSON format and field names.
+          Run the script once per recipe — do not batch. Check the exit code.
 
-          Do not modify existing rows. Quote any field containing commas. Use exactly 10 columns per row — do not add extra columns.
+          Do not modify existing rows in any CSV. Do not push to GitHub.
           "
 
-      - name: Regenerate urls.txt
-        run: cut -d',' -f2 recipes_source.csv | tail -n +2 > urls.txt
-
-      - name: Commit and push
+      - name: Commit updated urls.txt
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add recipes_source.csv urls.txt
+          git add urls.txt
           git diff --staged --quiet || (
-            git commit -m "feat: daily recipe sourcing — $(date +%Y-%m-%d)"
+            git commit -m "chore: update urls.txt — sourcing run $(date +%Y-%m-%d)"
             git push
           )

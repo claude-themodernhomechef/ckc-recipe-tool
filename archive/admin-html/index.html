@@ -16,16 +16,6 @@
 :root{--bg:#0f0f0d;--surface:#1a1a16;--border:rgba(255,255,255,0.08);--text-primary:#f5f3ee;--text-secondary:rgba(245,243,238,0.5);--text-muted:rgba(245,243,238,0.25);--green:#7cb87a;--green-glow:rgba(124,184,122,0.15);--red:#c96b6b;--red-glow:rgba(201,107,107,0.15);--yellow:#d4a843;--yellow-glow:rgba(212,168,67,0.15);--font-display:'Cormorant Garamond',Georgia,serif;--font-body:'DM Sans',system-ui,sans-serif}
 html,body{height:100%;width:100%;overflow:hidden;background:var(--bg);color:var(--text-primary);font-family:var(--font-body)}
 #app{height:100dvh;width:100%;display:flex;flex-direction:column;position:relative;overflow:hidden}
-#login-screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;padding:2rem;z-index:200;background:var(--bg)}
-.login-logo{font-family:var(--font-display);font-size:2.5rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase}
-.login-tagline{font-size:11px;color:var(--text-muted);letter-spacing:.12em;text-transform:uppercase;margin-top:-1rem}
-.login-form{display:flex;flex-direction:column;gap:12px;width:100%;max-width:280px}
-.login-input{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;color:var(--text-primary);font-family:var(--font-body);font-size:14px;outline:none;transition:border-color .2s}
-.login-input:focus{border-color:rgba(255,255,255,0.2)}
-.login-input::placeholder{color:var(--text-muted)}
-.login-btn{background:var(--text-primary);color:var(--bg);border:none;border-radius:100px;padding:14px;font-family:var(--font-body);font-size:14px;font-weight:500;cursor:pointer;transition:opacity .2s}
-.login-btn:active{opacity:.8}
-.login-error{font-size:12px;color:var(--red);text-align:center;min-height:16px}
 #loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:80;background:var(--bg)}
 .loading-text{font-size:12px;color:var(--text-muted);letter-spacing:.08em}
 .dots{display:flex;gap:6px}
@@ -91,16 +81,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:var(--bg);color:var(
 </style>
 </head>
 <body>
-<div id="login-screen">
-  <div class="login-logo">CKC</div>
-  <div class="login-tagline">Recipe Review</div>
-  <div class="login-form">
-    <input class="login-input" id="login-user" type="text" placeholder="Username" autocomplete="username" />
-    <input class="login-input" id="login-pass" type="password" placeholder="Password" autocomplete="current-password" />
-    <button class="login-btn" id="login-btn">Sign in</button>
-    <div class="login-error" id="login-error"></div>
-  </div>
-</div>
 <div id="app">
   <div id="loading"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><div class="loading-text" id="loading-text">Loading recipes...</div></div>
   <div id="error-screen"><div class="error-title">Something went wrong</div><div class="error-msg" id="error-msg"></div><button class="error-btn" id="error-retry">Try again</button></div>
@@ -373,31 +353,8 @@ document.addEventListener('keydown',e=>{
 const _m={name:'CKC Recipe Review',short_name:'CKC',display:'standalone',background_color:'#0f0f0d',theme_color:'#0f0f0d',orientation:'portrait'};
 const _b=new Blob([JSON.stringify(_m)],{type:'application/json'});const _l=document.createElement('link');_l.rel='manifest';_l.href=URL.createObjectURL(_b);document.head.appendChild(_l);
 
-// ── Login ─────────────────────────────────────────────
-const LOGIN_KEY = 'ckc_auth';
-function checkLogin(){
-  if(localStorage.getItem(LOGIN_KEY)==='1'){
-    document.getElementById('login-screen').style.display='none';
-    loadRecipes();
-  }
-}
-document.getElementById('login-btn').addEventListener('click', doLogin);
-document.getElementById('login-pass').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
-function doLogin(){
-  const u = document.getElementById('login-user').value.trim();
-  const p = document.getElementById('login-pass').value;
-  if(u==='admin' && p==='prince'){
-    localStorage.setItem(LOGIN_KEY,'1');
-    document.getElementById('login-screen').style.display='none';
-    loadRecipes();
-  } else {
-    document.getElementById('login-error').textContent='Incorrect username or password';
-    document.getElementById('login-pass').value='';
-  }
-}
-
 // ── Start ─────────────────────────────────────────────
-checkLogin();
+loadRecipes();
 </script>
 </body>
 </html>

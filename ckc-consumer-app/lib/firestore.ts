@@ -1,128 +1,121 @@
-/**
- * lib/firestore.ts
- *
- * All Firestore read/write operations.
- *
- * Firestore collections:
- *   /users/{uid}   — user profile document
- *   /recipes/{id}  — recipe documents (mirrors recipes.json schema)
- */
+// ─────────────────────────────────────────────
+//  Firestore data fetching — Phase 2
+//  Queries the live `recipes` collection.
+//  Falls back to SAMPLE_RECIPES on error.
+// ─────────────────────────────────────────────
 
-import {
-  doc,
-  setDoc,
-  getDoc,
-  updateDoc,
-  collection,
-  query,
-  where,
-  orderBy,
-  limit,
-  getDocs,
-  serverTimestamp,
-} from 'firebase/firestore';
+import { collection, query, where, limit, getDocs, doc, updateDoc, orderBy } from 'firebase/firestore';
 import { db } from './firebase';
-import { Recipe } from '../data/sampleRecipes';
+import { SAMPLE_RECIPES, Recipe } from '../data/sampleRecipes';
 
-// ─────────────────────────────────────────────
-//  User Profile
-// ─────────────────────────────────────────────
-
-export interface FirestoreUserProfile {
-  email: string;
-  protocols: string[];
-  household: number;
-  proteins: string[];
-  cuisines: string[];
-  savedRecipes: string[];
-  tier: 'free' | 'paid';
-  onboardingComplete: boolean;
-  createdAt?: ReturnType<typeof serverTimestamp>;
-}
-
-/**
- * Create or merge a user profile document.
- * Called from SetupCompleteScreen after onboarding finishes.
- */
-export async function saveUserProfile(
-  uid: string,
-  profile: Omit<FirestoreUserProfile, 'createdAt'>,
-): Promise<void> {
-  const ref = doc(db, 'users', uid);
-  const snap = await getDoc(ref);
-
-  if (snap.exists()) {
-    // Merge to preserve any fields we didn't include
-    await setDoc(ref, profile, { merge: true });
-  } else {
-    // First save — add a createdAt timestamp
-    await setDoc(ref, { ...profile, createdAt: serverTimestamp() });
+// Generate a deterministic dark placeholder color from a string
+function placeholderColor(seed: string): string {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = seed.charCodeAt(i) + ((hash << 5) - hash);
   }
+  const hue = Math.abs(hash) % 360;
+  return `hsl(${hue}, 25%, 18%)`;
 }
 
-/**
- * Load a user's profile from Firestore.
- * Returns null if no document exists (e.g. first social sign-in).
- */
-export async function getUserProfile(uid: string): Promise<FirestoreUserProfile | null> {
-  const ref = doc(db, 'users', uid);
-  const snap = await getDoc(ref);
-  return snap.exists() ? (snap.data() as FirestoreUserProfile) : null;
+// Map a Firestore document to the Recipe type the app uses
+function docToRecipe(id: string, data: Record<string, unknown>): Recipe {
+  return {
+    id,
+    name:             (data.name            as string) || '',
+    url:              (data.url             as string) || '',
+    cuisine:          (data.cuisine         as string) || '',
+    meal_type:        (data.meal_type       as string) || 'entree',
+    protein_type:     (data.protein_type    as string) || (data.protein as string) || '',
+    menu_description: (data.menu_description as string) || (data.description as string) || '',
+    prep_time:        (data.prep_time as number) ?? null,
+    image:            (data.image           as string | null) || null,
+    photo_url:        (data.photo_url       as string | null) || (data.image as string | null) || null,
+    placeholder_color: placeholderColor((data.name as string) || id),
+    blogger:          (data.blogger         as string) || '',
+    rating:           (data.rating          as string) || '',
+    dietTags:         (data.dietTags        as Recipe['dietTags']) || {},
+    ingredients:      (data.ingredients     as string[]) || [],
+    status:           (data.status          as Recipe['status']) || 'yes',
+  };
 }
 
-/**
- * Sync saved recipe IDs to Firestore.
- * Called automatically from UserContext whenever saved recipes change.
- */
-export async function updateSavedRecipes(uid: string, savedRecipes: string[]): Promise<void> {
-  const ref = doc(db, 'users', uid);
-  await updateDoc(ref, { savedRecipes });
-}
+// ── Admin: fetch pending / maybe recipes ─────────────────────────────────────
 
-/**
- * Update a single field in the user profile (e.g. tier after payment).
- */
-export async function updateUserField(
-  uid: string,
-  fields: Partial<FirestoreUserProfile>,
-): Promise<void> {
-  const ref = doc(db, 'users', uid);
-  await updateDoc(ref, fields as Record<string, unknown>);
-}
-
-// ─────────────────────────────────────────────
-//  Recipes
-// ─────────────────────────────────────────────
-
-/**
- * Fetch entree recipes from Firestore.
- * Returns an empty array if the collection is empty (caller falls back to sampleRecipes).
- */
-export async function fetchRecipes(limitCount: number = 50): Promise<Recipe[]> {
+export async function fetchPendingRecipes(): Promise<Recipe[]> {
   try {
-    const col = collection(db, 'recipes');
     const q = query(
-      col,
-      where('meal_type', '==', 'entree'),
-      limit(limitCount),
+      collection(db, 'recipes'),
+      where('status', '==', 'pending'),
+      orderBy('sourceAddedAt', 'asc'),
+      limit(100),
     );
     const snap = await getDocs(q);
-    return snap.docs.map(d => ({ id: d.id, ...d.data() } as Recipe));
-  } catch {
+    return snap.docs.map(d => docToRecipe(d.id, d.data() as Record<string, unknown>));
+  } catch (err) {
+    console.warn('fetchPendingRecipes failed:', err);
     return [];
   }
 }
 
-/**
- * Fetch a single recipe by document ID.
- * Returns null if not found (caller falls back to sampleRecipes).
- */
-export async function fetchRecipeById(id: string): Promise<Recipe | null> {
+export async function fetchMaybeRecipes(): Promise<Recipe[]> {
   try {
-    const ref = doc(db, 'recipes', id);
-    const snap = await getDoc(ref);
-    return snap.exists() ? ({ id: snap.id, ...snap.data() } as Recipe) : null;
-  } catch {
-    return null;
+    const q = query(
+      collection(db, 'recipes'),
+      where('status', '==', 'maybe'),
+      limit(100),
+    );
+    const snap = await getDocs(q);
+    return snap.docs.map(d => docToRecipe(d.id, d.data() as Record<string, unknown>));
+  } catch (err) {
+    console.warn('fetchMaybeRecipes failed:', err);
+    return [];
+  }
+}
+
+export async function updateRecipeStatus(
+  recipeId: string,
+  status: 'yes' | 'no' | 'maybe',
+): Promise<void> {
+  const ref = doc(db, 'recipes', recipeId);
+  await updateDoc(ref, { status, decidedAt: new Date().toISOString() });
+}
+
+// ── Consumer: fetch approved recipes ─────────────────────────────────────────
+
+// Fetch approved recipes from Firestore.
+// Discover feed — entrees only, capped. Falls back to SAMPLE_RECIPES.
+export async function fetchRecipes(limitCount: number = 200): Promise<Recipe[]> {
+  try {
+    const q = query(
+      collection(db, 'recipes'),
+      where('status', '==', 'yes'),
+      limit(limitCount),
+    );
+    const snap = await getDocs(q);
+    const recipes = snap.docs
+      .map(d => docToRecipe(d.id, d.data() as Record<string, unknown>))
+      .filter(r => r.meal_type === 'entree'); // only show entrees in the discover feed
+
+    if (recipes.length === 0) return SAMPLE_RECIPES;
+    return recipes;
+  } catch (err) {
+    console.warn('Firestore fetch failed, using sample data:', err);
+    return SAMPLE_RECIPES;
+  }
+}
+
+// Catalog — ALL recipes (yes + no + maybe + pending), no meal_type filter, up to 2000.
+export async function fetchCatalogRecipes(): Promise<Recipe[]> {
+  try {
+    const q = query(
+      collection(db, 'recipes'),
+      limit(2000),
+    );
+    const snap = await getDocs(q);
+    return snap.docs.map(d => docToRecipe(d.id, d.data() as Record<string, unknown>));
+  } catch (err) {
+    console.warn('Firestore catalog fetch failed:', err);
+    return [];
   }
 }

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,94 +7,51 @@ import {
   TouchableOpacity,
   TextInput,
   SectionList,
+  ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../App';
 import { Colors, Fonts } from '../constants/theme';
+import { fetchCatalogRecipes } from '../lib/firestore';
+import { normalizeIngredient } from '../lib/ingredientParser';
 
-type Props = {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'ShoppingPlanner'>;
-};
+// ── Ingredient categorisation ─────────────────────────────────────────────────
 
-// ─────────────────────────────────────────────
-//  Sample recipe data — replace with Firebase feed
-// ─────────────────────────────────────────────
-const SAMPLE_RECIPES: { id: string; name: string; blogger: string; ingredients: { name: string; category: Category }[] }[] = [
-  {
-    id: '1',
-    name: 'Lemon Herb Roasted Chicken',
-    blogger: 'Feasting at Home',
-    ingredients: [
-      { name: 'Whole chicken', category: 'Protein' },
-      { name: 'Garlic', category: 'Produce' },
-      { name: 'Lemons', category: 'Produce' },
-      { name: 'Fresh thyme', category: 'Produce' },
-      { name: 'Olive oil', category: 'PantryStaples' },
-    ],
-  },
-  {
-    id: '2',
-    name: 'Roasted Salmon Bowls with Tahini',
-    blogger: 'Cookie and Kate',
-    ingredients: [
-      { name: 'Salmon fillets', category: 'Protein' },
-      { name: 'Baby spinach', category: 'Produce' },
-      { name: 'Cherry tomatoes', category: 'Produce' },
-      { name: 'Tahini', category: 'PantryStaples' },
-      { name: 'Lemon', category: 'Produce' },
-    ],
-  },
-  {
-    id: '3',
-    name: 'Sheet Pan Chicken & Vegetables',
-    blogger: 'Ambitious Kitchen',
-    ingredients: [
-      { name: 'Chicken thighs', category: 'Protein' },
-      { name: 'Bell peppers', category: 'Produce' },
-      { name: 'Zucchini', category: 'Produce' },
-      { name: 'Red onion', category: 'Produce' },
-      { name: 'Olive oil', category: 'PantryStaples' },
-    ],
-  },
-  {
-    id: '4',
-    name: 'Greek Lamb Meatballs',
-    blogger: 'The Mediterranean Dish',
-    ingredients: [
-      { name: 'Ground lamb', category: 'Protein' },
-      { name: 'Greek yogurt', category: 'DairyEggs' },
-      { name: 'Fresh mint', category: 'Produce' },
-      { name: 'Cucumber', category: 'Produce' },
-      { name: 'Garlic', category: 'Produce' },
-    ],
-  },
-  {
-    id: '5',
-    name: 'Tuscan White Bean Soup',
-    blogger: 'Alexandra Cooks',
-    ingredients: [
-      { name: 'White beans', category: 'PantryConsumables' },
-      { name: 'Kale', category: 'Produce' },
-      { name: 'Carrots', category: 'Produce' },
-      { name: 'Celery', category: 'Produce' },
-      { name: 'Parmesan rind', category: 'DairyEggs' },
-    ],
-  },
-];
+const PROTEIN_KEYWORDS  = ['chicken','beef','salmon','tuna','shrimp','pork','lamb','turkey','fish','steak','tofu','tempeh','cod','halibut','tilapia','scallop','crab','lobster','duck','veal','bison','sausage','chorizo','bacon','ham','ground beef','ground turkey'];
+const DAIRY_KEYWORDS    = ['butter','cream','milk','cheese','yogurt','parmesan','mozzarella','ricotta','feta','brie','cheddar','gouda','sour cream','mascarpone','ghee','kefir','buttermilk','crème fraîche'];
+const PRODUCE_KEYWORDS  = ['garlic','onion','tomato','lemon','lime','orange','herb','cilantro','parsley','basil','thyme','rosemary','oregano','mint','dill','pepper','zucchini','eggplant','mushroom','spinach','kale','lettuce','arugula','carrot','celery','broccoli','cauliflower','asparagus','avocado','cucumber','ginger','scallion','shallot','leek','potato','sweet potato','squash','pumpkin'];
+
+function categorise(ingredient: string): Category {
+  const lower = ingredient.toLowerCase();
+  if (PROTEIN_KEYWORDS.some(k => lower.includes(k))) return 'Protein';
+  if (DAIRY_KEYWORDS.some(k => lower.includes(k)))   return 'Dairy';
+  if (PRODUCE_KEYWORDS.some(k => lower.includes(k)))  return 'Produce';
+  return 'Pantry';
+}
+
+type FirestoreRecipe = { id: string; name: string; blogger: string; ingredients: string[] };
+
+function toShoppingRecipe(r: { id: string; name: string; blogger: string; ingredients: string[] }): ShoppingRecipe {
+  return {
+    id: r.id,
+    name: r.name,
+    blogger: r.blogger,
+    ingredients: r.ingredients
+      .filter(i => i && i.trim())
+      .map(i => { const norm = normalizeIngredient(i); return { name: norm, category: categorise(norm) }; }),
+  };
+}
+
+type ShoppingRecipe = { id: string; name: string; blogger: string; ingredients: { name: string; category: Category }[] };
 
 type Category = 'Protein' | 'Produce' | 'DairyEggs' | 'PantryStaples' | 'PantryConsumables' | 'Frozen';
 
 const CATEGORY_ORDER: Category[] = ['Protein', 'Produce', 'DairyEggs', 'PantryStaples', 'PantryConsumables', 'Frozen'];
 
-
 const CATEGORY_LABELS: Record<Category, string> = {
-  Protein:          'Protein',
-  Produce:          'Produce',
-  DairyEggs:        'Dairy & Eggs',
-  PantryStaples:    'Pantry Staples',
-  PantryConsumables:'Pantry Consumables',
-  Frozen:           'Frozen',
+  Protein: 'Protein',
+  Produce: 'Produce',
+  Dairy:   'Dairy',
+  Pantry:  'Pantry',
 };
 
 const CATEGORY_COLORS: Record<Category, string> = {
@@ -109,11 +66,23 @@ const CATEGORY_COLORS: Record<Category, string> = {
 // ─────────────────────────────────────────────
 //  Main component
 // ─────────────────────────────────────────────
-export default function ShoppingPlannerScreen({ navigation }: Props) {
-  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set(['1', '3']));
+export default function ShoppingPlannerScreen() {
+  const [allRecipes, setAllRecipes] = useState<ShoppingRecipe[]>([]);
+  const [loadingRecipes, setLoadingRecipes] = useState(true);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set());
   const [searchQuery, setSearchQuery] = useState('');
   const [showRecipePicker, setShowRecipePicker] = useState(false);
+
+  useEffect(() => {
+    fetchCatalogRecipes().then(firestoreRecipes => {
+      const withIngredients = firestoreRecipes
+        .filter(r => r.ingredients && r.ingredients.length > 0)
+        .map(r => toShoppingRecipe({ id: r.id, name: r.name, blogger: r.blogger, ingredients: r.ingredients }));
+      setAllRecipes(withIngredients);
+      setLoadingRecipes(false);
+    }).catch(() => setLoadingRecipes(false));
+  }, []);
 
   // Toggle a recipe on/off
   const toggleRecipe = (id: string) => {
@@ -146,7 +115,7 @@ export default function ShoppingPlannerScreen({ navigation }: Props) {
       Frozen:           new Map(),
     };
 
-    for (const recipe of SAMPLE_RECIPES) {
+    for (const recipe of allRecipes) {
       if (!selectedIds.has(recipe.id)) continue;
       for (const ing of recipe.ingredients) {
         const key = ing.name.toLowerCase();
@@ -169,11 +138,19 @@ export default function ShoppingPlannerScreen({ navigation }: Props) {
       .filter(section => section.data.length > 0);
   }, [selectedIds, searchQuery]);
 
-  const selectedRecipes = SAMPLE_RECIPES.filter(r => selectedIds.has(r.id));
+  const selectedRecipes = allRecipes.filter(r => selectedIds.has(r.id));
   const totalItems = shoppingList.reduce((acc, s) => acc + s.data.length, 0);
   const checkedCount = shoppingList.reduce(
     (acc, s) => acc + s.data.filter(i => checkedItems.has(i.key)).length, 0
   );
+
+  if (loadingRecipes) {
+    return (
+      <View style={[styles.container, { alignItems: 'center', justifyContent: 'center' }]}>
+        <ActivityIndicator color={Colors.textSecondary} />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -202,7 +179,7 @@ export default function ShoppingPlannerScreen({ navigation }: Props) {
           <View style={styles.pickerPanel}>
             <Text style={styles.pickerLabel}>Select recipes to build your list</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.pickerScroll}>
-              {SAMPLE_RECIPES.map(recipe => {
+              {allRecipes.map(recipe => {
                 const on = selectedIds.has(recipe.id);
                 return (
                   <TouchableOpacity
@@ -467,7 +444,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     gap: 12,
   },
-  emptyIcon: { fontSize: 48 },
   emptyTitle: {
     fontFamily: Fonts.display,
     fontSize: 24,
@@ -491,7 +467,6 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
     gap: 8,
   },
-  sectionIcon: { fontSize: 16 },
   sectionTitle: {
     fontFamily: Fonts.bodyMedium,
     fontSize: 13,

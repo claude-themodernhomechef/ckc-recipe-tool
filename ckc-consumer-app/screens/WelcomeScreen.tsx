@@ -83,26 +83,10 @@ export default function WelcomeScreen({ navigation }: Props) {
         <View style={styles.buttonArea}>
           <TouchableOpacity
             style={styles.primaryBtn}
-            onPress={() => navigation.navigate('SignUp')}
+            onPress={() => navigation.navigate('DietProtocol')}
             activeOpacity={0.88}
           >
             <Text style={styles.primaryBtnText}>Get Started — It's Free</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.secondaryBtn}
-            activeOpacity={0.6}
-            onPress={() => navigation.navigate('Login')}
-          >
-            <Text style={styles.secondaryBtnText}>I already have an account</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.guestBtn}
-            activeOpacity={0.5}
-            onPress={() => navigation.navigate('GuestDiscover')}
-          >
-            <Text style={styles.guestBtnText}>Browse recipes first →</Text>
           </TouchableOpacity>
         </View>
 
@@ -190,24 +174,5 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.bodyMedium,
     fontSize: 15,
     color: Colors.bg,
-  },
-  secondaryBtn: {
-    alignItems: 'center',
-    paddingVertical: 8,
-  },
-  secondaryBtnText: {
-    fontFamily: Fonts.body,
-    fontSize: 13,
-    color: 'rgba(245,243,238,0.45)',
-  },
-  guestBtn: {
-    alignItems: 'center',
-    paddingVertical: 6,
-  },
-  guestBtnText: {
-    fontFamily: Fonts.body,
-    fontSize: 12,
-    color: 'rgba(245,243,238,0.28)',
-    textDecorationLine: 'underline',
   },
 });

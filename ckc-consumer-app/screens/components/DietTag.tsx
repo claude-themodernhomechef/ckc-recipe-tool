@@ -1,80 +1,56 @@
-/**
- * DietTag
- *
- * Single source of truth for diet protocol tag rendering.
- *
- * Variants:
- *   circle — compact filled circle with abbreviation. Used on recipe cards and
- *            detail screens. Outlined (border only) when status === 'modified'.
- *   pill   — bordered pill with full protocol label. Used on Profile and
- *            SetupComplete screens.
- */
+// ─────────────────────────────────────────────
+//  DietTag — diet protocol badge component
+//  variant="circle" → small filled dot with initials
+//  variant="pill"   → rounded label chip
+// ─────────────────────────────────────────────
 
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Colors, Fonts } from '../../constants/theme';
 
+// Color map matches Colors.diet in theme.ts and catalog.html
 export const DIET_COLORS: Record<string, string> = {
-  AIP: Colors.diet.AIP,
-  LF:  Colors.diet.LF,
-  K:   Colors.diet.K,
-  GF:  Colors.diet.GF,
-  DF:  Colors.diet.DF,
-  V:   Colors.diet.V,
-  Vg:  Colors.diet.Vg,
-  LH:  Colors.diet.LH,
-};
-
-export const DIET_LABELS: Record<string, string> = {
-  AIP: 'Autoimmune Protocol',
-  LF:  'Low-FODMAP',
-  K:   'Keto',
-  GF:  'Gluten-Free',
-  DF:  'Dairy-Free',
-  V:   'Vegan',
-  Vg:  'Vegetarian',
-  LH:  'Low-Histamine',
+  GF:  '#d4943a',
+  DF:  '#6aabda',
+  V:   '#7cb87a',
+  Vg:  '#5bbfb5',
+  K:   '#9b8ee0',
+  AIP: '#e07878',
+  LF:  '#d4a843',
+  LH:  '#c47fc4',
 };
 
 interface DietTagProps {
   protocol: string;
   variant?: 'circle' | 'pill';
-  /** 'modified' renders an outlined circle (border only) to indicate swap-required compliance */
   status?: 'native' | 'modified';
 }
 
-export default function DietTag({
-  protocol,
-  variant = 'circle',
-  status = 'native',
-}: DietTagProps) {
-  const color = DIET_COLORS[protocol] ?? Colors.textMuted;
-  const label = DIET_LABELS[protocol] ?? protocol;
+export default function DietTag({ protocol, variant = 'pill', status = 'native' }: DietTagProps) {
+  const color = DIET_COLORS[protocol] ?? '#888';
+  const isModified = status === 'modified';
 
-  if (variant === 'pill') {
+  if (variant === 'circle') {
     return (
       <View style={[
-        styles.pill,
-        { borderColor: color, backgroundColor: `${color}14` },
+        styles.circle,
+        { backgroundColor: isModified ? 'transparent' : color, borderColor: color },
+        isModified && styles.circleMod,
       ]}>
-        <Text style={[styles.pillText, { color }]}>
-          {label}
+        <Text style={[styles.circleText, isModified && { color }]}>
+          {protocol}
         </Text>
       </View>
     );
   }
 
-  if (status === 'modified') {
-    return (
-      <View style={[styles.circle, styles.circleOutlined, { borderColor: color }]}>
-        <Text style={[styles.circleText, { color }]}>{protocol}</Text>
-      </View>
-    );
-  }
-
   return (
-    <View style={[styles.circle, { backgroundColor: color }]}>
-      <Text style={styles.circleText}>{protocol}</Text>
+    <View style={[
+      styles.pill,
+      { backgroundColor: isModified ? 'transparent' : color + '22', borderColor: color },
+    ]}>
+      <Text style={[styles.pillText, { color }]}>
+        {protocol}{isModified ? '*' : ''}
+      </Text>
     </View>
   );
 }
@@ -84,28 +60,31 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
+    borderWidth: 1.5,
     alignItems: 'center',
     justifyContent: 'center',
+    marginRight: 4,
   },
-  circleOutlined: {
-    backgroundColor: 'transparent',
-    borderWidth: 1.5,
+  circleMod: {
+    borderStyle: 'dashed',
   },
   circleText: {
-    fontFamily: Fonts.bodyMedium,
-    fontSize: 9,
-    color: '#fff',
+    fontSize: 8,
+    fontWeight: '700',
+    color: '#0f0f0d',
     letterSpacing: 0.3,
   },
-
   pill: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
     borderWidth: 1,
-    borderRadius: 100,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
+    marginRight: 4,
+    marginBottom: 4,
   },
   pillText: {
-    fontFamily: Fonts.body,
-    fontSize: 12,
+    fontSize: 11,
+    fontWeight: '600',
+    letterSpacing: 0.4,
   },
 });

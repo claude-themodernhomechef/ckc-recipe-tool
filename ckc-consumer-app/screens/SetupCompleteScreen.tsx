@@ -104,29 +104,7 @@ export default function SetupCompleteScreen({ route }: Props) {
           <TouchableOpacity
             style={[styles.primaryBtn, loading && { opacity: 0.6 }]}
             activeOpacity={0.85}
-            disabled={loading}
-            onPress={async () => {
-              setLoading(true);
-              try {
-                await completeOnboarding({
-                  protocols,
-                  household,
-                  proteins,
-                  cuisines,
-                  savedRecipes: [],
-                  tier: 'free',
-                });
-                // Navigation to MainTabs happens automatically:
-                // completeOnboarding sets onboardingComplete = true in UserContext
-                // → AppNavigator re-renders → AppStack mounts → MainTabs appears
-              } catch (err: any) {
-                setLoading(false);
-                const msg = err?.code === 'auth/email-already-in-use'
-                  ? 'That email is already registered. Please sign in instead.'
-                  : 'Something went wrong creating your account. Please try again.';
-                Alert.alert('Account Error', msg);
-              }
-            }}
+            onPress={() => navigation.navigate('MainTabs')}
           >
             {loading
               ? <ActivityIndicator color={Colors.bg} />

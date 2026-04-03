@@ -1,30 +1,4 @@
-/**
- * App.tsx
- *
- * Root navigator with conditional auth/app stack routing.
- *
- * ── How routing works ──
- *
- * AppNavigator (inside UserProvider + NavigationContainer) reads auth state
- * from UserContext and renders one of two stacks:
- *
- *   AuthStack  — when user is not logged in, or logged in but onboarding incomplete
- *     Splash → Welcome → SignUp / Login → DietProtocol → … → SetupComplete
- *
- *   AppStack   — when user is fully authenticated (logged in + onboarding done)
- *     MainTabs (Discover / MealPlan / Scan / Shop / Profile)
- *     RecipeDetail (pushed over any tab)
- *
- * When SetupCompleteScreen calls completeOnboarding(), UserContext sets
- * onboardingComplete = true → AppNavigator re-renders → AppStack mounts →
- * user lands on MainTabs. No explicit navigation.navigate() needed.
- *
- * Same logic applies on app restart: if Firebase Auth has a persisted session
- * and Firestore has an onboardingComplete profile, the user goes straight to
- * MainTabs without seeing any auth or onboarding screens.
- */
-
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, LinkingOptions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
 import {
@@ -41,21 +15,19 @@ import { Colors } from './constants/theme';
 import { UserProvider, useUser } from './context/UserContext';
 import { MenuProvider } from './context/MenuContext';
 
-// ── Onboarding / auth screens ─────────────────────────────────────────────────
-import SplashScreen        from './screens/SplashScreen';
-import WelcomeScreen       from './screens/WelcomeScreen';
-import SignUpScreen        from './screens/SignUpScreen';
-import LoginScreen         from './screens/LoginScreen';
-import DietProtocolScreen  from './screens/DietProtocolScreen';
-import HouseholdScreen     from './screens/HouseholdScreen';
-import ProteinScreen       from './screens/ProteinScreen';
-import CuisineScreen       from './screens/CuisineScreen';
-import SetupCompleteScreen from './screens/SetupCompleteScreen';
-import GuestDiscoverScreen from './screens/GuestDiscoverScreen';
+import WelcomeScreen         from './screens/WelcomeScreen';
+import DietProtocolScreen    from './screens/DietProtocolScreen';
+import HouseholdScreen       from './screens/HouseholdScreen';
+import ProteinScreen         from './screens/ProteinScreen';
+import CuisineScreen         from './screens/CuisineScreen';
+import SetupCompleteScreen   from './screens/SetupCompleteScreen';
+import ShoppingPlannerScreen from './screens/ShoppingPlannerScreen';
+import MainTabs             from './navigation/MainTabs';
+import RecipeDetailScreen    from './screens/RecipeDetailScreen';
+import AdminScreen           from './screens/admin/AdminScreen';
 
-// ── Main app ──────────────────────────────────────────────────────────────────
-import MainTabs           from './navigation/MainTabs';
-import RecipeDetailScreen from './screens/RecipeDetailScreen';
+import { UserProvider }  from './context/UserContext';
+import { MenuProvider }  from './context/MenuContext';
 
 // ─────────────────────────────────────────────
 //  Route type map
@@ -78,6 +50,25 @@ export type RootStackParamList = {
   RecipeDetail:    { recipeId: string };
   // Legacy — kept so ShoppingPlannerScreen doesn't break until it's refactored
   ShoppingPlanner: undefined;
+  MainTabs:        undefined;
+  Discover:        undefined;
+  RecipeDetail:    { recipeId: string };
+  Admin:           undefined;
+  // Auth screens — not yet built, referenced by WelcomeScreen
+  SignUp:          undefined;
+  Login:           undefined;
+  GuestDiscover:   undefined;
+};
+
+// On web: /admin routes straight to AdminScreen
+const linking: LinkingOptions<RootStackParamList> = {
+  prefixes: [],
+  config: {
+    screens: {
+      Admin:   'admin',
+      Discover: '',
+    },
+  },
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -159,8 +150,30 @@ export default function App() {
   return (
     <UserProvider>
       <MenuProvider>
-        <NavigationContainer>
-          <AppNavigator />
+        <NavigationContainer linking={linking}>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+              animation: 'slide_from_right',
+              contentStyle: { backgroundColor: Colors.bg },
+            }}
+          >
+            <Stack.Screen name="Welcome"         component={WelcomeScreen} />
+            <Stack.Screen name="DietProtocol"    component={DietProtocolScreen} />
+            <Stack.Screen name="Household"       component={HouseholdScreen} />
+            <Stack.Screen name="Protein"         component={ProteinScreen} />
+            <Stack.Screen name="Cuisine"         component={CuisineScreen} />
+            <Stack.Screen name="SetupComplete"   component={SetupCompleteScreen} />
+            <Stack.Screen name="ShoppingPlanner" component={ShoppingPlannerScreen} />
+            <Stack.Screen name="MainTabs"        component={MainTabs} />
+            <Stack.Screen name="Discover"        component={MainTabs} />
+            <Stack.Screen name="RecipeDetail"    component={RecipeDetailScreen} />
+            <Stack.Screen name="Admin"           component={AdminScreen} />
+            {/* Auth screens — point to MainTabs until auth is built */}
+            <Stack.Screen name="SignUp"          component={MainTabs} />
+            <Stack.Screen name="Login"           component={MainTabs} />
+            <Stack.Screen name="GuestDiscover"   component={MainTabs} />
+          </Stack.Navigator>
         </NavigationContainer>
       </MenuProvider>
     </UserProvider>

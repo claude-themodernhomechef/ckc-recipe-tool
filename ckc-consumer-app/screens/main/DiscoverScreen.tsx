@@ -16,6 +16,7 @@ import React, { useRef, useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
+  Image,
   StyleSheet,
   Animated,
   PanResponder,
@@ -40,7 +41,7 @@ import {
 } from '../../data/sampleRecipes';
 import DietTag, { DIET_COLORS } from '../components/DietTag';
 import { fetchRecipes } from '../../lib/firestore';
-import { normalizeProtein } from '../../lib/ingredientParser';
+import { normalizeProtein, formatRating } from '../../lib/ingredientParser';
 
 const SIDEBAR_WIDTH = 220; // desktop sidebar width (matches MainTabs)
 const MAX_CARD_WIDTH = 420; // cap card width on wide screens
@@ -80,11 +81,11 @@ function filterRecipes(
   }
 
   if (prepTime === 'quick') {
-    results = results.filter(r => r.prep_time <= 30);
+    results = results.filter(r => r.prep_time != null && r.prep_time <= 30);
   } else if (prepTime === 'medium') {
-    results = results.filter(r => r.prep_time > 30 && r.prep_time <= 60);
+    results = results.filter(r => r.prep_time != null && r.prep_time > 30 && r.prep_time <= 60);
   } else if (prepTime === 'long') {
-    results = results.filter(r => r.prep_time > 60);
+    results = results.filter(r => r.prep_time != null && r.prep_time > 60);
   }
 
   return results;
@@ -119,7 +120,11 @@ function RecipeCardStatic({ recipe, offset, cardWidth, cardHeight }: { recipe: R
         position: 'absolute',
       },
     ]}>
-      <View style={[styles.cardPhoto, { height: cardHeight * 0.58, backgroundColor: recipe.placeholder_color }]} />
+      <View style={[styles.cardPhoto, { height: cardHeight * 0.58, backgroundColor: recipe.placeholder_color }]}>
+        {recipe.photo_url ? (
+          <Image source={{ uri: recipe.photo_url }} style={styles.cardImage} />
+        ) : null}
+      </View>
     </View>
   );
 }
@@ -210,6 +215,10 @@ function SwipeCard({ recipe, onSwipeLeft, onSwipeRight, onTap, activeProtocols, 
   const badges = protocolKeys
     .map(p => ({ p, status: getComplianceStatus(recipe, p) }))
     .filter(b => b.status !== 'none')
+    .sort((a, b) => {
+      if (a.status !== b.status) return a.status === 'native' ? -1 : 1;
+      return a.p.localeCompare(b.p);
+    })
     .slice(0, 5);
 
   return (
@@ -223,15 +232,20 @@ function SwipeCard({ recipe, onSwipeLeft, onSwipeRight, onTap, activeProtocols, 
     >
       {/* Photo / color placeholder */}
       <View style={[styles.cardPhoto, { height: cardHeight * 0.58, backgroundColor: recipe.placeholder_color }]}>
+        {recipe.photo_url ? (
+          <Image source={{ uri: recipe.photo_url }} style={styles.cardImage} />
+        ) : null}
         <Animated.View style={[styles.swipeOverlay, styles.overlayRight, { opacity: saveOpacity }]}>
           <Text style={styles.overlayText}>SAVE</Text>
         </Animated.View>
         <Animated.View style={[styles.swipeOverlay, styles.overlayLeft, { opacity: passOpacity }]}>
           <Text style={styles.overlayText}>PASS</Text>
         </Animated.View>
-        <View style={styles.prepTimePill}>
-          <Text style={styles.prepTimeText}>{recipe.prep_time} min</Text>
-        </View>
+        {recipe.prep_time ? (
+          <View style={styles.prepTimePill}>
+            <Text style={styles.prepTimeText}>{recipe.prep_time} min</Text>
+          </View>
+        ) : null}
       </View>
 
       {/* Card body */}
@@ -244,6 +258,18 @@ function SwipeCard({ recipe, onSwipeLeft, onSwipeRight, onTap, activeProtocols, 
 
         <Text style={styles.cardTitle} numberOfLines={2}>{recipe.name}</Text>
         <Text style={styles.cardDesc} numberOfLines={2}>{recipe.menu_description}</Text>
+
+        {(recipe.blogger || formatRating(recipe.rating)) ? (
+          <View style={styles.cardAttribution}>
+            {recipe.blogger ? <Text style={styles.cardBlogger}>{recipe.blogger}</Text> : null}
+            {recipe.blogger && formatRating(recipe.rating) ? (
+              <Text style={styles.cardRatingSep}>·</Text>
+            ) : null}
+            {formatRating(recipe.rating) ? (
+              <Text style={styles.cardRating}>★ {formatRating(recipe.rating)}</Text>
+            ) : null}
+          </View>
+        ) : null}
 
         {badges.length > 0 && (
           <View style={styles.badgeRow}>
@@ -826,6 +852,7 @@ const styles = StyleSheet.create({
   },
   cardTop: { position: 'absolute', zIndex: 20 },
   cardPhoto: { position: 'relative', overflow: 'hidden' },
+  cardImage: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', height: '100%' },
   cardBody: { padding: 16, gap: 6, flex: 1 },
   cardMeta: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   cuisineTag: {
@@ -849,6 +876,10 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
     lineHeight: 19,
   },
+  cardAttribution: { flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: 2 },
+  cardBlogger: { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted },
+  cardRatingSep: { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted },
+  cardRating: { fontFamily: Fonts.bodyMedium, fontSize: 11, color: Colors.gold },
   badgeRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 4, marginTop: 4 },
 
   // Compliance badges — circles matching original website design
