@@ -17,7 +17,10 @@ import {
 } from 'react-native';
 import { Colors, Fonts } from '../../constants/theme';
 import { fetchMaybeRecipes, updateRecipeStatus } from '../../lib/firestore';
-import { Recipe } from '../../data/sampleRecipes';
+import { Recipe, getComplianceStatus } from '../../data/sampleRecipes';
+import DietTag from '../components/DietTag';
+
+const DIET_PROTOCOLS = ['GF', 'DF', 'LF', 'K', 'AIP', 'V', 'Vg', 'LH'];
 
 function MaybeCard({ recipe, onDecide }: { recipe: Recipe; onDecide: (status: 'yes' | 'no') => void }) {
   return (
@@ -34,6 +37,18 @@ function MaybeCard({ recipe, onDecide }: { recipe: Recipe; onDecide: (status: 'y
         <Text style={styles.name} numberOfLines={2}>{recipe.name}</Text>
         <Text style={styles.meta}>{recipe.cuisine}  ·  {recipe.protein_type}</Text>
         {recipe.blogger ? <Text style={styles.blogger}>{recipe.blogger}</Text> : null}
+        {(() => {
+          const tags = DIET_PROTOCOLS
+            .map(p => ({ p, status: getComplianceStatus(recipe, p) }))
+            .filter(t => t.status !== 'none');
+          return tags.length > 0 ? (
+            <View style={styles.dietRow}>
+              {tags.map(t => (
+                <DietTag key={t.p} protocol={t.p} variant="circle" status={t.status === 'modified' ? 'modified' : 'native'} />
+              ))}
+            </View>
+          ) : null;
+        })()}
       </View>
 
       {/* Actions */}
@@ -123,6 +138,7 @@ const styles = StyleSheet.create({
   name: { fontFamily: Fonts.display, fontSize: 16, color: Colors.textPrimary, marginBottom: 2 },
   meta: { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted },
   blogger: { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted, marginTop: 2 },
+  dietRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 4, marginTop: 6 },
 
   actions: { flexDirection: 'column', justifyContent: 'center', gap: 6, paddingRight: 10 },
   btn: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },

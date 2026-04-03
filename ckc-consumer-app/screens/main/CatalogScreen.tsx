@@ -27,7 +27,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Fonts } from '../../constants/theme';
 import { fetchCatalogRecipes } from '../../lib/firestore';
 import { Recipe, getComplianceStatus } from '../../data/sampleRecipes';
-import { DIET_COLORS } from '../components/DietTag';
+import DietTag, { DIET_COLORS } from '../components/DietTag';
 import { formatRating } from '../../lib/ingredientParser';
 
 // ─────────────────────────────────────────────
@@ -45,24 +45,6 @@ const MEAL_TYPES = [
   'Entree', 'Side', 'Salad', 'Soup', 'Sauce', 'Breakfast', 'Dessert',
 ];
 
-// ─────────────────────────────────────────────
-//  Diet pill (for recipe row tags)
-// ─────────────────────────────────────────────
-
-function DietPill({ protocol, mod }: { protocol: string; mod: boolean }) {
-  const color = (DIET_COLORS as Record<string, string>)[protocol] || Colors.textMuted;
-  return (
-    <View style={[pill.wrap, { borderColor: color + '66', backgroundColor: color + '1a' }]}>
-      {mod && <View style={[pill.dot, { backgroundColor: color }]} />}
-      <Text style={[pill.text, { color }]}>{protocol}</Text>
-    </View>
-  );
-}
-const pill = StyleSheet.create({
-  wrap: { flexDirection: 'row', alignItems: 'center', gap: 3, paddingHorizontal: 6, paddingVertical: 2, borderRadius: 100, borderWidth: 1 },
-  dot:  { width: 4, height: 4, borderRadius: 2 },
-  text: { fontFamily: Fonts.bodyMedium, fontSize: 10, letterSpacing: 0.4 },
-});
 
 // ─────────────────────────────────────────────
 //  Diet filter chip (protocol selector row)
@@ -224,7 +206,7 @@ function RecipeRow({ recipe }: { recipe: Recipe }) {
         {activeDietTags.length > 0 && (
           <View style={row.tags}>
             {activeDietTags.slice(0, 6).map(t => (
-              <DietPill key={t.p} protocol={t.p} mod={t.status === 'modified'} />
+              <DietTag key={t.p} protocol={t.p} variant="circle" status={t.status === 'modified' ? 'modified' : 'native'} />
             ))}
           </View>
         )}

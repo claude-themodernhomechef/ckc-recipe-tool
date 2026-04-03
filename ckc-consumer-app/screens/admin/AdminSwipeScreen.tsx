@@ -22,7 +22,10 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Fonts } from '../../constants/theme';
 import { fetchPendingRecipes, updateRecipeStatus } from '../../lib/firestore';
-import { Recipe } from '../../data/sampleRecipes';
+import { Recipe, getComplianceStatus } from '../../data/sampleRecipes';
+import DietTag from '../components/DietTag';
+
+const DIET_PROTOCOLS = ['GF', 'DF', 'LF', 'K', 'AIP', 'V', 'Vg', 'LH'];
 
 // ── Single admin swipe card ───────────────────────────────────────────────────
 
@@ -114,6 +117,21 @@ function AdminCard({ recipe, onApprove, onReject, screenWidth, cardWidth, cardHe
           <Text style={styles.desc} numberOfLines={2}>{recipe.menu_description}</Text>
         ) : null}
         {recipe.blogger ? <Text style={styles.blogger}>{recipe.blogger}</Text> : null}
+
+        {/* Diet tags */}
+        {(() => {
+          const tags = DIET_PROTOCOLS
+            .map(p => ({ p, status: getComplianceStatus(recipe, p) }))
+            .filter(t => t.status !== 'none');
+          return tags.length > 0 ? (
+            <View style={styles.dietRow}>
+              {tags.map(t => (
+                <DietTag key={t.p} protocol={t.p} variant="circle" status={t.status === 'modified' ? 'modified' : 'native'} />
+              ))}
+            </View>
+          ) : null;
+        })()}
+
         <Text style={styles.url} numberOfLines={1}>{recipe.url}</Text>
       </View>
     </Animated.View>
@@ -267,6 +285,7 @@ const styles = StyleSheet.create({
   name:     { fontFamily: Fonts.display, fontSize: 22, color: Colors.textPrimary, marginBottom: 4 },
   desc:     { fontFamily: Fonts.body, fontSize: 13, color: Colors.textSecondary, marginBottom: 4 },
   blogger:  { fontFamily: Fonts.bodyMedium, fontSize: 12, color: Colors.textMuted },
+  dietRow:  { flexDirection: 'row', flexWrap: 'wrap', gap: 4, marginTop: 8 },
   url:      { fontFamily: Fonts.body, fontSize: 10, color: Colors.textMuted, marginTop: 4 },
 
   buttons: { flexDirection: 'row', gap: 16, paddingBottom: 24, paddingTop: 12 },
