@@ -5,10 +5,10 @@
  *   • Diet protocol colored chips (row, always visible)
  *   • Protein / Cuisine / Meal Type / Blogger — styled dropdown selects
  *
- * Tap any row → opens recipe URL in the browser.
+ * Tap any row → toggles recipe into the scrollable "menu strip" at top.
  */
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import {
   View,
   Text,
@@ -18,7 +18,6 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  Linking,
   ActivityIndicator,
   Modal,
   Pressable,
@@ -29,12 +28,13 @@ import { fetchCatalogRecipes } from '../../lib/firestore';
 import { Recipe, getComplianceStatus } from '../../data/sampleRecipes';
 import DietTag, { DIET_COLORS } from '../components/DietTag';
 import { formatRating } from '../../lib/ingredientParser';
+import { useMenu } from '../../context/MenuContext';
 
 // ─────────────────────────────────────────────
 //  Constants
 // ─────────────────────────────────────────────
 
-const DIET_PROTOCOLS = ['GF', 'DF', 'LF', 'K', 'AIP', 'V', 'Vg', 'LH'];
+const DIET_PROTOCOLS = ['AIP', 'DF', 'GF', 'K', 'LF', 'LH', 'V', 'Vg'];
 
 const STATUS_OPTIONS = ['yes', 'no', 'maybe', 'pending'] as const;
 type StatusOption = typeof STATUS_OPTIONS[number];
@@ -62,9 +62,10 @@ const MEAL_TYPES = [
   'Entree', 'Side', 'Salad', 'Soup', 'Sauce', 'Breakfast', 'Dessert',
 ];
 
+const GREEN = '#7cb87a';
 
 // ─────────────────────────────────────────────
-//  Diet filter chip (protocol selector row)
+//  Diet filter chip
 // ─────────────────────────────────────────────
 
 function DietChip({ protocol, active, onPress }: { protocol: string; active: boolean; onPress: () => void }) {
@@ -76,7 +77,9 @@ function DietChip({ protocol, active, onPress }: { protocol: string; active: boo
       style={[
         dc.circle,
         { borderColor: color },
-        active ? { backgroundColor: color } : { backgroundColor: 'transparent' },
+        active
+          ? { backgroundColor: color }
+          : { backgroundColor: color + '28' },
       ]}
     >
       <Text style={[dc.text, { color: active ? '#0f0f0d' : color }]}>{protocol}</Text>
@@ -89,6 +92,12 @@ const dc = StyleSheet.create({
     alignItems: 'center', justifyContent: 'center', marginRight: 6,
   },
   text: { fontFamily: Fonts.bodyMedium, fontSize: 9, letterSpacing: 0.3 },
+  clearBtn: {
+    height: 36, paddingHorizontal: 12, borderRadius: 18, borderWidth: 1.5,
+    borderColor: Colors.border, alignItems: 'center', justifyContent: 'center',
+    backgroundColor: Colors.surface, marginRight: 6,
+  },
+  clearText: { fontFamily: Fonts.bodyMedium, fontSize: 11, color: Colors.textSecondary },
 });
 
 // ─────────────────────────────────────────────
@@ -197,10 +206,127 @@ const dd = StyleSheet.create({
 });
 
 // ─────────────────────────────────────────────
+//  Menu strip (horizontal scroll of selected recipes)
+// ─────────────────────────────────────────────
+
+function MenuStrip({
+  selected,
+  onRemove,
+  onClear,
+}: {
+  selected: Recipe[];
+  onRemove: (id: string) => void;
+  onClear: () => void;
+}) {
+  const scrollRef = useRef<ScrollView>(null);
+
+  // Auto-scroll right when a new card is added
+  useEffect(() => {
+    if (selected.length > 0) {
+      setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 80);
+    }
+  }, [selected.length]);
+
+  return (
+    <View style={ms.wrap}>
+      <View style={ms.header}>
+        <Text style={ms.label}>
+          This Week's Menu
+          {selected.length > 0 && (
+            <Text style={ms.count}>  {selected.length} recipe{selected.length !== 1 ? 's' : ''}</Text>
+          )}
+        </Text>
+        {selected.length > 0 && (
+          <TouchableOpacity onPress={onClear} activeOpacity={0.7}>
+            <Text style={ms.clearBtn}>Clear all</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+
+      <ScrollView
+        ref={scrollRef}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={ms.scroll}
+      >
+        {selected.length === 0 ? (
+          <View style={ms.emptyWrap}>
+            <Text style={ms.emptyText}>Tap a recipe below to build your menu</Text>
+          </View>
+        ) : (
+          selected.map(r => (
+            <View key={r.id} style={ms.card}>
+              <View style={ms.cardThumb}>
+                {r.photo_url ? (
+                  <Image source={{ uri: r.photo_url }} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
+                ) : null}
+              </View>
+              <TouchableOpacity
+                style={ms.removeBtn}
+                onPress={() => onRemove(r.id)}
+                hitSlop={{ top: 6, right: 6, bottom: 6, left: 6 }}
+              >
+                <Text style={ms.removeBtnText}>×</Text>
+              </TouchableOpacity>
+              <Text style={ms.cardName} numberOfLines={2}>{r.name}</Text>
+            </View>
+          ))
+        )}
+      </ScrollView>
+    </View>
+  );
+}
+
+const ms = StyleSheet.create({
+  wrap: {
+    borderBottomWidth: 1, borderBottomColor: Colors.border,
+    paddingBottom: 10,
+  },
+  header: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+    paddingHorizontal: 16, paddingTop: 10, paddingBottom: 6,
+  },
+  label: { fontFamily: Fonts.bodyMedium, fontSize: 11, letterSpacing: 0.8, textTransform: 'uppercase', color: Colors.textMuted },
+  count: { fontFamily: Fonts.bodyMedium, fontSize: 11, color: GREEN, letterSpacing: 0.5 },
+  clearBtn: { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted },
+
+  scroll: { paddingHorizontal: 16, gap: 10 },
+  emptyWrap: { height: 72, justifyContent: 'center' },
+  emptyText: { fontFamily: Fonts.body, fontSize: 12, color: Colors.textMuted, fontStyle: 'italic' },
+
+  card: { width: 100, position: 'relative' },
+  cardThumb: {
+    width: 100, height: 62, borderRadius: 7,
+    backgroundColor: Colors.surface, overflow: 'hidden',
+    borderWidth: 1, borderColor: Colors.border,
+  },
+  removeBtn: {
+    position: 'absolute', top: 4, right: 4,
+    width: 18, height: 18, borderRadius: 9,
+    backgroundColor: 'rgba(0,0,0,0.65)',
+    alignItems: 'center', justifyContent: 'center',
+    zIndex: 1,
+  },
+  removeBtnText: { color: '#fff', fontSize: 13, lineHeight: 14 },
+  cardName: {
+    fontFamily: Fonts.body, fontSize: 10, color: Colors.textSecondary,
+    marginTop: 4, lineHeight: 13,
+  },
+});
+
+// ─────────────────────────────────────────────
 //  Recipe row
 // ─────────────────────────────────────────────
 
-function RecipeRow({ recipe }: { recipe: Recipe }) {
+function RecipeRow({
+  recipe,
+  selected,
+  onToggle,
+}: {
+  recipe: Recipe;
+  selected: boolean;
+  onToggle: () => void;
+}) {
   const activeDietTags = DIET_PROTOCOLS
     .map(p => ({ p, status: getComplianceStatus(recipe, p) }))
     .filter(t => t.status !== 'none')
@@ -211,18 +337,27 @@ function RecipeRow({ recipe }: { recipe: Recipe }) {
 
   return (
     <TouchableOpacity
-      style={row.wrap}
-      onPress={() => { if (recipe.url) Linking.openURL(recipe.url); }}
+      style={[row.wrap, selected && row.wrapSelected]}
+      onPress={onToggle}
       activeOpacity={0.75}
     >
+      {/* Toggle button */}
+      <View style={[row.toggleBtn, selected && row.toggleBtnSelected]}>
+        <Text style={[row.toggleIcon, selected && row.toggleIconSelected]}>
+          {selected ? '✓' : '+'}
+        </Text>
+      </View>
+
+      {/* Thumbnail */}
       <View style={[row.thumb, { backgroundColor: recipe.placeholder_color }]}>
         {recipe.photo_url ? (
           <Image source={{ uri: recipe.photo_url }} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
         ) : null}
       </View>
 
+      {/* Info */}
       <View style={row.info}>
-        <Text style={row.name} numberOfLines={1}>{recipe.name}</Text>
+        <Text style={[row.name, selected && row.nameSelected]} numberOfLines={1}>{recipe.name}</Text>
         <Text style={row.meta} numberOfLines={1}>
           {[
             recipe.cuisine,
@@ -240,6 +375,7 @@ function RecipeRow({ recipe }: { recipe: Recipe }) {
         )}
       </View>
 
+      {/* Right: status + rating */}
       <View style={row.right}>
         {recipe.status ? (() => {
           const s = recipe.status as StatusOption;
@@ -257,11 +393,35 @@ function RecipeRow({ recipe }: { recipe: Recipe }) {
     </TouchableOpacity>
   );
 }
+
 const row = StyleSheet.create({
-  wrap:   { flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: Colors.border },
-  thumb:  { width: 52, height: 52, borderRadius: 8, overflow: 'hidden', flexShrink: 0 },
+  wrap: {
+    flexDirection: 'row', alignItems: 'center', gap: 10,
+    paddingHorizontal: 12, paddingVertical: 12,
+    borderBottomWidth: 1, borderBottomColor: Colors.border,
+  },
+  wrapSelected: {
+    backgroundColor: GREEN + '12',
+    borderBottomColor: GREEN + '30',
+  },
+
+  toggleBtn: {
+    width: 26, height: 26, borderRadius: 13,
+    borderWidth: 1.5, borderColor: Colors.border,
+    alignItems: 'center', justifyContent: 'center',
+    flexShrink: 0,
+  },
+  toggleBtnSelected: {
+    borderColor: GREEN,
+    backgroundColor: GREEN,
+  },
+  toggleIcon: { fontFamily: Fonts.bodyMedium, fontSize: 14, color: Colors.textMuted, lineHeight: 16 },
+  toggleIconSelected: { color: '#0f0f0d' },
+
+  thumb:  { width: 48, height: 48, borderRadius: 7, overflow: 'hidden', flexShrink: 0 },
   info:   { flex: 1, gap: 3 },
   name:   { fontFamily: Fonts.display, fontSize: 17, color: Colors.textPrimary },
+  nameSelected: { color: GREEN },
   meta:   { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted },
   tags:   { flexDirection: 'row', flexWrap: 'wrap', gap: 4, marginTop: 2 },
   right:  { flexShrink: 0, alignItems: 'flex-end', gap: 4 },
@@ -291,12 +451,15 @@ export default function CatalogScreen() {
   const [loading, setLoading]       = useState(true);
   const [search,  setSearch]        = useState('');
 
-  const [filterDiet,     setFilterDiet]     = useState('');
+  const [filterDiets,    setFilterDiets]    = useState<Set<string>>(new Set());
   const [filterMealType, setFilterMealType] = useState('');
   const [filterProtein,  setFilterProtein]  = useState('');
   const [filterCuisine,  setFilterCuisine]  = useState('');
   const [filterBlogger,  setFilterBlogger]  = useState('');
   const [filterStatus,   setFilterStatus]   = useState<StatusOption | ''>('');
+
+  // Shared menu state — same context the Shop tab reads
+  const { menuItems, addToMenu, removeFromMenu, isInMenu, clearMenu } = useMenu();
 
   useEffect(() => {
     fetchCatalogRecipes().then(r => { setAllRecipes(r); setLoading(false); });
@@ -316,7 +479,7 @@ export default function CatalogScreen() {
       if (q && ![r.name, r.blogger, r.cuisine, r.protein_type].some(
         s => (s || '').toLowerCase().includes(q),
       )) return false;
-      if (filterDiet && getComplianceStatus(r, filterDiet) === 'none') return false;
+      if (filterDiets.size > 0 && ![...filterDiets].every(d => getComplianceStatus(r, d) !== 'none')) return false;
       if (filterMealType && (r.meal_type || '').toLowerCase() !== filterMealType.toLowerCase()) return false;
       if (filterProtein && r.protein_type !== filterProtein) return false;
       if (filterCuisine && r.cuisine !== filterCuisine) return false;
@@ -324,14 +487,26 @@ export default function CatalogScreen() {
       if (filterStatus && (r.status || 'yes') !== filterStatus) return false;
       return true;
     });
-  }, [allRecipes, search, filterDiet, filterMealType, filterProtein, filterCuisine, filterBlogger]);
+  }, [allRecipes, search, filterDiets, filterMealType, filterProtein, filterCuisine, filterBlogger, filterStatus]);
+
+  const selectedRecipes = useMemo(() =>
+    menuItems.map(m => allRecipes.find(r => r.id === m.recipeId)).filter(Boolean) as Recipe[],
+  [menuItems, allRecipes]);
+
+  function toggleRecipe(recipe: Recipe) {
+    if (isInMenu(recipe.id)) {
+      removeFromMenu(recipe.id);
+    } else {
+      addToMenu({ recipeId: recipe.id, recipeName: recipe.name, recipeImage: recipe.photo_url || undefined });
+    }
+  }
 
   function clearAll() {
-    setFilterDiet(''); setFilterMealType(''); setFilterProtein('');
+    setFilterDiets(new Set()); setFilterMealType(''); setFilterProtein('');
     setFilterCuisine(''); setFilterBlogger(''); setSearch(''); setFilterStatus('');
   }
 
-  const hasFilters = filterDiet || filterMealType || filterProtein || filterCuisine || filterBlogger || filterStatus;
+  const hasFilters = filterDiets.size > 0 || filterMealType || filterProtein || filterCuisine || filterBlogger || filterStatus;
 
   return (
     <SafeAreaView style={styles.screen} edges={['top']}>
@@ -367,10 +542,21 @@ export default function CatalogScreen() {
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.dietRow}>
           {DIET_PROTOCOLS.map(p => (
             <DietChip
-              key={p} protocol={p} active={filterDiet === p}
-              onPress={() => setFilterDiet(filterDiet === p ? '' : p)}
+              key={p} protocol={p} active={filterDiets.has(p)}
+              onPress={() => setFilterDiets(prev => {
+                const next = new Set(prev);
+                next.has(p) ? next.delete(p) : next.add(p);
+                return next;
+              })}
             />
           ))}
+          <TouchableOpacity
+            onPress={() => setFilterDiets(new Set())}
+            activeOpacity={0.7}
+            style={dc.clearBtn}
+          >
+            <Text style={dc.clearText}>Clear all</Text>
+          </TouchableOpacity>
         </ScrollView>
 
         <View style={styles.filterDivider} />
@@ -407,6 +593,13 @@ export default function CatalogScreen() {
         </ScrollView>
       </View>
 
+      {/* ── Menu strip ── */}
+      <MenuStrip
+        selected={selectedRecipes}
+        onRemove={id => removeFromMenu(id)}
+        onClear={clearMenu}
+      />
+
       {/* ── Recipe list (fills remaining space) ── */}
       {loading ? (
         <View style={styles.centered}>
@@ -422,7 +615,13 @@ export default function CatalogScreen() {
           style={styles.flatList}
           data={filtered}
           keyExtractor={r => r.id}
-          renderItem={({ item }) => <RecipeRow recipe={item} />}
+          renderItem={({ item }) => (
+            <RecipeRow
+              recipe={item}
+              selected={isInMenu(item.id)}
+              onToggle={() => toggleRecipe(item)}
+            />
+          )}
           contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
         />

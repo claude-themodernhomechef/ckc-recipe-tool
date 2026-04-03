@@ -40,7 +40,7 @@ BASE             = os.path.dirname(os.path.abspath(__file__))
 SA_KEY           = os.path.join(BASE, 'service-account.json')
 RULES_PATH       = os.path.join(BASE, 'CKC_Diet_Compliance_Rules.md')
 CHEF_GUIDE_PATH  = os.path.join(BASE, 'CKC_Chef_Notes_Guide.md')
-PRODUCTS_FILE    = '/Users/rafi/Desktop/Claude-MHC/Fig Scraper/ckc_products_cleaned_2026-03-29.json'
+PRODUCTS_FILE    = '/Users/rafi/Desktop/Claude-MHC/Fig Scraper/ckc_products_cleaned_2026-03-29.json'  # legacy local path — no longer used
 PROGRESS_FILE    = os.path.join(BASE, 'process_new_progress.json')
 NEEDS_REVIEW_CSV = os.path.join(BASE, 'needs_review.csv')
 STORAGE_BUCKET   = 'ckc-recipe-swipe.firebasestorage.app'
@@ -55,15 +55,27 @@ args = parser.parse_args()
 CONCURRENCY = 3
 
 # ── API / Firebase ─────────────────────────────────────────────────────────────
-env_text = open(os.path.join(BASE, 'functions', '.env')).read()
-api_key  = re.search(r'ANTHROPIC_API_KEY=(.+)', env_text).group(1).strip()
-client   = anthropic.Anthropic(api_key=api_key)
+# API key: prefer env var (CI), fall back to functions/.env (local)
+api_key = os.environ.get('ANTHROPIC_API_KEY', '')
+if not api_key:
+    env_path = os.path.join(BASE, 'functions', '.env')
+    if os.path.exists(env_path):
+        env_text = open(env_path).read()
+        m = re.search(r'ANTHROPIC_API_KEY=(.+)', env_text)
+        if m:
+            api_key = m.group(1).strip()
+if not api_key:
+    print('ERROR: ANTHROPIC_API_KEY not found in env or functions/.env')
+    sys.exit(1)
+client = anthropic.Anthropic(api_key=api_key)
 
 if not firebase_admin._apps:
-    firebase_admin.initialize_app(
-        credentials.Certificate(SA_KEY),
-        {'storageBucket': STORAGE_BUCKET}
-    )
+    sa_env = os.environ.get('FIREBASE_SERVICE_ACCOUNT', '')
+    if sa_env:
+        cred = credentials.Certificate(json.loads(sa_env))
+    else:
+        cred = credentials.Certificate(SA_KEY)
+    firebase_admin.initialize_app(cred, {'storageBucket': STORAGE_BUCKET})
 db     = fs_module.client()
 bucket = storage.bucket()
 
@@ -78,10 +90,27 @@ MENU_DESC_EXAMPLES = """Menu Description examples (all lowercase, semicolons bet
 - "grilled fresh peaches over fluffy quinoa with cherry tomatoes, cucumber, red onion, and fresh herbs in a light citrus vinaigrette"
 - "crispy pan-fried chicken thighs glazed with honey, soy, and garlic over jasmine rice with scallions"""
 
-# ── FIG product DB ─────────────────────────────────────────────────────────────
-print('Loading FIG product database…')
-PRODUCTS = json.load(open(PRODUCTS_FILE))
-print(f'Products loaded: {len(PRODUCTS):,}\n')
+# ── Supabase product DB ────────────────────────────────────────────────────────
+# Reads SUPABASE_URL and SUPABASE_ANON_KEY from env or functions/.env
+def _load_supabase_creds():
+    sb_url = os.environ.get('SUPABASE_URL', '')
+    sb_key = os.environ.get('SUPABASE_ANON_KEY', '')
+    if not sb_url or not sb_key:
+        env_path = os.path.join(BASE, 'functions', '.env')
+        if os.path.exists(env_path):
+            env_text = open(env_path).read()
+            m_url = re.search(r'SUPABASE_URL=(.+)', env_text)
+            m_key = re.search(r'SUPABASE_ANON_KEY=(.+)', env_text)
+            if m_url: sb_url = m_url.group(1).strip()
+            if m_key: sb_key = m_key.group(1).strip()
+    return sb_url, sb_key
+
+SUPABASE_URL, SUPABASE_KEY = _load_supabase_creds()
+FIG_AVAILABLE = bool(SUPABASE_URL and SUPABASE_KEY)
+if FIG_AVAILABLE:
+    print('Supabase product DB ready ✓\n')
+else:
+    print('⚠  Supabase credentials not found — uncertain ingredients will go straight to needs_review.csv\n')
 
 # ── Protocol → FIG field ───────────────────────────────────────────────────────
 PROTO_FIELD = {
@@ -304,25 +333,69 @@ def verify_diet_tags(name, cuisine, course, ingredients):
             if attempt == 3: raise
             time.sleep(attempt * 2)
 
-# ── Step 4: FIG product search ─────────────────────────────────────────────────
-def get_compliance(product, protocol):
-    if protocol == 'K':
-        sf = product.get('sugar_free', 'unknown')
-        pa = product.get('paleo',      'unknown')
-        if sf == 'compliant' and pa == 'compliant':        return 'compliant'
-        if sf == 'not_compliant' or pa == 'not_compliant': return 'not_compliant'
-        return 'caution'
-    field = PROTO_FIELD.get(protocol)
-    return product.get(field, 'unknown') if field else 'unknown'
-
+# ── Step 4: Supabase product search ───────────────────────────────────────────
 def search_fig_products(ingredient, protocol):
-    q = ingredient.lower().strip()
+    """Query Supabase products table for ingredient matches filtered by protocol compliance."""
     results = {'compliant': [], 'caution': [], 'not_compliant': []}
-    for p in PRODUCTS:
-        if q in p['name'].lower():
-            status = get_compliance(p, protocol)
+    if not FIG_AVAILABLE:
+        return results
+
+    try:
+        import urllib.request, urllib.parse
+
+        # If ingredient is multi-word (e.g. "canned whole plum tomatoes"), try the
+        # last 1-2 meaningful words first to avoid Supabase 500s on long strings
+        raw = ingredient.strip()
+        words = raw.split()
+        search_term = raw if len(words) <= 3 else ' '.join(words[-2:])
+        q = urllib.parse.quote(search_term)
+
+        if protocol == 'K':
+            select = 'name,brand,sugar_free,paleo'
+        else:
+            field = PROTO_FIELD.get(protocol)
+            if not field:
+                return results
+            select = f'name,brand,{field}'
+
+        def _fetch(term):
+            endpoint = f'{SUPABASE_URL}/rest/v1/products?name=ilike.*{urllib.parse.quote(term)}*&select={select}&limit=20'
+            req = urllib.request.Request(
+                endpoint,
+                headers={
+                    'apikey':        SUPABASE_KEY,
+                    'Authorization': f'Bearer {SUPABASE_KEY}',
+                    'Accept':        'application/json',
+                }
+            )
+            with urllib.request.urlopen(req, timeout=10) as r:
+                return json.loads(r.read())
+
+        try:
+            products = _fetch(search_term)
+        except Exception:
+            # Fallback: try just the last word
+            products = _fetch(words[-1]) if len(words) > 1 else []
+
+        for p in products:
+            name = f"{p.get('brand','')} {p.get('name','')}".strip()
+            if protocol == 'K':
+                sf = p.get('sugar_free', 'unknown')
+                pa = p.get('paleo',      'unknown')
+                if sf == 'compliant' and pa == 'compliant':
+                    status = 'compliant'
+                elif sf == 'not_compliant' or pa == 'not_compliant':
+                    status = 'not_compliant'
+                else:
+                    status = 'caution'
+            else:
+                status = p.get(PROTO_FIELD[protocol], 'unknown')
             if status in results:
-                results[status].append(p['name'])
+                results[status].append(name)
+
+    except Exception as e:
+        print(f'  ⚠ Supabase search error ({ingredient}/{protocol}): {e}')
+
     return results
 
 def extract_uncertain_ingredient(reason):
@@ -527,7 +600,20 @@ def main():
                 f.result()
             except Exception as e:
                 doc = futures[f]
-                print(f'ERROR {doc.to_dict().get("name","?")}: {e}')
+                name = doc.to_dict().get('name', '?')
+                print(f'ERROR {name}: {e}')
+                # Silent fail protection — flag recipe so it never gets lost
+                if not args.dry_run:
+                    try:
+                        doc.reference.update({
+                            'processingStatus': 'failed',
+                            'needsManualReview': True,
+                            'failureReason': str(e)[:300],
+                        })
+                    except Exception:
+                        pass
+                progress['done'].append({'id': doc.id, 'name': name, 'status': 'failed'})
+                save_progress(progress)
 
     from collections import Counter
     cats = Counter(r['status'] for r in progress['done'])

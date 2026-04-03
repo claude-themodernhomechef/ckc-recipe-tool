@@ -53,6 +53,27 @@ html,body{min-height:100%;background:var(--bg);color:var(--text-primary);font-fa
 .chip.active-no{background:var(--red-bg);border-color:var(--red);color:var(--red)}
 .chip.active-maybe{background:var(--yellow-bg);border-color:var(--yellow);color:var(--yellow)}
 .chip.active{background:var(--surface2);border-color:rgba(255,255,255,.25);color:var(--text-primary)}
+.diet-chip{width:40px;height:40px;padding:0;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;letter-spacing:.02em}
+.diet-chip[data-diet="V"].active  {background:rgba(124,184,122,.15);border-color:#7cb87a;color:#7cb87a}
+.diet-chip[data-diet="Vg"].active {background:rgba(91,191,181,.15);border-color:#5bbfb5;color:#5bbfb5}
+.diet-chip[data-diet="GF"].active {background:rgba(212,148,58,.15);border-color:#d4943a;color:#d4943a}
+.diet-chip[data-diet="DF"].active {background:rgba(106,171,218,.15);border-color:#6aabda;color:#6aabda}
+.diet-chip[data-diet="LH"].active {background:rgba(196,127,196,.15);border-color:#c47fc4;color:#c47fc4}
+.diet-chip[data-diet="LF"].active {background:rgba(212,168,67,.15);border-color:#d4a843;color:#d4a843}
+.diet-chip[data-diet="AIP"].active{background:rgba(224,120,120,.15);border-color:#e07878;color:#e07878}
+.diet-chip[data-diet="K"].active  {background:rgba(155,142,224,.15);border-color:#9b8ee0;color:#9b8ee0}
+.diet-chip[data-diet="V"]  {color:rgba(124,184,122,.5);border-color:rgba(124,184,122,.25)}
+.diet-chip[data-diet="Vg"] {color:rgba(91,191,181,.5);border-color:rgba(91,191,181,.25)}
+.diet-chip[data-diet="GF"] {color:rgba(212,148,58,.5);border-color:rgba(212,148,58,.25)}
+.diet-chip[data-diet="DF"] {color:rgba(106,171,218,.5);border-color:rgba(106,171,218,.25)}
+.diet-chip[data-diet="LH"] {color:rgba(196,127,196,.5);border-color:rgba(196,127,196,.25)}
+.diet-chip[data-diet="LF"] {color:rgba(212,168,67,.5);border-color:rgba(212,168,67,.25)}
+.diet-chip[data-diet="AIP"]{color:rgba(224,120,120,.5);border-color:rgba(224,120,120,.25)}
+.diet-chip[data-diet="K"]  {color:rgba(155,142,224,.5);border-color:rgba(155,142,224,.25)}
+.chip.active-review{background:rgba(224,120,120,0.12);border-color:#e07878;color:#e07878}
+.review-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:100px;font-size:10px;font-weight:600;letter-spacing:.04em;background:rgba(224,120,120,0.12);border:1px solid #e07878;color:#e07878;white-space:nowrap}
+.review-badge.pending{background:rgba(212,168,67,0.12);border-color:var(--yellow);color:var(--yellow)}
+.review-badge.failed{background:rgba(224,120,120,0.12);border-color:#e07878;color:#e07878}
 select.filter-select{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 10px;color:var(--text-secondary);font-family:var(--font-body);font-size:12px;outline:none;cursor:pointer}
 select.filter-select:focus{border-color:rgba(255,255,255,.2)}
 
@@ -180,33 +201,21 @@ tbody td.td-img{width:56px;padding:6px 10px}
       <button class="chip" data-decision="no">No</button>
       <button class="chip" data-decision="maybe">Maybe</button>
     </div>
+    <button class="chip" id="chip-needs-review">⚠ Needs Review</button>
     <select class="filter-select" id="filter-cuisine"><option value="">All cuisines</option></select>
     <select class="filter-select" id="filter-course"><option value="">All meal types</option></select>
     <select class="filter-select" id="filter-blogger"><option value="">All bloggers</option></select>
     <select class="filter-select" id="filter-protein"><option value="">All proteins</option><option value="chicken">Chicken</option><option value="fish">Fish</option><option value="seafood">Seafood</option><option value="meat">Meat</option><option value="lamb">Lamb</option><option value="pork">Pork</option><option value="pasta">Pasta</option><option value="tofu">Tofu</option><option value="vegetables">Vegetables</option></select>
-    <select class="filter-select" id="filter-diet">
-      <option value="">All diets</option>
-      <optgroup label="Any (native or with mods)">
-        <option value="V">V – Vegan</option>
-        <option value="Vg">Vg – Vegetarian</option>
-        <option value="GF">GF – Gluten-free</option>
-        <option value="DF">DF – Dairy-free</option>
-        <option value="LH">LH – Low-histamine</option>
-        <option value="LF">LF – Low-FODMAP</option>
-        <option value="AIP">AIP – Autoimmune Protocol</option>
-        <option value="K">K – Keto</option>
-      </optgroup>
-      <optgroup label="Native only (no mods needed)">
-        <option value="V:native">V – Vegan (native)</option>
-        <option value="Vg:native">Vg – Vegetarian (native)</option>
-        <option value="GF:native">GF – Gluten-free (native)</option>
-        <option value="DF:native">DF – Dairy-free (native)</option>
-        <option value="LH:native">LH – Low-histamine (native)</option>
-        <option value="LF:native">LF – Low-FODMAP (native)</option>
-        <option value="AIP:native">AIP – Autoimmune Protocol (native)</option>
-        <option value="K:native">K – Keto (native)</option>
-      </optgroup>
-    </select>
+    <div class="filter-group" id="diet-chips" title="Select one or more diets — recipes must match ALL selected">
+      <button class="chip diet-chip" data-diet="GF"  title="Gluten-free">GF</button>
+      <button class="chip diet-chip" data-diet="DF"  title="Dairy-free">DF</button>
+      <button class="chip diet-chip" data-diet="LF"  title="Low-FODMAP">LF</button>
+      <button class="chip diet-chip" data-diet="K"   title="Keto">K</button>
+      <button class="chip diet-chip" data-diet="AIP" title="Autoimmune Protocol">AIP</button>
+      <button class="chip diet-chip" data-diet="V"   title="Vegan">V</button>
+      <button class="chip diet-chip" data-diet="Vg"  title="Vegetarian">Vg</button>
+      <button class="chip diet-chip" data-diet="LH"  title="Low-histamine">LH</button>
+    </div>
   </div>
 
   <div class="stats-bar" id="stats-bar"></div>
@@ -307,12 +316,14 @@ const DIET_TAGS = [
 let allRows = [];      // {id, ...fields}
 let sortCol = 'decidedAt', sortDir = -1;
 let activeDecisions = new Set();
-let filterCuisine = '', filterCourse = '', filterBlogger = '', filterDiet = '', filterProtein = '';
+let filterCuisine = '', filterCourse = '', filterBlogger = '', filterProtein = '';
+let activeDiets = new Set();
+let filterNeedsReview = false;
 let searchQuery = '';
 
 async function loadCatalog(){
   try{
-    // Read unified recipes collection — show all decided recipes (yes/no/maybe)
+    // Read unified recipes collection — show all decided recipes (yes/no/maybe) + pending_review/failed
     const snap = await db.collection('recipes')
       .where('status', 'in', ['yes', 'no', 'maybe'])
       .get();
@@ -355,13 +366,13 @@ function getFiltered(){
     if(filterCourse  && r.course   !== filterCourse)  return false;
     if(filterBlogger && r.blogger  !== filterBlogger) return false;
     if(filterProtein && r.protein  !== filterProtein) return false;
-    if(filterDiet){
-      const [code, type] = filterDiet.split(':');
+    if(filterNeedsReview && !r.needsManualReview && r.processingStatus !== 'failed' && r.processingStatus !== 'pending_review') return false;
+    if(activeDiets.size){
       const dt = r.dietTags || {};
-      const t  = dt[code];
-      if(!t) return false;
-      if(type === 'native' && !t.native) return false;
-      if(!type && !t.native && !t.mod) return false;
+      for(const code of activeDiets){
+        const t = dt[code];
+        if(!t || (!t.native && !t.mod)) return false;
+      }
     }
     if(q && ![ r.name, r.blogger, r.cuisine, r.course, r.description, r.menuDescription, r.rating ]
               .some(v=>(v||'').toLowerCase().includes(q))) return false;
@@ -406,6 +417,10 @@ function renderTable(){
     const scoreClass = score>=90?'score-high':score>=70?'score-mid':'';
 
     const statusUpper = (row.status||'').toUpperCase();
+    const ps = row.processingStatus || '';
+    const reviewBadge = row.needsManualReview || ps === 'failed' || ps === 'pending_review'
+      ? `<span class="review-badge ${ps === 'failed' ? 'failed' : 'pending'}" title="${escHtml(row.failureReason||ps)}">${ps === 'failed' ? '✕ Failed' : '⚠ Needs Review'}</span>`
+      : '';
     tr.innerHTML=`
       <td class="td-img">
         ${row.image
@@ -413,7 +428,10 @@ function renderTable(){
           : '<div class="thumb-placeholder">🍽️</div>'}
       </td>
       <td class="td-name">
-        ${row.url ? `<a href="${escHtml(row.url)}" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px solid var(--border)">${escHtml(row.name)}</a>` : escHtml(row.name)}
+        <div style="display:flex;flex-direction:column;gap:4px">
+          ${row.url ? `<a href="${escHtml(row.url)}" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px solid var(--border)">${escHtml(row.name)}</a>` : escHtml(row.name)}
+          ${reviewBadge}
+        </div>
       </td>
       <td class="decision-cell">
         <select data-field="status" data-id="${row.id}" title="Change decision">
@@ -450,14 +468,16 @@ function renderTable(){
 }
 
 function updateStats(filtered){
-  const yes   = filtered.filter(r=>r.status==='yes').length;
-  const no    = filtered.filter(r=>r.status==='no').length;
-  const maybe = filtered.filter(r=>r.status==='maybe').length;
+  const yes    = filtered.filter(r=>r.status==='yes').length;
+  const no     = filtered.filter(r=>r.status==='no').length;
+  const maybe  = filtered.filter(r=>r.status==='maybe').length;
+  const review = allRows.filter(r=>r.needsManualReview||r.processingStatus==='failed'||r.processingStatus==='pending_review').length;
   document.getElementById('stats-bar').innerHTML=
     `<span><b>${filtered.length}</b> recipes</span>
      <span style="color:var(--green)"><b>${yes}</b> yes</span>
      <span style="color:var(--yellow)"><b>${maybe}</b> maybe</span>
-     <span style="color:var(--red)"><b>${no}</b> no</span>`;
+     <span style="color:var(--red)"><b>${no}</b> no</span>`
+    + (review ? `<span style="color:#e07878"><b>${review}</b> needs review</span>` : '');
 }
 
 // ── Edit + save ─────────────────────────────────────────────
@@ -701,12 +721,28 @@ document.querySelectorAll('#decision-chips .chip').forEach(chip=>{
   });
 });
 
+// ── Needs Review chip ───────────────────────────────────────
+document.getElementById('chip-needs-review').addEventListener('click', ()=>{
+  filterNeedsReview = !filterNeedsReview;
+  document.getElementById('chip-needs-review').className = filterNeedsReview ? 'chip active-review' : 'chip';
+  renderTable();
+});
+
 // ── Dropdowns ───────────────────────────────────────────────
 document.getElementById('filter-cuisine').addEventListener('change', e=>{ filterCuisine=e.target.value; renderTable(); });
 document.getElementById('filter-course').addEventListener('change',  e=>{ filterCourse=e.target.value;  renderTable(); });
 document.getElementById('filter-blogger').addEventListener('change', e=>{ filterBlogger=e.target.value; renderTable(); });
 document.getElementById('filter-protein').addEventListener('change', e=>{ filterProtein=e.target.value; renderTable(); });
-document.getElementById('filter-diet').addEventListener('change',   e=>{ filterDiet=e.target.value;    renderTable(); });
+
+// ── Diet multi-select chips ──────────────────────────────────
+document.querySelectorAll('#diet-chips .diet-chip').forEach(chip=>{
+  chip.addEventListener('click', ()=>{
+    const d = chip.dataset.diet;
+    if(activeDiets.has(d)){ activeDiets.delete(d); chip.classList.remove('active'); }
+    else{ activeDiets.add(d); chip.classList.add('active'); }
+    renderTable();
+  });
+});
 
 // ── Search ──────────────────────────────────────────────────
 let searchTimer;

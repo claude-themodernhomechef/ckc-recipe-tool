@@ -88,6 +88,20 @@ export default function WelcomeScreen({ navigation }: Props) {
           >
             <Text style={styles.primaryBtnText}>Get Started — It's Free</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Login')}
+            activeOpacity={0.75}
+          >
+            <Text style={styles.signInText}>Already have an account? Sign in</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate('GuestDiscover')}
+            activeOpacity={0.75}
+          >
+            <Text style={styles.bypassText}>Browse recipes without signing up →</Text>
+          </TouchableOpacity>
         </View>
 
       </SafeAreaView>
@@ -174,5 +188,17 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.bodyMedium,
     fontSize: 15,
     color: Colors.bg,
+  },
+  signInText: {
+    fontFamily: Fonts.body,
+    fontSize: 14,
+    color: 'rgba(245,243,238,0.75)',
+    textAlign: 'center',
+  },
+  bypassText: {
+    fontFamily: Fonts.body,
+    fontSize: 12,
+    color: 'rgba(245,243,238,0.40)',
+    textAlign: 'center',
   },
 });

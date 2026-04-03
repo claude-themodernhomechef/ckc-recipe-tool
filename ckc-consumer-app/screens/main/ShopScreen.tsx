@@ -71,9 +71,7 @@ function aggregateIngredients(
           category: 'pantry-staples',
           raw: `${structured.quantity} ${structured.unit} ${structured.name}`,
         };
-        // Still run through categorize for category
-        const { categorizeIngredient } = require('../../lib/ingredientParser');
-        parsed.category = categorizeIngredient(parsed.name);
+
       }
 
       if (!parsed.name) continue;

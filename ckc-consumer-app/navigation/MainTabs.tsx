@@ -22,7 +22,7 @@ import { Colors, Fonts } from '../constants/theme';
 import DiscoverScreen        from '../screens/main/DiscoverScreen';
 import CatalogScreen         from '../screens/main/CatalogScreen';
 import ScanScreen            from '../screens/main/ScanScreen';
-import ShoppingPlannerScreen from '../screens/ShoppingPlannerScreen';
+import ShopScreen            from '../screens/main/ShopScreen';
 import ProfileScreen         from '../screens/main/ProfileScreen';
 
 export type TabId = 'discover' | 'catalog' | 'scan' | 'shop' | 'profile';
@@ -175,7 +175,7 @@ export default function MainTabs() {
       case 'discover': return <DiscoverScreen />;
       case 'catalog':  return <CatalogScreen />;
       case 'scan':     return <ScanScreen />;
-      case 'shop':     return <ShoppingPlannerScreen />;
+      case 'shop':     return <ShopScreen />;
       case 'profile':  return <ProfileScreen />;
     }
   })();

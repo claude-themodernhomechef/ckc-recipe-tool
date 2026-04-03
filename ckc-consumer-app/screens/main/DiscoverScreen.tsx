@@ -512,6 +512,25 @@ export default function DiscoverScreen() {
         </Animated.View>
       </View>
 
+      {/* ── Time filter chips ── */}
+      <View style={styles.timeFilterRow}>
+        {BROWSE_CATEGORIES.map(cat => {
+          const isActive = activePrepTime === cat.filterValue;
+          return (
+            <TouchableOpacity
+              key={cat.filterValue}
+              style={[styles.filterChip, isActive && styles.filterChipActive]}
+              onPress={() => handleBrowseTap(cat)}
+              activeOpacity={0.7}
+            >
+              <Text style={[styles.filterChipText, isActive && styles.filterChipTextActive]}>
+                {cat.label}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+
       {/* ── Active secondary filter pill ── */}
       {secondaryFilterLabel && (
         <View style={styles.activeFilterRow}>
@@ -690,32 +709,6 @@ export default function DiscoverScreen() {
             </View>
           )}
 
-          {/* Browse section */}
-          <View style={styles.browseSection}>
-            <Text style={styles.browseSectionTitle}>Browse by Category</Text>
-            <FlatList
-              data={BROWSE_CATEGORIES}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              keyExtractor={c => c.filterValue}
-              contentContainerStyle={styles.browseTiles}
-              renderItem={({ item }) => {
-                const isActive = activePrepTime === item.filterValue;
-
-                return (
-                  <TouchableOpacity
-                    style={[styles.browseTile, isActive && styles.browseTileActive]}
-                    activeOpacity={0.7}
-                    onPress={() => handleBrowseTap(item)}
-                  >
-                    <Text style={[styles.browseTileLabel, isActive && styles.browseTileLabelActive]}>
-                      {item.label}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              }}
-            />
-          </View>
         </>
       )}
 
@@ -782,6 +775,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
     overflow: 'hidden',
+  },
+  timeFilterRow: {
+    flexDirection: 'row',
+    paddingHorizontal: 20,
+    paddingBottom: 8,
+    gap: 8,
   },
   filterChip: {
     borderWidth: 1,
