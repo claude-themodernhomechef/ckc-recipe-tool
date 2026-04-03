@@ -8,7 +8,7 @@
  * Tap any row → opens recipe URL in the browser.
  */
 
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   View,
   Text,
@@ -36,6 +36,23 @@ import { formatRating } from '../../lib/ingredientParser';
 
 const DIET_PROTOCOLS = ['GF', 'DF', 'LF', 'K', 'AIP', 'V', 'Vg', 'LH'];
 
+const STATUS_OPTIONS = ['yes', 'no', 'maybe', 'pending'] as const;
+type StatusOption = typeof STATUS_OPTIONS[number];
+
+const STATUS_LABELS: Record<StatusOption, string> = {
+  yes:     'Approved',
+  no:      'Rejected',
+  maybe:   'Maybe',
+  pending: 'Pending',
+};
+
+const STATUS_COLORS: Record<StatusOption, string> = {
+  yes:     '#7cb87a',
+  no:      '#e07878',
+  maybe:   '#d4a843',
+  pending: '#888888',
+};
+
 const PROTEINS = [
   'Chicken', 'Beef', 'Fish', 'Seafood', 'Pork',
   'Lamb', 'Vegetarian', 'Tofu', 'Pasta',
@@ -54,17 +71,24 @@ function DietChip({ protocol, active, onPress }: { protocol: string; active: boo
   const color = (DIET_COLORS as Record<string, string>)[protocol] || Colors.textPrimary;
   return (
     <TouchableOpacity
-      style={[dc.wrap, active && { borderColor: color, backgroundColor: color + '22' }]}
       onPress={onPress}
       activeOpacity={0.7}
+      style={[
+        dc.circle,
+        { borderColor: color },
+        active ? { backgroundColor: color } : { backgroundColor: 'transparent' },
+      ]}
     >
-      <Text style={[dc.text, { color: active ? color : Colors.textSecondary }]}>{protocol}</Text>
+      <Text style={[dc.text, { color: active ? '#0f0f0d' : color }]}>{protocol}</Text>
     </TouchableOpacity>
   );
 }
 const dc = StyleSheet.create({
-  wrap: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 100, borderWidth: 1.5, borderColor: Colors.border, marginRight: 6 },
-  text: { fontFamily: Fonts.bodyMedium, fontSize: 12 },
+  circle: {
+    width: 36, height: 36, borderRadius: 18, borderWidth: 1.5,
+    alignItems: 'center', justifyContent: 'center', marginRight: 6,
+  },
+  text: { fontFamily: Fonts.bodyMedium, fontSize: 9, letterSpacing: 0.3 },
 });
 
 // ─────────────────────────────────────────────
@@ -216,9 +240,20 @@ function RecipeRow({ recipe }: { recipe: Recipe }) {
         )}
       </View>
 
-      {formatRating(recipe.rating) ? (
-        <Text style={row.rating}>★ {formatRating(recipe.rating)}</Text>
-      ) : null}
+      <View style={row.right}>
+        {recipe.status ? (() => {
+          const s = recipe.status as StatusOption;
+          const color = STATUS_COLORS[s] ?? '#888';
+          return (
+            <View style={[row.statusBadge, { borderColor: color, backgroundColor: color + '22' }]}>
+              <Text style={[row.statusText, { color }]}>{STATUS_LABELS[s] ?? s}</Text>
+            </View>
+          );
+        })() : null}
+        {formatRating(recipe.rating) ? (
+          <Text style={row.rating}>★ {formatRating(recipe.rating)}</Text>
+        ) : null}
+      </View>
     </TouchableOpacity>
   );
 }
@@ -229,7 +264,22 @@ const row = StyleSheet.create({
   name:   { fontFamily: Fonts.display, fontSize: 17, color: Colors.textPrimary },
   meta:   { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted },
   tags:   { flexDirection: 'row', flexWrap: 'wrap', gap: 4, marginTop: 2 },
-  rating: { fontFamily: Fonts.bodyMedium, fontSize: 12, color: Colors.gold, flexShrink: 0 },
+  right:  { flexShrink: 0, alignItems: 'flex-end', gap: 4 },
+  statusBadge: { paddingHorizontal: 7, paddingVertical: 3, borderRadius: 6, borderWidth: 1 },
+  statusText:  { fontFamily: Fonts.bodyMedium, fontSize: 10, letterSpacing: 0.3 },
+  rating: { fontFamily: Fonts.bodyMedium, fontSize: 12, color: Colors.gold },
+});
+
+// Status chip strip
+const sc = StyleSheet.create({
+  chip: {
+    flexDirection: 'row', alignItems: 'center', gap: 5,
+    paddingHorizontal: 10, paddingVertical: 5,
+    borderRadius: 100, borderWidth: 1.5,
+    marginRight: 6,
+  },
+  dot:   { width: 7, height: 7, borderRadius: 4 },
+  label: { fontFamily: Fonts.bodyMedium, fontSize: 11 },
 });
 
 // ─────────────────────────────────────────────
@@ -246,6 +296,7 @@ export default function CatalogScreen() {
   const [filterProtein,  setFilterProtein]  = useState('');
   const [filterCuisine,  setFilterCuisine]  = useState('');
   const [filterBlogger,  setFilterBlogger]  = useState('');
+  const [filterStatus,   setFilterStatus]   = useState<StatusOption | ''>('');
 
   useEffect(() => {
     fetchCatalogRecipes().then(r => { setAllRecipes(r); setLoading(false); });
@@ -270,16 +321,17 @@ export default function CatalogScreen() {
       if (filterProtein && r.protein_type !== filterProtein) return false;
       if (filterCuisine && r.cuisine !== filterCuisine) return false;
       if (filterBlogger && r.blogger !== filterBlogger) return false;
+      if (filterStatus && (r.status || 'yes') !== filterStatus) return false;
       return true;
     });
   }, [allRecipes, search, filterDiet, filterMealType, filterProtein, filterCuisine, filterBlogger]);
 
   function clearAll() {
     setFilterDiet(''); setFilterMealType(''); setFilterProtein('');
-    setFilterCuisine(''); setFilterBlogger(''); setSearch('');
+    setFilterCuisine(''); setFilterBlogger(''); setSearch(''); setFilterStatus('');
   }
 
-  const hasFilters = filterDiet || filterMealType || filterProtein || filterCuisine || filterBlogger;
+  const hasFilters = filterDiet || filterMealType || filterProtein || filterCuisine || filterBlogger || filterStatus;
 
   return (
     <SafeAreaView style={styles.screen} edges={['top']}>
@@ -319,6 +371,29 @@ export default function CatalogScreen() {
               onPress={() => setFilterDiet(filterDiet === p ? '' : p)}
             />
           ))}
+        </ScrollView>
+
+        <View style={styles.filterDivider} />
+
+        {/* Status chips */}
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.statusRow}>
+          {STATUS_OPTIONS.map(s => {
+            const active = filterStatus === s;
+            const color = STATUS_COLORS[s];
+            return (
+              <TouchableOpacity
+                key={s}
+                style={[sc.chip, { borderColor: color }, active && { backgroundColor: color + '33' }]}
+                onPress={() => setFilterStatus(active ? '' : s)}
+                activeOpacity={0.7}
+              >
+                <View style={[sc.dot, { backgroundColor: color }]} />
+                <Text style={[sc.label, { color: active ? color : Colors.textSecondary }]}>
+                  {STATUS_LABELS[s]}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
         </ScrollView>
 
         <View style={styles.filterDivider} />
@@ -387,6 +462,7 @@ const styles = StyleSheet.create({
   },
   filterDivider: { height: 1, backgroundColor: Colors.border, marginHorizontal: 16, marginBottom: 8 },
   dietRow:     { paddingHorizontal: 16, paddingTop: 4, paddingBottom: 8, alignItems: 'center' },
+  statusRow:   { paddingHorizontal: 16, paddingTop: 4, paddingBottom: 8, alignItems: 'center' },
   dropdownRow: { paddingHorizontal: 16, paddingBottom: 10, gap: 8 },
 
   flatList:    { flex: 1 },

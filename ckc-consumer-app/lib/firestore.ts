@@ -36,6 +36,7 @@ function docToRecipe(id: string, data: Record<string, unknown>): Recipe {
     rating:           (data.rating          as string) || '',
     dietTags:         (data.dietTags        as Recipe['dietTags']) || {},
     ingredients:      (data.ingredients     as string[]) || [],
+    status:           (data.status          as Recipe['status']) || 'yes',
   };
 }
 
@@ -104,12 +105,11 @@ export async function fetchRecipes(limitCount: number = 200): Promise<Recipe[]> 
   }
 }
 
-// Catalog — ALL yes recipes, no meal_type filter, no cap (up to 2000).
+// Catalog — ALL recipes (yes + no + maybe + pending), no meal_type filter, up to 2000.
 export async function fetchCatalogRecipes(): Promise<Recipe[]> {
   try {
     const q = query(
       collection(db, 'recipes'),
-      where('status', '==', 'yes'),
       limit(2000),
     );
     const snap = await getDocs(q);
