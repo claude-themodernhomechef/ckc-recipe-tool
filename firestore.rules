@@ -7,6 +7,11 @@ service cloud.firestore {
       allow read, write: if request.auth != null && request.auth.uid == uid;
     }
 
+    // Decisions collection — read-only, same open-read policy as recipes
+    match /decisions/{decisionId} {
+      allow read: if true;
+    }
+
     // Unified recipes collection:
     // - Anyone can read (internal admin tool, protected by HTML password gate)
     // - Web UI can update status + decidedAt only (swipe decision)
