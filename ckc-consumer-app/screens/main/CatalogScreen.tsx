@@ -25,7 +25,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Fonts } from '../../constants/theme';
-import { fetchRecipes } from '../../lib/firestore';
+import { fetchCatalogRecipes } from '../../lib/firestore';
 import { Recipe, getComplianceStatus } from '../../data/sampleRecipes';
 import { DIET_COLORS } from '../components/DietTag';
 import { formatRating } from '../../lib/ingredientParser';
@@ -159,7 +159,7 @@ export default function CatalogScreen() {
   const [filterDiet, setFilterDiet]       = useState('');
 
   useEffect(() => {
-    fetchRecipes(500).then(r => { setAllRecipes(r); setLoading(false); });
+    fetchCatalogRecipes().then(r => { setAllRecipes(r); setLoading(false); });
   }, []);
 
   // Derive unique cuisines from data

@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Fonts } from '../constants/theme';
-import { fetchRecipes } from '../lib/firestore';
+import { fetchCatalogRecipes } from '../lib/firestore';
 import { normalizeIngredient } from '../lib/ingredientParser';
 
 // ── Ingredient categorisation ─────────────────────────────────────────────────
@@ -73,7 +73,7 @@ export default function ShoppingPlannerScreen() {
   const [showRecipePicker, setShowRecipePicker] = useState(false);
 
   useEffect(() => {
-    fetchRecipes(300).then(firestoreRecipes => {
+    fetchCatalogRecipes().then(firestoreRecipes => {
       const withIngredients = firestoreRecipes
         .filter(r => r.ingredients && r.ingredients.length > 0)
         .map(r => toShoppingRecipe({ id: r.id, name: r.name, blogger: r.blogger, ingredients: r.ingredients }));
