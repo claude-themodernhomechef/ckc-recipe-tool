@@ -179,7 +179,11 @@ const dd = StyleSheet.create({
 function RecipeRow({ recipe }: { recipe: Recipe }) {
   const activeDietTags = DIET_PROTOCOLS
     .map(p => ({ p, status: getComplianceStatus(recipe, p) }))
-    .filter(t => t.status !== 'none');
+    .filter(t => t.status !== 'none')
+    .sort((a, b) => {
+      if (a.status !== b.status) return a.status === 'native' ? -1 : 1;
+      return a.p.localeCompare(b.p);
+    });
 
   return (
     <TouchableOpacity
@@ -305,37 +309,30 @@ export default function CatalogScreen() {
         />
       </View>
 
-      {/* ── Diet chips ── */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.dietRow}>
-        {DIET_PROTOCOLS.map(p => (
-          <DietChip
-            key={p} protocol={p} active={filterDiet === p}
-            onPress={() => setFilterDiet(filterDiet === p ? '' : p)}
-          />
-        ))}
-      </ScrollView>
+      {/* ── Fixed filter section ── */}
+      <View style={styles.filterSection}>
+        {/* Diet chips */}
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.dietRow}>
+          {DIET_PROTOCOLS.map(p => (
+            <DietChip
+              key={p} protocol={p} active={filterDiet === p}
+              onPress={() => setFilterDiet(filterDiet === p ? '' : p)}
+            />
+          ))}
+        </ScrollView>
 
-      {/* ── Dropdown filter row ── */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.dropdownRow}>
-        <Dropdown
-          label="All Proteins" value={filterProtein}
-          options={PROTEINS} onSelect={setFilterProtein}
-        />
-        <Dropdown
-          label="All Cuisines" value={filterCuisine}
-          options={cuisines} onSelect={setFilterCuisine}
-        />
-        <Dropdown
-          label="All Types" value={filterMealType}
-          options={MEAL_TYPES} onSelect={setFilterMealType}
-        />
-        <Dropdown
-          label="All Bloggers" value={filterBlogger}
-          options={bloggers} onSelect={setFilterBlogger}
-        />
-      </ScrollView>
+        <View style={styles.filterDivider} />
 
-      {/* ── Recipe list ── */}
+        {/* Dropdown row */}
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.dropdownRow}>
+          <Dropdown label="All Proteins" value={filterProtein} options={PROTEINS}  onSelect={setFilterProtein} />
+          <Dropdown label="All Cuisines" value={filterCuisine} options={cuisines}  onSelect={setFilterCuisine} />
+          <Dropdown label="All Types"    value={filterMealType} options={MEAL_TYPES} onSelect={setFilterMealType} />
+          <Dropdown label="All Bloggers" value={filterBlogger} options={bloggers}  onSelect={setFilterBlogger} />
+        </ScrollView>
+      </View>
+
+      {/* ── Recipe list (fills remaining space) ── */}
       {loading ? (
         <View style={styles.centered}>
           <ActivityIndicator color={Colors.textSecondary} />
@@ -347,10 +344,11 @@ export default function CatalogScreen() {
         </View>
       ) : (
         <FlatList
+          style={styles.flatList}
           data={filtered}
           keyExtractor={r => r.id}
           renderItem={({ item }) => <RecipeRow recipe={item} />}
-          contentContainerStyle={styles.list}
+          contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
         />
       )}
@@ -365,7 +363,6 @@ export default function CatalogScreen() {
 
 const styles = StyleSheet.create({
   screen:   { flex: 1, backgroundColor: Colors.bg },
-  centered: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 8 },
 
   header: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
@@ -383,10 +380,18 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.body, fontSize: 14, color: Colors.textPrimary,
   },
 
-  dietRow:     { paddingHorizontal: 16, paddingBottom: 10, alignItems: 'center' },
+  filterSection: {
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.border,
+    paddingBottom: 4,
+  },
+  filterDivider: { height: 1, backgroundColor: Colors.border, marginHorizontal: 16, marginBottom: 8 },
+  dietRow:     { paddingHorizontal: 16, paddingTop: 4, paddingBottom: 8, alignItems: 'center' },
   dropdownRow: { paddingHorizontal: 16, paddingBottom: 10, gap: 8 },
 
-  list:       { paddingBottom: 40 },
+  flatList:    { flex: 1 },
+  listContent: { paddingBottom: 40 },
+  centered:    { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 8 },
   emptyTitle: { fontFamily: Fonts.display, fontSize: 24, color: Colors.textPrimary },
   emptyBody:  { fontFamily: Fonts.body, fontSize: 14, color: Colors.textSecondary },
 });

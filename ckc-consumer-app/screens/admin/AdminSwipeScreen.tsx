@@ -122,7 +122,11 @@ function AdminCard({ recipe, onApprove, onReject, screenWidth, cardWidth, cardHe
         {(() => {
           const tags = DIET_PROTOCOLS
             .map(p => ({ p, status: getComplianceStatus(recipe, p) }))
-            .filter(t => t.status !== 'none');
+            .filter(t => t.status !== 'none')
+            .sort((a, b) => {
+              if (a.status !== b.status) return a.status === 'native' ? -1 : 1;
+              return a.p.localeCompare(b.p);
+            });
           return tags.length > 0 ? (
             <View style={styles.dietRow}>
               {tags.map(t => (

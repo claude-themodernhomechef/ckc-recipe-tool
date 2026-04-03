@@ -215,6 +215,10 @@ function SwipeCard({ recipe, onSwipeLeft, onSwipeRight, onTap, activeProtocols, 
   const badges = protocolKeys
     .map(p => ({ p, status: getComplianceStatus(recipe, p) }))
     .filter(b => b.status !== 'none')
+    .sort((a, b) => {
+      if (a.status !== b.status) return a.status === 'native' ? -1 : 1;
+      return a.p.localeCompare(b.p);
+    })
     .slice(0, 5);
 
   return (
