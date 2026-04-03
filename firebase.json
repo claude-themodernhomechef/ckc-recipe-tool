@@ -4,5 +4,30 @@
   },
   "storage": {
     "rules": "storage.rules"
+  },
+  "functions": {
+    "source": "functions",
+    "runtime": "nodejs20"
+  },
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "functions/**",
+      "*.py",
+      "*.js",
+      "*.json",
+      "*.xlsx",
+      "*.numbers",
+      "*.docx",
+      "*.md",
+      "service-account.json"
+    ],
+    "rewrites": [
+      { "source": "/catalog", "destination": "/catalog.html" },
+      { "source": "/shopping", "destination": "/shopping.html" }
+    ]
   }
 }

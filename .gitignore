@@ -10,14 +10,38 @@ venv/
 # Scraper input
 staging_sheet.csv
 
+# Pipeline progress files — don't commit these (see CLAUDE.md)
+*_progress.json
+
+# Pipeline output / scrape results
+*_updates.json
+*_results.json
+*_warnings.json
+proposed_changes*.json
+broken_urls.json
+ratings.json
+ak_side_dish_images.json
+
+# Logs and temp output
+*.log
+rescrape_log.txt
+top_side_dishes.csv
+
 # Local images (served from Firebase Storage in production)
 images/
 
 # Firebase service account key — NEVER commit this
 service-account.json
 
+# Environment variables — NEVER commit these
+.env
+.env.*
+functions/.env
+
 # OS
 .DS_Store
 
 # Claude
 .claude/
+.vercel
+.env*.local

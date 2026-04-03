@@ -4,7 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
 import { Colors, Fonts } from '../constants/theme';
-import ProgressDots from './components/ProgressDots';
+import OnboardingHeader from './components/OnboardingHeader';
+import PrimaryButton from './components/PrimaryButton';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'DietProtocol'>;
@@ -73,10 +74,23 @@ const PROTOCOLS = [
 export default function DietProtocolScreen({ navigation }: Props) {
   const [selected, setSelected] = useState<string[]>([]);
 
+  const NO_RESTRICTIONS_KEY = 'NONE';
+
   function toggleProtocol(key: string) {
-    setSelected((prev) =>
-      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
-    );
+    if (key === NO_RESTRICTIONS_KEY) {
+      // Selecting "no restrictions" clears everything else
+      setSelected((prev) =>
+        prev.includes(NO_RESTRICTIONS_KEY) ? [] : [NO_RESTRICTIONS_KEY]
+      );
+    } else {
+      // Selecting any protocol clears "no restrictions"
+      setSelected((prev) => {
+        const without = prev.filter((k) => k !== NO_RESTRICTIONS_KEY);
+        return without.includes(key)
+          ? without.filter((k) => k !== key)
+          : [...without, key];
+      });
+    }
   }
 
   function handleContinue() {
@@ -86,21 +100,17 @@ export default function DietProtocolScreen({ navigation }: Props) {
   return (
     <SafeAreaView style={styles.safe}>
 
-      {/* ── Top nav ── */}
-      <View style={styles.topNav}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-          <Text style={styles.backArrow}>←</Text>
-        </TouchableOpacity>
-        <ProgressDots total={4} current={0} />
-        <TouchableOpacity onPress={handleContinue} style={styles.skipBtn}>
-          <Text style={styles.skipText}>Skip</Text>
-        </TouchableOpacity>
-      </View>
+      <OnboardingHeader
+        onBack={() => navigation.goBack()}
+        onSkip={handleContinue}
+        step={0}
+        total={4}
+      />
 
       {/* ── Title ── */}
       <View style={styles.titleArea}>
         <Text style={styles.title}>What's your dietary{'\n'}protocol?</Text>
-        <Text style={styles.subtitle}>Select all that apply. You can change this anytime.</Text>
+        <Text style={styles.subtitle}>Check all that apply. You can change this anytime.</Text>
       </View>
 
       {/* ── Protocol cards ── */}
@@ -109,6 +119,31 @@ export default function DietProtocolScreen({ navigation }: Props) {
         contentContainerStyle={styles.grid}
         showsVerticalScrollIndicator={false}
       >
+        {/* No restrictions option — full width */}
+        <TouchableOpacity
+          style={[
+            styles.card,
+            styles.cardFull,
+            selected.includes(NO_RESTRICTIONS_KEY) && {
+              borderColor: Colors.gold,
+              backgroundColor: `${Colors.gold}12`,
+            },
+          ]}
+          onPress={() => toggleProtocol(NO_RESTRICTIONS_KEY)}
+          activeOpacity={0.75}
+        >
+          <Text style={[styles.cardTag, { color: Colors.gold }]}>No Restrictions</Text>
+          <Text style={styles.cardName}>Show me everything</Text>
+          <Text style={styles.cardDesc}>
+            No dietary protocol — browse the full curated recipe collection
+          </Text>
+          {selected.includes(NO_RESTRICTIONS_KEY) && (
+            <View style={[styles.checkmark, { backgroundColor: Colors.gold }]}>
+              <Text style={styles.checkmarkText}>✓</Text>
+            </View>
+          )}
+        </TouchableOpacity>
+
         {PROTOCOLS.map((p) => {
           const isSelected = selected.includes(p.key);
           return (
@@ -140,17 +175,17 @@ export default function DietProtocolScreen({ navigation }: Props) {
         })}
       </ScrollView>
 
-      {/* ── Continue button ── */}
       <View style={styles.footer}>
-        <TouchableOpacity
-          style={[styles.continueBtn, selected.length === 0 && styles.continueBtnDisabled]}
+        <PrimaryButton
+          label={
+            selected.length === 0
+              ? 'Continue'
+              : selected.includes(NO_RESTRICTIONS_KEY)
+              ? 'Continue — show me everything'
+              : `Continue with ${selected.length} selected`
+          }
           onPress={handleContinue}
-          activeOpacity={0.85}
-        >
-          <Text style={styles.continueBtnText}>
-            {selected.length === 0 ? 'Continue' : `Continue with ${selected.length} selected`}
-          </Text>
-        </TouchableOpacity>
+        />
       </View>
 
     </SafeAreaView>
@@ -161,27 +196,6 @@ const styles = StyleSheet.create({
   safe: {
     flex: 1,
     backgroundColor: Colors.bg,
-  },
-
-  // ── Top nav
-  topNav: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingTop: 8,
-    paddingBottom: 4,
-  },
-  backBtn: { padding: 8 },
-  backArrow: {
-    fontSize: 22,
-    color: Colors.textSecondary,
-  },
-  skipBtn: { padding: 8 },
-  skipText: {
-    fontFamily: Fonts.body,
-    fontSize: 13,
-    color: Colors.textMuted,
   },
 
   // ── Title
@@ -211,6 +225,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     gap: 10,
     paddingBottom: 16,
+  },
+  cardFull: {
+    width: '100%',
   },
   card: {
     width: '47%',
@@ -260,19 +277,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingBottom: 16,
     paddingTop: 8,
-  },
-  continueBtn: {
-    backgroundColor: Colors.textPrimary,
-    borderRadius: 100,
-    paddingVertical: 16,
-    alignItems: 'center',
-  },
-  continueBtnDisabled: {
-    opacity: 0.4,
-  },
-  continueBtnText: {
-    fontFamily: Fonts.bodyMedium,
-    fontSize: 15,
-    color: Colors.bg,
   },
 });

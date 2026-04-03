@@ -1,0 +1,316 @@
+{
+  "GF": {
+    "name": "Gluten-Free",
+    "native_qualifiers": [
+      "gluten-free", "gluten free", "paleo", "whole30", "aip", "keto", "low-carb", "minimalist baker"
+    ],
+    "native_disqualifiers": [
+      "pasta", "orzo", "ramen", "ramen noodles", "lo mein", "chow mein", "couscous",
+      "gnocchi", "tortellini", "panko", "pot pie", "dumpling", "flour tortilla",
+      "flour tortillas", "bread crumb", "breadcrumb", "cornbread mix",
+      "soy sauce", "oyster sauce", "worcestershire", "hoisin"
+    ],
+    "mod_candidates": [
+      "pasta", "orzo", "ramen", "lo mein", "chow mein", "couscous", "gnocchi",
+      "tortellini", "panko", "flour tortilla", "breadcrumb", "bread crumb",
+      "soy sauce", "oyster sauce", "worcestershire", "hoisin", "all-purpose flour",
+      "ap flour", "flour"
+    ],
+    "swaps": {
+      "pasta": "Use brown rice pasta or GF pasta alternative",
+      "orzo": "Use cassava flour orzo",
+      "ramen": "Use brown rice noodle alternative",
+      "lo mein": "Use brown rice noodle alternative",
+      "chow mein": "Use brown rice noodle alternative",
+      "couscous": "Use GF couscous or cauliflower rice",
+      "gnocchi": "Use cauliflower gnocchi",
+      "tortellini": "Use GF tortellini",
+      "panko": "Use GF panko",
+      "flour tortilla": "Use corn tortillas or GF wraps",
+      "flour tortillas": "Use corn tortillas or GF wraps",
+      "breadcrumb": "Use GF panko",
+      "bread crumb": "Use GF panko",
+      "soy sauce": "Use tamari",
+      "oyster sauce": "Use GF oyster sauce",
+      "worcestershire": "Use GF Worcestershire sauce",
+      "hoisin": "Use GF hoisin sauce",
+      "all-purpose flour": "Use arrowroot powder for thickening, or a 1:1 GF flour blend for structural applications",
+      "ap flour": "Use arrowroot powder for thickening, or a 1:1 GF flour blend for structural applications",
+      "flour": "Use arrowroot powder for thickening sauces, or a 1:1 GF flour blend for binding/coating"
+    }
+  },
+
+  "DF": {
+    "name": "Dairy-Free",
+    "native_qualifiers": [
+      "dairy-free", "dairy free", "paleo", "whole30", "aip", "vegan", "coconut milk",
+      "coconut cream", "minimalist baker", "vegan richa"
+    ],
+    "native_disqualifiers": [
+      "parmesan", "mozzarella", "feta", "alfredo", "cream sauce", "butter",
+      "cheese", "yogurt", "sour cream", "ricotta", "half-and-half", "buttermilk",
+      "condensed milk", "heavy cream", "milk", "cheddar", "gouda", "brie",
+      "pecorino", "gruyere", "cotija", "cream cheese", "mascarpone", "ghee"
+    ],
+    "mod_candidates": [
+      "parmesan", "mozzarella", "feta", "butter", "cheese", "yogurt", "sour cream",
+      "ricotta", "half-and-half", "buttermilk", "condensed milk", "heavy cream",
+      "cream", "cheddar", "pecorino", "cotija", "cream cheese", "ghee", "milk"
+    ],
+    "swaps": {
+      "heavy cream": "Use full-fat canned coconut milk",
+      "half-and-half": "Use coconut milk",
+      "cream": "Use full-fat canned coconut milk",
+      "butter": "Use olive oil for cooking/sautéing, or DF butter for finishing",
+      "ghee": "Use olive oil or DF butter",
+      "yogurt": "Use plain unsweetened coconut yogurt",
+      "sour cream": "Use plain coconut yogurt or DF sour cream",
+      "cream cheese": "Use DF cream cheese alternative",
+      "parmesan": "Use nutritional yeast + miso paste for umami depth, or Follow Your Heart vegan parmesan",
+      "pecorino": "Use nutritional yeast + miso paste, or Follow Your Heart vegan parmesan",
+      "mozzarella": "Use Kite Hill brand vegan mozzarella",
+      "ricotta": "Use Kite Hill brand vegan ricotta",
+      "feta": "Remove if used as a garnish; use DF feta if it is a core ingredient",
+      "cotija": "Remove entirely",
+      "cheddar": "Use DF cheddar alternative",
+      "milk": "Use unsweetened oat milk or coconut milk",
+      "buttermilk": "Mix 1 tbsp apple cider vinegar + 1 cup oat milk, let sit 5 min",
+      "condensed milk": "Use coconut condensed milk"
+    }
+  },
+
+  "V": {
+    "name": "Vegan",
+    "native_qualifiers": [
+      "vegan", "minimalistbaker.com", "veganricha.com", "jessicainthekitchen.com",
+      "thesimpleveganista.com", "thissavoryvegan.com"
+    ],
+    "native_disqualifiers": [
+      "chicken", "beef", "pork", "lamb", "turkey", "salmon", "tuna", "shrimp",
+      "fish", "anchovy", "anchovies", "prawn", "lobster", "crab", "scallop",
+      "egg", "eggs", "milk", "cream", "butter", "cheese", "yogurt", "honey",
+      "gelatin", "lard", "bacon", "sausage", "pepperoni", "salami", "prosciutto",
+      "ghee", "worcestershire", "fish sauce", "oyster sauce"
+    ],
+    "mod_candidates": [
+      "chicken", "beef", "pork", "lamb", "turkey", "salmon", "tuna", "shrimp",
+      "fish", "anchovy", "egg", "eggs", "milk", "cream", "butter", "cheese",
+      "yogurt", "honey", "fish sauce", "worcestershire", "oyster sauce", "broth"
+    ],
+    "swaps": {
+      "chicken": "Use extra firm tofu (cut to match the protein shape of the dish)",
+      "beef": "Use extra firm tofu, Impossible Beef, or 1 lb mushrooms finely chopped",
+      "pork": "Use extra firm tofu or mushrooms",
+      "lamb": "Use extra firm tofu",
+      "shrimp": "Use extra firm tofu cut into 1 inch cubes",
+      "salmon": "Use tofu rectangles (1 lb block cut into four thin pieces)",
+      "tuna": "Use mashed chickpeas",
+      "fish": "Use tofu or mashed chickpeas",
+      "egg": "Use flax egg (2 tbsp ground flax + 1 tbsp water) for binding; omit if not structural",
+      "eggs": "Use flax egg (2 tbsp ground flax + 1 tbsp water) for binding; omit if not structural",
+      "honey": "Use agave",
+      "fish sauce": "Use extra soy sauce or coconut aminos",
+      "worcestershire": "Use vegan Worcestershire sauce",
+      "oyster sauce": "Use vegan oyster sauce",
+      "anchovy": "Use 1 tbsp tamari + 1 tbsp capers with brine",
+      "anchovies": "Use 1 tbsp tamari + 1 tbsp capers with brine",
+      "broth": "Replace chicken or beef broth with vegetable broth",
+      "milk": "Use unsweetened oat milk or coconut milk",
+      "cream": "Use full-fat canned coconut milk",
+      "butter": "Use olive oil or DF butter",
+      "cheese": "Use nutritional yeast or vegan cheese alternative",
+      "yogurt": "Use plain unsweetened coconut yogurt"
+    }
+  },
+
+  "Vg": {
+    "name": "Vegetarian",
+    "native_qualifiers": ["vegetarian", "plant-based"],
+    "native_disqualifiers": [
+      "chicken", "beef", "pork", "lamb", "turkey", "salmon", "tuna", "shrimp",
+      "fish", "anchovy", "anchovies", "prawn", "lobster", "crab", "scallop",
+      "bacon", "sausage", "pepperoni", "salami", "prosciutto", "lard",
+      "fish sauce", "oyster sauce", "worcestershire"
+    ],
+    "mod_candidates": [
+      "chicken", "beef", "pork", "lamb", "turkey", "salmon", "tuna", "shrimp",
+      "fish", "anchovy", "fish sauce", "worcestershire", "broth"
+    ],
+    "swaps": {
+      "chicken": "Use extra firm tofu or a plant-based chicken alternative",
+      "beef": "Use extra firm tofu, Impossible Beef, or 1 lb mushrooms finely chopped",
+      "pork": "Use extra firm tofu or mushrooms",
+      "lamb": "Use extra firm tofu",
+      "shrimp": "Use extra firm tofu cut into 1 inch cubes",
+      "salmon": "Use tofu rectangles (1 lb block cut into four thin pieces)",
+      "tuna": "Use mashed chickpeas",
+      "fish": "Use tofu",
+      "anchovy": "Use 1 tbsp tamari + 1 tbsp capers with brine",
+      "anchovies": "Use 1 tbsp tamari + 1 tbsp capers with brine",
+      "fish sauce": "Use soy sauce or tamari",
+      "worcestershire": "Use vegan Worcestershire sauce",
+      "broth": "Replace chicken or beef broth with vegetable broth"
+    }
+  },
+
+  "K": {
+    "name": "Keto",
+    "native_qualifiers": [
+      "keto", "ketogenic", "low-carb", "low carb", "whole30", "paleo"
+    ],
+    "native_disqualifiers": [
+      "rice", "pasta", "bread", "sugar", "potato", "potatoes", "corn", "couscous",
+      "quinoa", "orzo", "gnocchi", "noodle", "tortilla", "flour", "oat", "oats",
+      "barley", "rye", "honey", "maple syrup", "brown sugar", "white sugar",
+      "mango", "pineapple", "banana", "apple", "lentil", "lentils", "bean", "beans"
+    ],
+    "mod_candidates": [
+      "rice", "pasta", "couscous", "quinoa", "orzo", "gnocchi", "noodle", "noodles",
+      "potato", "potatoes", "mashed potato", "tortilla", "flour", "honey", "sugar",
+      "brown sugar", "maple syrup", "bread", "breadcrumb", "pineapple", "mango",
+      "apple", "banana"
+    ],
+    "swaps": {
+      "white rice": "Use cauliflower rice",
+      "rice": "Use cauliflower rice",
+      "couscous": "Use cauliflower rice",
+      "quinoa": "Serve over cooked vegetables",
+      "orzo": "Use sautéed cauliflower rice",
+      "gnocchi": "Use cauliflower gnocchi",
+      "mashed potato": "Use cauliflower mash",
+      "mashed potatoes": "Use cauliflower mash",
+      "potato": "Remove, or substitute roasted cauliflower florets",
+      "potatoes": "Remove, or substitute roasted cauliflower florets",
+      "pasta": "Use spiralized zucchini for light sauces, shirataki noodles for bold Asian sauces, or keto pasta",
+      "noodle": "Use shirataki noodles (Asian dishes) or spiralized zucchini (lighter dishes)",
+      "noodles": "Use shirataki noodles (Asian dishes) or spiralized zucchini (lighter dishes)",
+      "tortilla": "Use keto wraps",
+      "flour": "Use almond flour or a keto baking blend",
+      "breadcrumb": "Use almond flour",
+      "honey": "Use allulose liquid sweetener",
+      "sugar": "Use allulose sweetener",
+      "brown sugar": "Use allulose sweetener",
+      "maple syrup": "Use allulose liquid sweetener",
+      "pineapple": "Reduce by half, or replace with double avocado",
+      "mango": "Reduce by half, or replace with double avocado",
+      "apple": "Replace with fennel for similar texture",
+      "banana": "Omit or reduce to 1/4 amount"
+    }
+  },
+
+  "AIP": {
+    "name": "Autoimmune Protocol",
+    "native_qualifiers": ["aip", "autoimmune protocol", "autoimmune paleo"],
+    "native_disqualifiers": [
+      "pepper", "peppers", "bell pepper", "chili", "paprika", "tomato", "tomatoes",
+      "eggplant", "potato", "potatoes", "black pepper", "mustard", "dijon",
+      "cumin", "sesame", "fennel seed", "fennel seeds", "sunflower seed", "pepita",
+      "nut", "nuts", "almond", "cashew", "peanut", "walnut", "pecan",
+      "egg", "eggs", "dairy", "grain", "grains", "rice", "pasta", "flour",
+      "alcohol", "wine", "beer", "vinegar", "soy sauce", "miso", "legume",
+      "bean", "beans", "lentil", "refined sugar", "chocolate"
+    ],
+    "mod_candidates": [
+      "black pepper", "pepper", "mustard", "dijon", "cumin", "sesame", "paprika",
+      "chili", "bell pepper", "tomato", "egg", "soy sauce", "miso", "fish sauce",
+      "vinegar", "wine", "alcohol", "curry powder", "nuts", "almond"
+    ],
+    "swaps": {
+      "black pepper": "Remove entirely",
+      "mustard": "Remove entirely",
+      "dijon": "Remove entirely",
+      "cumin": "Remove, or substitute cinnamon for warming depth",
+      "sesame": "Remove entirely",
+      "sesame oil": "Remove entirely",
+      "paprika": "Remove entirely",
+      "smoked paprika": "Remove entirely",
+      "chili": "Remove entirely",
+      "chili flakes": "Remove entirely",
+      "red pepper flakes": "Remove entirely",
+      "bell pepper": "Remove entirely",
+      "tomato": "Remove if concentrated or in large amounts",
+      "egg": "Omit if not structural",
+      "soy sauce": "Use coconut aminos",
+      "miso": "Use coconut aminos",
+      "fish sauce": "Use coconut aminos",
+      "vinegar": "Use fresh citrus juice (lime or lemon)",
+      "wine": "Replace with matching broth",
+      "alcohol": "Replace with matching broth",
+      "curry powder": "Replace with turmeric",
+      "nuts": "Remove entirely",
+      "almond": "Remove entirely",
+      "brown sugar": "Use agave",
+      "flour": "Use arrowroot powder"
+    },
+    "cascade_tags": ["GF", "DF"]
+  },
+
+  "LF": {
+    "name": "Low-FODMAP",
+    "native_qualifiers": [
+      "low fodmap", "low-fodmap", "fodmap friendly", "paleo running momma"
+    ],
+    "native_disqualifiers": [
+      "garlic", "onion", "onions", "shallot", "shallots", "leek", "leeks",
+      "bean", "beans", "lentil", "lentils", "chickpea", "chickpeas",
+      "cauliflower", "fennel", "corn", "mushroom", "mushrooms",
+      "apple", "pear", "mango", "watermelon", "wheat", "rye"
+    ],
+    "mod_candidates": [
+      "garlic", "onion", "onions", "shallot", "shallots", "leek", "leeks",
+      "bean", "beans", "lentil", "chickpea", "mushroom", "mushrooms",
+      "fennel", "corn", "soy sauce", "heavy cream", "yogurt", "wine"
+    ],
+    "swaps": {
+      "garlic": "Replace garlic with garlic-infused oil (transfer flavor without fructans)",
+      "onion": "Replace onion with green tops of scallions only",
+      "onions": "Replace onions with green tops of scallions only",
+      "shallot": "Replace shallots with green tops of scallions + garlic-infused oil",
+      "shallots": "Replace shallots with green tops of scallions + garlic-infused oil",
+      "leek": "Use green tops of leeks only",
+      "leeks": "Use green tops of leeks only",
+      "bean": "Remove (only when a supporting ingredient, not the star of the dish)",
+      "beans": "Remove (only when a supporting ingredient, not the star of the dish)",
+      "lentil": "Remove",
+      "chickpea": "Remove",
+      "mushroom": "Remove entirely",
+      "mushrooms": "Remove entirely",
+      "fennel": "Remove entirely",
+      "corn": "Remove entirely",
+      "soy sauce": "Use tamari",
+      "heavy cream": "Use coconut milk",
+      "yogurt": "Use lactose-free Greek yogurt or coconut yogurt",
+      "wine": "Replace with matching chicken or vegetable broth"
+    },
+    "skip_if_star": ["chickpea soup", "lentil soup", "chickpea curry", "bean soup", "refried beans"]
+  },
+
+  "LH": {
+    "name": "Low-Histamine",
+    "native_qualifiers": ["low histamine", "low-histamine"],
+    "native_disqualifiers": [
+      "vinegar", "wine", "beer", "soy sauce", "miso", "sour cream", "parmesan",
+      "pecorino", "smoked", "pickled", "avocado", "tomato", "black pepper",
+      "chili", "sriracha", "hot sauce", "dijon", "mustard", "sumac", "lemon",
+      "canola oil"
+    ],
+    "mod_candidates": [
+      "vinegar", "wine", "soy sauce", "miso", "avocado", "smoked paprika",
+      "sumac", "black pepper", "canola oil", "parmesan", "pecorino", "sour cream"
+    ],
+    "swaps": {
+      "vinegar": "Use fresh citrus juice (lime or lemon)",
+      "wine": "Replace with matching broth",
+      "soy sauce": "Use coconut aminos",
+      "miso": "Remove or use coconut aminos",
+      "avocado": "Replace with cucumber for a cooling element",
+      "smoked paprika": "Remove entirely",
+      "sumac": "Remove entirely",
+      "black pepper": "Remove entirely",
+      "canola oil": "Use olive oil",
+      "parmesan": "Remove or use a DF alternative",
+      "pecorino": "Remove or use a DF alternative",
+      "sour cream": "Remove entirely"
+    }
+  }
+}

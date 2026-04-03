@@ -18671,59 +18671,6 @@
     ]
   },
   {
-    "name": "Easy Mediterranean-Style Garlic Shrimp",
-    "url": "https://www.themediterraneandish.com/easy-shrimp-recipe/",
-    "cuisine": "Mediterranean",
-    "course": "Entree",
-    "description": "",
-    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/easy-mediterranean-style-garlic-shrimp.webp",
-    "protein": "Seafood",
-    "rating": "4.83 (223 ratings)",
-    "blogger": "The Mediterranean Dish",
-    "alignmentScore": "94.0",
-    "dietTags": {
-      "GF": {
-        "native": false,
-        "mod": true,
-        "notes": "Replace all-purpose flour with a 1:1 GF flour blend."
-      },
-      "DF": {
-        "native": false,
-        "mod": true,
-        "notes": "Replace butter with olive oil. Replace ghee with olive oil or coconut oil."
-      },
-      "K": {
-        "native": false,
-        "mod": true,
-        "notes": "Replace the sweetener with allulose."
-      },
-      "LF": {
-        "native": false,
-        "mod": true,
-        "notes": "Replace garlic and onion with garlic-infused oil (use 1–2 tablespoons to replace both the oil and the garlic flavor contribution)."
-      }
-    },
-    "ingredients": [
-      "1 1/4 lb large shrimp (or prawns, peeled and deveined (if frozen, be sure to thaw first))",
-      "1 tbsp all-purpose flour",
-      "1 to 2 tsp smoked Spanish paprika",
-      "1/2 tsp each salt and pepper",
-      "1/2 tsp ground coriander",
-      "1/4 tsp cayenne",
-      "1/4 tsp sugar",
-      "1 tbsp butter (I prefer to use ghee clarified butter)",
-      "3 tbsp Extra virgin olive oil",
-      "3  shallots,  (thinly sliced)",
-      "4  garlic cloves, (chopped)",
-      "1/2  green bell pepper and 1/2 yellow bell pepper, (cored and sliced)",
-      "1 cup canned diced tomato",
-      "1/3 cup chicken or vegetable broth",
-      "2 tbsp dry white wine",
-      "2 tbsp fresh lemon juice",
-      "1/3 cup chopped parsley leaves"
-    ]
-  },
-  {
     "name": "Tuscan Garlic Shrimp",
     "url": "https://www.paleorunningmomma.com/garlic-tuscan-shrimp-paleo-whole30/",
     "cuisine": "Italian",
@@ -20278,56 +20225,6 @@
       "1 Tbsp. olive oil",
       "2 lemons",
       "1 tsp. smoked paprika or sumac"
-    ]
-  },
-  {
-    "name": "Restaurant-Style Pan Seared Salmon",
-    "url": "https://www.onceuponachef.com/recipes/restaurant-style-pan-seared-salmon.html",
-    "cuisine": "American",
-    "course": "Entree",
-    "description": "",
-    "image": "https://storage.googleapis.com/ckc-recipe-swipe.firebasestorage.app/images/restaurant-style-pan-seared-salmon.webp",
-    "protein": "Salmon",
-    "rating": "4.88 (305 ratings)",
-    "blogger": "Once Upon a Chef",
-    "alignmentScore": "89.0",
-    "dietTags": {
-      "GF": {
-        "native": true,
-        "mod": false,
-        "notes": ""
-      },
-      "DF": {
-        "native": true,
-        "mod": false,
-        "notes": ""
-      },
-      "K": {
-        "native": true,
-        "mod": false,
-        "notes": ""
-      },
-      "AIP": {
-        "native": false,
-        "mod": true,
-        "notes": "Replace bell peppers with celery or zucchini. Replace seed-based spices with turmeric, ginger, cinnamon, or fresh herbs. Replace seed-based spices with turmeric, ginger, cinnamon, or fresh herbs."
-      },
-      "LF": {
-        "native": true,
-        "mod": false,
-        "notes": ""
-      },
-      "LH": {
-        "native": true,
-        "mod": false,
-        "notes": ""
-      }
-    },
-    "ingredients": [
-      "1 tablespoon  extra-virgin olive oil",
-      "½ teaspoon  kosher salt",
-      "Freshly ground black pepper",
-      "4  (6-ounce) salmon fillets, 1¼ in thick (I have my fish monger remove the skin, but it's fine to leave it on if you like)"
     ]
   },
   {
@@ -24085,30 +23982,6 @@
     "description": "",
     "rating": "4.88 (57 ratings)",
     "protein": "Chicken",
-    "dietTags": {
-      "GF": {
-        "native": true,
-        "mod": false,
-        "notes": ""
-      },
-      "DF": {
-        "native": true,
-        "mod": false,
-        "notes": ""
-      }
-    },
-    "image": null
-  },
-  {
-    "name": "Sheet Pan Salmon and Potatoes",
-    "url": "https://www.ambitiouskitchen.com/sheet-pan-salmon/",
-    "blogger": "Ambitious Kitchen",
-    "alignmentScore": "90.0",
-    "cuisine": "American",
-    "course": "Entree",
-    "description": "",
-    "rating": "4.84 (12 ratings)",
-    "protein": "Salmon",
     "dietTags": {
       "GF": {
         "native": true,

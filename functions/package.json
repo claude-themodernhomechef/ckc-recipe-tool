@@ -1,0 +1,25 @@
+{
+  "name": "ckc-enrichment-functions",
+  "version": "1.0.0",
+  "description": "CKC recipe enrichment Cloud Functions",
+  "main": "index.js",
+  "engines": {
+    "node": "20"
+  },
+  "scripts": {
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.52.0",
+    "@supabase/supabase-js": "^2.0.0",
+    "axios": "^1.7.7",
+    "cheerio": "^1.0.0",
+    "firebase-admin": "^13.0.0",
+    "firebase-functions": "^6.0.0"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CKC — Swap Notes Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0d0d0d;
+    color: #f0ece4;
+    font-family: 'DM Sans', sans-serif;
+    padding: 40px 20px;
+    min-height: 100vh;
+  }
+
+  .page-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #666;
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 640px) {
+    .two-col { grid-template-columns: 1fr; }
+  }
+
+  /* ── Phone frame ── */
+  .phone {
+    background: #151515;
+    border-radius: 36px;
+    border: 1px solid #2a2a2a;
+    overflow: hidden;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+    position: relative;
+  }
+
+  .phone-notch {
+    width: 80px;
+    height: 20px;
+    background: #0d0d0d;
+    border-radius: 0 0 14px 14px;
+    margin: 0 auto 0;
+    position: relative;
+    z-index: 10;
+  }
+
+  .option-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #666;
+    text-align: center;
+    padding: 16px 0 8px;
+  }
+
+  /* ── Shared card content ── */
+  .recipe-photo {
+    width: 100%;
+    height: 200px;
+    background: #5c3a1e;
+    position: relative;
+  }
+
+  .back-btn {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 12px;
+    color: #f0ece4;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .save-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 100px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  .prep-pill {
+    position: absolute;
+    bottom: 12px;
+    right: 14px;
+    background: rgba(0,0,0,0.6);
+    border-radius: 100px;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    color: #f0ece4;
+  }
+
+  .content {
+    padding: 20px 20px 32px;
+  }
+
+  .meta-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .meta-tag {
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #777;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .meta-dot { color: #444; font-size: 10px; }
+
+  .recipe-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 500;
+    color: #f0ece4;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  .recipe-desc {
+    font-size: 13px;
+    color: #999;
+    line-height: 1.6;
+    margin-bottom: 18px;
+  }
+
+  /* ── Compliance circles ── */
+  .circles-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    color: #fff;
+    letter-spacing: 0.2px;
+  }
+
+  .circle-native-v   { background: #7cb87a; }
+  .circle-native-vg  { background: #5bbfb5; }
+  .circle-native-df  { background: #6aabda; }
+  .circle-native-k   { background: #9b8ee0; }
+  .circle-native-gf  { background: #d4943a; }
+  .circle-native-lf  { background: #d4a843; }
+  .circle-mod        { background: #555; }
+
+  /* ── Divider ── */
+  .divider {
+    height: 1px;
+    background: #222;
+    margin: 16px 0;
+  }
+
+  /* ── Section header ── */
+  .section-header {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #555;
+    margin-bottom: 12px;
+  }
+
+  /* ── OPTION A: Grouped ── */
+  .grouped-block {
+    margin-bottom: 16px;
+  }
+
+  .protocol-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .protocol-circle-sm {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 500;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    flex-shrink: 0;
+  }
+
+  .protocol-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: #ccc;
+  }
+
+  .swap-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: #999;
+    line-height: 1.6;
+    padding-left: 38px;
+    margin-bottom: 4px;
+  }
+
+  /* ── OPTION B: Flat ── */
+  .flat-swaps {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: #999;
+    line-height: 1.7;
+  }
+
+  /* ── Ingredients section ── */
+  .ingredients-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+  }
+
+  .servings-note {
+    font-size: 11px;
+    color: #555;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .ingredient-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 0;
+    border-bottom: 1px solid #1e1e1e;
+  }
+
+  .ingredient-name {
+    font-size: 13px;
+    color: #ccc;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .ingredient-qty {
+    font-size: 13px;
+    color: #666;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* ── Buttons ── */
+  .action-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 12px;
+  }
+
+  .btn-primary {
+    background: #f0ece4;
+    color: #0d0d0d;
+  }
+
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid #333;
+    color: #f0ece4;
+  }
+</style>
+</head>
+<body>
+
+<p class="page-label">Recipe Detail — Swap Notes Preview</p>
+
+<div class="two-col">
+
+  <!-- ── OPTION A: Grouped by protocol ── -->
+  <div>
+    <p class="option-label">Option A — Grouped by Protocol</p>
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="recipe-photo" style="background: #c0603a;">
+        <div class="back-btn">← Back</div>
+        <div class="save-btn">♥</div>
+        <div class="prep-pill">25 min</div>
+      </div>
+      <div class="content">
+        <div class="meta-row">
+          <span class="meta-tag">Italian</span>
+          <span class="meta-dot">·</span>
+          <span class="meta-tag">Salmon</span>
+        </div>
+        <h1 class="recipe-title">Creamy Tuscan Salmon</h1>
+        <p class="recipe-desc">Pan-seared salmon in a sun-dried tomato and spinach cream sauce.</p>
+
+        <div class="circles-row">
+          <div class="circle circle-native-gf">GF</div>
+          <div class="circle circle-native-k">K</div>
+          <div class="circle circle-mod">LF</div>
+          <div class="circle circle-mod">DF</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="section-header">Make it work for you</div>
+
+        <div class="grouped-block">
+          <div class="protocol-row">
+            <div class="protocol-circle-sm" style="background:#d4a843;">LF</div>
+            <span class="protocol-name">Low-FODMAP</span>
+          </div>
+          <p class="swap-text">Replace garlic with garlic-infused olive oil. Cap sun-dried tomatoes at 2 tbsp per serving.</p>
+        </div>
+
+        <div class="grouped-block">
+          <div class="protocol-row">
+            <div class="protocol-circle-sm" style="background:#6aabda;">DF</div>
+            <span class="protocol-name">Dairy-Free</span>
+          </div>
+          <p class="swap-text">Use full-fat coconut cream instead of heavy cream. Skip parmesan or use Violife dairy-free hard block.</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="section-header">Ingredients · 4 servings</div>
+        <div class="ingredient-row">
+          <span class="ingredient-name">Salmon fillets</span>
+          <span class="ingredient-qty">4 fillets</span>
+        </div>
+        <div class="ingredient-row">
+          <span class="ingredient-name">Heavy cream</span>
+          <span class="ingredient-qty">1 cup</span>
+        </div>
+        <div class="ingredient-row">
+          <span class="ingredient-name">Sun-dried tomatoes</span>
+          <span class="ingredient-qty">½ cup</span>
+        </div>
+        <div class="ingredient-row">
+          <span class="ingredient-name">Baby spinach</span>
+          <span class="ingredient-qty">2 cups</span>
+        </div>
+
+        <div class="action-btn btn-primary">View Full Recipe →</div>
+        <div class="action-btn btn-secondary">Generate Shopping List</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── OPTION B: Flat list ── -->
+  <div>
+    <p class="option-label">Option B — Flat List</p>
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="recipe-photo" style="background: #c0603a;">
+        <div class="back-btn">← Back</div>
+        <div class="save-btn">♥</div>
+        <div class="prep-pill">25 min</div>
+      </div>
+      <div class="content">
+        <div class="meta-row">
+          <span class="meta-tag">Italian</span>
+          <span class="meta-dot">·</span>
+          <span class="meta-tag">Salmon</span>
+        </div>
+        <h1 class="recipe-title">Creamy Tuscan Salmon</h1>
+        <p class="recipe-desc">Pan-seared salmon in a sun-dried tomato and spinach cream sauce.</p>
+
+        <div class="circles-row">
+          <div class="circle circle-native-gf">GF</div>
+          <div class="circle circle-native-k">K</div>
+          <div class="circle circle-mod">LF</div>
+          <div class="circle circle-mod">DF</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="section-header">Make it work for you</div>
+
+        <p class="flat-swaps">
+          Replace garlic with garlic-infused olive oil. Cap sun-dried tomatoes at 2 tbsp per serving. Use full-fat coconut cream instead of heavy cream. Skip parmesan or use Violife dairy-free hard block.
+        </p>
+
+        <div class="divider"></div>
+
+        <div class="section-header">Ingredients · 4 servings</div>
+        <div class="ingredient-row">
+          <span class="ingredient-name">Salmon fillets</span>
+          <span class="ingredient-qty">4 fillets</span>
+        </div>
+        <div class="ingredient-row">
+          <span class="ingredient-name">Heavy cream</span>
+          <span class="ingredient-qty">1 cup</span>
+        </div>
+        <div class="ingredient-row">
+          <span class="ingredient-name">Sun-dried tomatoes</span>
+          <span class="ingredient-qty">½ cup</span>
+        </div>
+        <div class="ingredient-row">
+          <span class="ingredient-name">Baby spinach</span>
+          <span class="ingredient-qty">2 cups</span>
+        </div>
+
+        <div class="action-btn btn-primary">View Full Recipe →</div>
+        <div class="action-btn btn-secondary">Generate Shopping List</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -5,7 +5,8 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../App';
 import { Colors, Fonts } from '../constants/theme';
-import ProgressDots from './components/ProgressDots';
+import OnboardingHeader from './components/OnboardingHeader';
+import PrimaryButton from './components/PrimaryButton';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Household'>;
@@ -25,27 +26,18 @@ export default function HouseholdScreen({ navigation, route }: Props) {
   const [selected, setSelected] = useState<number | null>(null);
 
   function handleContinue() {
-    navigation.navigate('Protein', {
-      protocols,
-      household: selected ?? 2,
-    });
+    navigation.navigate('Protein', { protocols, household: selected ?? 2 });
   }
 
   return (
     <SafeAreaView style={styles.safe}>
+      <OnboardingHeader
+        onBack={() => navigation.goBack()}
+        onSkip={handleContinue}
+        step={1}
+        total={4}
+      />
 
-      {/* ── Top nav ── */}
-      <View style={styles.topNav}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-          <Text style={styles.backArrow}>←</Text>
-        </TouchableOpacity>
-        <ProgressDots total={4} current={1} />
-        <TouchableOpacity onPress={handleContinue} style={styles.skipBtn}>
-          <Text style={styles.skipText}>Skip</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* ── Title ── */}
       <View style={styles.titleArea}>
         <Text style={styles.title}>Who are you{'\n'}cooking for?</Text>
         <Text style={styles.subtitle}>
@@ -53,7 +45,6 @@ export default function HouseholdScreen({ navigation, route }: Props) {
         </Text>
       </View>
 
-      {/* ── Options ── */}
       <View style={styles.optionsArea}>
         {OPTIONS.map((opt) => {
           const isSelected = selected === opt.value;
@@ -75,38 +66,19 @@ export default function HouseholdScreen({ navigation, route }: Props) {
         })}
       </View>
 
-      {/* ── Continue ── */}
       <View style={styles.footer}>
-        <TouchableOpacity
-          style={[styles.continueBtn, selected === null && styles.continueBtnDisabled]}
+        <PrimaryButton
+          label="Continue"
           onPress={handleContinue}
-          activeOpacity={0.85}
-        >
-          <Text style={styles.continueBtnText}>Continue</Text>
-        </TouchableOpacity>
+          disabled={selected === null}
+        />
       </View>
-
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  safe: {
-    flex: 1,
-    backgroundColor: Colors.bg,
-  },
-  topNav: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingTop: 8,
-    paddingBottom: 4,
-  },
-  backBtn: { padding: 8 },
-  backArrow: { fontSize: 22, color: Colors.textSecondary },
-  skipBtn: { padding: 8 },
-  skipText: { fontFamily: Fonts.body, fontSize: 13, color: Colors.textMuted },
+  safe: { flex: 1, backgroundColor: Colors.bg },
 
   titleArea: {
     paddingHorizontal: 24,
@@ -127,7 +99,6 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
 
-  // ── Number buttons — one row
   optionsArea: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -173,17 +144,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingBottom: 16,
     paddingTop: 40,
-  },
-  continueBtn: {
-    backgroundColor: Colors.textPrimary,
-    borderRadius: 100,
-    paddingVertical: 16,
-    alignItems: 'center',
-  },
-  continueBtnDisabled: { opacity: 0.4 },
-  continueBtnText: {
-    fontFamily: Fonts.bodyMedium,
-    fontSize: 15,
-    color: Colors.bg,
   },
 });

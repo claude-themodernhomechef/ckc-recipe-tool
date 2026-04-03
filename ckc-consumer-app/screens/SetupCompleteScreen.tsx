@@ -1,41 +1,24 @@
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../App';
 import { Colors, Fonts } from '../constants/theme';
+import { useUser } from '../context/UserContext';
+import DietTag from './components/DietTag';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'SetupComplete'>;
   route:      RouteProp<RootStackParamList, 'SetupComplete'>;
 };
 
-// Full names for the diet protocol keys
-const PROTOCOL_LABELS: Record<string, string> = {
-  AIP: 'Autoimmune Protocol',
-  LF:  'Low-FODMAP',
-  K:   'Keto',
-  GF:  'Gluten-Free',
-  DF:  'Dairy-Free',
-  V:   'Vegan',
-  Vg:  'Vegetarian',
-  LH:  'Low-Histamine',
-};
 
-const DIET_COLORS: Record<string, string> = {
-  AIP: Colors.diet.AIP,
-  LF:  Colors.diet.LF,
-  K:   Colors.diet.K,
-  GF:  Colors.diet.GF,
-  DF:  Colors.diet.DF,
-  V:   Colors.diet.V,
-  Vg:  Colors.diet.Vg,
-  LH:  Colors.diet.LH,
-};
-
-export default function SetupCompleteScreen({ navigation, route }: Props) {
+export default function SetupCompleteScreen({ route }: Props) {
   const { protocols, household, proteins, cuisines } = route.params;
+  const { completeOnboarding } = useUser();
+  const [loading, setLoading] = useState(false);
 
   // Build a friendly summary line
   const householdText = household === 1
@@ -76,14 +59,7 @@ export default function SetupCompleteScreen({ navigation, route }: Props) {
                 <Text style={styles.summaryLabel}>Dietary Protocols</Text>
                 <View style={styles.tagRow}>
                   {protocols.map((key) => (
-                    <View
-                      key={key}
-                      style={[styles.tag, { borderColor: DIET_COLORS[key], backgroundColor: `${DIET_COLORS[key]}14` }]}
-                    >
-                      <Text style={[styles.tagText, { color: DIET_COLORS[key] }]}>
-                        {PROTOCOL_LABELS[key] ?? key}
-                      </Text>
-                    </View>
+                    <DietTag key={key} protocol={key} variant="circle" />
                   ))}
                 </View>
               </View>
@@ -126,11 +102,36 @@ export default function SetupCompleteScreen({ navigation, route }: Props) {
         {/* ── CTA ── */}
         <View style={styles.footer}>
           <TouchableOpacity
-            style={styles.primaryBtn}
+            style={[styles.primaryBtn, loading && { opacity: 0.6 }]}
             activeOpacity={0.85}
-            onPress={() => navigation.navigate('ShoppingPlanner')}
+            disabled={loading}
+            onPress={async () => {
+              setLoading(true);
+              try {
+                await completeOnboarding({
+                  protocols,
+                  household,
+                  proteins,
+                  cuisines,
+                  savedRecipes: [],
+                  tier: 'free',
+                });
+                // Navigation to MainTabs happens automatically:
+                // completeOnboarding sets onboardingComplete = true in UserContext
+                // → AppNavigator re-renders → AppStack mounts → MainTabs appears
+              } catch (err: any) {
+                setLoading(false);
+                const msg = err?.code === 'auth/email-already-in-use'
+                  ? 'That email is already registered. Please sign in instead.'
+                  : 'Something went wrong creating your account. Please try again.';
+                Alert.alert('Account Error', msg);
+              }
+            }}
           >
-            <Text style={styles.primaryBtnText}>Start Exploring Recipes</Text>
+            {loading
+              ? <ActivityIndicator color={Colors.bg} />
+              : <Text style={styles.primaryBtnText}>Start Exploring Recipes</Text>
+            }
           </TouchableOpacity>
         </View>
 

@@ -30,7 +30,7 @@ const SAMPLE_RECIPES: { id: string; name: string; blogger: string; ingredients: 
       { name: 'Garlic', category: 'Produce' },
       { name: 'Lemons', category: 'Produce' },
       { name: 'Fresh thyme', category: 'Produce' },
-      { name: 'Olive oil', category: 'Pantry' },
+      { name: 'Olive oil', category: 'PantryStaples' },
     ],
   },
   {
@@ -41,7 +41,7 @@ const SAMPLE_RECIPES: { id: string; name: string; blogger: string; ingredients: 
       { name: 'Salmon fillets', category: 'Protein' },
       { name: 'Baby spinach', category: 'Produce' },
       { name: 'Cherry tomatoes', category: 'Produce' },
-      { name: 'Tahini', category: 'Pantry' },
+      { name: 'Tahini', category: 'PantryStaples' },
       { name: 'Lemon', category: 'Produce' },
     ],
   },
@@ -54,7 +54,7 @@ const SAMPLE_RECIPES: { id: string; name: string; blogger: string; ingredients: 
       { name: 'Bell peppers', category: 'Produce' },
       { name: 'Zucchini', category: 'Produce' },
       { name: 'Red onion', category: 'Produce' },
-      { name: 'Olive oil', category: 'Pantry' },
+      { name: 'Olive oil', category: 'PantryStaples' },
     ],
   },
   {
@@ -63,7 +63,7 @@ const SAMPLE_RECIPES: { id: string; name: string; blogger: string; ingredients: 
     blogger: 'The Mediterranean Dish',
     ingredients: [
       { name: 'Ground lamb', category: 'Protein' },
-      { name: 'Greek yogurt', category: 'Dairy' },
+      { name: 'Greek yogurt', category: 'DairyEggs' },
       { name: 'Fresh mint', category: 'Produce' },
       { name: 'Cucumber', category: 'Produce' },
       { name: 'Garlic', category: 'Produce' },
@@ -74,31 +74,36 @@ const SAMPLE_RECIPES: { id: string; name: string; blogger: string; ingredients: 
     name: 'Tuscan White Bean Soup',
     blogger: 'Alexandra Cooks',
     ingredients: [
-      { name: 'White beans', category: 'Pantry' },
+      { name: 'White beans', category: 'PantryConsumables' },
       { name: 'Kale', category: 'Produce' },
       { name: 'Carrots', category: 'Produce' },
       { name: 'Celery', category: 'Produce' },
-      { name: 'Parmesan rind', category: 'Dairy' },
+      { name: 'Parmesan rind', category: 'DairyEggs' },
     ],
   },
 ];
 
-type Category = 'Protein' | 'Produce' | 'Dairy' | 'Pantry';
+type Category = 'Protein' | 'Produce' | 'DairyEggs' | 'PantryStaples' | 'PantryConsumables' | 'Frozen';
 
-const CATEGORY_ORDER: Category[] = ['Protein', 'Produce', 'Dairy', 'Pantry'];
+const CATEGORY_ORDER: Category[] = ['Protein', 'Produce', 'DairyEggs', 'PantryStaples', 'PantryConsumables', 'Frozen'];
 
-const CATEGORY_ICONS: Record<Category, string> = {
-  Protein: '🥩',
-  Produce: '🥦',
-  Dairy:   '🧀',
-  Pantry:  '🫙',
+
+const CATEGORY_LABELS: Record<Category, string> = {
+  Protein:          'Protein',
+  Produce:          'Produce',
+  DairyEggs:        'Dairy & Eggs',
+  PantryStaples:    'Pantry Staples',
+  PantryConsumables:'Pantry Consumables',
+  Frozen:           'Frozen',
 };
 
 const CATEGORY_COLORS: Record<Category, string> = {
-  Protein: '#e07878',
-  Produce: '#7cb87a',
-  Dairy:   '#6aabda',
-  Pantry:  '#d4a843',
+  Protein:          '#e07878',
+  Produce:          '#7cb87a',
+  DairyEggs:        '#6aabda',
+  PantryStaples:    '#d4a843',
+  PantryConsumables:'#c4935a',
+  Frozen:           '#7ab8d4',
 };
 
 // ─────────────────────────────────────────────
@@ -133,10 +138,12 @@ export default function ShoppingPlannerScreen({ navigation }: Props) {
   // Build aggregated shopping list from selected recipes
   const shoppingList = useMemo(() => {
     const byCategory: Record<Category, Map<string, string[]>> = {
-      Protein: new Map(),
-      Produce: new Map(),
-      Dairy:   new Map(),
-      Pantry:  new Map(),
+      Protein:          new Map(),
+      Produce:          new Map(),
+      DairyEggs:        new Map(),
+      PantryStaples:    new Map(),
+      PantryConsumables:new Map(),
+      Frozen:           new Map(),
     };
 
     for (const recipe of SAMPLE_RECIPES) {
@@ -251,7 +258,6 @@ export default function ShoppingPlannerScreen({ navigation }: Props) {
         {/* ── Empty state ── */}
         {selectedIds.size === 0 && (
           <View style={styles.emptyState}>
-            <Text style={styles.emptyIcon}>🛒</Text>
             <Text style={styles.emptyTitle}>No recipes selected</Text>
             <Text style={styles.emptyBody}>
               Tap "+ Recipes" above to pick what you're cooking this week. Your shopping list will be built automatically.
@@ -268,9 +274,8 @@ export default function ShoppingPlannerScreen({ navigation }: Props) {
             stickySectionHeadersEnabled={false}
             renderSectionHeader={({ section }) => (
               <View style={styles.sectionHeader}>
-                <Text style={styles.sectionIcon}>{CATEGORY_ICONS[section.title as Category]}</Text>
                 <Text style={[styles.sectionTitle, { color: CATEGORY_COLORS[section.title as Category] }]}>
-                  {section.title}
+                  {CATEGORY_LABELS[section.title as Category]}
                 </Text>
                 <Text style={styles.sectionCount}>{section.data.length}</Text>
               </View>
