@@ -26,6 +26,7 @@ export interface Recipe {
   rating: string;
   dietTags: Record<string, DietTag>;
   ingredients: string[];
+  status?: 'yes' | 'no' | 'maybe' | 'pending';
 }
 
 // Returns 'native' | 'modified' | 'none' for a given protocol on a recipe
