@@ -315,6 +315,82 @@ const ms = StyleSheet.create({
 });
 
 // ─────────────────────────────────────────────
+//  Diet review flag modal
+// ─────────────────────────────────────────────
+
+function ReviewFlagModal({
+  recipe,
+  visible,
+  onClose,
+}: {
+  recipe: Recipe;
+  visible: boolean;
+  onClose: () => void;
+}) {
+  const uncertainTags = Object.entries(recipe.dietTags || {})
+    .filter(([, tag]) => tag?.uncertain === true)
+    .map(([protocol, tag]) => ({ protocol, reason: tag.reason || 'Ingredient compliance uncertain' }));
+
+  return (
+    <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
+      <Pressable style={rf.backdrop} onPress={onClose}>
+        <View style={rf.sheet}>
+          <View style={rf.header}>
+            <Text style={rf.title}>Diet Review Needed</Text>
+            <TouchableOpacity onPress={onClose} hitSlop={{ top: 8, right: 8, bottom: 8, left: 8 }}>
+              <Text style={rf.closeBtn}>✕</Text>
+            </TouchableOpacity>
+          </View>
+          <Text style={rf.subtitle}>{recipe.name}</Text>
+          <Text style={rf.body}>
+            The following protocols couldn't be confirmed during enrichment because one or more ingredients weren't found in the product database.
+          </Text>
+          {uncertainTags.map(({ protocol, reason }) => (
+            <View key={protocol} style={rf.item}>
+              <View style={rf.protocolBadge}>
+                <Text style={rf.protocolText}>{protocol}</Text>
+              </View>
+              <Text style={rf.reasonText}>{reason}</Text>
+            </View>
+          ))}
+          {uncertainTags.length === 0 && (
+            <Text style={rf.body}>No uncertain tags found — this may have already been resolved.</Text>
+          )}
+        </View>
+      </Pressable>
+    </Modal>
+  );
+}
+
+const rf = StyleSheet.create({
+  backdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.65)', justifyContent: 'flex-end' },
+  sheet: {
+    backgroundColor: Colors.surface,
+    borderTopLeftRadius: 16, borderTopRightRadius: 16,
+    paddingHorizontal: 20, paddingBottom: 40, paddingTop: 20,
+  },
+  header: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+    marginBottom: 4,
+  },
+  title:       { fontFamily: Fonts.display, fontSize: 20, color: Colors.textPrimary },
+  closeBtn:    { fontFamily: Fonts.bodyMedium, fontSize: 16, color: Colors.textMuted },
+  subtitle:    { fontFamily: Fonts.bodyMedium, fontSize: 13, color: Colors.textSecondary, marginBottom: 10 },
+  body:        { fontFamily: Fonts.body, fontSize: 13, color: Colors.textMuted, marginBottom: 14, lineHeight: 19 },
+  item: {
+    flexDirection: 'row', alignItems: 'flex-start', gap: 10,
+    paddingVertical: 10, borderTopWidth: 1, borderTopColor: Colors.border,
+  },
+  protocolBadge: {
+    paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6,
+    backgroundColor: '#d4a84322', borderWidth: 1, borderColor: '#d4a843',
+    flexShrink: 0,
+  },
+  protocolText: { fontFamily: Fonts.bodyMedium, fontSize: 11, color: '#d4a843' },
+  reasonText:   { fontFamily: Fonts.body, fontSize: 13, color: Colors.textSecondary, flex: 1, lineHeight: 18 },
+});
+
+// ─────────────────────────────────────────────
 //  Recipe row
 // ─────────────────────────────────────────────
 
@@ -327,6 +403,9 @@ function RecipeRow({
   selected: boolean;
   onToggle: () => void;
 }) {
+  const [reviewVisible, setReviewVisible] = useState(false);
+  const needsReview = recipe.processingStatus === 'pending_review';
+
   const activeDietTags = DIET_PROTOCOLS
     .map(p => ({ p, status: getComplianceStatus(recipe, p) }))
     .filter(t => t.status !== 'none')
@@ -336,61 +415,82 @@ function RecipeRow({
     });
 
   return (
-    <TouchableOpacity
-      style={[row.wrap, selected && row.wrapSelected]}
-      onPress={onToggle}
-      activeOpacity={0.75}
-    >
-      {/* Toggle button */}
-      <View style={[row.toggleBtn, selected && row.toggleBtnSelected]}>
-        <Text style={[row.toggleIcon, selected && row.toggleIconSelected]}>
-          {selected ? '✓' : '+'}
-        </Text>
-      </View>
+    <>
+      <TouchableOpacity
+        style={[row.wrap, selected && row.wrapSelected]}
+        onPress={onToggle}
+        activeOpacity={0.75}
+      >
+        {/* Toggle button */}
+        <View style={[row.toggleBtn, selected && row.toggleBtnSelected]}>
+          <Text style={[row.toggleIcon, selected && row.toggleIconSelected]}>
+            {selected ? '✓' : '+'}
+          </Text>
+        </View>
 
-      {/* Thumbnail */}
-      <View style={[row.thumb, { backgroundColor: recipe.placeholder_color }]}>
-        {recipe.photo_url ? (
-          <Image source={{ uri: recipe.photo_url }} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
-        ) : null}
-      </View>
+        {/* Thumbnail */}
+        <View style={[row.thumb, { backgroundColor: recipe.placeholder_color }]}>
+          {recipe.photo_url ? (
+            <Image source={{ uri: recipe.photo_url }} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
+          ) : null}
+        </View>
 
-      {/* Info */}
-      <View style={row.info}>
-        <Text style={[row.name, selected && row.nameSelected]} numberOfLines={1}>{recipe.name}</Text>
-        <Text style={row.meta} numberOfLines={1}>
-          {[
-            recipe.cuisine,
-            recipe.protein_type,
-            recipe.prep_time ? `${recipe.prep_time} min` : null,
-            recipe.blogger,
-          ].filter(Boolean).join('  ·  ')}
-        </Text>
-        {activeDietTags.length > 0 && (
-          <View style={row.tags}>
-            {activeDietTags.slice(0, 6).map(t => (
-              <DietTag key={t.p} protocol={t.p} variant="circle" status={t.status === 'modified' ? 'modified' : 'native'} />
-            ))}
+        {/* Info */}
+        <View style={row.info}>
+          <View style={row.nameRow}>
+            <Text style={[row.name, selected && row.nameSelected]} numberOfLines={1}>{recipe.name}</Text>
+            {needsReview && (
+              <TouchableOpacity
+                style={row.reviewFlag}
+                onPress={e => { e.stopPropagation(); setReviewVisible(true); }}
+                hitSlop={{ top: 6, right: 6, bottom: 6, left: 6 }}
+              >
+                <Text style={row.reviewFlagText}>⚑ review</Text>
+              </TouchableOpacity>
+            )}
           </View>
-        )}
-      </View>
-
-      {/* Right: status + rating */}
-      <View style={row.right}>
-        {recipe.status ? (() => {
-          const s = recipe.status as StatusOption;
-          const color = STATUS_COLORS[s] ?? '#888';
-          return (
-            <View style={[row.statusBadge, { borderColor: color, backgroundColor: color + '22' }]}>
-              <Text style={[row.statusText, { color }]}>{STATUS_LABELS[s] ?? s}</Text>
+          <Text style={row.meta} numberOfLines={1}>
+            {[
+              recipe.cuisine,
+              recipe.protein_type,
+              recipe.prep_time ? `${recipe.prep_time} min` : null,
+              recipe.blogger,
+            ].filter(Boolean).join('  ·  ')}
+          </Text>
+          {activeDietTags.length > 0 && (
+            <View style={row.tags}>
+              {activeDietTags.slice(0, 6).map(t => (
+                <DietTag key={t.p} protocol={t.p} variant="circle" status={t.status === 'modified' ? 'modified' : 'native'} />
+              ))}
             </View>
-          );
-        })() : null}
-        {formatRating(recipe.rating) ? (
-          <Text style={row.rating}>★ {formatRating(recipe.rating)}</Text>
-        ) : null}
-      </View>
-    </TouchableOpacity>
+          )}
+        </View>
+
+        {/* Right: status + rating */}
+        <View style={row.right}>
+          {recipe.status ? (() => {
+            const s = recipe.status as StatusOption;
+            const color = STATUS_COLORS[s] ?? '#888';
+            return (
+              <View style={[row.statusBadge, { borderColor: color, backgroundColor: color + '22' }]}>
+                <Text style={[row.statusText, { color }]}>{STATUS_LABELS[s] ?? s}</Text>
+              </View>
+            );
+          })() : null}
+          {formatRating(recipe.rating) ? (
+            <Text style={row.rating}>★ {formatRating(recipe.rating)}</Text>
+          ) : null}
+        </View>
+      </TouchableOpacity>
+
+      {needsReview && (
+        <ReviewFlagModal
+          recipe={recipe}
+          visible={reviewVisible}
+          onClose={() => setReviewVisible(false)}
+        />
+      )}
+    </>
   );
 }
 
@@ -420,8 +520,15 @@ const row = StyleSheet.create({
 
   thumb:  { width: 48, height: 48, borderRadius: 7, overflow: 'hidden', flexShrink: 0 },
   info:   { flex: 1, gap: 3 },
-  name:   { fontFamily: Fonts.display, fontSize: 17, color: Colors.textPrimary },
+  nameRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  name:   { fontFamily: Fonts.display, fontSize: 17, color: Colors.textPrimary, flexShrink: 1 },
   nameSelected: { color: GREEN },
+  reviewFlag: {
+    paddingHorizontal: 6, paddingVertical: 2, borderRadius: 5,
+    backgroundColor: '#d4a84322', borderWidth: 1, borderColor: '#d4a843',
+    flexShrink: 0,
+  },
+  reviewFlagText: { fontFamily: Fonts.bodyMedium, fontSize: 9, color: '#d4a843', letterSpacing: 0.3 },
   meta:   { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted },
   tags:   { flexDirection: 'row', flexWrap: 'wrap', gap: 4, marginTop: 2 },
   right:  { flexShrink: 0, alignItems: 'flex-end', gap: 4 },

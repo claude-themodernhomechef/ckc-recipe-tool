@@ -48,6 +48,7 @@ function docToRecipe(id: string, data: Record<string, unknown>): Recipe {
     dietTags:         (data.dietTags        as Recipe['dietTags']) || {},
     ingredients:      (data.ingredients     as string[]) || [],
     status:           (data.status          as Recipe['status']) || 'yes',
+    processingStatus: (data.processingStatus as Recipe['processingStatus']) || undefined,
   };
 }
 

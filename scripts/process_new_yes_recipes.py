@@ -37,9 +37,10 @@ from firebase_admin import credentials, firestore as fs_module, storage
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
 BASE             = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT        = os.path.dirname(BASE)
 SA_KEY           = os.path.join(BASE, 'service-account.json')
-RULES_PATH       = os.path.join(BASE, 'CKC_Diet_Compliance_Rules.md')
-CHEF_GUIDE_PATH  = os.path.join(BASE, 'CKC_Chef_Notes_Guide.md')
+RULES_PATH       = os.path.join(REPO_ROOT, 'docs', 'CKC_Diet_Compliance_Rules.md')
+CHEF_GUIDE_PATH  = os.path.join(REPO_ROOT, 'docs', 'CKC_Chef_Notes_Guide.md')
 PRODUCTS_FILE    = '/Users/rafi/Desktop/Claude-MHC/Fig Scraper/ckc_products_cleaned_2026-03-29.json'  # legacy local path — no longer used
 PROGRESS_FILE    = os.path.join(BASE, 'process_new_progress.json')
 NEEDS_REVIEW_CSV = os.path.join(BASE, 'needs_review.csv')
@@ -449,82 +450,88 @@ def process_recipe(doc, index, total, progress):
     print(f'{label} chef notes ✓')
 
     # ── 3. Diet tag verification ───────────────────────────────────────────────
-    diet_result = verify_diet_tags(name, cuisine, course, ingredients)
-    print(f'{label} diet tags ✓')
-
-    # ── 4. FIG product search for uncertain tags ───────────────────────────────
+    # Skip if dietTags already exist in Firestore — saves API calls for A4 recipes
+    existing_diet_tags = data.get('dietTags')
     confirmed_tags  = {}
     uncertain_items = []
 
-    for proto, result in diet_result.items():
-        if not result.get('native') and not result.get('mod'):
-            # Not tagged at all — skip
-            continue
+    if existing_diet_tags:
+        confirmed_tags = existing_diet_tags
+        print(f'{label} diet tags already present — skipping verification ✓')
+    else:
+        diet_result = verify_diet_tags(name, cuisine, course, ingredients)
+        print(f'{label} diet tags ✓')
 
-        if not result.get('uncertain'):
-            # Confident — keep as-is
-            tag = {'native': result['native'], 'mod': result['mod']}
-            if result.get('notes'):
-                tag['notes'] = result['notes']
-            confirmed_tags[proto] = tag
-            continue
+        # ── 4. FIG product search for uncertain tags ───────────────────────────
+        for proto, result in diet_result.items():
+            if not result.get('native') and not result.get('mod'):
+                # Not tagged at all — skip
+                continue
 
-        # Uncertain — search FIG products
-        reason     = result.get('reason', '')
-        ingredient = extract_uncertain_ingredient(reason)
-
-        if ingredient:
-            matches = search_fig_products(ingredient, proto)
-            if matches['compliant']:
-                # Compliant product found — confirm the tag
+            if not result.get('uncertain'):
+                # Confident — keep as-is
                 tag = {'native': result['native'], 'mod': result['mod']}
                 if result.get('notes'):
                     tag['notes'] = result['notes']
                 confirmed_tags[proto] = tag
-                print(f'{label} {proto} uncertain → compliant product found ({ingredient})')
-            elif matches['caution']:
-                # Only caution products — flag for review
-                caution_names = ' | '.join(matches['caution'][:3])
-                uncertain_items.append({
-                    'category':   'grey_area',
-                    'recipe':     name,
-                    'protocol':   proto,
-                    'ingredient': ingredient,
-                    'reason':     reason,
-                    'caution':    caution_names,
-                    'url':        url,
-                })
-                # Hold tag as mod: false until reviewed
-                confirmed_tags[proto] = {'native': False, 'mod': False, 'notes': ''}
-                print(f'{label} {proto} → grey area ({ingredient}) — needs review')
+                continue
+
+            # Uncertain — search FIG products
+            reason     = result.get('reason', '')
+            ingredient = extract_uncertain_ingredient(reason)
+
+            if ingredient:
+                matches = search_fig_products(ingredient, proto)
+                if matches['compliant']:
+                    # Compliant product found — confirm the tag
+                    tag = {'native': result['native'], 'mod': result['mod']}
+                    if result.get('notes'):
+                        tag['notes'] = result['notes']
+                    confirmed_tags[proto] = tag
+                    print(f'{label} {proto} uncertain → compliant product found ({ingredient})')
+                elif matches['caution']:
+                    # Only caution products — flag for review
+                    caution_names = ' | '.join(matches['caution'][:3])
+                    uncertain_items.append({
+                        'category':   'grey_area',
+                        'recipe':     name,
+                        'protocol':   proto,
+                        'ingredient': ingredient,
+                        'reason':     reason,
+                        'caution':    caution_names,
+                        'url':        url,
+                    })
+                    # Hold tag as mod: false until reviewed
+                    confirmed_tags[proto] = {'native': False, 'mod': False, 'notes': ''}
+                    print(f'{label} {proto} → grey area ({ingredient}) — needs review')
+                else:
+                    # No product found — flag for review
+                    uncertain_items.append({
+                        'category':   'no_product_found',
+                        'recipe':     name,
+                        'protocol':   proto,
+                        'ingredient': ingredient,
+                        'reason':     reason,
+                        'caution':    '',
+                        'url':        url,
+                    })
+                    confirmed_tags[proto] = {'native': False, 'mod': False, 'notes': ''}
+                    print(f'{label} {proto} → no product found ({ingredient}) — needs review')
             else:
-                # No product found — flag for review
+                # Can't extract ingredient — flag for review
                 uncertain_items.append({
-                    'category':   'no_product_found',
+                    'category':   'needs_clarification',
                     'recipe':     name,
                     'protocol':   proto,
-                    'ingredient': ingredient,
+                    'ingredient': '',
                     'reason':     reason,
                     'caution':    '',
                     'url':        url,
                 })
                 confirmed_tags[proto] = {'native': False, 'mod': False, 'notes': ''}
-                print(f'{label} {proto} → no product found ({ingredient}) — needs review')
-        else:
-            # Can't extract ingredient — flag for review
-            uncertain_items.append({
-                'category':   'needs_clarification',
-                'recipe':     name,
-                'protocol':   proto,
-                'ingredient': '',
-                'reason':     reason,
-                'caution':    '',
-                'url':        url,
-            })
-            confirmed_tags[proto] = {'native': False, 'mod': False, 'notes': ''}
-            print(f'{label} {proto} → needs clarification — needs review')
+                print(f'{label} {proto} → needs clarification — needs review')
 
-    # ── 5. Append uncertain items to growing needs_review.csv ─────────────────
+    # ── 5. Append uncertain items to growing needs_review.csv (new tags only) ──
     if uncertain_items:
         csv_rows = []
         for u in uncertain_items:
@@ -543,11 +550,12 @@ def process_recipe(doc, index, total, progress):
 
     update = {
         'chefNotes':        chef_notes,
-        'menuDescription':  menu_desc,
         'ingredients':      ingredients,
-        'dietTags':         confirmed_tags,
         'processingStatus': processing_status,
     }
+    # Only write dietTags if we generated them fresh — don't overwrite existing ones
+    if not existing_diet_tags:
+        update['dietTags'] = confirmed_tags
     if image_url:
         update['image'] = image_url
     if scraped.get('rating') and not data.get('rating'):

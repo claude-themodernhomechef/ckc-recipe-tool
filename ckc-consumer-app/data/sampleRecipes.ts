@@ -8,6 +8,8 @@ export interface DietTag {
   native: boolean;
   mod: boolean;
   notes: string;
+  uncertain?: boolean;
+  reason?: string;
 }
 
 export interface Recipe {
@@ -27,6 +29,7 @@ export interface Recipe {
   dietTags: Record<string, DietTag>;
   ingredients: string[];
   status?: 'yes' | 'no' | 'maybe' | 'pending';
+  processingStatus?: 'complete' | 'pending_review' | 'failed' | 'error';
 }
 
 // Returns 'native' | 'modified' | 'none' for a given protocol on a recipe
