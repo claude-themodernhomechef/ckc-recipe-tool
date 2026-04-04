@@ -20,8 +20,9 @@ import firebase_admin
 from firebase_admin import credentials, firestore as fs_module
 
 # ── Config ─────────────────────────────────────────────────────────────────────
-BASE   = os.path.dirname(os.path.abspath(__file__))
-SA_KEY = os.path.join(BASE, 'service-account.json')
+BASE      = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT = os.path.dirname(BASE)
+SA_KEY    = os.path.join(REPO_ROOT, 'service-account.json')
 
 # ── CLI args ───────────────────────────────────────────────────────────────────
 parser = argparse.ArgumentParser()
