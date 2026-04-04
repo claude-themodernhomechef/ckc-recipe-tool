@@ -59,7 +59,7 @@ export async function fetchPendingRecipes(): Promise<Recipe[]> {
     const q = query(
       collection(db, 'recipes'),
       where('status', '==', 'pending'),
-      limit(100),
+      limit(500),
     );
     const snap = await getDocs(q);
     return snap.docs.map(d => docToRecipe(d.id, d.data() as Record<string, unknown>));
