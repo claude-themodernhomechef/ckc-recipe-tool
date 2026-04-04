@@ -1,9 +1,7 @@
 name: Enrich YES Recipes
 
 on:
-  schedule:
-    - cron: '0 */3 * * *'   # Every 3 hours
-  workflow_dispatch:          # Manual trigger from GitHub UI
+  workflow_dispatch:          # Manual trigger from GitHub UI only
 
 jobs:
   enrich:
