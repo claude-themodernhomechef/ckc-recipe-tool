@@ -4,7 +4,7 @@
 //  Falls back to SAMPLE_RECIPES on error.
 // ─────────────────────────────────────────────
 
-import { collection, query, where, limit, getDocs, doc, updateDoc, orderBy } from 'firebase/firestore';
+import { collection, query, where, limit, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { db } from './firebase';
 import { SAMPLE_RECIPES, Recipe } from '../data/sampleRecipes';
 
@@ -59,7 +59,6 @@ export async function fetchPendingRecipes(): Promise<Recipe[]> {
     const q = query(
       collection(db, 'recipes'),
       where('status', '==', 'pending'),
-      orderBy('sourceAddedAt', 'asc'),
       limit(100),
     );
     const snap = await getDocs(q);
