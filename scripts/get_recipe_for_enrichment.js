@@ -32,7 +32,9 @@ async function main() {
   }
 
   const d = doc.data();
-  const hasDietTags = d.dietTags && Object.keys(d.dietTags).length > 0;
+  const ALL_PROTOCOLS = ['GF', 'DF', 'K', 'LF', 'V', 'Vg', 'AIP', 'LH'];
+  const existingTags  = d.dietTags ? Object.keys(d.dietTags) : [];
+  const hasAllTags    = ALL_PROTOCOLS.every(p => existingTags.includes(p));
 
   const lines = [
     `DOC_ID: ${docId}`,
@@ -53,8 +55,11 @@ async function main() {
   }
 
   lines.push('');
-  if (hasDietTags) {
-    lines.push('DIET_TAGS: already present — skip diet tag generation');
+  if (hasAllTags) {
+    lines.push('DIET_TAGS: already present (all 8 protocols) — skip diet tag generation');
+    lines.push(JSON.stringify(d.dietTags, null, 2));
+  } else if (existingTags.length > 0) {
+    lines.push(`DIET_TAGS: incomplete (only ${existingTags.join(', ')} present) — generate all 8 protocols`);
     lines.push(JSON.stringify(d.dietTags, null, 2));
   } else {
     lines.push('DIET_TAGS: missing — generate all 8 protocols');

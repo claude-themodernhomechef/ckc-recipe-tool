@@ -18,6 +18,8 @@ if (!admin.apps.length) {
 }
 const db = admin.firestore();
 
+const ALL_PROTOCOLS = ['GF', 'DF', 'K', 'LF', 'V', 'Vg', 'AIP', 'LH'];
+
 async function main() {
   const snap = await db.collection('recipes')
     .where('status', '==', 'yes')
@@ -26,7 +28,10 @@ async function main() {
   const ids = snap.docs
     .filter(doc => {
       const d = doc.data();
-      return !d.chefNotes || !d.chefNotes.trim();
+      const missingChefNotes  = !d.chefNotes || !d.chefNotes.trim();
+      const existingProtocols = d.dietTags ? Object.keys(d.dietTags) : [];
+      const incompleteDietTags = !ALL_PROTOCOLS.every(p => existingProtocols.includes(p));
+      return missingChefNotes || incompleteDietTags;
     })
     .map(doc => doc.id);
 
