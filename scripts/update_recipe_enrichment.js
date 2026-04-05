@@ -17,11 +17,11 @@
  *   1 — error (printed to stderr)
  */
 
-const admin = require('./functions/node_modules/firebase-admin');
+const admin = require('firebase-admin');
 const path  = require('path');
 const fs    = require('fs');
 
-const SA_KEY = path.join(__dirname, 'service-account.json');
+const SA_KEY = path.join(__dirname, '..', 'service-account.json');
 
 if (!admin.apps.length) {
   admin.initializeApp({ credential: admin.credential.cert(SA_KEY) });
