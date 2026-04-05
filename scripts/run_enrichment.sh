@@ -16,7 +16,7 @@ echo "CKC Recipe Enrichment"
 echo "Loading queue from Firestore..."
 
 # Get all doc IDs needing enrichment (one per line)
-QUEUE=$(node scripts/get_enrichment_queue.js 2>/dev/null)
+QUEUE=$(/usr/local/bin/node scripts/get_enrichment_queue.js 2>/dev/null)
 TOTAL=$(echo "$QUEUE" | grep -c . || true)
 
 if [ -z "$QUEUE" ] || [ "$TOTAL" -eq 0 ]; then
@@ -35,7 +35,7 @@ for DOC_ID in $QUEUE; do
   COUNT=$((COUNT + 1))
 
   # Get recipe data for this doc
-  RECIPE_DATA=$(node scripts/get_recipe_for_enrichment.js "$DOC_ID" 2>/dev/null)
+  RECIPE_DATA=$(/usr/local/bin/node scripts/get_recipe_for_enrichment.js "$DOC_ID" 2>/dev/null)
   RECIPE_NAME=$(echo "$RECIPE_DATA" | grep '^NAME:' | sed 's/NAME: //')
 
   echo "[$COUNT/$TOTAL] $RECIPE_NAME"
