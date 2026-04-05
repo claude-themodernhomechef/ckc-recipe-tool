@@ -4,19 +4,35 @@
 # Enriches YES recipes missing chefNotes — one fresh agent call per recipe.
 #
 # Usage:
-#   chmod +x scripts/run_enrichment.sh
-#   ./scripts/run_enrichment.sh
+#   bash scripts/run_enrichment.sh
 # ─────────────────────────────────────────────────────────────
 
-set -e
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$REPO_ROOT"
+
+# Find claude — check common locations
+CLAUDE_BIN=$(which claude 2>/dev/null || echo "")
+if [ -z "$CLAUDE_BIN" ]; then
+  for p in \
+    /usr/local/bin/claude \
+    "$HOME/.local/bin/claude" \
+    "$HOME/.npm-global/bin/claude" \
+    "$HOME/Library/Application Support/Claude/claude-code-vm/2.1.87/claude" \
+    "$HOME/.vscode/extensions/anthropic.claude-code-2.1.92-darwin-arm64/resources/native-binary/claude"; do
+    if [ -x "$p" ]; then CLAUDE_BIN="$p"; break; fi
+  done
+fi
+if [ -z "$CLAUDE_BIN" ]; then
+  echo "ERROR: claude not found. Update CLAUDE_BIN path in run_enrichment.sh."
+  exit 1
+fi
+
+NODE_BIN=/usr/local/bin/node
 
 echo "CKC Recipe Enrichment"
 echo "Loading queue from Firestore..."
 
-# Get all doc IDs needing enrichment (one per line)
-QUEUE=$(/usr/local/bin/node scripts/get_enrichment_queue.js 2>/dev/null)
+QUEUE=$("$NODE_BIN" scripts/get_enrichment_queue.js 2>/dev/null)
 TOTAL=$(echo "$QUEUE" | grep -c . || true)
 
 if [ -z "$QUEUE" ] || [ "$TOTAL" -eq 0 ]; then
@@ -34,30 +50,26 @@ FAILED=0
 for DOC_ID in $QUEUE; do
   COUNT=$((COUNT + 1))
 
-  # Get recipe data for this doc
-  RECIPE_DATA=$(/usr/local/bin/node scripts/get_recipe_for_enrichment.js "$DOC_ID" 2>/dev/null)
+  RECIPE_DATA=$("$NODE_BIN" scripts/get_recipe_for_enrichment.js "$DOC_ID" 2>/dev/null)
   RECIPE_NAME=$(echo "$RECIPE_DATA" | grep '^NAME:' | sed 's/NAME: //')
 
   echo "[$COUNT/$TOTAL] $RECIPE_NAME"
 
-  # Run a fresh agent for this single recipe
-  claude --dangerously-skip-permissions -p "
-Read these two files in full before doing anything else:
-1. docs/CKC_Chef_Notes_Guide.md
-2. .claude/agent/diet-compliance-rules.md
-
-Then enrich the recipe below following the instructions in .claude/agent/enrich-single-recipe.md.
+  # Run a fresh agent for this single recipe — errors are caught, never kill the loop
+  "$CLAUDE_BIN" --dangerously-skip-permissions -p "
+Read the instructions in .claude/agent/enrich-single-recipe.md then enrich the recipe below.
 
 ---
 $RECIPE_DATA
 " 2>/dev/null
+  EXIT_CODE=$?
 
-  if [ $? -eq 0 ]; then
+  if [ $EXIT_CODE -eq 0 ]; then
     DONE=$((DONE + 1))
     echo "  ✓ done"
   else
     FAILED=$((FAILED + 1))
-    echo "  ✗ failed"
+    echo "  ✗ failed (exit $EXIT_CODE)"
   fi
 
   echo ""
