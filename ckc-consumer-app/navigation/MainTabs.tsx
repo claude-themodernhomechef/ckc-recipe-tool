@@ -1,7 +1,7 @@
 /**
  * MainTabs — primary app shell after onboarding.
  *
- * 5 tabs: Discover · Catalog · Scan · Shop · Profile
+ * 5 tabs: Discover · Meal Plan · Scan · Shop · Profile
  *
  * Desktop web (≥900px): fixed left sidebar (220px) + content area
  * Mobile / narrow web:  content + bottom tab bar
@@ -20,19 +20,19 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Fonts } from '../constants/theme';
 
 import DiscoverScreen        from '../screens/main/DiscoverScreen';
-import CatalogScreen         from '../screens/main/CatalogScreen';
+import MealPlanScreen        from '../screens/main/MealPlanScreen';
 import ScanScreen            from '../screens/main/ScanScreen';
 import ShopScreen            from '../screens/main/ShopScreen';
 import ProfileScreen         from '../screens/main/ProfileScreen';
 
-export type TabId = 'discover' | 'catalog' | 'scan' | 'shop' | 'profile';
+export type TabId = 'discover' | 'mealplan' | 'scan' | 'shop' | 'profile';
 
 const TABS: { id: TabId; label: string; icon: string }[] = [
-  { id: 'discover', label: 'Discover', icon: '✦' },
-  { id: 'catalog',  label: 'Catalog',  icon: '≡' },
-  { id: 'scan',     label: 'Scan',     icon: '⊞' },
-  { id: 'shop',     label: 'Shop',     icon: '⊕' },
-  { id: 'profile',  label: 'Profile',  icon: '○' },
+  { id: 'discover', label: 'Discover',  icon: '✦' },
+  { id: 'mealplan', label: 'Meal Plan', icon: '▦' },
+  { id: 'scan',     label: 'Scan',      icon: '⊞' },
+  { id: 'shop',     label: 'Shop',      icon: '⊕' },
+  { id: 'profile',  label: 'Profile',   icon: '○' },
 ];
 
 // ── Desktop sidebar ───────────────────────────────────────────────────────────
@@ -173,7 +173,7 @@ export default function MainTabs() {
   const content = (() => {
     switch (active) {
       case 'discover': return <DiscoverScreen />;
-      case 'catalog':  return <CatalogScreen />;
+      case 'mealplan': return <MealPlanScreen />;
       case 'scan':     return <ScanScreen />;
       case 'shop':     return <ShopScreen />;
       case 'profile':  return <ProfileScreen />;
