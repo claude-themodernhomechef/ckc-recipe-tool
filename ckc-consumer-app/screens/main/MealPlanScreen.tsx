@@ -333,11 +333,9 @@ function SetupFlow({ isPaid, onComplete }: { isPaid: boolean; onComplete: (a: Se
           <TouchableOpacity style={sf.btn} onPress={advance} activeOpacity={0.85}>
             <Text style={sf.btnText}>{isLast ? 'Build My Plan' : 'Continue'}</Text>
           </TouchableOpacity>
-          {!isLast && (
-            <TouchableOpacity onPress={advance} activeOpacity={0.6}>
-              <Text style={sf.skip}>Skip</Text>
-            </TouchableOpacity>
-          )}
+          <TouchableOpacity onPress={advance} activeOpacity={0.6}>
+            <Text style={sf.skip}>Skip</Text>
+          </TouchableOpacity>
         </View>
 
       </SafeAreaView>
