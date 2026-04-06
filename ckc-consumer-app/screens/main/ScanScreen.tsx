@@ -183,11 +183,18 @@ export default function ScanScreen() {
         ingredients = await scanRecipePhoto(recipeImageUri);
       } else if (inputMethod === 'manual' && manualText.trim()) {
         // Parse manual text — one ingredient per line
-        ingredients = manualText.trim().split('\n').filter(Boolean).map(line => ({
-          raw:  line.trim(),
-          name: line.trim().toLowerCase().replace(/^[\d\s¼½¾⅓⅔tbsptsp.]+/i, '').trim(),
-          qty:  line.trim().match(/^[\d\s¼½¾⅓⅔]+(?:tbsp|tsp|cup|oz|lb|g|kg|cloves?|medium|large|small)?/i)?.[0]?.trim() ?? '',
-        }));
+        ingredients = manualText.trim().split('\n').filter(Boolean).map(line => {
+          const raw  = line.trim();
+          // Split on first word boundary after leading qty tokens
+          // e.g. "1 and 1/2 teaspoons cornstarch" → qty="1 and 1/2 teaspoons", name="cornstarch"
+          const qtyUnits = /^([\d\/\s¼½¾⅓⅔.]+(?:and\s+[\d\/]+\s+)?\s*(?:teaspoons?|tablespoons?|tbsp|tsp|cups?|oz|lbs?|g|kg|cloves?|medium|large|small|pinch)?)\s+/i;
+          const match = raw.match(qtyUnits);
+          const qty  = match ? match[1].trim() : '';
+          const name = (match ? raw.slice(match[0].length) : raw).toLowerCase()
+            .replace(/\s*[\(\*].*$/, '') // strip parenthetical notes and asterisks
+            .trim();
+          return { raw, name, qty };
+        });
       } else if (inputMethod === 'url' && urlText.trim()) {
         // URL extraction — Phase 2 (server-side scrape)
         // For now, show a friendly message
