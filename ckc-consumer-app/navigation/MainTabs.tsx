@@ -5,6 +5,8 @@
  *
  * Desktop web (≥900px): fixed left sidebar (220px) + content area
  * Mobile / narrow web:  content + bottom tab bar
+ *
+ * Shop tab shows a recipe-count badge when the shopping list has items.
  */
 
 import React, { useState } from 'react';
@@ -18,12 +20,13 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Fonts } from '../constants/theme';
+import { useMenu } from '../context/MenuContext';
 
-import DiscoverScreen        from '../screens/main/DiscoverScreen';
-import MealPlanScreen        from '../screens/main/MealPlanScreen';
-import ScanScreen            from '../screens/main/ScanScreen';
-import ShopScreen            from '../screens/main/ShopScreen';
-import ProfileScreen         from '../screens/main/ProfileScreen';
+import DiscoverScreen  from '../screens/main/DiscoverScreen';
+import MealPlanScreen  from '../screens/main/MealPlanScreen';
+import ScanScreen      from '../screens/main/ScanScreen';
+import ShopScreen      from '../screens/main/ShopScreen';
+import ProfileScreen   from '../screens/main/ProfileScreen';
 
 export type TabId = 'discover' | 'mealplan' | 'scan' | 'shop' | 'profile';
 
@@ -35,9 +38,50 @@ const TABS: { id: TabId; label: string; icon: string }[] = [
   { id: 'profile',  label: 'Profile',   icon: '○' },
 ];
 
+// ── Badge component ───────────────────────────────────────────────────────────
+
+function Badge({ count }: { count: number }) {
+  if (count === 0) return null;
+  return (
+    <View style={badge.wrap}>
+      <Text style={badge.text}>{count > 99 ? '99+' : count}</Text>
+    </View>
+  );
+}
+
+const badge = StyleSheet.create({
+  wrap: {
+    position:        'absolute',
+    top:             -5,
+    right:           -8,
+    minWidth:        16,
+    height:          16,
+    borderRadius:    8,
+    backgroundColor: Colors.gold,
+    alignItems:      'center',
+    justifyContent:  'center',
+    paddingHorizontal: 3,
+    zIndex:          10,
+  },
+  text: {
+    fontFamily: Fonts.bodyMedium,
+    fontSize:   9,
+    color:      '#000',
+    lineHeight: 12,
+  },
+});
+
 // ── Desktop sidebar ───────────────────────────────────────────────────────────
 
-function Sidebar({ active, onSelect }: { active: TabId; onSelect: (t: TabId) => void }) {
+function Sidebar({
+  active,
+  onSelect,
+  shopBadge,
+}: {
+  active:    TabId;
+  onSelect:  (t: TabId) => void;
+  shopBadge: number;
+}) {
   return (
     <View style={sidebar.wrap}>
       {/* Wordmark */}
@@ -55,9 +99,12 @@ function Sidebar({ active, onSelect }: { active: TabId; onSelect: (t: TabId) => 
             onPress={() => onSelect(tab.id)}
             activeOpacity={0.7}
           >
-            <Text style={[sidebar.icon, active === tab.id && sidebar.iconActive]}>
-              {tab.icon}
-            </Text>
+            <View style={sidebar.iconWrap}>
+              <Text style={[sidebar.icon, active === tab.id && sidebar.iconActive]}>
+                {tab.icon}
+              </Text>
+              {tab.id === 'shop' && <Badge count={shopBadge} />}
+            </View>
             <Text style={[sidebar.label, active === tab.id && sidebar.labelActive]}>
               {tab.label}
             </Text>
@@ -102,7 +149,7 @@ const sidebar = StyleSheet.create({
     letterSpacing: 1,
     marginTop: 2,
   },
-  nav:       { flex: 1, paddingHorizontal: 12, paddingTop: 4 },
+  nav:      { flex: 1, paddingHorizontal: 12, paddingTop: 4 },
   item: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -112,11 +159,12 @@ const sidebar = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 2,
   },
-  itemActive: { backgroundColor: Colors.surfaceElevated },
-  icon:       { width: 18, fontFamily: Fonts.body, fontSize: 14, color: Colors.textMuted, textAlign: 'center' },
-  iconActive: { color: Colors.textPrimary },
-  label:      { fontFamily: Fonts.body, fontSize: 14, color: Colors.textMuted },
-  labelActive:{ fontFamily: Fonts.bodyMedium, color: Colors.textPrimary },
+  itemActive:  { backgroundColor: Colors.surfaceElevated },
+  iconWrap:    { width: 18, alignItems: 'center', position: 'relative' },
+  icon:        { fontFamily: Fonts.body, fontSize: 14, color: Colors.textMuted, textAlign: 'center' },
+  iconActive:  { color: Colors.textPrimary },
+  label:       { fontFamily: Fonts.body, fontSize: 14, color: Colors.textMuted },
+  labelActive: { fontFamily: Fonts.bodyMedium, color: Colors.textPrimary },
   footer: {
     paddingHorizontal: 20,
     paddingBottom: 20,
@@ -129,7 +177,15 @@ const sidebar = StyleSheet.create({
 
 // ── Mobile bottom tab bar ─────────────────────────────────────────────────────
 
-function BottomTabs({ active, onSelect }: { active: TabId; onSelect: (t: TabId) => void }) {
+function BottomTabs({
+  active,
+  onSelect,
+  shopBadge,
+}: {
+  active:    TabId;
+  onSelect:  (t: TabId) => void;
+  shopBadge: number;
+}) {
   return (
     <SafeAreaView edges={['bottom']} style={bottom.wrap}>
       <View style={bottom.bar}>
@@ -140,9 +196,12 @@ function BottomTabs({ active, onSelect }: { active: TabId; onSelect: (t: TabId) 
             onPress={() => onSelect(tab.id)}
             activeOpacity={0.7}
           >
-            <Text style={[bottom.icon, active === tab.id && bottom.iconActive]}>
-              {tab.icon}
-            </Text>
+            <View style={bottom.iconWrap}>
+              <Text style={[bottom.icon, active === tab.id && bottom.iconActive]}>
+                {tab.icon}
+              </Text>
+              {tab.id === 'shop' && <Badge count={shopBadge} />}
+            </View>
             <Text style={[bottom.label, active === tab.id && bottom.labelActive]}>
               {tab.label}
             </Text>
@@ -154,13 +213,14 @@ function BottomTabs({ active, onSelect }: { active: TabId; onSelect: (t: TabId) 
 }
 
 const bottom = StyleSheet.create({
-  wrap: { backgroundColor: Colors.bg, borderTopWidth: 1, borderTopColor: Colors.border },
-  bar:  { flexDirection: 'row' },
-  item: { flex: 1, alignItems: 'center', paddingVertical: 10, gap: 3 },
-  icon: { fontSize: 16, color: Colors.textMuted },
-  iconActive: { color: Colors.textPrimary },
-  label: { fontFamily: Fonts.body, fontSize: 10, color: Colors.textMuted },
-  labelActive: { fontFamily: Fonts.bodyMedium, color: Colors.textPrimary },
+  wrap:      { backgroundColor: Colors.bg, borderTopWidth: 1, borderTopColor: Colors.border },
+  bar:       { flexDirection: 'row' },
+  item:      { flex: 1, alignItems: 'center', paddingVertical: 10, gap: 3 },
+  iconWrap:  { position: 'relative', alignItems: 'center', justifyContent: 'center', width: 24, height: 22 },
+  icon:      { fontSize: 16, color: Colors.textMuted },
+  iconActive:{ color: Colors.textPrimary },
+  label:     { fontFamily: Fonts.body, fontSize: 10, color: Colors.textMuted },
+  labelActive:{ fontFamily: Fonts.bodyMedium, color: Colors.textPrimary },
 });
 
 // ── Main export ───────────────────────────────────────────────────────────────
@@ -169,6 +229,10 @@ export default function MainTabs() {
   const [active, setActive] = useState<TabId>('discover');
   const { width } = useWindowDimensions();
   const isDesktop = Platform.OS === 'web' && width >= 900;
+
+  // Badge: total recipe count in the shopping list
+  const { menuItems } = useMenu();
+  const shopBadge = menuItems.length;
 
   const content = (() => {
     switch (active) {
@@ -182,9 +246,9 @@ export default function MainTabs() {
 
   return (
     <View style={[styles.root, { flexDirection: isDesktop ? 'row' : 'column' }]}>
-      {isDesktop && <Sidebar active={active} onSelect={setActive} />}
+      {isDesktop && <Sidebar active={active} onSelect={setActive} shopBadge={shopBadge} />}
       <View style={styles.content}>{content}</View>
-      {!isDesktop && <BottomTabs active={active} onSelect={setActive} />}
+      {!isDesktop && <BottomTabs active={active} onSelect={setActive} shopBadge={shopBadge} />}
     </View>
   );
 }

@@ -116,7 +116,11 @@ function AdminCard({ recipe, onApprove, onReject, screenWidth, cardWidth, cardHe
         {recipe.menu_description ? (
           <Text style={styles.desc} numberOfLines={2}>{recipe.menu_description}</Text>
         ) : null}
-        {recipe.blogger ? <Text style={styles.blogger}>{recipe.blogger}</Text> : null}
+        {/* Blogger + rating row */}
+        <View style={styles.metaRow}>
+          {recipe.blogger ? <Text style={styles.blogger}>{recipe.blogger}</Text> : null}
+          {recipe.rating  ? <Text style={styles.rating}>★ {recipe.rating}</Text> : null}
+        </View>
 
         {/* Diet tags */}
         {(() => {
@@ -288,7 +292,9 @@ const styles = StyleSheet.create({
   meta:     { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted, marginBottom: 4 },
   name:     { fontFamily: Fonts.display, fontSize: 22, color: Colors.textPrimary, marginBottom: 4 },
   desc:     { fontFamily: Fonts.body, fontSize: 13, color: Colors.textSecondary, marginBottom: 4 },
+  metaRow:  { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 2 },
   blogger:  { fontFamily: Fonts.bodyMedium, fontSize: 12, color: Colors.textMuted },
+  rating:   { fontFamily: Fonts.bodyMedium, fontSize: 13, color: Colors.gold },
   dietRow:  { flexDirection: 'row', flexWrap: 'wrap', gap: 4, marginTop: 8 },
   url:      { fontFamily: Fonts.body, fontSize: 10, color: Colors.textMuted, marginTop: 4 },
 

@@ -28,6 +28,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Colors, Fonts } from '../../constants/theme';
 import PremiumGate from '../components/PremiumGate';
 import { useUser } from '../../context/UserContext';
+import { useMenu, AddMenuItemInput } from '../../context/MenuContext';
 import { Recipe } from '../../data/sampleRecipes';
 import { fetchRecipesByIds, fetchSideDishes } from '../../lib/firestore';
 
@@ -706,6 +707,7 @@ const cm = StyleSheet.create({
 export default function MealPlanScreen() {
   const navigation   = useNavigation<any>();
   const { profile, savedRecipeIds } = useUser();
+  const { syncMealPlan } = useMenu();
   const isPaid = profile.tier === 'paid';
 
   // Week
@@ -742,6 +744,35 @@ export default function MealPlanScreen() {
 
   // Load CKC side dishes once (for Chef Sides pairing)
   useEffect(() => { fetchSideDishes().then(setAllSides); }, []);
+
+  // ── Sync meal plan → ShopScreen (MenuContext) ────────────────────────────────
+  // Any time the plan changes (auto-build, manual add/remove), push all
+  // entrees + sides into the shared shopping list so Shop tab stays in sync.
+  useEffect(() => {
+    if (!setupDone) return;
+    const items: AddMenuItemInput[] = [];
+    Object.values(plan).forEach(dayMeal => {
+      if (dayMeal.entree) {
+        items.push({
+          recipeId:   dayMeal.entree.id,
+          recipeName: dayMeal.entree.name,
+          recipeImage:dayMeal.entree.photo_url ?? undefined,
+          recipeType: 'entree',
+          source:     'mealplan',
+        });
+      }
+      dayMeal.sides.forEach(side => {
+        items.push({
+          recipeId:   side.id,
+          recipeName: side.name,
+          recipeImage:side.photo_url ?? undefined,
+          recipeType: 'side',
+          source:     'mealplan',
+        });
+      });
+    });
+    syncMealPlan(items);
+  }, [plan, setupDone]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Setup complete: auto-build the week ──────────────────────────────────────
 
