@@ -286,6 +286,11 @@ const RULES: Record<string, SwapRule[]> = {
   ],
 };
 
+const PROTOCOL_LABELS: Record<string, string> = {
+  GF: 'Gluten-Free', LF: 'Low-FODMAP', DF: 'Dairy-Free',
+  K: 'Keto', AIP: 'AIP', LH: 'Low-Histamine', V: 'Vegan', Vg: 'Vegetarian',
+};
+
 // Default protocol for scoring — will pull from user profile in Phase 2
 const ACTIVE_PROTOCOL = 'GF';
 
@@ -412,15 +417,14 @@ export default function ScanScreen() {
       } else if (inputMethod === 'manual' && manualText.trim()) {
         // Parse manual text — one ingredient per line
         ingredients = manualText.trim().split('\n').filter(Boolean).map(line => {
-          const raw  = line.trim();
-          // Split on first word boundary after leading qty tokens
-          // e.g. "1 and 1/2 teaspoons cornstarch" → qty="1 and 1/2 teaspoons", name="cornstarch"
-          const qtyUnits = /^([\d\/\s¼½¾⅓⅔.]+(?:and\s+[\d\/]+\s+)?\s*(?:teaspoons?|tablespoons?|tbsp|tsp|cups?|oz|lbs?|g|kg|cloves?|medium|large|small|pinch)?)\s+/i;
-          const match = raw.match(qtyUnits);
+          const raw = line.trim();
+          // Remove all parenthetical notes first e.g. "(281g)" "(spooned & leveled)"
+          const stripped = raw.replace(/\s*\([^)]*\)/g, '').replace(/\*/g, '').trim();
+          // Match leading quantity + unit
+          const qtyUnits = /^([\d\s\/¼½¾⅓⅔.]+(?:and\s+[\d\/\s]+)?\s*(?:teaspoons?|tablespoons?|tbsp|tsp|cups?|oz|lbs?|g|kg|cloves?|medium|large|small|pinch)?)\s+/i;
+          const match = stripped.match(qtyUnits);
           const qty  = match ? match[1].trim() : '';
-          const name = (match ? raw.slice(match[0].length) : raw).toLowerCase()
-            .replace(/\s*[\(\*].*$/, '') // strip parenthetical notes and asterisks
-            .trim();
+          const name = (match ? stripped.slice(match[0].length) : stripped).toLowerCase().trim();
           return { raw, name, qty };
         });
       } else if (inputMethod === 'url' && urlText.trim()) {
@@ -527,7 +531,7 @@ export default function ScanScreen() {
           <View style={styles.loadingWrap}>
             <ActivityIndicator size="large" color={Colors.gold} />
             <Text style={styles.loadingTitle}>Checking your recipe…</Text>
-            <Text style={styles.loadingBody}>Scoring ingredients against your Low-FODMAP protocol</Text>
+            <Text style={styles.loadingBody}>Scoring ingredients against your {PROTOCOL_LABELS[ACTIVE_PROTOCOL]} protocol</Text>
           </View>
         </SafeAreaView>
       );
@@ -552,7 +556,7 @@ export default function ScanScreen() {
               {flagged > 0 ? ' — swaps suggested below' : ' — this recipe is compatible'}
             </Text>
             <View style={styles.protocolChip}>
-              <Text style={styles.protocolChipText}>Low-FODMAP</Text>
+              <Text style={styles.protocolChipText}>{PROTOCOL_LABELS[ACTIVE_PROTOCOL]}</Text>
             </View>
           </View>
 
