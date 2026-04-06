@@ -49,6 +49,10 @@ async function callGemini(prompt: string, base64: string, mimeType: string): Pro
     }
   );
   const json = await response.json();
+  console.log('[gemini.web] API response status:', response.status, JSON.stringify(json).slice(0, 300));
+  if (!response.ok || json?.error) {
+    throw new Error(json?.error?.message ?? `Gemini API error ${response.status}`);
+  }
   let text = json?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
   // Strip markdown code blocks if Gemini wraps response in ```json ... ```
   text = text.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
@@ -62,6 +66,8 @@ export async function scanRecipePhoto(imageUri: string): Promise<ExtractedIngred
 [{"raw":"2 cloves garlic","name":"garlic","qty":"2 cloves"}]
 No explanation, no markdown, no code blocks. If no ingredient list found, return [].`;
   const text = (await callGemini(prompt, base64, mimeType)).trim();
+  console.log('[gemini.web] scanRecipePhoto raw response:', text);
+  if (!text || text === '[]') return [];
   return JSON.parse(text) as ExtractedIngredient[];
 }
 
