@@ -11,9 +11,14 @@ import {
   TextInput, ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import * as ImagePicker from 'expo-image-picker';
+import { Platform } from 'react-native';
 import { Colors, Fonts } from '../../constants/theme';
 import { scanRecipePhoto, scanPantryPhoto, ExtractedIngredient, PantryItem } from '../../lib/gemini';
+
+// expo-image-picker is mobile-only — lazy import to avoid web build errors
+const ImagePicker = Platform.OS !== 'web'
+  ? require('expo-image-picker')
+  : null;
 
 // ─────────────────────────────────────────────
 //  Types
@@ -116,6 +121,7 @@ export default function ScanScreen() {
   }
 
   async function pickImage(target: 'recipe' | 'pantry') {
+    if (!ImagePicker) { setErrorMsg('Photo upload is only available on the mobile app.'); return; }
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
       setErrorMsg('Photo library permission is required to scan images.');
@@ -132,6 +138,7 @@ export default function ScanScreen() {
   }
 
   async function takePhoto(target: 'recipe' | 'pantry') {
+    if (!ImagePicker) { setErrorMsg('Camera is only available on the mobile app.'); return; }
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
     if (status !== 'granted') {
       setErrorMsg('Camera permission is required to take photos.');

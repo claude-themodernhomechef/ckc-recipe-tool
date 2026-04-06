@@ -43,16 +43,24 @@ export interface PantryItem {
 async function uriToBase64(uri: string): Promise<string> {
   const response = await fetch(uri);
   const blob     = await response.blob();
-  return new Promise((resolve, reject) => {
-    const reader  = new FileReader();
-    reader.onload = () => {
-      const result = reader.result as string;
-      // Strip the data:image/...;base64, prefix
-      resolve(result.split(',')[1]);
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(blob);
-  });
+  // Use FileReader if available (web), otherwise use arrayBuffer (React Native)
+  if (typeof FileReader !== 'undefined') {
+    return new Promise((resolve, reject) => {
+      const reader  = new FileReader();
+      reader.onload = () => {
+        const result = reader.result as string;
+        resolve(result.split(',')[1]);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  } else {
+    const buffer = await blob.arrayBuffer();
+    const bytes  = new Uint8Array(buffer);
+    let binary   = '';
+    bytes.forEach(b => { binary += String.fromCharCode(b); });
+    return btoa(binary);
+  }
 }
 
 function getMimeType(uri: string): string {
