@@ -23,7 +23,7 @@ interface UserContextValue {
 }
 
 const defaultProfile: UserProfile = {
-  tier: 'free',
+  tier: 'paid', // DEV: set to 'free' to test paywall gates
   protocols: [],
   cuisines: [],
   proteins: [],
