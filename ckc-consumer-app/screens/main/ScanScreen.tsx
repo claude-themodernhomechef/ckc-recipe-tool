@@ -11,55 +11,94 @@ import {
   TextInput, ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import * as ImagePicker from 'expo-image-picker';
 import { Colors, Fonts } from '../../constants/theme';
-
-// ─────────────────────────────────────────────
-//  Demo data
-// ─────────────────────────────────────────────
-
-const DEMO_RECIPE_RESULTS = [
-  { name: 'Chicken breast',     qty: '2 lbs',   type: 'normal' },
-  { name: 'Olive oil',          qty: '2 tbsp',  type: 'normal' },
-  { name: 'Garlic',             qty: '3 cloves',type: 'crossed', swapNote: 'High fructans → use garlic-infused oil' },
-  { name: 'Garlic-infused oil', qty: '1 tbsp',  type: 'swap',    swapFor: 'Garlic' },
-  { name: 'Onion',              qty: '1 medium',type: 'crossed', swapNote: 'High FODMAP → use leek greens only' },
-  { name: 'Leek greens',        qty: '½ cup',   type: 'swap',    swapFor: 'Onion' },
-  { name: 'Lemon juice',        qty: '2 tbsp',  type: 'normal' },
-  { name: 'Fresh thyme',        qty: '1 tsp',   type: 'normal' },
-  { name: 'Wheat flour',        qty: '¼ cup',   type: 'crossed', swapNote: 'Contains gluten → omit or use rice flour' },
-];
-
-const DEMO_PANTRY_RESULTS = [
-  { name: 'Olive oil',     matched: true },
-  { name: 'Chicken breast',matched: false },
-  { name: 'Lemon juice',   matched: true },
-  { name: 'Fresh thyme',   matched: true },
-  { name: 'Garlic',        matched: false },
-  { name: 'Onion',         matched: false },
-];
+import { scanRecipePhoto, scanPantryPhoto, ExtractedIngredient, PantryItem } from '../../lib/gemini';
 
 // ─────────────────────────────────────────────
 //  Types
 // ─────────────────────────────────────────────
 
-type Mode      = null | 'recipe' | 'pantry';
-type RecipeStep = 'input' | 'loading' | 'results';
-type PantryStep = 'input' | 'loading' | 'results';
+type Mode        = null | 'recipe' | 'pantry';
+type RecipeStep  = 'input' | 'loading' | 'results';
+type PantryStep  = 'input' | 'loading' | 'results';
 type InputMethod = 'url' | 'photo' | 'manual';
+
+interface ScoredIngredient {
+  name:      string;
+  qty:       string;
+  type:      'normal' | 'crossed' | 'swap';
+  swapNote?: string;
+  swapFor?:  string;
+}
+
+interface PantryResult {
+  name:    string;
+  matched: boolean;
+}
+
+// ─────────────────────────────────────────────
+//  Compliance scoring (rules-based, Phase 1)
+//  Full Claude API hybrid scoring wired in Phase 2
+// ─────────────────────────────────────────────
+
+const FLAGGED_LOWFODMAP: Record<string, string> = {
+  garlic:            'High fructans → use garlic-infused oil',
+  onion:             'High FODMAP → use leek greens only',
+  'wheat flour':     'Contains gluten → omit or use rice flour',
+  'all-purpose flour':'Contains gluten → use rice flour',
+  honey:             'High fructose → use maple syrup',
+  apple:             'High sorbitol → use strawberries',
+  milk:              'High lactose → use lactose-free milk',
+};
+
+const SWAP_NAMES: Record<string, string> = {
+  garlic:             'garlic-infused oil',
+  onion:              'leek greens',
+  'wheat flour':      'rice flour',
+  'all-purpose flour':'rice flour',
+  honey:              'maple syrup',
+  apple:              'strawberries',
+  milk:               'lactose-free milk',
+};
+
+function scoreIngredients(ingredients: ExtractedIngredient[]): ScoredIngredient[] {
+  const result: ScoredIngredient[] = [];
+  const addedSwaps = new Set<string>();
+
+  for (const ing of ingredients) {
+    const key = Object.keys(FLAGGED_LOWFODMAP).find(k => ing.name.includes(k));
+    if (key) {
+      result.push({ name: ing.name, qty: ing.qty, type: 'crossed', swapNote: FLAGGED_LOWFODMAP[key] });
+      const swapName = SWAP_NAMES[key];
+      if (swapName && !addedSwaps.has(swapName)) {
+        addedSwaps.add(swapName);
+        result.push({ name: swapName, qty: ing.qty, type: 'swap', swapFor: ing.name });
+      }
+    } else {
+      result.push({ name: ing.name, qty: ing.qty, type: 'normal' });
+    }
+  }
+
+  return result;
+}
 
 // ─────────────────────────────────────────────
 //  Main Screen
 // ─────────────────────────────────────────────
 
 export default function ScanScreen() {
-  const [mode, setMode]               = useState<Mode>(null);
-  const [recipeStep, setRecipeStep]   = useState<RecipeStep>('input');
-  const [pantryStep, setPantryStep]   = useState<PantryStep>('input');
-  const [inputMethod, setInputMethod] = useState<InputMethod>('url');
-  const [urlText, setUrlText]         = useState('');
-  const [manualText, setManualText]   = useState('');
-
-  // Pantry "already have" toggles — key: ingredient name, value: true = have it
+  const [mode, setMode]                   = useState<Mode>(null);
+  const [recipeStep, setRecipeStep]       = useState<RecipeStep>('input');
+  const [pantryStep, setPantryStep]       = useState<PantryStep>('input');
+  const [inputMethod, setInputMethod]     = useState<InputMethod>('url');
+  const [urlText, setUrlText]             = useState('');
+  const [manualText, setManualText]       = useState('');
+  const [recipeImageUri, setRecipeImageUri] = useState<string | null>(null);
+  const [pantryImageUri, setPantryImageUri] = useState<string | null>(null);
+  const [recipeResults, setRecipeResults] = useState<ScoredIngredient[]>([]);
+  const [pantryResults, setPantryResults] = useState<PantryResult[]>([]);
+  const [errorMsg, setErrorMsg]           = useState<string | null>(null);
   const [pantryToggles, setPantryToggles] = useState<Record<string, boolean | null>>({});
 
   function resetAll() {
@@ -68,17 +107,111 @@ export default function ScanScreen() {
     setPantryStep('input');
     setUrlText('');
     setManualText('');
+    setRecipeImageUri(null);
+    setPantryImageUri(null);
+    setRecipeResults([]);
+    setPantryResults([]);
+    setErrorMsg(null);
     setPantryToggles({});
   }
 
-  function simulateRecipeScan() {
-    setRecipeStep('loading');
-    setTimeout(() => setRecipeStep('results'), 2500);
+  async function pickImage(target: 'recipe' | 'pantry') {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      setErrorMsg('Photo library permission is required to scan images.');
+      return;
+    }
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 0.8,
+    });
+    if (!result.canceled && result.assets[0]) {
+      if (target === 'recipe') setRecipeImageUri(result.assets[0].uri);
+      else setPantryImageUri(result.assets[0].uri);
+    }
   }
 
-  function simulatePantryScan() {
+  async function takePhoto(target: 'recipe' | 'pantry') {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== 'granted') {
+      setErrorMsg('Camera permission is required to take photos.');
+      return;
+    }
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 0.8,
+    });
+    if (!result.canceled && result.assets[0]) {
+      if (target === 'recipe') setRecipeImageUri(result.assets[0].uri);
+      else setPantryImageUri(result.assets[0].uri);
+    }
+  }
+
+  async function runRecipeScan() {
+    setErrorMsg(null);
+    setRecipeStep('loading');
+    try {
+      let ingredients: ExtractedIngredient[] = [];
+
+      if (inputMethod === 'photo' && recipeImageUri) {
+        ingredients = await scanRecipePhoto(recipeImageUri);
+      } else if (inputMethod === 'manual' && manualText.trim()) {
+        // Parse manual text — one ingredient per line
+        ingredients = manualText.trim().split('\n').filter(Boolean).map(line => ({
+          raw:  line.trim(),
+          name: line.trim().toLowerCase().replace(/^[\d\s¼½¾⅓⅔tbsptsp.]+/i, '').trim(),
+          qty:  line.trim().match(/^[\d\s¼½¾⅓⅔]+(?:tbsp|tsp|cup|oz|lb|g|kg|cloves?|medium|large|small)?/i)?.[0]?.trim() ?? '',
+        }));
+      } else if (inputMethod === 'url' && urlText.trim()) {
+        // URL extraction — Phase 2 (server-side scrape)
+        // For now, show a friendly message
+        setErrorMsg('URL scanning coming soon — use Photo or Paste Text for now.');
+        setRecipeStep('input');
+        return;
+      }
+
+      if (ingredients.length === 0) {
+        setErrorMsg('No ingredients found. Try a clearer photo or paste the list manually.');
+        setRecipeStep('input');
+        return;
+      }
+
+      const scored = scoreIngredients(ingredients);
+      setRecipeResults(scored);
+      setRecipeStep('results');
+    } catch (e) {
+      console.error('[ScanScreen] runRecipeScan error', e);
+      setErrorMsg('Something went wrong. Please try again.');
+      setRecipeStep('input');
+    }
+  }
+
+  async function runPantryScan() {
+    if (!pantryImageUri) return;
+    setErrorMsg(null);
     setPantryStep('loading');
-    setTimeout(() => setPantryStep('results'), 2000);
+    try {
+      const items: PantryItem[] = await scanPantryPhoto(pantryImageUri);
+
+      // Mock shopping list to cross-reference against
+      // Phase 2: pull from Firestore shopping list
+      const shoppingList = [
+        'olive oil', 'chicken breast', 'lemon juice',
+        'fresh thyme', 'garlic', 'onion', 'rice flour',
+      ];
+
+      const results: PantryResult[] = shoppingList.map(listItem => ({
+        name:    listItem,
+        matched: items.some(i => i.name.includes(listItem) || listItem.includes(i.name)),
+      }));
+
+      setPantryResults(results);
+      setPantryStep('results');
+    } catch (e) {
+      console.error('[ScanScreen] runPantryScan error', e);
+      setErrorMsg('Something went wrong. Please try again.');
+      setPantryStep('input');
+    }
   }
 
   function togglePantryItem(name: string, value: boolean) {
@@ -100,7 +233,7 @@ export default function ScanScreen() {
             <View style={styles.modeCardText}>
               <Text style={styles.modeCardTitle}>Scan a Recipe</Text>
               <Text style={styles.modeCardBody}>
-                Paste a URL, upload a photo, or paste an ingredient list — we'll score it against your diet protocol.
+                Upload a photo or paste an ingredient list — we'll score it against your diet protocol.
               </Text>
             </View>
             <Text style={styles.modeChevron}>›</Text>
@@ -111,7 +244,7 @@ export default function ScanScreen() {
             <View style={styles.modeCardText}>
               <Text style={styles.modeCardTitle}>Scan Your Pantry</Text>
               <Text style={styles.modeCardBody}>
-                Take a photo of your fridge, pantry, or spice rack — we'll flag what you may already have on your shopping list.
+                Take a photo of your fridge, pantry, or spice rack — we'll flag what you may already have.
               </Text>
             </View>
             <Text style={styles.modeChevron}>›</Text>
@@ -136,7 +269,7 @@ export default function ScanScreen() {
     }
 
     if (recipeStep === 'results') {
-      const flagged = DEMO_RECIPE_RESULTS.filter(r => r.type === 'crossed').length;
+      const flagged = recipeResults.filter(r => r.type === 'crossed').length;
       return (
         <SafeAreaView style={styles.container} edges={['top']}>
           <View style={styles.header}>
@@ -146,11 +279,12 @@ export default function ScanScreen() {
             <Text style={styles.title}>Recipe Results</Text>
           </View>
 
-          {/* Summary banner */}
           <View style={styles.summaryBanner}>
             <Text style={styles.summaryText}>
-              <Text style={styles.summaryHighlight}>{flagged} ingredient{flagged !== 1 ? 's' : ''} flagged</Text>
-              {' '}— swaps suggested below
+              <Text style={styles.summaryHighlight}>
+                {flagged === 0 ? 'All clear' : `${flagged} ingredient${flagged !== 1 ? 's' : ''} flagged`}
+              </Text>
+              {flagged > 0 ? ' — swaps suggested below' : ' — this recipe is compatible'}
             </Text>
             <View style={styles.protocolChip}>
               <Text style={styles.protocolChipText}>Low-FODMAP</Text>
@@ -158,7 +292,7 @@ export default function ScanScreen() {
           </View>
 
           <ScrollView contentContainerStyle={styles.resultsContent}>
-            {DEMO_RECIPE_RESULTS.map((item, i) => {
+            {recipeResults.map((item, i) => {
               if (item.type === 'crossed') {
                 return (
                   <View key={i} style={[styles.resultRow, styles.resultRowCrossed]}>
@@ -205,6 +339,11 @@ export default function ScanScreen() {
     }
 
     // Recipe input
+    const canScan =
+      (inputMethod === 'photo' && recipeImageUri != null) ||
+      (inputMethod === 'manual' && manualText.trim().length > 0) ||
+      (inputMethod === 'url' && urlText.trim().length > 0);
+
     return (
       <SafeAreaView style={styles.container} edges={['top']}>
         <View style={styles.header}>
@@ -215,13 +354,15 @@ export default function ScanScreen() {
         </View>
 
         <ScrollView contentContainerStyle={styles.inputBody}>
+          {errorMsg && <Text style={styles.errorMsg}>{errorMsg}</Text>}
+
           {/* Input method tabs */}
           <View style={styles.methodTabs}>
             {(['url', 'photo', 'manual'] as InputMethod[]).map(m => (
               <TouchableOpacity
                 key={m}
                 style={[styles.methodTab, inputMethod === m && styles.methodTabActive]}
-                onPress={() => setInputMethod(m)}
+                onPress={() => { setInputMethod(m); setErrorMsg(null); }}
                 activeOpacity={0.8}
               >
                 <Text style={[styles.methodTabText, inputMethod === m && styles.methodTabTextActive]}>
@@ -245,18 +386,32 @@ export default function ScanScreen() {
                 autoCorrect={false}
                 keyboardType="url"
               />
-              <Text style={styles.inputHint}>Paste any recipe link — blog, food site, or social media</Text>
+              <Text style={styles.inputHint}>URL scanning coming soon — use Photo or Paste Text for now</Text>
             </View>
           )}
 
           {/* Photo input */}
           {inputMethod === 'photo' && (
             <View style={styles.inputSection}>
-              <TouchableOpacity style={styles.photoUpload} activeOpacity={0.8}>
-                <Text style={styles.photoUploadIcon}>📷</Text>
-                <Text style={styles.photoUploadLabel}>Take a Photo</Text>
-                <Text style={styles.photoUploadSub}>or tap to choose from library</Text>
-              </TouchableOpacity>
+              {recipeImageUri ? (
+                <View style={styles.imagePreviewWrap}>
+                  <Text style={styles.imagePreviewLabel}>Photo selected ✓</Text>
+                  <TouchableOpacity onPress={() => setRecipeImageUri(null)}>
+                    <Text style={styles.imageRemoveBtn}>Remove</Text>
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <View style={styles.photoOptions}>
+                  <TouchableOpacity style={styles.photoBtn} onPress={() => takePhoto('recipe')} activeOpacity={0.8}>
+                    <Text style={styles.photoBtnIcon}>📷</Text>
+                    <Text style={styles.photoBtnLabel}>Take Photo</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.photoBtn} onPress={() => pickImage('recipe')} activeOpacity={0.8}>
+                    <Text style={styles.photoBtnIcon}>🖼️</Text>
+                    <Text style={styles.photoBtnLabel}>Choose from Library</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
               <Text style={styles.inputHint}>Photo of a printed recipe, cookbook page, or screen</Text>
             </View>
           )}
@@ -280,14 +435,9 @@ export default function ScanScreen() {
           )}
 
           <TouchableOpacity
-            style={[
-              styles.scanBtn,
-              (inputMethod === 'url' && !urlText) ||
-              (inputMethod === 'manual' && !manualText)
-                ? styles.scanBtnDisabled
-                : null,
-            ]}
-            onPress={simulateRecipeScan}
+            style={[styles.scanBtn, !canScan && styles.scanBtnDisabled]}
+            onPress={runRecipeScan}
+            disabled={!canScan}
             activeOpacity={0.85}
           >
             <Text style={styles.scanBtnText}>Check This Recipe</Text>
@@ -312,7 +462,7 @@ export default function ScanScreen() {
     }
 
     if (pantryStep === 'results') {
-      const matched = DEMO_PANTRY_RESULTS.filter(r => r.matched);
+      const matched = pantryResults.filter(r => r.matched);
       return (
         <SafeAreaView style={styles.container} edges={['top']}>
           <View style={styles.header}>
@@ -324,16 +474,18 @@ export default function ScanScreen() {
 
           <View style={styles.summaryBanner}>
             <Text style={styles.summaryText}>
-              <Text style={styles.summaryHighlight}>{matched.length} item{matched.length !== 1 ? 's' : ''}</Text>
+              <Text style={styles.summaryHighlight}>
+                {matched.length} item{matched.length !== 1 ? 's' : ''}
+              </Text>
               {' '}may already be at home
             </Text>
           </View>
 
           <ScrollView contentContainerStyle={styles.resultsContent}>
             <Text style={styles.sectionLabel}>Your Shopping List</Text>
-            {DEMO_PANTRY_RESULTS.map((item, i) => {
-              const toggle = pantryToggles[item.name];
-              const haveIt = toggle === true;
+            {pantryResults.map((item, i) => {
+              const toggle   = pantryToggles[item.name];
+              const haveIt   = toggle === true;
               const dontHave = toggle === false;
 
               return (
@@ -398,19 +550,40 @@ export default function ScanScreen() {
         </View>
 
         <ScrollView contentContainerStyle={styles.inputBody}>
+          {errorMsg && <Text style={styles.errorMsg}>{errorMsg}</Text>}
+
           <Text style={styles.inputDescription}>
             Take a photo of your fridge, pantry, or spice rack. We'll identify what you have and flag items on your shopping list that you may not need to buy.
           </Text>
 
-          <TouchableOpacity style={styles.photoUploadLarge} activeOpacity={0.8}>
-            <Text style={styles.photoUploadIconLarge}>📷</Text>
-            <Text style={styles.photoUploadLabel}>Take a Photo</Text>
-            <Text style={styles.photoUploadSub}>or tap to choose from library</Text>
-          </TouchableOpacity>
+          {pantryImageUri ? (
+            <View style={styles.imagePreviewWrap}>
+              <Text style={styles.imagePreviewLabel}>Photo selected ✓</Text>
+              <TouchableOpacity onPress={() => setPantryImageUri(null)}>
+                <Text style={styles.imageRemoveBtn}>Remove</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={styles.photoOptions}>
+              <TouchableOpacity style={styles.photoBtn} onPress={() => takePhoto('pantry')} activeOpacity={0.8}>
+                <Text style={styles.photoBtnIcon}>📷</Text>
+                <Text style={styles.photoBtnLabel}>Take Photo</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.photoBtn} onPress={() => pickImage('pantry')} activeOpacity={0.8}>
+                <Text style={styles.photoBtnIcon}>🖼️</Text>
+                <Text style={styles.photoBtnLabel}>Choose from Library</Text>
+              </TouchableOpacity>
+            </View>
+          )}
 
-          <Text style={styles.inputHint}>You can take multiple photos — fridge, pantry, and spice rack separately</Text>
+          <Text style={styles.inputHint}>You can scan your fridge, pantry, and spice rack separately</Text>
 
-          <TouchableOpacity style={styles.scanBtn} onPress={simulatePantryScan} activeOpacity={0.85}>
+          <TouchableOpacity
+            style={[styles.scanBtn, !pantryImageUri && styles.scanBtnDisabled]}
+            onPress={runPantryScan}
+            disabled={!pantryImageUri}
+            activeOpacity={0.85}
+          >
             <Text style={styles.scanBtnText}>Scan My Pantry</Text>
           </TouchableOpacity>
         </ScrollView>
@@ -444,6 +617,16 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.display,
     fontSize: 28,
     color: Colors.textPrimary,
+  },
+
+  errorMsg: {
+    fontFamily: Fonts.body,
+    fontSize: 13,
+    color: Colors.red,
+    backgroundColor: 'rgba(201,107,107,0.1)',
+    borderRadius: 8,
+    padding: 12,
+    lineHeight: 19,
   },
 
   // ── Entry ──
@@ -561,7 +744,6 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     marginBottom: 8,
   },
-
   resultRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
@@ -591,9 +773,8 @@ const styles = StyleSheet.create({
   resultDotGreen: { backgroundColor: Colors.green },
   resultDotRed:   { backgroundColor: Colors.red },
   resultDotGold:  { backgroundColor: Colors.gold },
-
-  resultRowBody: { flex: 1, gap: 2 },
-  resultRowTop:  { flexDirection: 'row', gap: 8, alignItems: 'baseline' },
+  resultRowBody:  { flex: 1, gap: 2 },
+  resultRowTop:   { flexDirection: 'row', gap: 8, alignItems: 'baseline' },
   resultQty: {
     fontFamily: Fonts.body,
     fontSize: 12,
@@ -658,9 +839,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 8,
   },
-  methodTabActive: {
-    backgroundColor: Colors.surfaceElevated,
-  },
+  methodTabActive: { backgroundColor: Colors.surfaceElevated },
   methodTabText: {
     fontFamily: Fonts.body,
     fontSize: 13,
@@ -670,7 +849,6 @@ const styles = StyleSheet.create({
     color: Colors.textPrimary,
     fontFamily: Fonts.bodyMedium,
   },
-
   inputSection: { gap: 8 },
   inputLabel: {
     fontFamily: Fonts.bodyMedium,
@@ -699,39 +877,52 @@ const styles = StyleSheet.create({
     lineHeight: 17,
   },
 
-  photoUpload: {
+  // ── Photo picker ──
+  photoOptions: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  photoBtn: {
+    flex: 1,
     backgroundColor: Colors.surface,
     borderWidth: 1,
     borderColor: Colors.border,
     borderRadius: 12,
     borderStyle: 'dashed',
-    paddingVertical: 24,
-    alignItems: 'center',
-    gap: 6,
-  },
-  photoUploadLarge: {
-    backgroundColor: Colors.surface,
-    borderWidth: 1,
-    borderColor: Colors.border,
-    borderRadius: 14,
-    borderStyle: 'dashed',
-    paddingVertical: 48,
+    paddingVertical: 28,
     alignItems: 'center',
     gap: 8,
   },
-  photoUploadIcon:     { fontSize: 28 },
-  photoUploadIconLarge:{ fontSize: 40 },
-  photoUploadLabel: {
+  photoBtnIcon:  { fontSize: 28 },
+  photoBtnLabel: {
     fontFamily: Fonts.bodyMedium,
-    fontSize: 15,
+    fontSize: 13,
     color: Colors.textPrimary,
+    textAlign: 'center',
   },
-  photoUploadSub: {
+  imagePreviewWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: Colors.surface,
+    borderWidth: 1,
+    borderColor: Colors.green + '55',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+  },
+  imagePreviewLabel: {
+    fontFamily: Fonts.bodyMedium,
+    fontSize: 14,
+    color: Colors.green,
+  },
+  imageRemoveBtn: {
     fontFamily: Fonts.body,
-    fontSize: 12,
+    fontSize: 13,
     color: Colors.textMuted,
   },
 
+  // ── Scan button ──
   scanBtn: {
     backgroundColor: Colors.gold,
     borderRadius: 100,
@@ -739,9 +930,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 4,
   },
-  scanBtnDisabled: {
-    opacity: 0.35,
-  },
+  scanBtnDisabled: { opacity: 0.35 },
   scanBtnText: {
     fontFamily: Fonts.bodyMedium,
     fontSize: 15,
@@ -763,10 +952,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0,
     marginBottom: 2,
   },
-  pantryRowHaveIt: {
-    opacity: 0.45,
-  },
-  pantryRowLeft: { gap: 3 },
+  pantryRowHaveIt: { opacity: 0.45 },
+  pantryRowLeft:   { gap: 3 },
   pantryItemName: {
     fontFamily: Fonts.bodyMedium,
     fontSize: 14,
