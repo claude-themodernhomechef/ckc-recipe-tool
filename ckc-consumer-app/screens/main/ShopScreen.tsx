@@ -77,7 +77,7 @@ interface AggregatedEntry {
   category:      string;
   sources:       string[];
   // Swap metadata — set when diet mode is active
-  _itemType?:    'normal' | 'crossed' | 'swap';
+  _itemType?:    'normal' | 'crossed' | 'swap' | 'reverted';
   _swapName?:    string;    // for 'crossed': the ingredient that replaces this
   _swapFor?:     string;    // for 'swap': the original ingredient this replaces
   _swapRecipe?:  string;    // which recipe required this swap
@@ -585,6 +585,7 @@ export default function ShopScreen() {
     toggleChecked, uncheckAll, clearMenu, isInMenu,
     organicPreference, setOrganicPreference,
     canAddEntree, canAddItem,
+    revertedSwaps, toggleRevertedSwap,
   } = useMenu();
   const { profile } = useUser();
   const isPaid = profile.tier === 'paid';
@@ -597,16 +598,7 @@ export default function ShopScreen() {
   const [paywallEntree,   setPaywallEntree]   = useState(false);
   // Diet mode: default ON when user has active protocols
   const [dietModeEnabled, setDietModeEnabled] = useState(() => profile.protocols.length > 0);
-  const [revertedSwaps, setRevertedSwaps] = useState<Set<string>>(new Set());
 
-  const handleRevertSwap = useCallback((originalName: string) => {
-    setRevertedSwaps(prev => {
-      const next = new Set(prev);
-      if (next.has(originalName)) next.delete(originalName);
-      else next.add(originalName);
-      return next;
-    });
-  }, []);
 
   const allRecipes = SAMPLE_RECIPES;
 
@@ -695,16 +687,15 @@ export default function ShopScreen() {
         const isReverted = revertedSwaps.has(item.name);
 
         if (swapInfo && !isReverted) {
-          // Mark original as crossed out
+          // Swap active — cross out original, inject replacement below
           withSwaps.push({
             ...item,
-            _itemType:    'crossed',
-            _swapName:    swapInfo.to ?? undefined,
-            _swapRecipe:  swapInfo.recipe,
-            _swapProtocol:swapInfo.protocol,
-            _swapColor:   swapInfo.color,
+            _itemType:     'crossed',
+            _swapName:     swapInfo.to ?? undefined,
+            _swapRecipe:   swapInfo.recipe,
+            _swapProtocol: swapInfo.protocol,
+            _swapColor:    swapInfo.color,
           });
-          // Inject swap replacement right after (only if there is a replacement)
           if (swapInfo.to) {
             withSwaps.push({
               name:          swapInfo.to,
@@ -718,8 +709,17 @@ export default function ShopScreen() {
               _swapColor:    swapInfo.color,
             });
           }
+        } else if (swapInfo && isReverted) {
+          // User kept original — show normal + active "Kept" toggle button
+          withSwaps.push({
+            ...item,
+            _itemType:     'reverted',
+            _swapName:     swapInfo.to ?? undefined,
+            _swapRecipe:   swapInfo.recipe,
+            _swapProtocol: swapInfo.protocol,
+            _swapColor:    swapInfo.color,
+          });
         } else {
-          // Normal or reverted-swap item
           withSwaps.push({ ...item, _itemType: 'normal' });
         }
       }
@@ -1035,11 +1035,34 @@ export default function ShopScreen() {
                     <Text style={[styles.listItemName, styles.listItemNameCrossed]}>{capFirst(item.name)}</Text>
                   </View>
                   <TouchableOpacity
-                    onPress={() => handleRevertSwap(item.name)}
+                    onPress={() => toggleRevertedSwap(item.name)}
                     style={styles.revertBtn}
                     hitSlop={{ top: 8, right: 8, bottom: 8, left: 8 }}
                   >
                     <Text style={styles.revertBtnText}>↩ Keep</Text>
+                  </TouchableOpacity>
+                </View>
+              );
+            }
+
+            // ── Reverted item (user chose to keep original) ───────────────────
+            if (item._itemType === 'reverted') {
+              const qtyStr = formatEntry(item);
+              return (
+                <View style={[styles.listItem, styles.listItemReverted]}>
+                  <View style={[styles.checkbox, styles.checkboxReverted]}>
+                    <Text style={styles.revertedIcon}>✓</Text>
+                  </View>
+                  <View style={styles.listItemBody}>
+                    <Text style={styles.listItemQty}>{qtyStr}</Text>
+                    <Text style={styles.listItemName}>{capFirst(item.name)}</Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => toggleRevertedSwap(item.name)}
+                    style={styles.revertBtnActive}
+                    hitSlop={{ top: 8, right: 8, bottom: 8, left: 8 }}
+                  >
+                    <Text style={styles.revertBtnActiveText}>✓ Kept</Text>
                   </TouchableOpacity>
                 </View>
               );
@@ -1503,6 +1526,29 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.bodyMedium,
     fontSize: 11,
     color: Colors.red,
+  },
+
+  // Reverted item (user chose to keep original)
+  listItemReverted: {
+    backgroundColor: 'rgba(212,168,67,0.04)',
+  },
+  checkboxReverted: {
+    backgroundColor: 'rgba(212,168,67,0.15)',
+    borderColor: Colors.gold,
+  },
+  revertedIcon: { fontSize: 11, color: Colors.gold },
+  revertBtnActive: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: Colors.gold,
+    backgroundColor: 'rgba(212,168,67,0.15)',
+  },
+  revertBtnActiveText: {
+    fontFamily: Fonts.bodyMedium,
+    fontSize: 11,
+    color: Colors.gold,
   },
 
   // Swap replacement item (new gold ingredient)

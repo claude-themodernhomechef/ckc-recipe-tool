@@ -52,6 +52,10 @@ interface MenuContextValue {
   // Meal plan sync — replaces all 'mealplan'-sourced items in one call
   syncMealPlan: (items: AddMenuItemInput[]) => void;
 
+  // Diet swap reverts — ingredients the user chose to keep as original
+  revertedSwaps:     Set<string>;
+  toggleRevertedSwap:(ingredientName: string) => void;
+
   // Paywall helpers (pass isPaid from UserContext)
   entreeCount:    number;
   totalCount:     number;
@@ -74,6 +78,8 @@ const MenuContext = createContext<MenuContextValue>({
   clearMenu:          () => {},
   setOrganicPreference: () => {},
   syncMealPlan:       () => {},
+  revertedSwaps:      new Set(),
+  toggleRevertedSwap: () => {},
   entreeCount:        0,
   totalCount:         0,
   canAddEntree:       () => true,
@@ -86,6 +92,7 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
   const [menuItems,         setMenuItems]         = useState<MenuItem[]>([]);
   const [checkedItems,      setCheckedItems]       = useState<Set<string>>(new Set());
   const [organicPreference, setOrganicPreferenceState] = useState<OrganicPreference>('conventional');
+  const [revertedSwaps,     setRevertedSwaps]     = useState<Set<string>>(new Set());
 
   // ── Derived counts (manual items only — meal plan gated by MealPlanScreen) ──
   const entreeCount = useMemo(
@@ -161,6 +168,15 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
     setOrganicPreferenceState(pref);
   }
 
+  function toggleRevertedSwap(ingredientName: string) {
+    setRevertedSwaps(prev => {
+      const next = new Set(prev);
+      if (next.has(ingredientName)) next.delete(ingredientName);
+      else next.add(ingredientName);
+      return next;
+    });
+  }
+
   // ── Meal plan sync ───────────────────────────────────────────────────────────
   // Called by MealPlanScreen whenever its plan state changes.
   // Keeps all 'manual' items intact and replaces all 'mealplan' items.
@@ -198,6 +214,8 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
         clearMenu,
         setOrganicPreference,
         syncMealPlan,
+        revertedSwaps,
+        toggleRevertedSwap,
         entreeCount,
         totalCount,
         canAddEntree,
