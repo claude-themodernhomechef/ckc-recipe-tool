@@ -1,14 +1,17 @@
 #!/bin/bash
 # ─────────────────────────────────────────────────────────────
 # run_enrichment.sh
-# Enriches YES recipes missing chefNotes — one fresh agent call per recipe.
+# Enriches YES recipes in batches of 10 — one agent call per batch.
 #
 # Usage:
-#   bash scripts/run_enrichment.sh
+#   bash scripts/run_enrichment.sh             # all recipes
+#   bash scripts/run_enrichment.sh --limit 50  # first 50 only
 # ─────────────────────────────────────────────────────────────
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$REPO_ROOT"
+
+BATCH_SIZE=10
 
 # Find claude binary
 CLAUDE_BIN=""
@@ -27,12 +30,17 @@ if [ -z "$CLAUDE_BIN" ]; then
   echo "ERROR: claude not found. Update CLAUDE_BIN path in run_enrichment.sh."
   exit 1
 fi
-echo "Using claude: $CLAUDE_BIN"
 
 NODE_BIN=/usr/local/bin/node
 
-echo "CKC Recipe Enrichment"
-echo "Loading queue from Firestore..."
+# Optional --limit N flag
+LIMIT=0
+if [ "$1" = "--limit" ] && [ -n "$2" ]; then
+  LIMIT="$2"
+fi
+
+echo "CKC Recipe Enrichment (batch size: $BATCH_SIZE)"
+echo "Loading queue..."
 
 QUEUE=$("$NODE_BIN" scripts/get_enrichment_queue.js 2>/dev/null)
 TOTAL=$(echo "$QUEUE" | grep -c . || true)
@@ -42,42 +50,74 @@ if [ -z "$QUEUE" ] || [ "$TOTAL" -eq 0 ]; then
   exit 0
 fi
 
-echo "$TOTAL recipes to enrich"
+if [ "$LIMIT" -gt 0 ] 2>/dev/null; then
+  QUEUE=$(echo "$QUEUE" | head -n "$LIMIT")
+  TOTAL="$LIMIT"
+  echo "$TOTAL recipes to enrich (limited)"
+else
+  echo "$TOTAL recipes to enrich"
+fi
 echo ""
 
-COUNT=0
 DONE=0
 FAILED=0
+BATCH_NUM=0
+IDS=()
 
-for DOC_ID in $QUEUE; do
-  COUNT=$((COUNT + 1))
+process_batch() {
+  local ids=("$@")
+  local count="${#ids[@]}"
+  BATCH_NUM=$((BATCH_NUM + 1))
 
-  RECIPE_DATA=$("$NODE_BIN" scripts/get_recipe_for_enrichment.js "$DOC_ID" 2>/dev/null)
-  RECIPE_NAME=$(echo "$RECIPE_DATA" | grep '^NAME:' | sed 's/NAME: //')
+  echo "── Batch $BATCH_NUM ($count recipes) ──────────────────────"
 
-  echo "[$COUNT/$TOTAL] $RECIPE_NAME"
-
-  # Run a fresh agent for this single recipe — errors are caught, never kill the loop
-  PROMPT="Read the instructions in .claude/agent/enrich-single-recipe.md then enrich the recipe below.
-
----
-$RECIPE_DATA
+  # Build combined recipe data block
+  COMBINED=""
+  for id in "${ids[@]}"; do
+    DATA=$("$NODE_BIN" scripts/get_recipe_for_enrichment.js "$id" 2>/dev/null)
+    NAME=$(echo "$DATA" | grep '^NAME:' | sed 's/NAME: //')
+    echo "  $NAME"
+    COMBINED="$COMBINED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$DATA
 "
+  done
+
+  PROMPT="Follow the instructions in .claude/agent/enrich-batch.md to enrich this batch of $count recipes.
+
+$COMBINED"
+
   "$CLAUDE_BIN" --dangerously-skip-permissions -p "$PROMPT" 2>/dev/null
   EXIT_CODE=$?
 
   if [ $EXIT_CODE -eq 0 ]; then
-    DONE=$((DONE + 1))
-    echo "  ✓ done"
+    DONE=$((DONE + count))
+    echo "  ✓ batch done"
   else
-    FAILED=$((FAILED + 1))
-    echo "  ✗ failed (exit $EXIT_CODE)"
+    FAILED=$((FAILED + count))
+    echo "  ✗ batch failed (exit $EXIT_CODE)"
   fi
-
   echo ""
-done
+}
 
-echo "─────────────────────────────────────"
+# Loop through queue in batches
+BATCH_IDS=()
+while IFS= read -r DOC_ID; do
+  [ -z "$DOC_ID" ] && continue
+  BATCH_IDS+=("$DOC_ID")
+
+  if [ "${#BATCH_IDS[@]}" -eq "$BATCH_SIZE" ]; then
+    process_batch "${BATCH_IDS[@]}"
+    BATCH_IDS=()
+  fi
+done <<< "$QUEUE"
+
+# Process any remaining
+if [ "${#BATCH_IDS[@]}" -gt 0 ]; then
+  process_batch "${BATCH_IDS[@]}"
+fi
+
+echo "═════════════════════════════════════════"
 echo "Enriched: $DONE / $TOTAL"
 if [ "$FAILED" -gt 0 ]; then
   echo "Failed:   $FAILED"
