@@ -115,7 +115,7 @@ const RULES: Record<string, SwapRule[]> = {
       swap: 'maple syrup' },
     { match: ['all-purpose flour', 'wheat flour', 'ap flour'],
       reason: 'Contains wheat (FODMAP in large amounts)',
-      swap: '1:1 GF flour blend or arrowroot powder' },
+      swap: '1:1 GF flour blend' },
   ],
   DF: [
     { match: ['butter'],
