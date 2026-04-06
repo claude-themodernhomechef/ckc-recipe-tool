@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd ckc-consumer-app && npm install && npx expo export --platform web",
+  "buildCommand": "cd ckc-consumer-app && npm ci && npx expo export --platform web",
   "outputDirectory": "ckc-consumer-app/dist",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
