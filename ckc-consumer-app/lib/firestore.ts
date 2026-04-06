@@ -4,7 +4,7 @@
 //  Falls back to SAMPLE_RECIPES on error.
 // ─────────────────────────────────────────────
 
-import { collection, query, where, limit, getDocs, doc, updateDoc } from 'firebase/firestore';
+import { collection, query, where, limit, getDocs, doc, updateDoc, documentId } from 'firebase/firestore';
 import { db } from './firebase';
 import { SAMPLE_RECIPES, Recipe } from '../data/sampleRecipes';
 
@@ -113,6 +113,42 @@ export async function fetchRecipes(limitCount: number = 200): Promise<Recipe[]> 
   } catch (err) {
     console.warn('Firestore fetch failed, using sample data:', err);
     return SAMPLE_RECIPES;
+  }
+}
+
+// Fetch specific recipes by their Firestore document IDs (for loading saved recipe details)
+export async function fetchRecipesByIds(ids: string[]): Promise<Recipe[]> {
+  if (ids.length === 0) return [];
+  try {
+    const results: Recipe[] = [];
+    // Firestore 'in' queries support max 10 items per batch
+    for (let i = 0; i < ids.length; i += 10) {
+      const batch = ids.slice(i, i + 10);
+      const q = query(collection(db, 'recipes'), where(documentId(), 'in', batch));
+      const snap = await getDocs(q);
+      snap.docs.forEach(d => results.push(docToRecipe(d.id, d.data() as Record<string, unknown>)));
+    }
+    return results;
+  } catch (err) {
+    console.warn('fetchRecipesByIds failed:', err);
+    return [];
+  }
+}
+
+// Fetch side dishes from the full CKC library for Chef Sides pairing
+export async function fetchSideDishes(): Promise<Recipe[]> {
+  try {
+    const q = query(
+      collection(db, 'recipes'),
+      where('status', '==', 'yes'),
+      where('meal_type', 'in', ['side', 'salad', 'sauce']),
+      limit(300),
+    );
+    const snap = await getDocs(q);
+    return snap.docs.map(d => docToRecipe(d.id, d.data() as Record<string, unknown>));
+  } catch (err) {
+    console.warn('fetchSideDishes failed:', err);
+    return [];
   }
 }
 
