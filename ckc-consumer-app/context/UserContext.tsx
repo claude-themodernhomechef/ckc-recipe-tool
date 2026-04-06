@@ -24,7 +24,7 @@ interface UserContextValue {
 
 const defaultProfile: UserProfile = {
   tier: 'paid', // DEV: set to 'free' to test paywall gates
-  protocols: [],
+  protocols: ['LF', 'GF'], // DEV: sample protocols to test diet toggle in Shop tab
   cuisines: [],
   proteins: [],
   household: 2,
