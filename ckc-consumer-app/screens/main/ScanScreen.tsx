@@ -424,7 +424,11 @@ export default function ScanScreen() {
           const qtyUnits = /^([\d\s\/¼½¾⅓⅔.]+(?:and\s+[\d\/\s]+)?\s*(?:teaspoons?|tablespoons?|tbsp|tsp|cups?|oz|lbs?|g|kg|cloves?|medium|large|small|pinch)?)\s+/i;
           const match = stripped.match(qtyUnits);
           const qty  = match ? match[1].trim() : '';
-          const name = (match ? stripped.slice(match[0].length) : stripped).toLowerCase().trim();
+          // Keep full remainder as name — don't strip mid-line numbers (e.g. "egg + 1 egg yolk")
+          const name = (match ? stripped.slice(match[0].length) : stripped)
+            .toLowerCase()
+            .replace(/,\s*(at room temp.*|softened.*|melted.*|cooled.*)$/i, '') // strip trailing prep notes
+            .trim();
           return { raw, name, qty };
         });
       } else if (inputMethod === 'url' && urlText.trim()) {
