@@ -13,6 +13,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Fonts } from '../../constants/theme';
 import { scanRecipePhoto, scanPantryPhoto, ExtractedIngredient, PantryItem } from '../../lib/gemini';
+import { useUser } from '../../context/UserContext';
 
 // expo-image-picker is mobile-only — lazy import to avoid web build errors
 const ImagePicker = Platform.OS !== 'web'
@@ -291,28 +292,37 @@ const PROTOCOL_LABELS: Record<string, string> = {
   K: 'Keto', AIP: 'AIP', LH: 'Low-Histamine', V: 'Vegan', Vg: 'Vegetarian',
 };
 
-// Default protocol for scoring — will pull from user profile in Phase 2
-const ACTIVE_PROTOCOL = 'GF';
+function formatProtocolLabel(protocols: string[]): string {
+  return protocols.map(p => PROTOCOL_LABELS[p] ?? p).join(' + ');
+}
 
-function scoreIngredients(ingredients: ExtractedIngredient[]): ScoredIngredient[] {
-  const rules  = RULES[ACTIVE_PROTOCOL] ?? [];
+function scoreIngredients(ingredients: ExtractedIngredient[], protocols: string[]): ScoredIngredient[] {
   const result: ScoredIngredient[] = [];
   const addedSwaps = new Set<string>();
 
   for (const ing of ingredients) {
-    const rule = rules.find(r => r.match.some(k => ing.name.includes(k)));
-    if (rule) {
-      result.push({
-        name: ing.name, qty: ing.qty, type: 'crossed',
-        swapNote: rule.swap
-          ? `${rule.reason} → ${rule.swap}`
-          : `${rule.reason} — remove entirely`,
-      });
-      if (rule.swap && !addedSwaps.has(rule.swap)) {
-        addedSwaps.add(rule.swap);
-        result.push({ name: rule.swap, qty: ing.qty, type: 'swap', swapFor: ing.name });
+    // Check against all active protocols — flag on first match
+    let matched = false;
+    for (const protocol of protocols) {
+      const rules = RULES[protocol] ?? [];
+      const rule  = rules.find(r => r.match.some(k => ing.name.includes(k)));
+      if (rule) {
+        const protocolLabel = PROTOCOL_LABELS[protocol] ?? protocol;
+        result.push({
+          name: ing.name, qty: ing.qty, type: 'crossed',
+          swapNote: rule.swap
+            ? `${protocolLabel}: ${rule.reason} → ${rule.swap}`
+            : `${protocolLabel}: ${rule.reason} — remove entirely`,
+        });
+        if (rule.swap && !addedSwaps.has(rule.swap)) {
+          addedSwaps.add(rule.swap);
+          result.push({ name: rule.swap, qty: ing.qty, type: 'swap', swapFor: ing.name });
+        }
+        matched = true;
+        break;
       }
-    } else {
+    }
+    if (!matched) {
       result.push({ name: ing.name, qty: ing.qty, type: 'normal' });
     }
   }
@@ -325,6 +335,9 @@ function scoreIngredients(ingredients: ExtractedIngredient[]): ScoredIngredient[
 // ─────────────────────────────────────────────
 
 export default function ScanScreen() {
+  const { profile } = useUser();
+  const activeProtocols = profile.protocols.length > 0 ? profile.protocols : ['GF'];
+
   const [mode, setMode]                   = useState<Mode>(null);
   const [recipeStep, setRecipeStep]       = useState<RecipeStep>('input');
   const [pantryStep, setPantryStep]       = useState<PantryStep>('input');
@@ -445,7 +458,7 @@ export default function ScanScreen() {
         return;
       }
 
-      const scored = scoreIngredients(ingredients);
+      const scored = scoreIngredients(ingredients, activeProtocols);
       setRecipeResults(scored);
       setRecipeStep('results');
     } catch (e: any) {
@@ -535,7 +548,7 @@ export default function ScanScreen() {
           <View style={styles.loadingWrap}>
             <ActivityIndicator size="large" color={Colors.gold} />
             <Text style={styles.loadingTitle}>Checking your recipe…</Text>
-            <Text style={styles.loadingBody}>Scoring ingredients against your {PROTOCOL_LABELS[ACTIVE_PROTOCOL]} protocol</Text>
+            <Text style={styles.loadingBody}>Scoring ingredients against your {formatProtocolLabel(activeProtocols)} protocol</Text>
           </View>
         </SafeAreaView>
       );
@@ -560,7 +573,7 @@ export default function ScanScreen() {
               {flagged > 0 ? ' — swaps suggested below' : ' — this recipe is compatible'}
             </Text>
             <View style={styles.protocolChip}>
-              <Text style={styles.protocolChipText}>{PROTOCOL_LABELS[ACTIVE_PROTOCOL]}</Text>
+              <Text style={styles.protocolChipText}>{formatProtocolLabel(activeProtocols)}</Text>
             </View>
           </View>
 
