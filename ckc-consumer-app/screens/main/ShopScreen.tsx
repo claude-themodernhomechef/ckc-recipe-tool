@@ -77,7 +77,7 @@ interface AggregatedEntry {
   category:      string;
   sources:       string[];
   // Swap metadata — set when diet mode is active
-  _itemType?:    'normal' | 'swap' | 'reverted';
+  _itemType?:    'normal' | 'swap' | 'crossed' | 'reverted';
   _swapName?:    string;    // for 'crossed': the ingredient that replaces this
   _swapFor?:     string;    // for 'swap': the original ingredient this replaces
   _swapRecipe?:  string;    // which recipe required this swap
@@ -687,8 +687,8 @@ export default function ShopScreen() {
         const isReverted = revertedSwaps.has(item.name);
 
         if (swapInfo && !isReverted) {
-          // Swap active — show only the gold replacement line (original is hidden)
           if (swapInfo.to) {
+            // Has a replacement — show gold swap row
             withSwaps.push({
               name:          swapInfo.to,
               unitQtys:      {},
@@ -696,6 +696,15 @@ export default function ShopScreen() {
               sources:       [swapInfo.recipe],
               _itemType:     'swap',
               _swapFor:      item.name,
+              _swapRecipe:   swapInfo.recipe,
+              _swapProtocol: swapInfo.protocol,
+              _swapColor:    swapInfo.color,
+            });
+          } else {
+            // No replacement — ingredient should be removed; show crossed out in red
+            withSwaps.push({
+              ...item,
+              _itemType:     'crossed',
               _swapRecipe:   swapInfo.recipe,
               _swapProtocol: swapInfo.protocol,
               _swapColor:    swapInfo.color,
@@ -720,6 +729,7 @@ export default function ShopScreen() {
       const visible = hideChecked
         ? withSwaps.filter(e =>
             e._itemType === 'swap' ||     // always show swap items
+            e._itemType === 'crossed' ||  // always show crossed items
             e._itemType === 'reverted' || // always show reverted items
             !checkedItems.has(e.name)
           )
@@ -1014,6 +1024,38 @@ export default function ShopScreen() {
                   {/* Active toggle: compliant state */}
                   <TouchableOpacity
                     onPress={() => toggleRevertedSwap(item._swapFor ?? item.name)}
+                    style={styles.swapToggleActive}
+                    hitSlop={{ top: 8, right: 8, bottom: 8, left: 8 }}
+                  >
+                    <Text style={styles.swapToggleActiveText}>✓ Compliant</Text>
+                  </TouchableOpacity>
+                </View>
+              );
+            }
+
+            // ── Crossed item — removed ingredient (no swap available) ─────────
+            if (item._itemType === 'crossed') {
+              const qtyStr = formatEntry(item);
+              return (
+                <View style={[styles.listItem, styles.listItemCrossed]}>
+                  <View style={[styles.checkbox, styles.checkboxCrossed]}>
+                    <Text style={styles.crossedIcon}>✕</Text>
+                  </View>
+                  <View style={styles.listItemBody}>
+                    <Text style={[styles.listItemQty, styles.listItemQtyCrossed]}>{qtyStr}</Text>
+                    <Text style={[styles.listItemName, styles.listItemNameCrossed]}>{capFirst(item.name)}</Text>
+                    <View style={styles.swapMeta}>
+                      <View style={[styles.swapProtocolChip, { borderColor: (item._swapColor ?? Colors.red) + '66' }]}>
+                        <Text style={[styles.swapProtocolText, { color: item._swapColor ?? Colors.red }]}>
+                          {item._swapProtocol}
+                        </Text>
+                      </View>
+                      <Text style={styles.swapSource}>removed · {item._swapRecipe}</Text>
+                    </View>
+                  </View>
+                  {/* Active toggle: compliant state (removed) */}
+                  <TouchableOpacity
+                    onPress={() => toggleRevertedSwap(item.name)}
                     style={styles.swapToggleActive}
                     hitSlop={{ top: 8, right: 8, bottom: 8, left: 8 }}
                   >
