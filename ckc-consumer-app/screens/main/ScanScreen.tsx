@@ -5,13 +5,12 @@
  * Mode 2: Pantry Scanner — photo of fridge/pantry → cross-reference shopping list
  */
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View, Text, StyleSheet, TouchableOpacity, ScrollView,
-  TextInput, ActivityIndicator,
+  TextInput, ActivityIndicator, Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Platform } from 'react-native';
 import { Colors, Fonts } from '../../constants/theme';
 import { scanRecipePhoto, scanPantryPhoto, ExtractedIngredient, PantryItem } from '../../lib/gemini';
 
@@ -106,6 +105,18 @@ export default function ScanScreen() {
   const [errorMsg, setErrorMsg]           = useState<string | null>(null);
   const [pantryToggles, setPantryToggles] = useState<Record<string, boolean | null>>({});
 
+  // Web file input refs
+  const recipeFileInputRef = useRef<any>(null);
+  const pantryFileInputRef = useRef<any>(null);
+
+  function handleWebFileSelect(target: 'recipe' | 'pantry', e: any) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const uri = URL.createObjectURL(file);
+    if (target === 'recipe') setRecipeImageUri(uri);
+    else setPantryImageUri(uri);
+  }
+
   function resetAll() {
     setMode(null);
     setRecipeStep('input');
@@ -121,12 +132,14 @@ export default function ScanScreen() {
   }
 
   async function pickImage(target: 'recipe' | 'pantry') {
-    if (!ImagePicker) { setErrorMsg('Photo upload is only available on the mobile app.'); return; }
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== 'granted') {
-      setErrorMsg('Photo library permission is required to scan images.');
+    if (Platform.OS === 'web') {
+      const ref = target === 'recipe' ? recipeFileInputRef : pantryFileInputRef;
+      ref.current?.click();
       return;
     }
+    if (!ImagePicker) return;
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') { setErrorMsg('Photo library permission is required.'); return; }
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 0.8,
@@ -138,12 +151,18 @@ export default function ScanScreen() {
   }
 
   async function takePhoto(target: 'recipe' | 'pantry') {
-    if (!ImagePicker) { setErrorMsg('Camera is only available on the mobile app.'); return; }
-    const { status } = await ImagePicker.requestCameraPermissionsAsync();
-    if (status !== 'granted') {
-      setErrorMsg('Camera permission is required to take photos.');
+    if (Platform.OS === 'web') {
+      // On web, camera access via file input with capture attribute
+      const ref = target === 'recipe' ? recipeFileInputRef : pantryFileInputRef;
+      if (ref.current) {
+        ref.current.setAttribute('capture', 'environment');
+        ref.current.click();
+      }
       return;
     }
+    if (!ImagePicker) return;
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== 'granted') { setErrorMsg('Camera permission is required.'); return; }
     const result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 0.8,
@@ -409,6 +428,15 @@ export default function ScanScreen() {
                 </View>
               ) : (
                 <View style={styles.photoOptions}>
+                  {Platform.OS === 'web' && (
+                    <input
+                      ref={recipeFileInputRef}
+                      type="file"
+                      accept="image/*"
+                      style={{ display: 'none' }}
+                      onChange={(e: any) => handleWebFileSelect('recipe', e)}
+                    />
+                  )}
                   <TouchableOpacity style={styles.photoBtn} onPress={() => takePhoto('recipe')} activeOpacity={0.8}>
                     <Text style={styles.photoBtnIcon}>📷</Text>
                     <Text style={styles.photoBtnLabel}>Take Photo</Text>
@@ -572,6 +600,15 @@ export default function ScanScreen() {
             </View>
           ) : (
             <View style={styles.photoOptions}>
+              {Platform.OS === 'web' && (
+                <input
+                  ref={pantryFileInputRef}
+                  type="file"
+                  accept="image/*"
+                  style={{ display: 'none' }}
+                  onChange={(e: any) => handleWebFileSelect('pantry', e)}
+                />
+              )}
               <TouchableOpacity style={styles.photoBtn} onPress={() => takePhoto('pantry')} activeOpacity={0.8}>
                 <Text style={styles.photoBtnIcon}>📷</Text>
                 <Text style={styles.photoBtnLabel}>Take Photo</Text>
