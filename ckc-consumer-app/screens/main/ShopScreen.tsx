@@ -72,10 +72,17 @@ const SERVING_STEPS = [0.5, 1, 2, 3, 4, 5];
 // ─────────────────────────────────────────────
 
 interface AggregatedEntry {
-  name:     string;
-  unitQtys: Record<string, number>;
-  category: string;
-  sources:  string[];
+  name:          string;
+  unitQtys:      Record<string, number>;
+  category:      string;
+  sources:       string[];
+  // Swap metadata — set when diet mode is active
+  _itemType?:    'normal' | 'crossed' | 'swap';
+  _swapName?:    string;    // for 'crossed': the ingredient that replaces this
+  _swapFor?:     string;    // for 'swap': the original ingredient this replaces
+  _swapRecipe?:  string;    // which recipe required this swap
+  _swapProtocol?:string;
+  _swapColor?:   string;
 }
 
 interface SectionData {
@@ -166,6 +173,44 @@ function capFirst(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
+// Parses free-text swap notes into explicit (from → to) pairs
+function parseSwapPairs(notes: string): Array<{ from: string; to: string | null }> {
+  const result: Array<{ from: string; to: string | null }> = [];
+  const s = notes.toLowerCase();
+
+  // "Use X instead of Y" → { from: Y, to: X }
+  const insteadRe = /use\s+(.+?)\s+instead\s+of\s+(.+?)(?:[,.]|$)/gi;
+  let m: RegExpExecArray | null;
+  while ((m = insteadRe.exec(s)) !== null) {
+    result.push({ from: m[2].trim(), to: m[1].trim() });
+  }
+
+  // "Replace X (and Z) with Y" → multiple froms
+  const replaceRe = /replace\s+(.+?)\s+with\s+(.+?)(?:[,.]|$)/gi;
+  while ((m = replaceRe.exec(s)) !== null) {
+    const to = m[2].trim();
+    m[1].split(/\s+and\s+/i).forEach(f => result.push({ from: f.trim(), to }));
+  }
+
+  // "Skip X" / "Omit X" → { from: X, to: null }
+  const skipRe = /(?:skip|omit)\s+([^,.\n]+)/gi;
+  while ((m = skipRe.exec(s)) !== null) {
+    result.push({ from: m[1].split(',')[0].trim(), to: null });
+  }
+
+  return result;
+}
+
+// Fuzzy-matches a parsed term against an ingredient list key
+function fuzzyMatch(parsedTerm: string, ingredientName: string): boolean {
+  const clean = (x: string) =>
+    x.replace(/\b(cloves?|heads?|tbsp\s+of|tsp\s+of|cups?\s+of|\bof\b)\b/g, '')
+     .replace(/\s+/g, ' ').trim();
+  const a = clean(parsedTerm);
+  const b = clean(ingredientName);
+  return b.includes(a) || a.includes(b);
+}
+
 // ─────────────────────────────────────────────
 //  Protocol toggle bar
 // ─────────────────────────────────────────────
@@ -249,121 +294,6 @@ const ptb = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   thumbActive: { backgroundColor: '#000', alignSelf: 'flex-end' },
-});
-
-// ─────────────────────────────────────────────
-//  Modifications header (ListHeaderComponent)
-// ─────────────────────────────────────────────
-
-function ModificationsHeader({ mods }: { mods: RecipeMod[] }) {
-  if (mods.length === 0) {
-    return (
-      <View style={mh.allGoodRow}>
-        <Text style={mh.allGoodIcon}>✓</Text>
-        <Text style={mh.allGoodText}>All items are compliant with your protocols</Text>
-      </View>
-    );
-  }
-
-  return (
-    <View style={mh.wrap}>
-      <View style={mh.titleRow}>
-        <Text style={mh.title}>MODIFICATIONS NEEDED</Text>
-        <View style={mh.badge}>
-          <Text style={mh.badgeText}>{mods.length}</Text>
-        </View>
-      </View>
-      {mods.map(item => (
-        <View key={item.recipeId} style={mh.card}>
-          {/* Recipe name + protocol chips */}
-          <View style={mh.cardHeader}>
-            <Text style={mh.cardRecipe} numberOfLines={1}>{item.recipeName}</Text>
-            <View style={mh.cardChips}>
-              {item.mods.map(m => (
-                <View key={m.protocol} style={[mh.cardChip, { borderColor: m.color + '66' }]}>
-                  <Text style={[mh.cardChipText, { color: m.color }]}>{m.label}</Text>
-                </View>
-              ))}
-            </View>
-          </View>
-          {/* Swap notes — one per protocol if multiple */}
-          {item.mods.map((m, i) => (
-            <View key={m.protocol} style={mh.noteRow}>
-              {item.mods.length > 1 && (
-                <Text style={[mh.noteProtocol, { color: m.color }]}>{m.label}: </Text>
-              )}
-              <Text style={mh.noteText}>{m.notes}</Text>
-            </View>
-          ))}
-        </View>
-      ))}
-      <Text style={mh.footer}>
-        Per-ingredient swaps coming soon — for now, use these notes while shopping.
-      </Text>
-    </View>
-  );
-}
-
-const mh = StyleSheet.create({
-  // All-good state
-  allGoodRow: {
-    flexDirection:  'row',
-    alignItems:     'center',
-    gap:            8,
-    marginHorizontal: 16,
-    marginTop:      16,
-    marginBottom:   4,
-    paddingVertical: 12,
-    paddingHorizontal: 14,
-    backgroundColor: 'rgba(124,184,122,0.08)',
-    borderRadius:   10,
-    borderWidth:    1,
-    borderColor:    'rgba(124,184,122,0.2)',
-  },
-  allGoodIcon: { fontSize: 14, color: Colors.green },
-  allGoodText: { fontFamily: Fonts.body, fontSize: 13, color: Colors.green },
-
-  // Main wrapper
-  wrap: { paddingHorizontal: 16, paddingTop: 16, paddingBottom: 4 },
-  titleRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 10 },
-  title: {
-    fontFamily: Fonts.bodyMedium, fontSize: 11,
-    color: Colors.textMuted, letterSpacing: 0.8, textTransform: 'uppercase',
-  },
-  badge: {
-    backgroundColor: 'rgba(212,168,67,0.15)',
-    borderRadius: 10, paddingHorizontal: 7, paddingVertical: 2,
-  },
-  badgeText: { fontFamily: Fonts.body, fontSize: 11, color: Colors.gold },
-
-  // Card per recipe
-  card: {
-    backgroundColor: 'rgba(212,168,67,0.05)',
-    borderWidth:     1,
-    borderColor:     'rgba(212,168,67,0.18)',
-    borderRadius:    12,
-    padding:         14,
-    marginBottom:    8,
-    gap:             8,
-  },
-  cardHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8 },
-  cardRecipe: { fontFamily: Fonts.bodyMedium, fontSize: 14, color: Colors.textPrimary, flex: 1 },
-  cardChips:  { flexDirection: 'row', gap: 4 },
-  cardChip: {
-    paddingHorizontal: 7, paddingVertical: 2,
-    borderRadius: 100, borderWidth: 1,
-  },
-  cardChipText: { fontFamily: Fonts.bodyMedium, fontSize: 10 },
-
-  // Swap note lines
-  noteRow: { flexDirection: 'row', flexWrap: 'wrap' },
-  noteProtocol: { fontFamily: Fonts.bodyMedium, fontSize: 13 },
-  noteText: { fontFamily: Fonts.body, fontSize: 13, color: Colors.textSecondary, lineHeight: 20, flex: 1 },
-
-  footer: {
-    fontFamily: Fonts.body, fontSize: 11,
-    color: Colors.textMuted, marginTop: 4, marginBottom: 8, lineHeight: 16,
-  },
 });
 
 // ─────────────────────────────────────────────
@@ -667,36 +597,21 @@ export default function ShopScreen() {
   const [paywallEntree,   setPaywallEntree]   = useState(false);
   // Diet mode: default ON when user has active protocols
   const [dietModeEnabled, setDietModeEnabled] = useState(() => profile.protocols.length > 0);
+  const [revertedSwaps, setRevertedSwaps] = useState<Set<string>>(new Set());
+
+  const handleRevertSwap = useCallback((originalName: string) => {
+    setRevertedSwaps(prev => {
+      const next = new Set(prev);
+      if (next.has(originalName)) next.delete(originalName);
+      else next.add(originalName);
+      return next;
+    });
+  }, []);
 
   const allRecipes = SAMPLE_RECIPES;
 
   // ── Aggregate ingredients ────────────────────────────────────────────────────
   const aggregated = useMemo(() => aggregateIngredients(menuItems, allRecipes), [menuItems]);
-
-  // ── Build section list ───────────────────────────────────────────────────────
-  const sections: SectionData[] = useMemo(() => {
-    return SHOPPING_CATEGORIES.map(cat => {
-      let items = [...aggregated.values()].filter(e => e.category === cat.key);
-
-      if (cat.key === 'dairy') {
-        items.sort((a, b) => getDairyGroup(a.name) - getDairyGroup(b.name) || a.name.localeCompare(b.name));
-      } else {
-        items.sort((a, b) => a.name.localeCompare(b.name));
-      }
-
-      if (cat.key === 'pantry-staples') {
-        const knownKeys = new Set<string>(SHOPPING_CATEGORIES.map(c => c.key));
-        const uncategorized = [...aggregated.values()].filter(e => !knownKeys.has(e.category));
-        items = [...items, ...uncategorized].sort((a, b) => a.name.localeCompare(b.name));
-      }
-
-      if (hideChecked) {
-        items = items.filter(e => !checkedItems.has(e.name));
-      }
-
-      return { title: cat.label, key: cat.key, data: items };
-    }).filter(s => s.data.length > 0);
-  }, [aggregated, checkedItems, hideChecked]);
 
   // ── Diet mode: collect modification notes per recipe ─────────────────────────
   const modificationNotes = useMemo((): RecipeMod[] => {
@@ -727,6 +642,99 @@ export default function ShopScreen() {
     }
     return result;
   }, [dietModeEnabled, menuItems, allRecipes, profile.protocols]);
+
+  // ── Build swap map from modification notes ───────────────────────────────────
+  // Builds a map: original ingredient name → swap info
+  // Derived from modification notes + free-text parsing
+  const swapMap = useMemo((): Map<string, { to: string | null; recipe: string; protocol: string; color: string }> => {
+    if (!dietModeEnabled || modificationNotes.length === 0) return new Map();
+    const map = new Map<string, { to: string | null; recipe: string; protocol: string; color: string }>();
+
+    for (const recipeMod of modificationNotes) {
+      for (const mod of recipeMod.mods) {
+        const pairs = parseSwapPairs(mod.notes);
+        for (const pair of pairs) {
+          // Find matching ingredient in aggregated list
+          for (const ingName of aggregated.keys()) {
+            if (!map.has(ingName) && fuzzyMatch(pair.from, ingName)) {
+              map.set(ingName, {
+                to:       pair.to,
+                recipe:   recipeMod.recipeName,
+                protocol: mod.protocol,
+                color:    mod.color,
+              });
+            }
+          }
+        }
+      }
+    }
+    return map;
+  }, [dietModeEnabled, modificationNotes, aggregated]);
+
+  // ── Build section list ───────────────────────────────────────────────────────
+  const sections: SectionData[] = useMemo(() => {
+    return SHOPPING_CATEGORIES.map(cat => {
+      let items = [...aggregated.values()].filter(e => e.category === cat.key);
+
+      if (cat.key === 'dairy') {
+        items.sort((a, b) => getDairyGroup(a.name) - getDairyGroup(b.name) || a.name.localeCompare(b.name));
+      } else {
+        items.sort((a, b) => a.name.localeCompare(b.name));
+      }
+
+      if (cat.key === 'pantry-staples') {
+        const knownKeys = new Set<string>(SHOPPING_CATEGORIES.map(c => c.key));
+        const uncategorized = [...aggregated.values()].filter(e => !knownKeys.has(e.category));
+        items = [...items, ...uncategorized].sort((a, b) => a.name.localeCompare(b.name));
+      }
+
+      // Inject swap metadata + swap replacement items
+      const withSwaps: AggregatedEntry[] = [];
+      for (const item of items) {
+        const swapInfo = swapMap.get(item.name);
+        const isReverted = revertedSwaps.has(item.name);
+
+        if (swapInfo && !isReverted) {
+          // Mark original as crossed out
+          withSwaps.push({
+            ...item,
+            _itemType:    'crossed',
+            _swapName:    swapInfo.to ?? undefined,
+            _swapRecipe:  swapInfo.recipe,
+            _swapProtocol:swapInfo.protocol,
+            _swapColor:   swapInfo.color,
+          });
+          // Inject swap replacement right after (only if there is a replacement)
+          if (swapInfo.to) {
+            withSwaps.push({
+              name:          swapInfo.to,
+              unitQtys:      {},
+              category:      item.category,
+              sources:       [swapInfo.recipe],
+              _itemType:     'swap',
+              _swapFor:      item.name,
+              _swapRecipe:   swapInfo.recipe,
+              _swapProtocol: swapInfo.protocol,
+              _swapColor:    swapInfo.color,
+            });
+          }
+        } else {
+          // Normal or reverted-swap item
+          withSwaps.push({ ...item, _itemType: 'normal' });
+        }
+      }
+
+      // Apply hideChecked (never hide an active swap item)
+      const visible = hideChecked
+        ? withSwaps.filter(e =>
+            e._itemType === 'swap' ||   // always show swap items
+            !checkedItems.has(e.name)
+          )
+        : withSwaps;
+
+      return { title: cat.label, key: cat.key, data: visible };
+    }).filter(s => s.data.length > 0);
+  }, [aggregated, checkedItems, hideChecked, swapMap, revertedSwaps]);
 
   // ── Counts ───────────────────────────────────────────────────────────────────
   const totalItems = useMemo(() => [...aggregated.values()].length, [aggregated]);
@@ -958,13 +966,28 @@ export default function ShopScreen() {
       ) : (
         <SectionList
           sections={sections}
-          keyExtractor={item => item.name}
+          keyExtractor={item => item._itemType === 'swap' ? `swap__${item._swapFor}__${item.name}` : item.name}
           stickySectionHeadersEnabled={false}
           contentContainerStyle={styles.listContent}
           ListHeaderComponent={
-            dietModeEnabled && profile.protocols.length > 0
-              ? <ModificationsHeader mods={modificationNotes} />
-              : null
+            dietModeEnabled && profile.protocols.length > 0 ? (
+              <View style={styles.dietModeSummary}>
+                {modificationNotes.length === 0 ? (
+                  <>
+                    <Text style={styles.dietModeAllGoodIcon}>✓</Text>
+                    <Text style={styles.dietModeAllGoodText}>All items compliant with your protocols</Text>
+                  </>
+                ) : (
+                  <>
+                    <Text style={styles.dietModeSummaryIcon}>⚑</Text>
+                    <Text style={styles.dietModeSummaryText}>
+                      {swapMap.size - revertedSwaps.size} ingredient{swapMap.size - revertedSwaps.size === 1 ? '' : 's'} swapped for your protocols
+                      {revertedSwaps.size > 0 ? ` · ${revertedSwaps.size} kept original` : ''}
+                    </Text>
+                  </>
+                )}
+              </View>
+            ) : null
           }
           renderSectionHeader={({ section }) => (
             <View style={styles.sectionHeader}>
@@ -976,7 +999,54 @@ export default function ShopScreen() {
           )}
           renderItem={({ item }) => {
             const checked = checkedItems.has(item.name);
-            const qtyStr  = formatEntry(item);
+
+            // ── Swap replacement item (new gold ingredient) ──────────────────
+            if (item._itemType === 'swap') {
+              return (
+                <View style={[styles.listItem, styles.listItemSwap]}>
+                  <View style={[styles.checkbox, styles.checkboxSwap]}>
+                    <Text style={styles.swapIcon}>↑</Text>
+                  </View>
+                  <View style={styles.listItemBody}>
+                    <Text style={styles.listItemSwapName}>{capFirst(item.name)}</Text>
+                    <View style={styles.swapMeta}>
+                      <View style={[styles.swapProtocolChip, { borderColor: (item._swapColor ?? Colors.gold) + '66' }]}>
+                        <Text style={[styles.swapProtocolText, { color: item._swapColor ?? Colors.gold }]}>
+                          {item._swapProtocol}
+                        </Text>
+                      </View>
+                      <Text style={styles.swapSource}>swap for {capFirst(item._swapFor ?? '')} · {item._swapRecipe}</Text>
+                    </View>
+                  </View>
+                </View>
+              );
+            }
+
+            // ── Crossed-out item (needs swap, not reverted) ───────────────────
+            if (item._itemType === 'crossed') {
+              const qtyStr = formatEntry(item);
+              return (
+                <View style={[styles.listItem, styles.listItemCrossed]}>
+                  <View style={[styles.checkbox, styles.checkboxCrossed]}>
+                    <Text style={styles.crossedIcon}>✕</Text>
+                  </View>
+                  <View style={styles.listItemBody}>
+                    <Text style={[styles.listItemQty, styles.listItemQtyCrossed]}>{qtyStr}</Text>
+                    <Text style={[styles.listItemName, styles.listItemNameCrossed]}>{capFirst(item.name)}</Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => handleRevertSwap(item.name)}
+                    style={styles.revertBtn}
+                    hitSlop={{ top: 8, right: 8, bottom: 8, left: 8 }}
+                  >
+                    <Text style={styles.revertBtnText}>↩ Keep</Text>
+                  </TouchableOpacity>
+                </View>
+              );
+            }
+
+            // ── Normal item ────────────────────────────────────────────────────
+            const qtyStr = formatEntry(item);
             return (
               <TouchableOpacity
                 style={[styles.listItem, checked && styles.listItemChecked]}
@@ -987,12 +1057,8 @@ export default function ShopScreen() {
                   {checked && <Text style={styles.checkmark}>✓</Text>}
                 </View>
                 <View style={styles.listItemBody}>
-                  <Text style={[styles.listItemQty, checked && styles.listItemTextChecked]}>
-                    {qtyStr}
-                  </Text>
-                  <Text style={[styles.listItemName, checked && styles.listItemTextChecked]}>
-                    {capFirst(item.name)}
-                  </Text>
+                  <Text style={[styles.listItemQty, checked && styles.listItemTextChecked]}>{qtyStr}</Text>
+                  <Text style={[styles.listItemName, checked && styles.listItemTextChecked]}>{capFirst(item.name)}</Text>
                 </View>
                 {item.sources.length > 1 && (
                   <Text style={styles.sourceCount}>{item.sources.length} recipes</Text>
@@ -1405,4 +1471,82 @@ const styles = StyleSheet.create({
     textAlign:  'center',
     paddingTop: 40,
   },
+
+  // Crossed-out item (needs swap)
+  listItemCrossed: {
+    backgroundColor: 'rgba(201,107,107,0.06)',
+    borderBottomColor: 'rgba(201,107,107,0.15)',
+  },
+  checkboxCrossed: {
+    backgroundColor: 'rgba(201,107,107,0.15)',
+    borderColor: Colors.red,
+  },
+  crossedIcon: { fontSize: 10, color: Colors.red },
+  listItemQtyCrossed: {
+    color: Colors.red,
+    textDecorationLine: 'line-through',
+    opacity: 0.6,
+  },
+  listItemNameCrossed: {
+    color: Colors.red,
+    textDecorationLine: 'line-through',
+    opacity: 0.6,
+  },
+  revertBtn: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: 'rgba(201,107,107,0.3)',
+  },
+  revertBtnText: {
+    fontFamily: Fonts.bodyMedium,
+    fontSize: 11,
+    color: Colors.red,
+  },
+
+  // Swap replacement item (new gold ingredient)
+  listItemSwap: {
+    backgroundColor: 'rgba(212,168,67,0.06)',
+    borderBottomColor: 'rgba(212,168,67,0.15)',
+  },
+  checkboxSwap: {
+    backgroundColor: 'rgba(212,168,67,0.15)',
+    borderColor: Colors.gold,
+  },
+  swapIcon: { fontSize: 12, color: Colors.gold },
+  listItemSwapName: {
+    fontFamily: Fonts.bodyMedium,
+    fontSize: 14,
+    color: Colors.gold,
+  },
+  swapMeta: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 3, flexWrap: 'wrap' },
+  swapProtocolChip: {
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 100,
+    borderWidth: 1,
+  },
+  swapProtocolText: { fontFamily: Fonts.bodyMedium, fontSize: 10 },
+  swapSource: { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted },
+
+  // Diet mode summary line
+  dietModeSummary: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginHorizontal: 16,
+    marginTop: 14,
+    marginBottom: 4,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    backgroundColor: Colors.surface,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: Colors.border,
+  },
+  dietModeAllGoodIcon: { fontSize: 13, color: Colors.green },
+  dietModeAllGoodText: { fontFamily: Fonts.body, fontSize: 12, color: Colors.green },
+  dietModeSummaryIcon: { fontSize: 13, color: Colors.gold },
+  dietModeSummaryText: { fontFamily: Fonts.body, fontSize: 12, color: Colors.textSecondary },
 });
