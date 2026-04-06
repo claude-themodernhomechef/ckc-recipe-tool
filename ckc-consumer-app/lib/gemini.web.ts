@@ -49,7 +49,10 @@ async function callGemini(prompt: string, base64: string, mimeType: string): Pro
     }
   );
   const json = await response.json();
-  return json?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+  let text = json?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+  // Strip markdown code blocks if Gemini wraps response in ```json ... ```
+  text = text.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
+  return text;
 }
 
 export async function scanRecipePhoto(imageUri: string): Promise<ExtractedIngredient[]> {
