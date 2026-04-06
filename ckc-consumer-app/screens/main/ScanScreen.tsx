@@ -92,7 +92,7 @@ const RULES: Record<string, SwapRule[]> = {
     { match: ['fennel'],
       reason: 'High fructans (FODMAP)',
       swap: null },
-    { match: ['corn'],
+    { match: ['sweet corn', 'corn kernels', 'canned corn', 'frozen corn'],
       reason: 'Moderate FODMAP (sorbitol)',
       swap: null },
     { match: ['mushroom'],
