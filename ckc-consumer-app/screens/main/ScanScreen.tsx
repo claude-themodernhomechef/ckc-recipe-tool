@@ -13,6 +13,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Fonts } from '../../constants/theme';
 import { scanRecipePhoto, scanPantryPhoto, ExtractedIngredient, PantryItem } from '../../lib/gemini';
+import { scoreIngredientsWithClaude } from '../../lib/claudeScoring';
 import { useUser } from '../../context/UserContext';
 
 // expo-image-picker is mobile-only — lazy import to avoid web build errors
@@ -458,7 +459,7 @@ export default function ScanScreen() {
         return;
       }
 
-      const scored = scoreIngredients(ingredients, activeProtocols);
+      const scored = await scoreIngredientsWithClaude(ingredients, activeProtocols);
       setRecipeResults(scored);
       setRecipeStep('results');
     } catch (e: any) {
