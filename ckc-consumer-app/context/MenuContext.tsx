@@ -53,8 +53,9 @@ interface MenuContextValue {
   syncMealPlan: (items: AddMenuItemInput[]) => void;
 
   // Diet swap reverts — ingredients the user chose to keep as original
-  revertedSwaps:     Set<string>;
-  toggleRevertedSwap:(ingredientName: string) => void;
+  revertedSwaps:      Set<string>;
+  toggleRevertedSwap: (ingredientName: string) => void;
+  clearRevertedSwaps: () => void;
 
   // Paywall helpers (pass isPaid from UserContext)
   entreeCount:    number;
@@ -80,6 +81,7 @@ const MenuContext = createContext<MenuContextValue>({
   syncMealPlan:       () => {},
   revertedSwaps:      new Set(),
   toggleRevertedSwap: () => {},
+  clearRevertedSwaps: () => {},
   entreeCount:        0,
   totalCount:         0,
   canAddEntree:       () => true,
@@ -177,6 +179,10 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
     });
   }
 
+  function clearRevertedSwaps() {
+    setRevertedSwaps(new Set());
+  }
+
   // ── Meal plan sync ───────────────────────────────────────────────────────────
   // Called by MealPlanScreen whenever its plan state changes.
   // Keeps all 'manual' items intact and replaces all 'mealplan' items.
@@ -216,6 +222,7 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
         syncMealPlan,
         revertedSwaps,
         toggleRevertedSwap,
+        clearRevertedSwaps,
         entreeCount,
         totalCount,
         canAddEntree,

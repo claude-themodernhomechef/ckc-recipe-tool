@@ -77,7 +77,7 @@ interface AggregatedEntry {
   category:      string;
   sources:       string[];
   // Swap metadata — set when diet mode is active
-  _itemType?:    'normal' | 'swap';
+  _itemType?:    'normal' | 'swap' | 'reverted';
   _swapName?:    string;    // for 'crossed': the ingredient that replaces this
   _swapFor?:     string;    // for 'swap': the original ingredient this replaces
   _swapRecipe?:  string;    // which recipe required this swap
@@ -585,7 +585,7 @@ export default function ShopScreen() {
     toggleChecked, uncheckAll, clearMenu, isInMenu,
     organicPreference, setOrganicPreference,
     canAddEntree, canAddItem,
-    revertedSwaps, toggleRevertedSwap,
+    revertedSwaps, toggleRevertedSwap, clearRevertedSwaps,
   } = useMenu();
   const { profile } = useUser();
   const isPaid = profile.tier === 'paid';
@@ -702,8 +702,15 @@ export default function ShopScreen() {
             });
           }
         } else if (swapInfo && isReverted) {
-          // User reverted — show original ingredient normally (no swap line)
-          withSwaps.push({ ...item, _itemType: 'normal' });
+          // User reverted — show original ingredient with inactive toggle button
+          withSwaps.push({
+            ...item,
+            _itemType:     'reverted',
+            _swapName:     swapInfo.to ?? undefined,
+            _swapRecipe:   swapInfo.recipe,
+            _swapProtocol: swapInfo.protocol,
+            _swapColor:    swapInfo.color,
+          });
         } else {
           withSwaps.push({ ...item, _itemType: 'normal' });
         }
@@ -712,7 +719,8 @@ export default function ShopScreen() {
       // Apply hideChecked (never hide an active swap item)
       const visible = hideChecked
         ? withSwaps.filter(e =>
-            e._itemType === 'swap' ||   // always show swap items
+            e._itemType === 'swap' ||     // always show swap items
+            e._itemType === 'reverted' || // always show reverted items
             !checkedItems.has(e.name)
           )
         : withSwaps;
@@ -908,7 +916,7 @@ export default function ShopScreen() {
         <ProtocolToggleBar
           protocols={profile.protocols}
           enabled={dietModeEnabled}
-          onToggle={() => setDietModeEnabled(v => !v)}
+          onToggle={() => { setDietModeEnabled(v => !v); clearRevertedSwaps(); }}
         />
       )}
 
@@ -985,7 +993,7 @@ export default function ShopScreen() {
           renderItem={({ item }) => {
             const checked = checkedItems.has(item.name);
 
-            // ── Swap replacement item (new gold ingredient) ──────────────────
+            // ── Swap replacement item (gold) — diet-compliant state ──────────
             if (item._itemType === 'swap') {
               return (
                 <View style={[styles.listItem, styles.listItemSwap]}>
@@ -1003,12 +1011,40 @@ export default function ShopScreen() {
                       <Text style={styles.swapSource}>replaces {capFirst(item._swapFor ?? '')} · {item._swapRecipe}</Text>
                     </View>
                   </View>
+                  {/* Active toggle: compliant state */}
                   <TouchableOpacity
                     onPress={() => toggleRevertedSwap(item._swapFor ?? item.name)}
-                    style={styles.revertBtn}
+                    style={styles.swapToggleActive}
                     hitSlop={{ top: 8, right: 8, bottom: 8, left: 8 }}
                   >
-                    <Text style={styles.revertBtnText}>Revert</Text>
+                    <Text style={styles.swapToggleActiveText}>✓ Compliant</Text>
+                  </TouchableOpacity>
+                </View>
+              );
+            }
+
+            // ── Reverted item — original ingredient, not diet-compliant ───────
+            if (item._itemType === 'reverted') {
+              const qtyStr = formatEntry(item);
+              return (
+                <View style={styles.listItem}>
+                  <TouchableOpacity
+                    style={[styles.checkbox, checked && styles.checkboxChecked]}
+                    onPress={() => toggleChecked(item.name)}
+                  >
+                    {checked && <Text style={styles.checkmark}>✓</Text>}
+                  </TouchableOpacity>
+                  <View style={styles.listItemBody}>
+                    <Text style={[styles.listItemQty, checked && styles.listItemTextChecked]}>{qtyStr}</Text>
+                    <Text style={[styles.listItemName, checked && styles.listItemTextChecked]}>{capFirst(item.name)}</Text>
+                  </View>
+                  {/* Inactive toggle: original state */}
+                  <TouchableOpacity
+                    onPress={() => toggleRevertedSwap(item.name)}
+                    style={styles.swapToggleInactive}
+                    hitSlop={{ top: 8, right: 8, bottom: 8, left: 8 }}
+                  >
+                    <Text style={styles.swapToggleInactiveText}>Original</Text>
                   </TouchableOpacity>
                 </View>
               );
@@ -1474,27 +1510,31 @@ const styles = StyleSheet.create({
     color: Colors.red,
   },
 
-  // Reverted item (user chose to keep original)
-  listItemReverted: {
-    backgroundColor: 'rgba(212,168,67,0.04)',
-  },
-  checkboxReverted: {
-    backgroundColor: 'rgba(212,168,67,0.15)',
-    borderColor: Colors.gold,
-  },
-  revertedIcon: { fontSize: 11, color: Colors.gold },
-  revertBtnActive: {
-    paddingHorizontal: 8,
+  // Swap compliance toggle buttons
+  swapToggleActive: {
+    paddingHorizontal: 9,
     paddingVertical: 4,
     borderRadius: 6,
     borderWidth: 1,
     borderColor: Colors.gold,
     backgroundColor: 'rgba(212,168,67,0.15)',
   },
-  revertBtnActiveText: {
+  swapToggleActiveText: {
     fontFamily: Fonts.bodyMedium,
     fontSize: 11,
     color: Colors.gold,
+  },
+  swapToggleInactive: {
+    paddingHorizontal: 9,
+    paddingVertical: 4,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: Colors.border,
+  },
+  swapToggleInactiveText: {
+    fontFamily: Fonts.body,
+    fontSize: 11,
+    color: Colors.textMuted,
   },
 
   // Swap replacement item (new gold ingredient)
