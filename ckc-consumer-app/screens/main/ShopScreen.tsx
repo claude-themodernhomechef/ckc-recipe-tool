@@ -77,7 +77,7 @@ interface AggregatedEntry {
   category:      string;
   sources:       string[];
   // Swap metadata — set when diet mode is active
-  _itemType?:    'normal' | 'crossed' | 'swap' | 'reverted';
+  _itemType?:    'normal' | 'swap';
   _swapName?:    string;    // for 'crossed': the ingredient that replaces this
   _swapFor?:     string;    // for 'swap': the original ingredient this replaces
   _swapRecipe?:  string;    // which recipe required this swap
@@ -687,15 +687,7 @@ export default function ShopScreen() {
         const isReverted = revertedSwaps.has(item.name);
 
         if (swapInfo && !isReverted) {
-          // Swap active — cross out original, inject replacement below
-          withSwaps.push({
-            ...item,
-            _itemType:     'crossed',
-            _swapName:     swapInfo.to ?? undefined,
-            _swapRecipe:   swapInfo.recipe,
-            _swapProtocol: swapInfo.protocol,
-            _swapColor:    swapInfo.color,
-          });
+          // Swap active — show only the gold replacement line (original is hidden)
           if (swapInfo.to) {
             withSwaps.push({
               name:          swapInfo.to,
@@ -710,15 +702,8 @@ export default function ShopScreen() {
             });
           }
         } else if (swapInfo && isReverted) {
-          // User kept original — show normal + active "Kept" toggle button
-          withSwaps.push({
-            ...item,
-            _itemType:     'reverted',
-            _swapName:     swapInfo.to ?? undefined,
-            _swapRecipe:   swapInfo.recipe,
-            _swapProtocol: swapInfo.protocol,
-            _swapColor:    swapInfo.color,
-          });
+          // User reverted — show original ingredient normally (no swap line)
+          withSwaps.push({ ...item, _itemType: 'normal' });
         } else {
           withSwaps.push({ ...item, _itemType: 'normal' });
         }
@@ -982,7 +967,7 @@ export default function ShopScreen() {
                     <Text style={styles.dietModeSummaryIcon}>⚑</Text>
                     <Text style={styles.dietModeSummaryText}>
                       {swapMap.size - revertedSwaps.size} ingredient{swapMap.size - revertedSwaps.size === 1 ? '' : 's'} swapped for your protocols
-                      {revertedSwaps.size > 0 ? ` · ${revertedSwaps.size} kept original` : ''}
+                      {revertedSwaps.size > 0 ? ` · ${revertedSwaps.size} reverted` : ''}
                     </Text>
                   </>
                 )}
@@ -1015,54 +1000,15 @@ export default function ShopScreen() {
                           {item._swapProtocol}
                         </Text>
                       </View>
-                      <Text style={styles.swapSource}>swap for {capFirst(item._swapFor ?? '')} · {item._swapRecipe}</Text>
+                      <Text style={styles.swapSource}>replaces {capFirst(item._swapFor ?? '')} · {item._swapRecipe}</Text>
                     </View>
                   </View>
-                </View>
-              );
-            }
-
-            // ── Crossed-out item (needs swap, not reverted) ───────────────────
-            if (item._itemType === 'crossed') {
-              const qtyStr = formatEntry(item);
-              return (
-                <View style={[styles.listItem, styles.listItemCrossed]}>
-                  <View style={[styles.checkbox, styles.checkboxCrossed]}>
-                    <Text style={styles.crossedIcon}>✕</Text>
-                  </View>
-                  <View style={styles.listItemBody}>
-                    <Text style={[styles.listItemQty, styles.listItemQtyCrossed]}>{qtyStr}</Text>
-                    <Text style={[styles.listItemName, styles.listItemNameCrossed]}>{capFirst(item.name)}</Text>
-                  </View>
                   <TouchableOpacity
-                    onPress={() => toggleRevertedSwap(item.name)}
+                    onPress={() => toggleRevertedSwap(item._swapFor ?? item.name)}
                     style={styles.revertBtn}
                     hitSlop={{ top: 8, right: 8, bottom: 8, left: 8 }}
                   >
-                    <Text style={styles.revertBtnText}>↩ Keep</Text>
-                  </TouchableOpacity>
-                </View>
-              );
-            }
-
-            // ── Reverted item (user chose to keep original) ───────────────────
-            if (item._itemType === 'reverted') {
-              const qtyStr = formatEntry(item);
-              return (
-                <View style={[styles.listItem, styles.listItemReverted]}>
-                  <View style={[styles.checkbox, styles.checkboxReverted]}>
-                    <Text style={styles.revertedIcon}>✓</Text>
-                  </View>
-                  <View style={styles.listItemBody}>
-                    <Text style={styles.listItemQty}>{qtyStr}</Text>
-                    <Text style={styles.listItemName}>{capFirst(item.name)}</Text>
-                  </View>
-                  <TouchableOpacity
-                    onPress={() => toggleRevertedSwap(item.name)}
-                    style={styles.revertBtnActive}
-                    hitSlop={{ top: 8, right: 8, bottom: 8, left: 8 }}
-                  >
-                    <Text style={styles.revertBtnActiveText}>✓ Kept</Text>
+                    <Text style={styles.revertBtnText}>Revert</Text>
                   </TouchableOpacity>
                 </View>
               );
