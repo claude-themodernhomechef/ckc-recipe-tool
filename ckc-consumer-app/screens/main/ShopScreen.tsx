@@ -33,6 +33,20 @@ import {
 
 const INSTACART_GREEN = '#43B02A';
 
+// ── Protocol metadata ────────────────────────────────────────────────────────
+// Keys match both profile.protocols[] values and recipe dietTags keys exactly.
+
+const PROTOCOL_META: Record<string, { label: string; color: string }> = {
+  AIP: { label: 'AIP',         color: Colors.diet.AIP },
+  LF:  { label: 'Low-FODMAP',  color: Colors.diet.LF  },
+  K:   { label: 'Keto',        color: Colors.diet.K   },
+  GF:  { label: 'Gluten-Free', color: Colors.diet.GF  },
+  DF:  { label: 'Dairy-Free',  color: Colors.diet.DF  },
+  V:   { label: 'Vegetarian',  color: Colors.diet.V   },
+  Vg:  { label: 'Vegan',       color: Colors.diet.Vg  },
+  LH:  { label: 'Low-Histamine', color: Colors.diet.LH },
+};
+
 const ORGANIC_OPTIONS: { value: OrganicPreference; label: string; sublabel: string }[] = [
   {
     value:    'conventional',
@@ -68,6 +82,12 @@ interface SectionData {
   title: string;
   key:   string;
   data:  AggregatedEntry[];
+}
+
+interface RecipeMod {
+  recipeId:   string;
+  recipeName: string;
+  mods: { protocol: string; label: string; notes: string; color: string }[];
 }
 
 // ─────────────────────────────────────────────
@@ -145,6 +165,206 @@ function capFirst(s: string): string {
   if (!s) return '';
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
+
+// ─────────────────────────────────────────────
+//  Protocol toggle bar
+// ─────────────────────────────────────────────
+
+function ProtocolToggleBar({
+  protocols,
+  enabled,
+  onToggle,
+}: {
+  protocols: string[];
+  enabled:   boolean;
+  onToggle:  () => void;
+}) {
+  if (protocols.length === 0) return null;
+
+  return (
+    <TouchableOpacity
+      style={[ptb.wrap, enabled && ptb.wrapActive]}
+      onPress={onToggle}
+      activeOpacity={0.85}
+    >
+      {/* Protocol chips */}
+      <View style={ptb.chips}>
+        {protocols.map(p => {
+          const meta = PROTOCOL_META[p];
+          if (!meta) return null;
+          return (
+            <View key={p} style={[ptb.chip, { backgroundColor: meta.color + '22', borderColor: meta.color + '55' }]}>
+              <Text style={[ptb.chipText, { color: meta.color }]}>{meta.label}</Text>
+            </View>
+          );
+        })}
+      </View>
+
+      {/* Toggle switch */}
+      <View style={ptb.toggle}>
+        <Text style={ptb.toggleLabel}>Diet Mode</Text>
+        <View style={[ptb.track, enabled && ptb.trackActive]}>
+          <View style={[ptb.thumb, enabled && ptb.thumbActive]} />
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+}
+
+const ptb = StyleSheet.create({
+  wrap: {
+    flexDirection:     'row',
+    alignItems:        'center',
+    justifyContent:    'space-between',
+    paddingHorizontal: 16,
+    paddingVertical:   10,
+    borderBottomWidth: 1,
+    borderColor:       Colors.border,
+    backgroundColor:   Colors.surface,
+  },
+  wrapActive: {
+    backgroundColor: 'rgba(212,168,67,0.04)',
+  },
+  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, flex: 1 },
+  chip: {
+    paddingHorizontal: 8,
+    paddingVertical:   3,
+    borderRadius:      100,
+    borderWidth:       1,
+  },
+  chipText: { fontFamily: Fonts.bodyMedium, fontSize: 11 },
+  toggle: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingLeft: 10 },
+  toggleLabel: { fontFamily: Fonts.body, fontSize: 12, color: Colors.textMuted },
+  track: {
+    width: 36, height: 20, borderRadius: 10,
+    backgroundColor: Colors.surfaceElevated,
+    borderWidth: 1, borderColor: Colors.border,
+    justifyContent: 'center',
+    paddingHorizontal: 2,
+  },
+  trackActive: { backgroundColor: Colors.gold, borderColor: Colors.gold },
+  thumb: {
+    width: 14, height: 14, borderRadius: 7,
+    backgroundColor: Colors.textMuted,
+    alignSelf: 'flex-start',
+  },
+  thumbActive: { backgroundColor: '#000', alignSelf: 'flex-end' },
+});
+
+// ─────────────────────────────────────────────
+//  Modifications header (ListHeaderComponent)
+// ─────────────────────────────────────────────
+
+function ModificationsHeader({ mods }: { mods: RecipeMod[] }) {
+  if (mods.length === 0) {
+    return (
+      <View style={mh.allGoodRow}>
+        <Text style={mh.allGoodIcon}>✓</Text>
+        <Text style={mh.allGoodText}>All items are compliant with your protocols</Text>
+      </View>
+    );
+  }
+
+  return (
+    <View style={mh.wrap}>
+      <View style={mh.titleRow}>
+        <Text style={mh.title}>MODIFICATIONS NEEDED</Text>
+        <View style={mh.badge}>
+          <Text style={mh.badgeText}>{mods.length}</Text>
+        </View>
+      </View>
+      {mods.map(item => (
+        <View key={item.recipeId} style={mh.card}>
+          {/* Recipe name + protocol chips */}
+          <View style={mh.cardHeader}>
+            <Text style={mh.cardRecipe} numberOfLines={1}>{item.recipeName}</Text>
+            <View style={mh.cardChips}>
+              {item.mods.map(m => (
+                <View key={m.protocol} style={[mh.cardChip, { borderColor: m.color + '66' }]}>
+                  <Text style={[mh.cardChipText, { color: m.color }]}>{m.label}</Text>
+                </View>
+              ))}
+            </View>
+          </View>
+          {/* Swap notes — one per protocol if multiple */}
+          {item.mods.map((m, i) => (
+            <View key={m.protocol} style={mh.noteRow}>
+              {item.mods.length > 1 && (
+                <Text style={[mh.noteProtocol, { color: m.color }]}>{m.label}: </Text>
+              )}
+              <Text style={mh.noteText}>{m.notes}</Text>
+            </View>
+          ))}
+        </View>
+      ))}
+      <Text style={mh.footer}>
+        Per-ingredient swaps coming soon — for now, use these notes while shopping.
+      </Text>
+    </View>
+  );
+}
+
+const mh = StyleSheet.create({
+  // All-good state
+  allGoodRow: {
+    flexDirection:  'row',
+    alignItems:     'center',
+    gap:            8,
+    marginHorizontal: 16,
+    marginTop:      16,
+    marginBottom:   4,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    backgroundColor: 'rgba(124,184,122,0.08)',
+    borderRadius:   10,
+    borderWidth:    1,
+    borderColor:    'rgba(124,184,122,0.2)',
+  },
+  allGoodIcon: { fontSize: 14, color: Colors.green },
+  allGoodText: { fontFamily: Fonts.body, fontSize: 13, color: Colors.green },
+
+  // Main wrapper
+  wrap: { paddingHorizontal: 16, paddingTop: 16, paddingBottom: 4 },
+  titleRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 10 },
+  title: {
+    fontFamily: Fonts.bodyMedium, fontSize: 11,
+    color: Colors.textMuted, letterSpacing: 0.8, textTransform: 'uppercase',
+  },
+  badge: {
+    backgroundColor: 'rgba(212,168,67,0.15)',
+    borderRadius: 10, paddingHorizontal: 7, paddingVertical: 2,
+  },
+  badgeText: { fontFamily: Fonts.body, fontSize: 11, color: Colors.gold },
+
+  // Card per recipe
+  card: {
+    backgroundColor: 'rgba(212,168,67,0.05)',
+    borderWidth:     1,
+    borderColor:     'rgba(212,168,67,0.18)',
+    borderRadius:    12,
+    padding:         14,
+    marginBottom:    8,
+    gap:             8,
+  },
+  cardHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8 },
+  cardRecipe: { fontFamily: Fonts.bodyMedium, fontSize: 14, color: Colors.textPrimary, flex: 1 },
+  cardChips:  { flexDirection: 'row', gap: 4 },
+  cardChip: {
+    paddingHorizontal: 7, paddingVertical: 2,
+    borderRadius: 100, borderWidth: 1,
+  },
+  cardChipText: { fontFamily: Fonts.bodyMedium, fontSize: 10 },
+
+  // Swap note lines
+  noteRow: { flexDirection: 'row', flexWrap: 'wrap' },
+  noteProtocol: { fontFamily: Fonts.bodyMedium, fontSize: 13 },
+  noteText: { fontFamily: Fonts.body, fontSize: 13, color: Colors.textSecondary, lineHeight: 20, flex: 1 },
+
+  footer: {
+    fontFamily: Fonts.body, fontSize: 11,
+    color: Colors.textMuted, marginTop: 4, marginBottom: 8, lineHeight: 16,
+  },
+});
 
 // ─────────────────────────────────────────────
 //  Pre-checkout confirmation sheet
@@ -445,6 +665,8 @@ export default function ShopScreen() {
   const [checkoutVisible, setCheckoutVisible] = useState(false);
   const [paywallVisible,  setPaywallVisible]  = useState(false);
   const [paywallEntree,   setPaywallEntree]   = useState(false);
+  // Diet mode: default ON when user has active protocols
+  const [dietModeEnabled, setDietModeEnabled] = useState(() => profile.protocols.length > 0);
 
   const allRecipes = SAMPLE_RECIPES;
 
@@ -475,6 +697,36 @@ export default function ShopScreen() {
       return { title: cat.label, key: cat.key, data: items };
     }).filter(s => s.data.length > 0);
   }, [aggregated, checkedItems, hideChecked]);
+
+  // ── Diet mode: collect modification notes per recipe ─────────────────────────
+  const modificationNotes = useMemo((): RecipeMod[] => {
+    if (!dietModeEnabled || profile.protocols.length === 0) return [];
+    const result: RecipeMod[] = [];
+    const seen = new Set<string>();
+
+    for (const menuItem of menuItems) {
+      if (seen.has(menuItem.recipeId)) continue;
+      const recipe = allRecipes.find(
+        r => r.id === menuItem.recipeId || r.name === menuItem.recipeName,
+      );
+      if (!recipe) continue;
+
+      const mods = profile.protocols
+        .map(p => {
+          const tag = recipe.dietTags?.[p];
+          if (!tag || tag.native || !tag.mod || !tag.notes.trim()) return null;
+          const meta = PROTOCOL_META[p];
+          return { protocol: p, label: meta?.label ?? p, notes: tag.notes, color: meta?.color ?? Colors.gold };
+        })
+        .filter(Boolean) as RecipeMod['mods'];
+
+      if (mods.length > 0) {
+        result.push({ recipeId: menuItem.recipeId, recipeName: menuItem.recipeName, mods });
+        seen.add(menuItem.recipeId);
+      }
+    }
+    return result;
+  }, [dietModeEnabled, menuItems, allRecipes, profile.protocols]);
 
   // ── Counts ───────────────────────────────────────────────────────────────────
   const totalItems = useMemo(() => [...aggregated.values()].length, [aggregated]);
@@ -658,6 +910,15 @@ export default function ShopScreen() {
         </View>
       )}
 
+      {/* ── Protocol diet-mode toggle ────────────────────────────────────────── */}
+      {menuItems.length > 0 && (
+        <ProtocolToggleBar
+          protocols={profile.protocols}
+          enabled={dietModeEnabled}
+          onToggle={() => setDietModeEnabled(v => !v)}
+        />
+      )}
+
       {/* ── Action row ──────────────────────────────────────────────────────── */}
       {menuItems.length > 0 && (
         <View style={styles.actionRow}>
@@ -700,6 +961,11 @@ export default function ShopScreen() {
           keyExtractor={item => item.name}
           stickySectionHeadersEnabled={false}
           contentContainerStyle={styles.listContent}
+          ListHeaderComponent={
+            dietModeEnabled && profile.protocols.length > 0
+              ? <ModificationsHeader mods={modificationNotes} />
+              : null
+          }
           renderSectionHeader={({ section }) => (
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}>{section.title}</Text>
