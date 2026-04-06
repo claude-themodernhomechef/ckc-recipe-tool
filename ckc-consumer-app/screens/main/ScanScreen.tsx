@@ -205,9 +205,13 @@ export default function ScanScreen() {
       const scored = scoreIngredients(ingredients);
       setRecipeResults(scored);
       setRecipeStep('results');
-    } catch (e) {
+    } catch (e: any) {
       console.error('[ScanScreen] runRecipeScan error', e);
-      setErrorMsg('Something went wrong. Please try again.');
+      if (e?.message === 'GEMINI_KEY_MISSING') {
+        setErrorMsg('API key not configured. Check Vercel environment variables.');
+      } else {
+        setErrorMsg(`Error: ${e?.message ?? 'Unknown error'}`);
+      }
       setRecipeStep('input');
     }
   }
