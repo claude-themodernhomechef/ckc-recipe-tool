@@ -5,11 +5,12 @@
  * Mode 2: Pantry Scanner — photo of fridge/pantry → cross-reference shopping list
  */
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View, Text, StyleSheet, TouchableOpacity, ScrollView,
-  TextInput, ActivityIndicator, Platform,
+  TextInput, Animated, Platform,
 } from 'react-native';
+import Svg, { Circle } from 'react-native-svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Fonts } from '../../constants/theme';
 import { scanRecipePhoto, scanPantryPhoto, ExtractedIngredient, PantryItem } from '../../lib/gemini';
@@ -332,6 +333,111 @@ function scoreIngredients(ingredients: ExtractedIngredient[], protocols: string[
 }
 
 // ─────────────────────────────────────────────
+//  Animated Loading View
+// ─────────────────────────────────────────────
+
+const RECIPE_PHRASES = [
+  'Reading your recipe…',
+  'Identifying ingredients…',
+  'Checking against 400,000+ products…',
+  'Scanning for hidden sources…',
+  'Analyzing ingredient interactions…',
+  'Almost there…',
+];
+
+const PANTRY_PHRASES = [
+  'Scanning your pantry…',
+  'Identifying ingredients…',
+  'Matching against your shopping list…',
+  'Cross-referencing your protocols…',
+  'Almost there…',
+];
+
+const RING_SIZE   = 160;
+const STROKE_W    = 8;
+const RADIUS      = (RING_SIZE - STROKE_W) / 2;
+const CIRCUMF     = 2 * Math.PI * RADIUS;
+
+function ScanLoadingView({ variant, protocolLabel }: { variant: 'recipe' | 'pantry'; protocolLabel: string }) {
+  const phrases       = variant === 'recipe' ? RECIPE_PHRASES : PANTRY_PHRASES;
+  const [phraseIdx, setPhraseIdx] = useState(0);
+  const [pct, setPct]             = useState(0);
+  const fadeAnim   = useRef(new Animated.Value(1)).current;
+  const progressRef = useRef(0);
+
+  // Fake progress: ramp to ~88% over 9s then hold
+  useEffect(() => {
+    const start = Date.now();
+    const DURATION = 9000;
+    const MAX_PCT  = 88;
+    const tick = setInterval(() => {
+      const elapsed = Date.now() - start;
+      const raw     = Math.min(elapsed / DURATION, 1);
+      // ease-out curve
+      const eased   = 1 - Math.pow(1 - raw, 2);
+      const next    = Math.round(eased * MAX_PCT);
+      if (next !== progressRef.current) {
+        progressRef.current = next;
+        setPct(next);
+      }
+      if (elapsed >= DURATION) clearInterval(tick);
+    }, 80);
+    return () => clearInterval(tick);
+  }, []);
+
+  // Cycle phrases with fade
+  useEffect(() => {
+    const cycle = setInterval(() => {
+      Animated.sequence([
+        Animated.timing(fadeAnim, { toValue: 0, duration: 300, useNativeDriver: true }),
+        Animated.timing(fadeAnim, { toValue: 1, duration: 300, useNativeDriver: true }),
+      ]).start();
+      setTimeout(() => {
+        setPhraseIdx(i => (i + 1) % phrases.length);
+      }, 300);
+    }, 2200);
+    return () => clearInterval(cycle);
+  }, []);
+
+  const strokeDash = (pct / 100) * CIRCUMF;
+
+  return (
+    <View style={styles.loadingWrap}>
+      {/* Ring */}
+      <View style={{ width: RING_SIZE, height: RING_SIZE, alignItems: 'center', justifyContent: 'center' }}>
+        <Svg width={RING_SIZE} height={RING_SIZE} style={{ position: 'absolute' }}>
+          {/* Track */}
+          <Circle
+            cx={RING_SIZE / 2} cy={RING_SIZE / 2} r={RADIUS}
+            stroke="#2a2a2a" strokeWidth={STROKE_W} fill="none"
+          />
+          {/* Progress arc */}
+          <Circle
+            cx={RING_SIZE / 2} cy={RING_SIZE / 2} r={RADIUS}
+            stroke={Colors.gold}
+            strokeWidth={STROKE_W}
+            fill="none"
+            strokeDasharray={`${strokeDash} ${CIRCUMF}`}
+            strokeLinecap="round"
+            transform={`rotate(-90 ${RING_SIZE / 2} ${RING_SIZE / 2})`}
+          />
+        </Svg>
+        <Text style={styles.loadingPct}>{pct}%</Text>
+      </View>
+
+      {/* Phrase */}
+      <Animated.Text style={[styles.loadingTitle, { opacity: fadeAnim }]}>
+        {phrases[phraseIdx]}
+      </Animated.Text>
+
+      <Text style={styles.loadingBody}>
+        Scoring against your {protocolLabel} protocol
+      </Text>
+    </View>
+  );
+}
+
+// ─────────────────────────────────────────────
 //  Main Screen
 // ─────────────────────────────────────────────
 
@@ -546,11 +652,7 @@ export default function ScanScreen() {
     if (recipeStep === 'loading') {
       return (
         <SafeAreaView style={styles.container} edges={['top']}>
-          <View style={styles.loadingWrap}>
-            <ActivityIndicator size="large" color={Colors.gold} />
-            <Text style={styles.loadingTitle}>Checking your recipe…</Text>
-            <Text style={styles.loadingBody}>Scoring ingredients against your {formatProtocolLabel(activeProtocols)} protocol</Text>
-          </View>
+          <ScanLoadingView variant="recipe" protocolLabel={formatProtocolLabel(activeProtocols)} />
         </SafeAreaView>
       );
     }
@@ -748,11 +850,7 @@ export default function ScanScreen() {
     if (pantryStep === 'loading') {
       return (
         <SafeAreaView style={styles.container} edges={['top']}>
-          <View style={styles.loadingWrap}>
-            <ActivityIndicator size="large" color={Colors.gold} />
-            <Text style={styles.loadingTitle}>Scanning your pantry…</Text>
-            <Text style={styles.loadingBody}>Identifying ingredients and checking your shopping list</Text>
-          </View>
+          <ScanLoadingView variant="pantry" protocolLabel={formatProtocolLabel(activeProtocols)} />
         </SafeAreaView>
       );
     }
@@ -981,8 +1079,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 16,
+    gap: 24,
     paddingHorizontal: 32,
+  },
+  loadingPct: {
+    fontFamily: Fonts.display,
+    fontSize: 32,
+    color: Colors.textPrimary,
   },
   loadingTitle: {
     fontFamily: Fonts.display,
