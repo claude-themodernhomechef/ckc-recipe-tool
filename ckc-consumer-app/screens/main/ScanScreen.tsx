@@ -365,10 +365,10 @@ function ScanLoadingView({ variant, protocolLabel }: { variant: 'recipe' | 'pant
   const fadeAnim   = useRef(new Animated.Value(1)).current;
   const progressRef = useRef(0);
 
-  // Fake progress: ramp to ~88% over 9s then hold
+  // Fake progress: ramp to ~88% over 22s then hold
   useEffect(() => {
     const start = Date.now();
-    const DURATION = 9000;
+    const DURATION = 22000;
     const MAX_PCT  = 88;
     const tick = setInterval(() => {
       const elapsed = Date.now() - start;
