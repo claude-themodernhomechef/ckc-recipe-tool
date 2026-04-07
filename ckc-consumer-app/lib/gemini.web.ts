@@ -34,7 +34,7 @@ async function uriToBase64Web(uri: string): Promise<{ base64: string; mimeType: 
 
 async function callGemini(prompt: string, base64: string, mimeType: string): Promise<string> {
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${API_KEY}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
