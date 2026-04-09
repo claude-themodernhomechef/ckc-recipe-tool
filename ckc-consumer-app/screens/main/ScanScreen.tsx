@@ -348,9 +348,17 @@ const RECIPE_PHRASES = [
 const PANTRY_PHRASES = [
   'Scanning your pantry…',
   'Identifying ingredients…',
-  'Matching against your shopping list…',
-  'Cross-referencing your protocols…',
+  'Processing your photos…',
+  'Removing duplicates…',
   'Almost there…',
+];
+
+const PANTRY_ZONES = [
+  { key: 'spices',     label: 'Spices',                  icon: '🫙', max: 2 },
+  { key: 'condiments', label: 'Condiments & Fridge Door', icon: '🥫', max: 2 },
+  { key: 'freezer',    label: 'Freezer',                  icon: '🧊', max: 3 },
+  { key: 'fridge',     label: 'Fridge',                   icon: '🧀', max: 3 },
+  { key: 'pantry',     label: 'Pantry',                   icon: '🏪', max: 3 },
 ];
 
 const RING_SIZE   = 160;
@@ -452,22 +460,34 @@ export default function ScanScreen() {
   const [urlText, setUrlText]             = useState('');
   const [manualText, setManualText]       = useState('');
   const [recipeImageUri, setRecipeImageUri] = useState<string | null>(null);
-  const [pantryImageUri, setPantryImageUri] = useState<string | null>(null);
-  const [recipeResults, setRecipeResults] = useState<ScoredIngredient[]>([]);
-  const [pantryResults, setPantryResults] = useState<PantryResult[]>([]);
-  const [errorMsg, setErrorMsg]           = useState<string | null>(null);
-  const [pantryToggles, setPantryToggles] = useState<Record<string, boolean | null>>({});
+  const [pantryZones, setPantryZones]       = useState<Record<string, string[]>>({});
+  const [recipeResults, setRecipeResults]   = useState<ScoredIngredient[]>([]);
+  const [pantryResults, setPantryResults]   = useState<PantryResult[]>([]);
+  const [errorMsg, setErrorMsg]             = useState<string | null>(null);
+  const [pantryToggles, setPantryToggles]   = useState<Record<string, boolean | null>>({});
 
   // Web file input refs
-  const recipeFileInputRef = useRef<any>(null);
-  const pantryFileInputRef = useRef<any>(null);
+  const recipeFileInputRef  = useRef<any>(null);
+  const pantryFileInputRef  = useRef<any>(null);
+  const pantryZoneKeyRef    = useRef<string>('');
 
   function handleWebFileSelect(target: 'recipe' | 'pantry', e: any) {
     const file = e.target.files?.[0];
     if (!file) return;
     const uri = URL.createObjectURL(file);
-    if (target === 'recipe') setRecipeImageUri(uri);
-    else setPantryImageUri(uri);
+    if (target === 'recipe') {
+      setRecipeImageUri(uri);
+    } else {
+      const zoneKey = pantryZoneKeyRef.current;
+      if (zoneKey) {
+        setPantryZones(prev => ({
+          ...prev,
+          [zoneKey]: [...(prev[zoneKey] ?? []), uri],
+        }));
+      }
+      // Reset so the same file can be re-selected if needed
+      if (pantryFileInputRef.current) pantryFileInputRef.current.value = '';
+    }
   }
 
   function resetAll() {
@@ -477,17 +497,24 @@ export default function ScanScreen() {
     setUrlText('');
     setManualText('');
     setRecipeImageUri(null);
-    setPantryImageUri(null);
+    setPantryZones({});
     setRecipeResults([]);
     setPantryResults([]);
     setErrorMsg(null);
     setPantryToggles({});
   }
 
-  async function pickImage(target: 'recipe' | 'pantry') {
+  async function pickImage(target: 'recipe' | 'pantry', zoneKey?: string) {
     if (Platform.OS === 'web') {
-      const ref = target === 'recipe' ? recipeFileInputRef : pantryFileInputRef;
-      ref.current?.click();
+      if (target === 'recipe') {
+        recipeFileInputRef.current?.click();
+      } else if (zoneKey) {
+        pantryZoneKeyRef.current = zoneKey;
+        if (pantryFileInputRef.current) {
+          pantryFileInputRef.current.removeAttribute('capture');
+          pantryFileInputRef.current.click();
+        }
+      }
       return;
     }
     if (!ImagePicker) return;
@@ -498,18 +525,30 @@ export default function ScanScreen() {
       quality: 0.8,
     });
     if (!result.canceled && result.assets[0]) {
-      if (target === 'recipe') setRecipeImageUri(result.assets[0].uri);
-      else setPantryImageUri(result.assets[0].uri);
+      if (target === 'recipe') {
+        setRecipeImageUri(result.assets[0].uri);
+      } else if (zoneKey) {
+        setPantryZones(prev => ({
+          ...prev,
+          [zoneKey]: [...(prev[zoneKey] ?? []), result.assets[0].uri],
+        }));
+      }
     }
   }
 
-  async function takePhoto(target: 'recipe' | 'pantry') {
+  async function takePhoto(target: 'recipe' | 'pantry', zoneKey?: string) {
     if (Platform.OS === 'web') {
-      // On web, camera access via file input with capture attribute
-      const ref = target === 'recipe' ? recipeFileInputRef : pantryFileInputRef;
-      if (ref.current) {
-        ref.current.setAttribute('capture', 'environment');
-        ref.current.click();
+      if (target === 'recipe') {
+        if (recipeFileInputRef.current) {
+          recipeFileInputRef.current.setAttribute('capture', 'environment');
+          recipeFileInputRef.current.click();
+        }
+      } else if (zoneKey) {
+        pantryZoneKeyRef.current = zoneKey;
+        if (pantryFileInputRef.current) {
+          pantryFileInputRef.current.setAttribute('capture', 'environment');
+          pantryFileInputRef.current.click();
+        }
       }
       return;
     }
@@ -521,9 +560,22 @@ export default function ScanScreen() {
       quality: 0.8,
     });
     if (!result.canceled && result.assets[0]) {
-      if (target === 'recipe') setRecipeImageUri(result.assets[0].uri);
-      else setPantryImageUri(result.assets[0].uri);
+      if (target === 'recipe') {
+        setRecipeImageUri(result.assets[0].uri);
+      } else if (zoneKey) {
+        setPantryZones(prev => ({
+          ...prev,
+          [zoneKey]: [...(prev[zoneKey] ?? []), result.assets[0].uri],
+        }));
+      }
     }
+  }
+
+  function removeZonePhoto(zoneKey: string, idx: number) {
+    setPantryZones(prev => ({
+      ...prev,
+      [zoneKey]: (prev[zoneKey] ?? []).filter((_, i) => i !== idx),
+    }));
   }
 
   async function runRecipeScan() {
@@ -580,24 +632,25 @@ export default function ScanScreen() {
   }
 
   async function runPantryScan() {
-    if (!pantryImageUri) return;
+    const allUris = Object.values(pantryZones).flat();
+    if (allUris.length === 0) return;
     setErrorMsg(null);
     setPantryStep('loading');
     try {
-      const items: PantryItem[] = await scanPantryPhoto(pantryImageUri);
-
-      // Mock shopping list to cross-reference against
-      // Phase 2: pull from Firestore shopping list
-      const shoppingList = [
-        'olive oil', 'chicken breast', 'lemon juice',
-        'fresh thyme', 'garlic', 'onion', 'rice flour',
-      ];
-
-      const results: PantryResult[] = shoppingList.map(listItem => ({
-        name:    listItem,
-        matched: items.some(i => i.name.includes(listItem) || listItem.includes(i.name)),
-      }));
-
+      const allItems: PantryItem[] = [];
+      for (const uri of allUris) {
+        const items = await scanPantryPhoto(uri);
+        allItems.push(...items);
+      }
+      // Deduplicate by lowercase name
+      const seen = new Set<string>();
+      const unique = allItems.filter(i => {
+        const key = i.name.toLowerCase().trim();
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+      const results: PantryResult[] = unique.map(i => ({ name: i.name, matched: false }));
       setPantryResults(results);
       setPantryStep('results');
     } catch (e) {
@@ -869,14 +922,14 @@ export default function ScanScreen() {
           <View style={styles.summaryBanner}>
             <Text style={styles.summaryText}>
               <Text style={styles.summaryHighlight}>
-                {matched.length} item{matched.length !== 1 ? 's' : ''}
+                {pantryResults.length} ingredient{pantryResults.length !== 1 ? 's' : ''}
               </Text>
-              {' '}may already be at home
+              {' '}detected in your photo
             </Text>
           </View>
 
           <ScrollView contentContainerStyle={styles.resultsContent}>
-            <Text style={styles.sectionLabel}>Your Shopping List</Text>
+            <Text style={styles.sectionLabel}>Detected Ingredients</Text>
             {pantryResults.map((item, i) => {
               const toggle   = pantryToggles[item.name];
               const haveIt   = toggle === true;
@@ -934,6 +987,8 @@ export default function ScanScreen() {
     }
 
     // Pantry input
+    const totalPhotos = Object.values(pantryZones).flat().length;
+
     return (
       <SafeAreaView style={styles.container} edges={['top']}>
         <View style={styles.header}>
@@ -943,51 +998,97 @@ export default function ScanScreen() {
           <Text style={styles.title}>Scan Your Pantry</Text>
         </View>
 
+        {/* Hidden file input for web — shared across all zones */}
+        {Platform.OS === 'web' && (
+          <input
+            ref={pantryFileInputRef}
+            type="file"
+            accept="image/*"
+            style={{ display: 'none' }}
+            onChange={(e: any) => handleWebFileSelect('pantry', e)}
+          />
+        )}
+
         <ScrollView contentContainerStyle={styles.inputBody}>
           {errorMsg && <Text style={styles.errorMsg}>{errorMsg}</Text>}
 
-          <Text style={styles.inputDescription}>
-            Take a photo of your fridge, pantry, or spice rack. We'll identify what you have and flag items on your shopping list that you may not need to buy.
-          </Text>
-
-          {pantryImageUri ? (
-            <View style={styles.imagePreviewWrap}>
-              <Text style={styles.imagePreviewLabel}>Photo selected ✓</Text>
-              <TouchableOpacity onPress={() => setPantryImageUri(null)}>
-                <Text style={styles.imageRemoveBtn}>Remove</Text>
-              </TouchableOpacity>
+          {/* ── Photo Tips Card ── */}
+          <View style={styles.tipsCard}>
+            <Text style={styles.tipsTitle}>📸  For the best results</Text>
+            <View style={styles.tipsRow}>
+              <View style={styles.tipCol}>
+                <Text style={styles.tipColHeader}>✅  Do this</Text>
+                <Text style={styles.tipItem}>• Items in a single layer</Text>
+                <Text style={styles.tipItem}>• Labels facing the camera</Text>
+                <Text style={styles.tipItem}>• Good lighting, no glare</Text>
+              </View>
+              <View style={styles.tipDivider} />
+              <View style={styles.tipCol}>
+                <Text style={styles.tipColHeader}>❌  Avoid this</Text>
+                <Text style={styles.tipItem}>• Items stacked or hidden</Text>
+                <Text style={styles.tipItem}>• Labels facing away</Text>
+                <Text style={styles.tipItem}>• Dark or blurry shots</Text>
+              </View>
             </View>
-          ) : (
-            <View style={styles.photoOptions}>
-              {Platform.OS === 'web' && (
-                <input
-                  ref={pantryFileInputRef}
-                  type="file"
-                  accept="image/*"
-                  style={{ display: 'none' }}
-                  onChange={(e: any) => handleWebFileSelect('pantry', e)}
-                />
-              )}
-              <TouchableOpacity style={styles.photoBtn} onPress={() => takePhoto('pantry')} activeOpacity={0.8}>
-                <Text style={styles.photoBtnIcon}>📷</Text>
-                <Text style={styles.photoBtnLabel}>Take Photo</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.photoBtn} onPress={() => pickImage('pantry')} activeOpacity={0.8}>
-                <Text style={styles.photoBtnIcon}>🖼️</Text>
-                <Text style={styles.photoBtnLabel}>Choose from Library</Text>
-              </TouchableOpacity>
-            </View>
-          )}
+          </View>
 
-          <Text style={styles.inputHint}>You can scan your fridge, pantry, and spice rack separately</Text>
+          {/* ── Zone Sections ── */}
+          {PANTRY_ZONES.map(zone => {
+            const photos = pantryZones[zone.key] ?? [];
+            const canAdd = photos.length < zone.max;
+            return (
+              <View key={zone.key} style={styles.zoneSection}>
+                <Text style={styles.zoneLabel}>{zone.icon}  {zone.label}</Text>
+                <Text style={styles.zoneSubLabel}>Up to {zone.max} photo{zone.max > 1 ? 's' : ''}</Text>
+
+                {/* Uploaded photo thumbnails */}
+                {photos.length > 0 && (
+                  <View style={styles.zoneThumbs}>
+                    {photos.map((uri, idx) => (
+                      <View key={idx} style={styles.zoneThumbWrap}>
+                        <Text style={styles.zoneThumbCheck}>✓ Photo {idx + 1}</Text>
+                        <TouchableOpacity onPress={() => removeZonePhoto(zone.key, idx)}>
+                          <Text style={styles.zoneThumbRemove}>Remove</Text>
+                        </TouchableOpacity>
+                      </View>
+                    ))}
+                  </View>
+                )}
+
+                {/* Add photo buttons */}
+                {canAdd && (
+                  <View style={styles.photoOptions}>
+                    <TouchableOpacity
+                      style={styles.photoBtn}
+                      onPress={() => takePhoto('pantry', zone.key)}
+                      activeOpacity={0.8}
+                    >
+                      <Text style={styles.photoBtnIcon}>📷</Text>
+                      <Text style={styles.photoBtnLabel}>Take Photo</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.photoBtn}
+                      onPress={() => pickImage('pantry', zone.key)}
+                      activeOpacity={0.8}
+                    >
+                      <Text style={styles.photoBtnIcon}>🖼️</Text>
+                      <Text style={styles.photoBtnLabel}>Choose from Library</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+              </View>
+            );
+          })}
 
           <TouchableOpacity
-            style={[styles.scanBtn, !pantryImageUri && styles.scanBtnDisabled]}
+            style={[styles.scanBtn, totalPhotos === 0 && styles.scanBtnDisabled]}
             onPress={runPantryScan}
-            disabled={!pantryImageUri}
+            disabled={totalPhotos === 0}
             activeOpacity={0.85}
           >
-            <Text style={styles.scanBtnText}>Scan My Pantry</Text>
+            <Text style={styles.scanBtnText}>
+              {totalPhotos === 0 ? 'Add at Least One Photo' : `Scan My Pantry (${totalPhotos} photo${totalPhotos !== 1 ? 's' : ''})`}
+            </Text>
           </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
@@ -1343,6 +1444,92 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.bodyMedium,
     fontSize: 15,
     color: '#000',
+  },
+
+  // ── Photo tips card ──
+  tipsCard: {
+    backgroundColor: 'rgba(255,255,255,0.04)',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    padding: 16,
+    marginBottom: 24,
+  },
+  tipsTitle: {
+    fontFamily: Fonts.body,
+    fontSize: 13,
+    fontWeight: '600',
+    color: Colors.text,
+    marginBottom: 12,
+  },
+  tipsRow: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  tipCol: {
+    flex: 1,
+    gap: 4,
+  },
+  tipDivider: {
+    width: 1,
+    backgroundColor: Colors.border,
+  },
+  tipColHeader: {
+    fontFamily: Fonts.body,
+    fontSize: 12,
+    fontWeight: '600',
+    color: Colors.textMuted,
+    marginBottom: 4,
+  },
+  tipItem: {
+    fontFamily: Fonts.body,
+    fontSize: 12,
+    color: Colors.textMuted,
+    lineHeight: 18,
+  },
+
+  // ── Zone sections ──
+  zoneSection: {
+    marginBottom: 24,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.border,
+    paddingBottom: 20,
+  },
+  zoneLabel: {
+    fontFamily: Fonts.heading,
+    fontSize: 18,
+    color: Colors.text,
+    marginBottom: 2,
+  },
+  zoneSubLabel: {
+    fontFamily: Fonts.body,
+    fontSize: 12,
+    color: Colors.textMuted,
+    marginBottom: 12,
+  },
+  zoneThumbs: {
+    gap: 8,
+    marginBottom: 12,
+  },
+  zoneThumbWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+  zoneThumbCheck: {
+    fontFamily: Fonts.body,
+    fontSize: 13,
+    color: '#6fcf97',
+  },
+  zoneThumbRemove: {
+    fontFamily: Fonts.body,
+    fontSize: 12,
+    color: Colors.textMuted,
+    textDecorationLine: 'underline',
   },
 
   // ── Pantry results ──

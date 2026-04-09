@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Fonts } from '../../constants/theme';
 import { useUser } from '../../context/UserContext';
@@ -29,17 +29,27 @@ export default function ProfileScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
-        <Text style={styles.title}>Profile</Text>
-        <View style={[
-          styles.tierBadge,
-          profile.tier === 'paid' && styles.tierBadgePaid,
-        ]}>
-          <Text style={[
-            styles.tierBadgeText,
-            profile.tier === 'paid' && styles.tierBadgeTextPaid,
-          ]}>
-            {profile.tier === 'paid' ? 'Premium' : 'Free'}
+        {/* Avatar */}
+        <Pressable style={styles.avatar}>
+          <Text style={styles.avatarIcon}>👤</Text>
+        </Pressable>
+
+        {/* Greeting + tier */}
+        <View style={styles.headerText}>
+          <Text style={styles.greeting}>
+            Hello, {profile.name ? profile.name : 'Chef'} 👋
           </Text>
+          <View style={[
+            styles.tierBadge,
+            profile.tier === 'paid' && styles.tierBadgePaid,
+          ]}>
+            <Text style={[
+              styles.tierBadgeText,
+              profile.tier === 'paid' && styles.tierBadgeTextPaid,
+            ]}>
+              {profile.tier === 'paid' ? 'Premium' : 'Free'}
+            </Text>
+          </View>
         </View>
       </View>
 
@@ -146,16 +156,34 @@ const styles = StyleSheet.create({
 
   header: {
     paddingHorizontal: 24,
-    paddingTop: 8,
-    paddingBottom: 16,
+    paddingTop: 12,
+    paddingBottom: 20,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    gap: 16,
   },
-  title: {
+  avatar: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: Colors.surface,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatarIcon: {
+    fontSize: 26,
+  },
+  headerText: {
+    flex: 1,
+    gap: 6,
+  },
+  greeting: {
     fontFamily: Fonts.display,
-    fontSize: 28,
+    fontSize: 26,
     color: Colors.textPrimary,
+    lineHeight: 30,
   },
   tierBadge: {
     borderWidth: 1,

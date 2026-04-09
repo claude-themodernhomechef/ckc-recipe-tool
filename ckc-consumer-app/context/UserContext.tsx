@@ -6,6 +6,7 @@ import React, { createContext, useContext, useState } from 'react';
 
 export interface UserProfile {
   tier: 'free' | 'paid';
+  name: string;          // user's first name, set during onboarding
   protocols: string[];   // active diet protocols from setup
   cuisines: string[];    // preferred cuisines from setup
   proteins: string[];    // preferred proteins from setup
@@ -16,6 +17,7 @@ export interface UserProfile {
 interface UserContextValue {
   profile: UserProfile;
   savedRecipeIds: string[];
+  setName: (name: string) => void;
   saveRecipe: (recipeId: string) => void;
   unsaveRecipe: (recipeId: string) => void;
   isSaved: (recipeId: string) => boolean;
@@ -24,6 +26,7 @@ interface UserContextValue {
 
 const defaultProfile: UserProfile = {
   tier: 'paid', // DEV: set to 'free' to test paywall gates
+  name: '',
   protocols: ['LF', 'GF'], // DEV: sample protocols to test diet toggle in Shop tab
   cuisines: [],
   proteins: [],
@@ -34,6 +37,7 @@ const defaultProfile: UserProfile = {
 const UserContext = createContext<UserContextValue>({
   profile: defaultProfile,
   savedRecipeIds: [],
+  setName: () => {},
   saveRecipe: () => {},
   unsaveRecipe: () => {},
   isSaved: () => false,
@@ -41,8 +45,12 @@ const UserContext = createContext<UserContextValue>({
 });
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
-  const [profile] = useState<UserProfile>(defaultProfile);
+  const [profile, setProfile] = useState<UserProfile>(defaultProfile);
   const [savedRecipeIds, setSavedRecipeIds] = useState<string[]>([]);
+
+  function setName(name: string) {
+    setProfile(p => ({ ...p, name }));
+  }
 
   function saveRecipe(recipeId: string) {
     setSavedRecipeIds(ids => ids.includes(recipeId) ? ids : [...ids, recipeId]);
@@ -61,7 +69,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <UserContext.Provider value={{ profile, savedRecipeIds, saveRecipe, unsaveRecipe, isSaved, signOut }}>
+    <UserContext.Provider value={{ profile, savedRecipeIds, setName, saveRecipe, unsaveRecipe, isSaved, signOut }}>
       {children}
     </UserContext.Provider>
   );
