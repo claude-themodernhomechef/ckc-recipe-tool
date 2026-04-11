@@ -302,6 +302,7 @@ function RecipeRow({
         notes: note,
       });
       setSaveState('saved');
+      setTimeout(() => setSaveState('idle'), 2000);
     } catch (e) {
       console.warn('updateDietTagInDecisions failed:', e);
       setSaveState('idle');

@@ -18,9 +18,9 @@ service cloud.firestore {
     match /recipes/{recipeId} {
       allow read: if true;
 
-      // Allow swipe decision updates from web UI (status + decidedAt fields only)
+      // Allow swipe decision updates + diet tag edits from admin UI
       allow update: if request.resource.data.diff(resource.data).affectedKeys()
-           .hasOnly(['status', 'decidedAt']);
+           .hasOnly(['status', 'decidedAt', 'dietTags']);
     }
 
     // Deny everything else by default
