@@ -22,7 +22,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Fonts } from '../../constants/theme';
-import { fetchCatalogRecipes, updateDietTagInDecisions } from '../../lib/firestore';
+import { subscribeCatalogRecipes, updateDietTagInDecisions } from '../../lib/firestore';
 import { Recipe, getComplianceStatus } from '../../data/sampleRecipes';
 import DietTag, { DIET_COLORS } from '../components/DietTag';
 import { formatRating } from '../../lib/ingredientParser';
@@ -608,7 +608,11 @@ export default function DecisionsCatalogScreen() {
   const [filterStatus,   setFilterStatus]   = useState<StatusOption | ''>('');
 
   useEffect(() => {
-    fetchCatalogRecipes().then(r => { setAllRecipes(r); setLoading(false); });
+    const unsubscribe = subscribeCatalogRecipes(r => {
+      setAllRecipes(r);
+      setLoading(false);
+    });
+    return unsubscribe;
   }, []);
 
   const cuisines = useMemo(() =>

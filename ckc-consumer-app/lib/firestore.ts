@@ -4,7 +4,7 @@
 //  Falls back to SAMPLE_RECIPES on error.
 // ─────────────────────────────────────────────
 
-import { collection, query, where, limit, getDocs, doc, updateDoc, documentId, getDoc } from 'firebase/firestore';
+import { collection, query, where, limit, getDocs, doc, updateDoc, documentId, getDoc, onSnapshot } from 'firebase/firestore';
 import { db } from './firebase';
 import { SAMPLE_RECIPES, Recipe } from '../data/sampleRecipes';
 
@@ -165,6 +165,17 @@ export async function fetchCatalogRecipes(): Promise<Recipe[]> {
     console.warn('Firestore catalog fetch failed:', err);
     return [];
   }
+}
+
+// Live listener — streams all recipes and calls onData whenever anything changes.
+// Returns an unsubscribe function to call on cleanup.
+export function subscribeCatalogRecipes(onData: (recipes: Recipe[]) => void): () => void {
+  const q = query(collection(db, 'recipes'), limit(5000));
+  return onSnapshot(q, snap => {
+    onData(snap.docs.map(d => docToRecipe(d.id, d.data() as Record<string, unknown>)));
+  }, err => {
+    console.warn('subscribeCatalogRecipes error:', err);
+  });
 }
 
 // ── Needs Review ─────────────────────────────────────────────────────────────
