@@ -370,19 +370,20 @@ function RecipeRow({
         {/* Expanded note editor */}
         {activeProtocol && (
           <View style={[row.noteBox, saveState === 'saved' && row.noteBoxSaved]}>
-            {/* Header: protocol + regenerate + restore */}
+            {/* Header: protocol + regenerate + restore + close */}
             <View style={row.noteHeader}>
               <Text style={row.noteProtocol}>{activeProtocol}</Text>
               <View style={row.noteHeaderBtns}>
-                {noteText !== originalNote && (
-                  <TouchableOpacity style={row.restoreBtn} onPress={handleRestore} activeOpacity={0.7}>
-                    <Text style={row.restoreBtnText}>↺ Restore</Text>
-                  </TouchableOpacity>
-                )}
+                <TouchableOpacity style={row.restoreBtn} onPress={handleRestore} activeOpacity={0.7}>
+                  <Text style={row.restoreBtnText}>↺ Revert</Text>
+                </TouchableOpacity>
                 <TouchableOpacity style={row.regenBtn} onPress={handleRegenerate} disabled={generating} activeOpacity={0.7}>
                   {generating
                     ? <ActivityIndicator size="small" color={Colors.gold} />
                     : <Text style={row.regenBtnText}>✦ Regenerate</Text>}
+                </TouchableOpacity>
+                <TouchableOpacity style={row.closeBtn} onPress={() => setActiveProtocol(null)} activeOpacity={0.7}>
+                  <Text style={row.closeBtnText}>✕</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -489,6 +490,11 @@ const row = StyleSheet.create({
     borderRadius: 5, borderWidth: 1, borderColor: Colors.borderActive,
   },
   regenBtnText: { fontFamily: Fonts.bodyMedium, fontSize: 10, color: Colors.gold },
+  closeBtn: {
+    paddingHorizontal: 7, paddingVertical: 3,
+    borderRadius: 5, borderWidth: 1, borderColor: Colors.border,
+  },
+  closeBtnText: { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted },
   typeToggle: { flexDirection: 'row', gap: 6, marginBottom: 6 },
   typeBtn: {
     paddingHorizontal: 10, paddingVertical: 4,
