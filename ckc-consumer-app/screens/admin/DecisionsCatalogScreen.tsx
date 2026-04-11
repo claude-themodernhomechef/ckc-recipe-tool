@@ -6,7 +6,7 @@
  * Accessible at /catalog/decisions on web.
  */
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import {
   View,
   Text,
@@ -22,7 +22,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Fonts } from '../../constants/theme';
-import { fetchDecisionsCollection } from '../../lib/firestore';
+import { fetchDecisionsCollection, updateDietTagInDecisions } from '../../lib/firestore';
 import { Recipe, getComplianceStatus } from '../../data/sampleRecipes';
 import DietTag, { DIET_COLORS } from '../components/DietTag';
 import { formatRating } from '../../lib/ingredientParser';
@@ -201,10 +201,58 @@ const dd = StyleSheet.create({
 });
 
 // ─────────────────────────────────────────────
+//  Claude swap-note regeneration
+// ─────────────────────────────────────────────
+
+const ANTHROPIC_KEY = process.env.EXPO_PUBLIC_ANTHROPIC_API_KEY ?? '';
+
+const REGEN_SYSTEM = `You rewrite diet compliance modification notes for recipes.
+
+Style rules:
+- Imperative sentences: "Replace X with Y.", "Remove X entirely.", "Use X instead of Y."
+- Specific quantities when known
+- Note what stays compliant when helpful
+- No bullet points, no headers, no markdown
+- No mention of diet protocol names within the note
+- End with a period`;
+
+async function regenerateNote(recipeName: string, protocol: string, currentNote: string): Promise<string> {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': ANTHROPIC_KEY,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true',
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 300,
+      system: REGEN_SYSTEM,
+      messages: [{
+        role: 'user',
+        content: `Recipe: ${recipeName}\nProtocol: ${protocol}\nCurrent note: ${currentNote || '(none)'}\n\nRewrite a correct, specific modification note for this protocol. Focus on what ingredients to swap or remove.`,
+      }],
+    }),
+  });
+  if (!res.ok) throw new Error(`Claude API error: ${res.status}`);
+  const data = await res.json();
+  return (data.content?.[0]?.text ?? '').trim();
+}
+
+// ─────────────────────────────────────────────
 //  Recipe row
 // ─────────────────────────────────────────────
 
 function RecipeRow({ recipe }: { recipe: Recipe }) {
+  const [activeProtocol, setActiveProtocol] = useState<string | null>(null);
+  const [noteText, setNoteText]             = useState('');
+  const [originalNote, setOriginalNote]     = useState('');
+  const [isNative, setIsNative]             = useState(false);
+  const [saveState, setSaveState]           = useState<'idle' | 'saving' | 'saved'>('idle');
+  const [generating, setGenerating]         = useState(false);
+  const debounceRef                         = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const activeDietTags = DIET_PROTOCOLS
     .map(p => ({ p, status: getComplianceStatus(recipe, p) }))
     .filter(t => t.status !== 'none')
@@ -212,6 +260,69 @@ function RecipeRow({ recipe }: { recipe: Recipe }) {
       if (a.status !== b.status) return a.status === 'native' ? -1 : 1;
       return a.p.localeCompare(b.p);
     });
+
+  function handleTagPress(protocol: string) {
+    if (activeProtocol === protocol) {
+      setActiveProtocol(null);
+      return;
+    }
+    const tag = recipe.dietTags[protocol];
+    const note = tag?.notes ?? '';
+    setActiveProtocol(protocol);
+    setNoteText(note);
+    setOriginalNote(note);
+    setIsNative(tag?.native === true);
+    setSaveState('idle');
+  }
+
+  const saveToFirestore = useCallback(async (protocol: string, native: boolean, note: string) => {
+    setSaveState('saving');
+    try {
+      await updateDietTagInDecisions(recipe.id, protocol, {
+        native,
+        mod: !native,
+        notes: note,
+      });
+      setSaveState('saved');
+    } catch (e) {
+      console.warn('updateDietTagInDecisions failed:', e);
+      setSaveState('idle');
+    }
+  }, [recipe.id]);
+
+  function handleNoteChange(text: string) {
+    setNoteText(text);
+    setSaveState('idle');
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      if (activeProtocol) saveToFirestore(activeProtocol, isNative, text);
+    }, 800);
+  }
+
+  async function handleTypeToggle(native: boolean) {
+    setIsNative(native);
+    if (activeProtocol) await saveToFirestore(activeProtocol, native, noteText);
+  }
+
+  async function handleRegenerate() {
+    if (!activeProtocol) return;
+    setGenerating(true);
+    try {
+      const note = await regenerateNote(recipe.name, activeProtocol, noteText);
+      setNoteText(note);
+      await saveToFirestore(activeProtocol, isNative, note);
+    } catch (e) {
+      console.warn('regenerateNote failed:', e);
+    } finally {
+      setGenerating(false);
+    }
+  }
+
+  async function handleRestore() {
+    if (!activeProtocol) return;
+    setNoteText(originalNote);
+    await saveToFirestore(activeProtocol, isNative, originalNote);
+  }
 
   return (
     <View style={row.wrap}>
@@ -226,20 +337,83 @@ function RecipeRow({ recipe }: { recipe: Recipe }) {
       <View style={row.info}>
         <Text style={row.name} numberOfLines={1}>{recipe.name}</Text>
         <Text style={row.meta} numberOfLines={1}>
-          {[
-            recipe.cuisine,
-            recipe.protein_type,
-            recipe.blogger,
-          ].filter(Boolean).join('  ·  ')}
+          {[recipe.cuisine, recipe.protein_type, recipe.blogger].filter(Boolean).join('  ·  ')}
         </Text>
         {activeDietTags.length > 0 && (
           <View style={row.tags}>
-            {activeDietTags.slice(0, 6).map(t => (
-              <DietTag key={t.p} protocol={t.p} variant="circle" status={t.status === 'modified' ? 'modified' : 'native'} />
+            {activeDietTags.map(t => (
+              <TouchableOpacity key={t.p} onPress={() => handleTagPress(t.p)} activeOpacity={0.7}>
+                <DietTag protocol={t.p} variant="circle" status={t.status === 'modified' ? 'modified' : 'native'} />
+              </TouchableOpacity>
             ))}
           </View>
         )}
+
+        {/* Expanded note editor */}
+        {activeProtocol && (
+          <View style={row.noteBox}>
+            {/* Header: protocol + regenerate + restore */}
+            <View style={row.noteHeader}>
+              <Text style={row.noteProtocol}>{activeProtocol}</Text>
+              <View style={row.noteHeaderBtns}>
+                {noteText !== originalNote && (
+                  <TouchableOpacity style={row.restoreBtn} onPress={handleRestore} activeOpacity={0.7}>
+                    <Text style={row.restoreBtnText}>↺ Restore</Text>
+                  </TouchableOpacity>
+                )}
+                <TouchableOpacity style={row.regenBtn} onPress={handleRegenerate} disabled={generating} activeOpacity={0.7}>
+                  {generating
+                    ? <ActivityIndicator size="small" color={Colors.gold} />
+                    : <Text style={row.regenBtnText}>✦ Regenerate</Text>}
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            {/* Native / Mod toggle */}
+            <View style={row.typeToggle}>
+              <TouchableOpacity
+                style={[row.typeBtn, isNative && row.typeBtnActive]}
+                onPress={() => handleTypeToggle(true)}
+                activeOpacity={0.7}
+              >
+                <Text style={[row.typeBtnText, isNative && row.typeBtnTextActive]}>● Native</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[row.typeBtn, !isNative && row.typeBtnActive]}
+                onPress={() => handleTypeToggle(false)}
+                activeOpacity={0.7}
+              >
+                <Text style={[row.typeBtnText, !isNative && row.typeBtnTextActive]}>◎ Mod</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Editable note */}
+            <TextInput
+              style={row.noteInput}
+              value={noteText}
+              onChangeText={handleNoteChange}
+              multiline
+              placeholder={isNative ? 'Native — no swap needed.' : 'Describe the swap…'}
+              placeholderTextColor={Colors.textMuted}
+            />
+
+            {/* Save status */}
+            {saveState === 'saving' && <Text style={row.saveStatus}>Saving…</Text>}
+            {saveState === 'saved'  && <Text style={[row.saveStatus, { color: Colors.green }]}>Saved ✓</Text>}
+          </View>
+        )}
       </View>
+
+      {/* URL button */}
+      {recipe.url ? (
+        <TouchableOpacity
+          style={row.urlBtn}
+          onPress={() => { if (typeof window !== 'undefined') window.open(recipe.url, '_blank'); }}
+          activeOpacity={0.7}
+        >
+          <Text style={row.urlBtnText}>View Recipe ↗</Text>
+        </TouchableOpacity>
+      ) : null}
 
       {/* Right: status + rating */}
       <View style={row.right}>
@@ -272,6 +446,52 @@ const row = StyleSheet.create({
   meta:   { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted },
   tags:   { flexDirection: 'row', flexWrap: 'wrap', gap: 4, marginTop: 2 },
   right:  { flexShrink: 0, alignItems: 'flex-end', gap: 4 },
+  noteBox: {
+    marginTop: 6,
+    backgroundColor: Colors.surfaceElevated,
+    borderLeftWidth: 2, borderLeftColor: Colors.borderActive,
+    borderRadius: 4,
+    paddingHorizontal: 10, paddingVertical: 7,
+  },
+  noteProtocol: { fontFamily: Fonts.bodyMedium, fontSize: 10, color: Colors.textMuted, letterSpacing: 0.5 },
+  noteText:     { fontFamily: Fonts.body, fontSize: 12, color: Colors.textSecondary, lineHeight: 17 },
+  noteHeader: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+    marginBottom: 6,
+  },
+  noteHeaderBtns: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  restoreBtn: {
+    paddingHorizontal: 8, paddingVertical: 3,
+    borderRadius: 5, borderWidth: 1, borderColor: Colors.border,
+  },
+  restoreBtnText: { fontFamily: Fonts.bodyMedium, fontSize: 10, color: Colors.textMuted },
+  regenBtn: {
+    paddingHorizontal: 8, paddingVertical: 3,
+    borderRadius: 5, borderWidth: 1, borderColor: Colors.borderActive,
+  },
+  regenBtnText: { fontFamily: Fonts.bodyMedium, fontSize: 10, color: Colors.gold },
+  typeToggle: { flexDirection: 'row', gap: 6, marginBottom: 6 },
+  typeBtn: {
+    paddingHorizontal: 10, paddingVertical: 4,
+    borderRadius: 5, borderWidth: 1, borderColor: Colors.border,
+    backgroundColor: Colors.bg,
+  },
+  typeBtnActive:    { borderColor: Colors.borderActive, backgroundColor: Colors.surfaceElevated },
+  typeBtnText:      { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted },
+  typeBtnTextActive:{ fontFamily: Fonts.bodyMedium, fontSize: 11, color: Colors.textPrimary },
+  noteInput: {
+    fontFamily: Fonts.body, fontSize: 12, color: Colors.textPrimary,
+    backgroundColor: Colors.bg, borderWidth: 1, borderColor: Colors.border,
+    borderRadius: 5, paddingHorizontal: 8, paddingVertical: 6,
+    minHeight: 56, textAlignVertical: 'top',
+  },
+  saveStatus: { fontFamily: Fonts.body, fontSize: 10, color: Colors.textMuted, marginTop: 3 },
+  urlBtn: {
+    flexShrink: 0, paddingHorizontal: 10, paddingVertical: 5,
+    borderRadius: 6, borderWidth: 1, borderColor: Colors.border,
+    backgroundColor: Colors.surface,
+  },
+  urlBtnText: { fontFamily: Fonts.body, fontSize: 11, color: Colors.textSecondary },
   statusBadge: { paddingHorizontal: 7, paddingVertical: 3, borderRadius: 6, borderWidth: 1 },
   statusText:  { fontFamily: Fonts.bodyMedium, fontSize: 10, letterSpacing: 0.3 },
   rating: { fontFamily: Fonts.bodyMedium, fontSize: 12, color: Colors.gold },

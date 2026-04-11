@@ -19,6 +19,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Fonts } from '../../constants/theme';
 import EmptyState from '../components/EmptyState';
 import PremiumGate from '../components/PremiumGate';
+import DietTag from '../components/DietTag';
 import { useMenu, OrganicPreference } from '../../context/MenuContext';
 import { useUser } from '../../context/UserContext';
 import { SAMPLE_RECIPES, Recipe } from '../../data/sampleRecipes';
@@ -234,15 +235,9 @@ function ProtocolToggleBar({
     >
       {/* Protocol chips */}
       <View style={ptb.chips}>
-        {protocols.map(p => {
-          const meta = PROTOCOL_META[p];
-          if (!meta) return null;
-          return (
-            <View key={p} style={[ptb.chip, { backgroundColor: meta.color + '22', borderColor: meta.color + '55' }]}>
-              <Text style={[ptb.chipText, { color: meta.color }]}>{meta.label}</Text>
-            </View>
-          );
-        })}
+        {protocols.map(p => (
+          <DietTag key={p} protocol={p} variant="circle" status="native" />
+        ))}
       </View>
 
       {/* Toggle switch */}
@@ -876,47 +871,57 @@ export default function ShopScreen() {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.menuStripContent}
           >
-            {menuItems.map(item => (
-              <View key={item.recipeId} style={styles.menuChip}>
-                {/* Source pill */}
-                <View style={[
-                  styles.sourcePill,
-                  item.source === 'mealplan' && styles.sourcePillPlan,
-                ]}>
-                  <Text style={styles.sourcePillText}>
-                    {item.source === 'mealplan' ? 'PLAN' : 'ADDED'}
-                  </Text>
+            {menuItems.map(item => {
+              const recipe = allRecipes.find(r => r.id === item.recipeId || r.name === item.recipeName);
+              const photoUri = item.recipeImage || recipe?.photo_url;
+              const bgColor = recipe?.placeholder_color || Colors.surface;
+              return (
+                <View key={item.recipeId} style={styles.menuCard}>
+                  {/* Photo area */}
+                  <View style={[styles.menuCardPhoto, { backgroundColor: bgColor }]}>
+                    {photoUri ? (
+                      <Image
+                        source={{ uri: photoUri }}
+                        style={StyleSheet.absoluteFillObject}
+                        resizeMode="cover"
+                      />
+                    ) : null}
+                    {/* Remove × */}
+                    <TouchableOpacity
+                      style={styles.menuCardRemove}
+                      onPress={() => removeFromMenu(item.recipeId)}
+                      activeOpacity={0.8}
+                    >
+                      <Text style={styles.menuCardRemoveText}>×</Text>
+                    </TouchableOpacity>
+                  </View>
+                  {/* Name */}
+                  <Text style={styles.menuCardName} numberOfLines={2}>{item.recipeName}</Text>
+                  {/* Servings stepper */}
+                  <View style={styles.menuCardControls}>
+                    <TouchableOpacity
+                      style={styles.stepperBtn}
+                      onPress={() => {
+                        const idx = SERVING_STEPS.indexOf(item.servings);
+                        if (idx > 0) setServings(item.recipeId, SERVING_STEPS[idx - 1]);
+                      }}
+                    >
+                      <Text style={styles.stepperBtnText}>−</Text>
+                    </TouchableOpacity>
+                    <Text style={styles.servingsLabel}>{item.servings}×</Text>
+                    <TouchableOpacity
+                      style={styles.stepperBtn}
+                      onPress={() => {
+                        const idx = SERVING_STEPS.indexOf(item.servings);
+                        if (idx < SERVING_STEPS.length - 1) setServings(item.recipeId, SERVING_STEPS[idx + 1]);
+                      }}
+                    >
+                      <Text style={styles.stepperBtnText}>+</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
-                <Text style={styles.menuChipName} numberOfLines={1}>{item.recipeName}</Text>
-                <View style={styles.menuChipControls}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      const idx = SERVING_STEPS.indexOf(item.servings);
-                      if (idx > 0) setServings(item.recipeId, SERVING_STEPS[idx - 1]);
-                    }}
-                    style={styles.stepperBtn}
-                  >
-                    <Text style={styles.stepperBtnText}>−</Text>
-                  </TouchableOpacity>
-                  <Text style={styles.servingsLabel}>{item.servings}×</Text>
-                  <TouchableOpacity
-                    onPress={() => {
-                      const idx = SERVING_STEPS.indexOf(item.servings);
-                      if (idx < SERVING_STEPS.length - 1) setServings(item.recipeId, SERVING_STEPS[idx + 1]);
-                    }}
-                    style={styles.stepperBtn}
-                  >
-                    <Text style={styles.stepperBtnText}>+</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => removeFromMenu(item.recipeId)}
-                    style={styles.removeBtn}
-                  >
-                    <Text style={styles.removeBtnText}>×</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            ))}
+              );
+            })}
           </ScrollView>
         </View>
       )}
@@ -1285,41 +1290,53 @@ const styles = StyleSheet.create({
     borderTopWidth:    1,
     borderBottomWidth: 1,
     borderColor:       Colors.border,
-    paddingVertical:   10,
+    paddingVertical:   12,
   },
-  menuStripContent: { paddingHorizontal: 16, gap: 8 },
-  menuChip: {
-    backgroundColor: Colors.surface,
+  menuStripContent: { paddingHorizontal: 16, gap: 10 },
+
+  // Photo cards
+  menuCard: {
+    width:           130,
     borderRadius:    10,
-    paddingHorizontal: 12,
-    paddingVertical:   8,
-    minWidth:        140,
-    maxWidth:        200,
+    overflow:        'hidden',
+    backgroundColor: Colors.surface,
     borderWidth:     1,
     borderColor:     Colors.border,
+  },
+  menuCardPhoto: {
+    width:    '100%',
+    height:   100,
+    overflow: 'hidden',
+  },
+  menuCardRemove: {
+    position:        'absolute',
+    top:             6,
+    right:           6,
+    width:           22,
+    height:          22,
+    borderRadius:    11,
+    backgroundColor: 'rgba(0,0,0,0.55)',
+    alignItems:      'center',
+    justifyContent:  'center',
+  },
+  menuCardRemoveText: { fontFamily: Fonts.body, fontSize: 14, color: '#fff', lineHeight: 18 },
+  menuCardName: {
+    fontFamily:      Fonts.bodyMedium,
+    fontSize:        11,
+    color:           Colors.textPrimary,
+    paddingHorizontal: 8,
+    paddingTop:      6,
+    paddingBottom:   2,
+    lineHeight:      15,
+  },
+  menuCardControls: {
+    flexDirection:   'row',
+    alignItems:      'center',
     gap:             4,
+    paddingHorizontal: 8,
+    paddingBottom:   8,
+    paddingTop:      4,
   },
-  sourcePill: {
-    alignSelf:        'flex-start',
-    backgroundColor:  Colors.surfaceElevated,
-    borderRadius:     4,
-    paddingHorizontal:5,
-    paddingVertical:  2,
-    marginBottom:     2,
-  },
-  sourcePillPlan: { backgroundColor: 'rgba(212,168,67,0.12)' },
-  sourcePillText: {
-    fontFamily:    Fonts.bodyMedium,
-    fontSize:      8,
-    color:         Colors.textMuted,
-    letterSpacing: 0.5,
-  },
-  menuChipName: {
-    fontFamily: Fonts.bodyMedium,
-    fontSize:   12,
-    color:      Colors.textPrimary,
-  },
-  menuChipControls: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 2 },
   stepperBtn: {
     width:           24,
     height:          24,
@@ -1336,8 +1353,6 @@ const styles = StyleSheet.create({
     minWidth:   24,
     textAlign:  'center',
   },
-  removeBtn:     { marginLeft: 'auto', padding: 2 },
-  removeBtnText: { fontFamily: Fonts.body, fontSize: 16, color: Colors.textMuted },
 
   // Action row
   actionRow: {

@@ -4,7 +4,7 @@
 //  Falls back to SAMPLE_RECIPES on error.
 // ─────────────────────────────────────────────
 
-import { collection, query, where, limit, getDocs, doc, updateDoc, documentId } from 'firebase/firestore';
+import { collection, query, where, limit, getDocs, doc, updateDoc, documentId, getDoc } from 'firebase/firestore';
 import { db } from './firebase';
 import { SAMPLE_RECIPES, Recipe } from '../data/sampleRecipes';
 
@@ -165,6 +165,130 @@ export async function fetchCatalogRecipes(): Promise<Recipe[]> {
     console.warn('Firestore catalog fetch failed:', err);
     return [];
   }
+}
+
+// ── Needs Review ─────────────────────────────────────────────────────────────
+
+export interface ReviewItem {
+  protocol:   string;
+  ingredient: string;
+  reason:     string;
+  category:   string;
+  caution:    string;
+  resolved:   boolean;
+  addedAt:    string;
+  finalDecision?: string;
+  swapNote?:      string;
+}
+
+export interface NeedsReviewRecipe {
+  id:              string;
+  name:            string;
+  url:             string;
+  image:           string | null;
+  placeholder_color: string;
+  reviewItems:     ReviewItem[];
+  dietTags:        Record<string, Record<string, unknown>>;
+}
+
+export async function fetchNeedsReviewRecipes(): Promise<NeedsReviewRecipe[]> {
+  try {
+    const q = query(
+      collection(db, 'recipes'),
+      where('processingStatus', '==', 'pending_review'),
+      limit(500),
+    );
+    const snap = await getDocs(q);
+    const results: NeedsReviewRecipe[] = [];
+    for (const d of snap.docs) {
+      const data = d.data() as Record<string, unknown>;
+      const items = (data.reviewItems as ReviewItem[]) || [];
+      const unresolved = items.filter(i => !i.resolved);
+      if (unresolved.length === 0) continue;
+      results.push({
+        id:               d.id,
+        name:             (data.name  as string) || '',
+        url:              (data.url   as string) || '',
+        image:            (data.image as string | null) || (data.photo_url as string | null) || null,
+        placeholder_color: placeholderColor((data.name as string) || d.id),
+        reviewItems:      items,
+        dietTags:         (data.dietTags as Record<string, Record<string, unknown>>) || {},
+      });
+    }
+    return results;
+  } catch (err) {
+    console.warn('fetchNeedsReviewRecipes failed:', err);
+    return [];
+  }
+}
+
+// Resolve one reviewItem and update the corresponding dietTag.
+// decision: 'compliant' | 'replace' | 'remove' | 'skip'
+// swapNote: only used when decision === 'replace'
+export async function resolveReviewItem(
+  recipeId:  string,
+  protocol:  string,
+  ingredient: string,
+  decision:  'compliant' | 'replace' | 'remove' | 'skip',
+  currentDietTags: Record<string, Record<string, unknown>>,
+  currentReviewItems: ReviewItem[],
+  swapNote?: string,
+): Promise<void> {
+  const ref = doc(db, 'recipes', recipeId);
+
+  // Update reviewItems — mark the matching item resolved
+  const updatedItems = currentReviewItems.map(item => {
+    if (item.protocol === protocol && item.ingredient === ingredient && !item.resolved) {
+      return { ...item, resolved: true, finalDecision: decision, swapNote: swapNote || '' };
+    }
+    return item;
+  });
+
+  // Update dietTag for this protocol
+  const protoTag = { ...(currentDietTags[protocol] || {}) };
+  if (decision === 'compliant') {
+    protoTag.native   = true;
+    protoTag.mod      = false;
+    protoTag.uncertain = false;
+  } else if (decision === 'replace') {
+    protoTag.mod      = true;
+    protoTag.native   = false;
+    protoTag.uncertain = false;
+    if (swapNote) protoTag.notes = swapNote;
+  } else if (decision === 'remove') {
+    protoTag.native   = false;
+    protoTag.mod      = false;
+    protoTag.uncertain = false;
+  }
+  // 'skip' → no dietTag change
+
+  // Check if all items are now resolved
+  const allResolved = updatedItems.every(i => i.resolved);
+
+  const update: Record<string, unknown> = {
+    reviewItems: updatedItems,
+    [`dietTags.${protocol}`]: protoTag,
+  };
+  if (allResolved) {
+    update.processingStatus = 'complete';
+  }
+
+  await updateDoc(ref, update);
+}
+
+// Update a diet tag (native/mod/notes) on a document in the decisions collection.
+export async function updateDietTagInDecisions(
+  recipeId: string,
+  protocol: string,
+  update: { native?: boolean; mod?: boolean; notes?: string },
+): Promise<void> {
+  const ref = doc(db, 'decisions', recipeId);
+  const snap = await getDoc(ref);
+  if (!snap.exists()) throw new Error(`decisions/${recipeId} not found`);
+  const existing = (snap.data().dietTags?.[protocol] ?? {}) as Record<string, unknown>;
+  await updateDoc(ref, {
+    [`dietTags.${protocol}`]: { ...existing, ...update },
+  });
 }
 
 // Decisions — fetch all docs from the `decisions` collection, mapped to Recipe type.

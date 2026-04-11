@@ -459,7 +459,7 @@ function RecipeRow({
           </Text>
           {activeDietTags.length > 0 && (
             <View style={row.tags}>
-              {activeDietTags.slice(0, 6).map(t => (
+              {activeDietTags.map(t => (
                 <DietTag key={t.p} protocol={t.p} variant="circle" status={t.status === 'modified' ? 'modified' : 'native'} />
               ))}
             </View>
