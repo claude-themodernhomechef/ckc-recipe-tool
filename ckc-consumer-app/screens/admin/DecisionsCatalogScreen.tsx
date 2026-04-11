@@ -261,9 +261,28 @@ function RecipeRow({
   const [generating, setGenerating]         = useState(false);
   const debounceRef                         = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Close editor when another recipe is opened
+  // Refs so closures (debounce, useEffect) always see the latest values
+  const activeProtocolRef = useRef<string | null>(null);
+  const noteTextRef       = useRef('');
+  const isNativeRef       = useRef(false);
+  activeProtocolRef.current = activeProtocol;
+  noteTextRef.current       = noteText;
+  isNativeRef.current       = isNative;
+
+  // Close editor when another recipe is opened — flush any pending save first
   useEffect(() => {
-    if (!isExpanded && activeProtocol !== null) {
+    if (!isExpanded && activeProtocolRef.current !== null) {
+      // Flush debounce and save immediately before closing
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+        debounceRef.current = null;
+      }
+      const p = activeProtocolRef.current;
+      updateDietTagInDecisions(recipe.id, p, {
+        native: isNativeRef.current,
+        mod:    !isNativeRef.current,
+        notes:  noteTextRef.current,
+      }).catch(e => console.warn('flush save failed:', e));
       setActiveProtocol(null);
       setSaveState('idle');
     }
@@ -277,9 +296,25 @@ function RecipeRow({
       return a.p.localeCompare(b.p);
     });
 
+  function flushAndClose() {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+      debounceRef.current = null;
+    }
+    if (activeProtocolRef.current) {
+      updateDietTagInDecisions(recipe.id, activeProtocolRef.current, {
+        native: isNativeRef.current,
+        mod:    !isNativeRef.current,
+        notes:  noteTextRef.current,
+      }).catch(e => console.warn('flush save failed:', e));
+    }
+    setActiveProtocol(null);
+    setSaveState('idle');
+  }
+
   function handleTagPress(protocol: string) {
     if (activeProtocol === protocol) {
-      setActiveProtocol(null);
+      flushAndClose();
       onExpand(null);
       return;
     }
@@ -314,7 +349,10 @@ function RecipeRow({
     setSaveState('idle');
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
-      if (activeProtocol) saveToFirestore(activeProtocol, isNative, text);
+      // Use refs so this always reads the latest values, not stale closure
+      if (activeProtocolRef.current) {
+        saveToFirestore(activeProtocolRef.current, isNativeRef.current, text);
+      }
     }, 800);
   }
 
@@ -383,7 +421,7 @@ function RecipeRow({
                     ? <ActivityIndicator size="small" color={Colors.gold} />
                     : <Text style={row.regenBtnText}>✦ Regenerate</Text>}
                 </TouchableOpacity>
-                <TouchableOpacity style={row.closeBtn} onPress={() => setActiveProtocol(null)} activeOpacity={0.7}>
+                <TouchableOpacity style={row.closeBtn} onPress={flushAndClose} activeOpacity={0.7}>
                   <Text style={row.closeBtnText}>✕</Text>
                 </TouchableOpacity>
               </View>
