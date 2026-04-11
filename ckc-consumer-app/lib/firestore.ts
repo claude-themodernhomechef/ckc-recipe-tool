@@ -276,15 +276,15 @@ export async function resolveReviewItem(
   await updateDoc(ref, update);
 }
 
-// Update a diet tag (native/mod/notes) on a document in the decisions collection.
+// Update a diet tag (native/mod/notes) on a document in the recipes collection.
 export async function updateDietTagInDecisions(
   recipeId: string,
   protocol: string,
   update: { native?: boolean; mod?: boolean; notes?: string },
 ): Promise<void> {
-  const ref = doc(db, 'decisions', recipeId);
+  const ref = doc(db, 'recipes', recipeId);
   const snap = await getDoc(ref);
-  if (!snap.exists()) throw new Error(`decisions/${recipeId} not found`);
+  if (!snap.exists()) throw new Error(`recipes/${recipeId} not found`);
   const existing = (snap.data().dietTags?.[protocol] ?? {}) as Record<string, unknown>;
   await updateDoc(ref, {
     [`dietTags.${protocol}`]: { ...existing, ...update },

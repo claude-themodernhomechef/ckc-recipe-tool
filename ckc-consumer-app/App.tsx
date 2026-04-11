@@ -25,6 +25,7 @@ import ProteinScreen         from './screens/ProteinScreen';
 import CuisineScreen         from './screens/CuisineScreen';
 import SetupCompleteScreen   from './screens/SetupCompleteScreen';
 import ShoppingPlannerScreen from './screens/ShoppingPlannerScreen';
+import NameScreen            from './screens/NameScreen';
 import GuestDiscoverScreen   from './screens/GuestDiscoverScreen';
 import MainTabs              from './navigation/MainTabs';
 import RecipeDetailScreen    from './screens/RecipeDetailScreen';
@@ -40,6 +41,7 @@ export type RootStackParamList = {
   Welcome:         undefined;
   SignUp:          undefined;
   Login:           undefined;
+  Name:            undefined;
   DietProtocol:    undefined;
   Household:       { protocols: string[] };
   Protein:         { protocols: string[]; household: number };
@@ -85,6 +87,7 @@ function AppNavigator() {
       <Stack.Screen name="Welcome"         component={WelcomeScreen} />
       <Stack.Screen name="SignUp"          component={SignUpScreen} />
       <Stack.Screen name="Login"           component={LoginScreen} />
+      <Stack.Screen name="Name"            component={NameScreen} />
       <Stack.Screen name="DietProtocol"    component={DietProtocolScreen} />
       <Stack.Screen name="Household"       component={HouseholdScreen} />
       <Stack.Screen name="Protein"         component={ProteinScreen} />

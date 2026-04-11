@@ -83,7 +83,7 @@ export default function WelcomeScreen({ navigation }: Props) {
         <View style={styles.buttonArea}>
           <TouchableOpacity
             style={styles.primaryBtn}
-            onPress={() => navigation.navigate('DietProtocol')}
+            onPress={() => navigation.navigate('Name')}
             activeOpacity={0.88}
           >
             <Text style={styles.primaryBtnText}>Get Started — It's Free</Text>
