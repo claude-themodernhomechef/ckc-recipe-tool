@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CKC — Needs Review Queue</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #1a1a1a;
+    --card: #242424;
+    --card-hover: #2a2a2a;
+    --border: #333;
+    --text: #e8e4df;
+    --text-muted: #8a8580;
+    --accent-green: #7dba6e;
+    --accent-red: #d4644a;
+    --accent-amber: #d4a44a;
+    --accent-blue: #5b9bd5;
+    --accent-purple: #9b7ed5;
+    --tag-gf: #7dba6e;
+    --tag-df: #d4a44a;
+    --tag-lf: #5b9bd5;
+    --tag-k: #9b7ed5;
+    --tag-aip: #d4644a;
+    --tag-v: #6ec4a8;
+    --tag-vg: #c47eb8;
+    --tag-lh: #8a8580;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ── Top Bar ─────────────────────────────────────── */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 32px;
+    border-bottom: 1px solid var(--border);
+  }
+  .topbar-left {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+  }
+  .topbar h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 2px;
+  }
+  .topbar h2 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+  .topbar-stats {
+    display: flex;
+    gap: 20px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .stat { color: var(--text-muted); }
+  .stat strong { font-weight: 700; }
+  .stat.remaining strong { color: var(--accent-amber); }
+  .stat.done strong { color: var(--accent-green); }
+  .stat.skipped strong { color: var(--accent-red); }
+
+  /* ── Layout ──────────────────────────────────────── */
+  .layout {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    height: calc(100vh - 65px);
+  }
+
+  /* ── Sidebar (recipe list) ───────────────────────── */
+  .sidebar {
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 16px 0;
+  }
+  .sidebar-header {
+    padding: 0 20px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .sidebar-header h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .sidebar-search {
+    width: 100%;
+    margin: 0 20px 12px;
+    width: calc(100% - 40px);
+    padding: 10px 14px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    outline: none;
+  }
+  .sidebar-search:focus { border-color: var(--accent-blue); }
+
+  .recipe-item {
+    padding: 14px 20px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: background 0.15s;
+  }
+  .recipe-item:hover { background: var(--card-hover); }
+  .recipe-item.active { background: var(--card); border-left: 3px solid var(--accent-blue); }
+  .recipe-item .name {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .recipe-item .meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .protocol-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .protocol-badge.AIP { background: rgba(212,100,74,0.2); color: var(--tag-aip); }
+  .protocol-badge.LF { background: rgba(91,155,213,0.2); color: var(--tag-lf); }
+  .protocol-badge.LH { background: rgba(138,133,128,0.2); color: var(--tag-lh); }
+  .protocol-badge.K { background: rgba(155,126,213,0.2); color: var(--tag-k); }
+  .protocol-badge.GF { background: rgba(125,186,110,0.2); color: var(--tag-gf); }
+  .protocol-badge.DF { background: rgba(212,164,74,0.2); color: var(--tag-df); }
+  .protocol-badge.V { background: rgba(110,196,168,0.2); color: var(--tag-v); }
+  .protocol-badge.Vg { background: rgba(196,126,184,0.2); color: var(--tag-vg); }
+  .ingredient-flag {
+    font-style: italic;
+    color: var(--accent-amber);
+  }
+
+  /* ── Main Panel ──────────────────────────────────── */
+  .main-panel {
+    overflow-y: auto;
+    padding: 32px 40px;
+  }
+
+  .recipe-header {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 28px;
+  }
+  .recipe-photo {
+    width: 200px;
+    height: 200px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .recipe-info { flex: 1; }
+  .recipe-info h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  .recipe-info .url {
+    font-size: 13px;
+    color: var(--accent-blue);
+    text-decoration: none;
+    margin-bottom: 12px;
+    display: inline-block;
+  }
+  .recipe-info .url:hover { text-decoration: underline; }
+  .recipe-info .blogger {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+  .recipe-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .diet-tag {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border: 1px solid;
+  }
+  .diet-tag.native { opacity: 1; }
+  .diet-tag.mod { opacity: 0.7; font-style: italic; }
+  .diet-tag.none { opacity: 0.3; }
+
+  /* ── Flagged Ingredient Section ──────────────────── */
+  .section-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .flag-card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border);
+  }
+  .flag-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .flag-header .protocol-badge { font-size: 13px; padding: 4px 12px; }
+  .flag-header .ingredient-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent-amber);
+  }
+
+  .flag-reason {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    border-left: 3px solid var(--accent-amber);
+  }
+
+  .suggested-swap {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 16px;
+    background: rgba(125,186,110,0.08);
+    border: 1px solid rgba(125,186,110,0.2);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .suggested-swap .label {
+    font-weight: 700;
+    color: var(--accent-green);
+    white-space: nowrap;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding-top: 1px;
+  }
+
+  /* ── Decision Buttons ────────────────────────────── */
+  .decision-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .decision-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+  .decision-btn:hover { border-color: var(--text-muted); }
+  .decision-btn.selected.compliant {
+    background: rgba(125,186,110,0.15);
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+  }
+  .decision-btn.selected.replace {
+    background: rgba(91,155,213,0.15);
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+  }
+  .decision-btn.selected.remove {
+    background: rgba(212,100,74,0.15);
+    border-color: var(--accent-red);
+    color: var(--accent-red);
+  }
+  .decision-btn.selected.skip {
+    background: rgba(138,133,128,0.15);
+    border-color: var(--tag-lh);
+    color: var(--tag-lh);
+  }
+  .decision-btn .icon { font-size: 16px; display: block; margin-bottom: 4px; }
+  .decision-btn .sublabel { font-size: 11px; font-weight: 400; color: var(--text-muted); display: block; }
+
+  /* ── Mod Note Editor ─────────────────────────────── */
+  .mod-note-editor {
+    margin-top: 12px;
+    display: none;
+  }
+  .mod-note-editor.visible { display: block; }
+  .mod-note-editor label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    display: block;
+  }
+  .mod-note-editor textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 12px 16px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    resize: vertical;
+    outline: none;
+  }
+  .mod-note-editor textarea:focus { border-color: var(--accent-blue); }
+
+  /* ── Bottom Action Bar ───────────────────────────── */
+  .action-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+  .save-btn {
+    padding: 14px 40px;
+    background: var(--accent-green);
+    color: #1a1a1a;
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .save-btn:hover { opacity: 0.9; }
+  .save-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .skip-recipe {
+    padding: 14px 24px;
+    background: none;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .skip-recipe:hover { border-color: var(--text-muted); }
+
+  /* ── Ingredients Sidebar ─────────────────────────── */
+  .ingredients-panel {
+    margin-top: 28px;
+  }
+  .ingredients-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 20px;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.8;
+  }
+  .ingredients-list .flagged {
+    color: var(--accent-amber);
+    font-weight: 600;
+  }
+
+  /* ── Keyboard hint ───────────────────────────────── */
+  .keyboard-hints {
+    display: flex;
+    gap: 16px;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .keyboard-hints kbd {
+    display: inline-block;
+    padding: 2px 6px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    margin-right: 4px;
+  }
+
+  /* ── Empty state ─────────────────────────────────── */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 16px;
+    color: var(--text-muted);
+  }
+  .empty-state .checkmark { font-size: 64px; }
+  .empty-state h3 { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- ── Top Bar ──────────────────────────────────────── -->
+<div class="topbar">
+  <div class="topbar-left">
+    <h1>CKC</h1>
+    <h2>Needs Review</h2>
+  </div>
+  <div class="topbar-stats">
+    <div class="stat remaining"><strong>12</strong> remaining</div>
+    <div class="stat done"><strong>455</strong> resolved</div>
+    <div class="stat skipped"><strong>8</strong> skipped tag</div>
+  </div>
+</div>
+
+<!-- ── Layout ──────────────────────────────────────── -->
+<div class="layout">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <input class="sidebar-search" type="text" placeholder="Search recipes…" />
+
+    <div class="recipe-item active">
+      <div class="name">Malai Chicken (Creamy White Chicken Curry)</div>
+      <div class="meta">
+        <span class="protocol-badge LH">LH</span>
+        <span class="ingredient-flag">garam masala</span>
+      </div>
+    </div>
+    <div class="recipe-item">
+      <div class="name">Mexican Shrimp Skillet</div>
+      <div class="meta">
+        <span class="protocol-badge LH">LH</span>
+        <span class="ingredient-flag">taco seasoning</span>
+      </div>
+    </div>
+    <div class="recipe-item">
+      <div class="name">Cajun Shrimp and Sausage Skillet</div>
+      <div class="meta">
+        <span class="protocol-badge LF">LF</span>
+        <span class="ingredient-flag">cajun seasoning</span>
+      </div>
+    </div>
+    <div class="recipe-item">
+      <div class="name">1-Pot Golden Curry Lentil Soup</div>
+      <div class="meta">
+        <span class="protocol-badge LF">LF</span>
+        <span class="ingredient-flag">lentils (defining ingredient)</span>
+      </div>
+    </div>
+    <div class="recipe-item">
+      <div class="name">Honey-Harissa Baked Salmon</div>
+      <div class="meta">
+        <span class="protocol-badge LH">LH</span>
+        <span class="ingredient-flag">harissa (defining ingredient)</span>
+      </div>
+    </div>
+    <div class="recipe-item">
+      <div class="name">Spring Pork Bulgogi</div>
+      <div class="meta">
+        <span class="protocol-badge LF">LF</span>
+        <span class="ingredient-flag">gochujang</span>
+      </div>
+    </div>
+    <div class="recipe-item">
+      <div class="name">Chicken Traybake</div>
+      <div class="meta">
+        <span class="protocol-badge LH">LH</span>
+        <span class="ingredient-flag">balsamic vinegar</span>
+      </div>
+    </div>
+    <div class="recipe-item">
+      <div class="name">Crispy Sweet Potato Fries</div>
+      <div class="meta">
+        <span class="protocol-badge LH">LH</span>
+        <span class="ingredient-flag">smoked paprika</span>
+      </div>
+    </div>
+    <div class="recipe-item">
+      <div class="name">Moroccan Chicken Meatballs</div>
+      <div class="meta">
+        <span class="protocol-badge LH">LH</span>
+        <span class="ingredient-flag">ras el hanout</span>
+      </div>
+    </div>
+    <div class="recipe-item">
+      <div class="name">Best Grilled Chicken</div>
+      <div class="meta">
+        <span class="protocol-badge LF">LF</span>
+        <span class="ingredient-flag">balsamic vinegar</span>
+      </div>
+    </div>
+    <div class="recipe-item">
+      <div class="name">Baked Halibut with Lemon and Dill</div>
+      <div class="meta">
+        <span class="protocol-badge LH">LH</span>
+        <span class="ingredient-flag">italian seasoning</span>
+      </div>
+    </div>
+    <div class="recipe-item">
+      <div class="name">Greek Yogurt Cucumber Salad</div>
+      <div class="meta">
+        <span class="protocol-badge LH">LH</span>
+        <span class="ingredient-flag">greek yogurt</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Panel -->
+  <div class="main-panel">
+
+    <!-- Recipe Header -->
+    <div class="recipe-header">
+      <img class="recipe-photo" src="https://pinchofyum.com/wp-content/uploads/Malai-Chicken-Feature.jpg" alt="Malai Chicken" onerror="this.style.background='hsl(35,25%,18%)'" />
+      <div class="recipe-info">
+        <h2>Malai Chicken (Creamy White Chicken Curry)</h2>
+        <a class="url" href="#">pinchofyum.com</a>
+        <div class="blogger">Pinch of Yum • Indian • Entree</div>
+        <div class="recipe-tags">
+          <span class="diet-tag native" style="color:var(--tag-gf);border-color:var(--tag-gf)">GF native</span>
+          <span class="diet-tag mod" style="color:var(--tag-df);border-color:var(--tag-df)">DF mod</span>
+          <span class="diet-tag mod" style="color:var(--tag-lf);border-color:var(--tag-lf)">LF mod</span>
+          <span class="diet-tag mod" style="color:var(--tag-k);border-color:var(--tag-k)">K mod</span>
+          <span class="diet-tag none" style="color:var(--tag-lh);border-color:var(--tag-lh)">LH ?</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Flagged Ingredient -->
+    <div class="section-title">Flagged Ingredient</div>
+
+    <div class="flag-card">
+      <div class="flag-header">
+        <span class="protocol-badge LH">LH</span>
+        <span class="ingredient-name">garam masala</span>
+      </div>
+
+      <div class="flag-reason">
+        Garam masala contains cumin, cardamom, coriander, black pepper, and nutmeg — all flagged on the LH not-approved spice list. The LH-safe components are cinnamon and cloves, which form the warm backbone of the blend.
+      </div>
+
+      <div class="suggested-swap">
+        <span class="label">Suggested</span>
+        <span>Replace garam masala with cinnamon and cloves.</span>
+      </div>
+
+      <!-- Decision Buttons -->
+      <div class="decision-row">
+        <button class="decision-btn" onclick="selectDecision(this, 'compliant')">
+          <span class="icon">✓</span>
+          Compliant
+          <span class="sublabel">No mod needed</span>
+        </button>
+        <button class="decision-btn selected replace" onclick="selectDecision(this, 'replace')">
+          <span class="icon">↔</span>
+          Replace
+          <span class="sublabel">Swap ingredient</span>
+        </button>
+        <button class="decision-btn" onclick="selectDecision(this, 'remove')">
+          <span class="icon">✕</span>
+          Remove
+          <span class="sublabel">Remove entirely</span>
+        </button>
+        <button class="decision-btn" onclick="selectDecision(this, 'skip')">
+          <span class="icon">⊘</span>
+          Skip Tag
+          <span class="sublabel">Can't modify</span>
+        </button>
+      </div>
+
+      <!-- Mod Note Editor (visible when Replace is selected) -->
+      <div class="mod-note-editor visible">
+        <label>Modification note (writes to dietTags.LH.notes)</label>
+        <textarea>Replace garam masala with cinnamon and cloves.</textarea>
+      </div>
+    </div>
+
+    <!-- Ingredients Reference -->
+    <div class="ingredients-panel">
+      <div class="section-title">Recipe Ingredients</div>
+      <div class="ingredients-list">
+        <span>2 lbs boneless chicken thighs</span>
+        <span>1 cup plain yogurt</span>
+        <span>2 tbsp olive oil</span>
+        <span class="flagged">2 tsp garam masala ⚑</span>
+        <span>1 tsp ground turmeric</span>
+        <span>1 tsp salt</span>
+        <span>4 cloves garlic, minced</span>
+        <span>1 inch ginger, grated</span>
+        <span>1 cup heavy cream</span>
+        <span>1 cup cashews, soaked</span>
+        <span>2 green cardamom pods</span>
+        <span>1 bay leaf</span>
+        <span>Fresh cilantro</span>
+        <span>Basmati rice, for serving</span>
+      </div>
+    </div>
+
+    <!-- Action Bar -->
+    <div class="action-bar">
+      <div class="keyboard-hints">
+        <span><kbd>1</kbd> Compliant</span>
+        <span><kbd>2</kbd> Replace</span>
+        <span><kbd>3</kbd> Remove</span>
+        <span><kbd>4</kbd> Skip</span>
+        <span><kbd>⏎</kbd> Save & Next</span>
+      </div>
+      <div style="display:flex;gap:12px;">
+        <button class="skip-recipe">Skip for now</button>
+        <button class="save-btn">Save & Next →</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function selectDecision(btn, type) {
+  const row = btn.parentElement;
+  row.querySelectorAll('.decision-btn').forEach(b => {
+    b.className = 'decision-btn';
+  });
+  btn.classList.add('selected', type);
+
+  const editor = row.nextElementSibling;
+  if (type === 'replace') {
+    editor.classList.add('visible');
+    editor.querySelector('textarea').focus();
+  } else if (type === 'compliant') {
+    editor.classList.add('visible');
+    editor.querySelector('textarea').value = 'Garam masala — natively LH-compliant, no modification needed.';
+  } else if (type === 'remove') {
+    editor.classList.add('visible');
+    editor.querySelector('textarea').value = 'Remove garam masala entirely.';
+  } else if (type === 'skip') {
+    editor.classList.add('visible');
+    editor.querySelector('textarea').value = 'Skip LH tag — garam masala is a defining ingredient of this dish.';
+  }
+}
+</script>
+
+</body>
+</html>
