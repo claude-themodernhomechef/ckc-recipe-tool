@@ -261,6 +261,9 @@ function RecipeRow({
   const [generating, setGenerating]         = useState(false);
   const debounceRef                         = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Local copy of dietTags so re-opening a tag shows the latest saved values
+  const [localDietTags, setLocalDietTags]   = useState<Record<string, any>>(recipe.dietTags ?? {});
+
   // Refs so closures (debounce, useEffect) always see the latest values
   const activeProtocolRef = useRef<string | null>(null);
   const noteTextRef       = useRef('');
@@ -277,12 +280,16 @@ function RecipeRow({
         clearTimeout(debounceRef.current);
         debounceRef.current = null;
       }
-      const p = activeProtocolRef.current;
+      const p      = activeProtocolRef.current;
+      const native = isNativeRef.current;
+      const note   = noteTextRef.current;
       updateDietTagInDecisions(recipe.id, p, {
-        native: isNativeRef.current,
-        mod:    !isNativeRef.current,
-        notes:  noteTextRef.current,
+        native, mod: !native, notes: note,
       }).catch(e => console.warn('flush save failed:', e));
+      setLocalDietTags(prev => ({
+        ...prev,
+        [p]: { ...(prev[p] ?? {}), native, mod: !native, notes: note },
+      }));
       setActiveProtocol(null);
       setSaveState('idle');
     }
@@ -301,12 +308,18 @@ function RecipeRow({
       clearTimeout(debounceRef.current);
       debounceRef.current = null;
     }
-    if (activeProtocolRef.current) {
-      updateDietTagInDecisions(recipe.id, activeProtocolRef.current, {
-        native: isNativeRef.current,
-        mod:    !isNativeRef.current,
-        notes:  noteTextRef.current,
+    const p = activeProtocolRef.current;
+    if (p) {
+      const native = isNativeRef.current;
+      const note   = noteTextRef.current;
+      updateDietTagInDecisions(recipe.id, p, {
+        native, mod: !native, notes: note,
       }).catch(e => console.warn('flush save failed:', e));
+      // Update local cache immediately so re-opening shows saved value
+      setLocalDietTags(prev => ({
+        ...prev,
+        [p]: { ...(prev[p] ?? {}), native, mod: !native, notes: note },
+      }));
     }
     setActiveProtocol(null);
     setSaveState('idle');
@@ -318,7 +331,7 @@ function RecipeRow({
       onExpand(null);
       return;
     }
-    const tag = recipe.dietTags[protocol];
+    const tag = localDietTags[protocol];
     const note = tag?.notes ?? '';
     setActiveProtocol(protocol);
     setNoteText(note);
@@ -336,6 +349,11 @@ function RecipeRow({
         mod: !native,
         notes: note,
       });
+      // Update local cache so re-opening this tag shows the saved value
+      setLocalDietTags(prev => ({
+        ...prev,
+        [protocol]: { ...(prev[protocol] ?? {}), native, mod: !native, notes: note },
+      }));
       setSaveState('saved');
       setTimeout(() => setSaveState('idle'), 2000);
     } catch (e) {
