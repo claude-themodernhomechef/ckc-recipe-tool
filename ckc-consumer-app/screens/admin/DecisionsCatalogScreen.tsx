@@ -244,7 +244,15 @@ async function regenerateNote(recipeName: string, protocol: string, currentNote:
 //  Recipe row
 // ─────────────────────────────────────────────
 
-function RecipeRow({ recipe }: { recipe: Recipe }) {
+function RecipeRow({
+  recipe,
+  isExpanded,
+  onExpand,
+}: {
+  recipe: Recipe;
+  isExpanded: boolean;
+  onExpand: (id: string | null) => void;
+}) {
   const [activeProtocol, setActiveProtocol] = useState<string | null>(null);
   const [noteText, setNoteText]             = useState('');
   const [originalNote, setOriginalNote]     = useState('');
@@ -252,6 +260,14 @@ function RecipeRow({ recipe }: { recipe: Recipe }) {
   const [saveState, setSaveState]           = useState<'idle' | 'saving' | 'saved'>('idle');
   const [generating, setGenerating]         = useState(false);
   const debounceRef                         = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Close editor when another recipe is opened
+  useEffect(() => {
+    if (!isExpanded && activeProtocol !== null) {
+      setActiveProtocol(null);
+      setSaveState('idle');
+    }
+  }, [isExpanded]);
 
   const activeDietTags = DIET_PROTOCOLS
     .map(p => ({ p, status: getComplianceStatus(recipe, p) }))
@@ -264,6 +280,7 @@ function RecipeRow({ recipe }: { recipe: Recipe }) {
   function handleTagPress(protocol: string) {
     if (activeProtocol === protocol) {
       setActiveProtocol(null);
+      onExpand(null);
       return;
     }
     const tag = recipe.dietTags[protocol];
@@ -273,6 +290,7 @@ function RecipeRow({ recipe }: { recipe: Recipe }) {
     setOriginalNote(note);
     setIsNative(tag?.native === true);
     setSaveState('idle');
+    onExpand(recipe.id);
   }
 
   const saveToFirestore = useCallback(async (protocol: string, native: boolean, note: string) => {
@@ -351,7 +369,7 @@ function RecipeRow({ recipe }: { recipe: Recipe }) {
 
         {/* Expanded note editor */}
         {activeProtocol && (
-          <View style={row.noteBox}>
+          <View style={[row.noteBox, saveState === 'saved' && row.noteBoxSaved]}>
             {/* Header: protocol + regenerate + restore */}
             <View style={row.noteHeader}>
               <Text style={row.noteProtocol}>{activeProtocol}</Text>
@@ -453,6 +471,7 @@ const row = StyleSheet.create({
     borderRadius: 4,
     paddingHorizontal: 10, paddingVertical: 7,
   },
+  noteBoxSaved: { borderLeftColor: Colors.green },
   noteProtocol: { fontFamily: Fonts.bodyMedium, fontSize: 10, color: Colors.textMuted, letterSpacing: 0.5 },
   noteText:     { fontFamily: Fonts.body, fontSize: 12, color: Colors.textSecondary, lineHeight: 17 },
   noteHeader: {
@@ -506,6 +525,7 @@ const sc = StyleSheet.create({
   },
   dot:   { width: 7, height: 7, borderRadius: 4 },
   label: { fontFamily: Fonts.bodyMedium, fontSize: 11 },
+  count: { fontFamily: Fonts.body, fontSize: 10 },
 });
 
 // ─────────────────────────────────────────────
@@ -558,6 +578,17 @@ export default function DecisionsCatalogScreen() {
   }
 
   const hasFilters = filterDiets.size > 0 || filterMealType || filterProtein || filterCuisine || filterBlogger || filterStatus;
+
+  const [expandedRecipeId, setExpandedRecipeId] = useState<string | null>(null);
+
+  const statusCounts = useMemo(() => {
+    const counts: Record<string, number> = { yes: 0, no: 0, maybe: 0, pending: 0 };
+    for (const r of allRecipes) {
+      const s = (r.status || 'yes') as StatusOption;
+      if (counts[s] !== undefined) counts[s]++;
+    }
+    return counts;
+  }, [allRecipes]);
 
   return (
     <SafeAreaView style={styles.screen} edges={['top']}>
@@ -624,6 +655,9 @@ export default function DecisionsCatalogScreen() {
                 <Text style={[sc.label, { color: active ? color : Colors.textSecondary }]}>
                   {STATUS_LABELS[s]}
                 </Text>
+                <Text style={[sc.count, { color: active ? color : Colors.textMuted }]}>
+                  {statusCounts[s] ?? 0}
+                </Text>
               </TouchableOpacity>
             );
           })}
@@ -655,7 +689,13 @@ export default function DecisionsCatalogScreen() {
           style={styles.flatList}
           data={filtered}
           keyExtractor={r => r.id}
-          renderItem={({ item }) => <RecipeRow recipe={item} />}
+          renderItem={({ item }) => (
+            <RecipeRow
+              recipe={item}
+              isExpanded={expandedRecipeId === item.id}
+              onExpand={setExpandedRecipeId}
+            />
+          )}
           contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
         />
