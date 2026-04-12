@@ -144,18 +144,15 @@ function cuisineCompatScore(entree: string, side: string): number {
 
 function isStandaloneComplete(entree: Recipe): boolean {
   const n = entree.name.toLowerCase();
-  const d = (entree.menu_description || '').toLowerCase();
-  const text = `${n} ${d}`;
-  // Soups, stews, casseroles, one-pan bakes always stand alone
-  if (n.includes('soup') || n.includes('stew') || n.includes('casserole') ||
+  // Only explicit standalone formats: soups, stews, casseroles, lasagna, stuffed dishes
+  if (n.includes('soup') || n.includes('stew') || n.includes('chili') ||
+      n.includes('casserole') || n.includes('lasagna') || n.includes('stuffed') ||
       entree.meal_type === 'soup') return true;
-  // Complete bowls: has protein + grain + vegetable in name/description
-  const hasGrain = STARCH_KEYWORDS.some(k => text.includes(k));
-  const hasProtein = (entree.protein_type || '') !== '';
-  const vegWords = ['broccoli','spinach','zucchini','kale','bok choy','asparagus',
-    'pepper','tomato','mushroom','eggplant','cauliflower','brussels','squash'];
-  const hasVeg = vegWords.some(v => text.includes(v));
-  if (hasGrain && hasProtein && hasVeg) return true;
+  // Complete bowls must have "bowl" in the name AND contain a grain keyword
+  if (n.includes('bowl')) {
+    const hasGrain = STARCH_KEYWORDS.some(k => n.includes(k));
+    if (hasGrain) return true;
+  }
   return false;
 }
 
