@@ -101,12 +101,11 @@ export async function fetchRecipes(limitCount: number = 200): Promise<Recipe[]> 
     const q = query(
       collection(db, 'recipes'),
       where('status', '==', 'yes'),
+      where('meal_type', '==', 'entree'),
       limit(limitCount),
     );
     const snap = await getDocs(q);
-    const recipes = snap.docs
-      .map(d => docToRecipe(d.id, d.data() as Record<string, unknown>))
-      .filter(r => r.meal_type === 'entree'); // only show entrees in the discover feed
+    const recipes = snap.docs.map(d => docToRecipe(d.id, d.data() as Record<string, unknown>));
 
     if (recipes.length === 0) return SAMPLE_RECIPES;
     return recipes;

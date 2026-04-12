@@ -56,8 +56,17 @@ const STARCH_KEYWORDS = ['rice', 'pasta', 'noodle', 'bread', 'tortilla', 'cousco
 
 type CookTime    = 'quick' | 'normal' | 'long';
 type SetupAnswers = { days: 2 | 3 | 5 | 7; proteins: string[]; cuisines: string[]; cookTime: CookTime };
-type DayMeal     = { entree: Recipe | null; sides: Recipe[] };
-type WeekPlan    = Record<string, DayMeal>; // key = 'YYYY-MM-DD'
+
+// A side slot holds the current pick + alternatives for cycling.
+// options[0] is the original suggestion; optIdx cycles through all options.
+// Manually-added sides have options.length === 1 (no ↻ button shown).
+interface SideSlot {
+  options: Recipe[];
+  optIdx:  number;
+}
+
+type DayMeal  = { entree: Recipe | null; sides: SideSlot[] };
+type WeekPlan = Record<string, DayMeal>; // key = 'YYYY-MM-DD'
 
 // ─────────────────────────────────────────────
 // Date helpers
@@ -131,29 +140,196 @@ function cuisineCompatScore(entree: string, side: string): number {
   return 1;
 }
 
-function getSuggestedSides(entree: Recipe, allSides: Recipe[], protocols: string[]): Recipe[] {
-  // No sides for soups/stews/casseroles
+// ── Entree classification helpers ────────────────────────────────────────────
+
+function isStandaloneComplete(entree: Recipe): boolean {
   const n = entree.name.toLowerCase();
-  if (n.includes('soup') || n.includes('stew') || n.includes('casserole') || entree.meal_type === 'soup') return [];
+  const d = (entree.menu_description || '').toLowerCase();
+  const text = `${n} ${d}`;
+  // Soups, stews, casseroles, one-pan bakes always stand alone
+  if (n.includes('soup') || n.includes('stew') || n.includes('casserole') ||
+      entree.meal_type === 'soup') return true;
+  // Complete bowls: has protein + grain + vegetable in name/description
+  const hasGrain = STARCH_KEYWORDS.some(k => text.includes(k));
+  const hasProtein = (entree.protein_type || '') !== '';
+  const vegWords = ['broccoli','spinach','zucchini','kale','bok choy','asparagus',
+    'pepper','tomato','mushroom','eggplant','cauliflower','brussels','squash'];
+  const hasVeg = vegWords.some(v => text.includes(v));
+  if (hasGrain && hasProtein && hasVeg) return true;
+  return false;
+}
+
+function isPastaEntree(entree: Recipe): boolean {
+  const text = `${entree.name} ${entree.menu_description || ''}`.toLowerCase();
+  return ['pasta','spaghetti','fettuccine','linguine','penne','rigatoni','lasagna',
+    'tortellini','gnocchi','noodle','ramen','udon','pad thai','lo mein','chow mein',
+    'orzo'].some(k => text.includes(k));
+}
+
+function isTacoEntree(entree: Recipe): boolean {
+  const n = entree.name.toLowerCase();
+  return n.includes('taco') || n.includes('fajita') || n.includes('burrito');
+}
+
+function isSandwichEntree(entree: Recipe): boolean {
+  const n = entree.name.toLowerCase();
+  return ['sandwich','burger','wrap','quesadilla','pita','flatbread'].some(k => n.includes(k));
+}
+
+function isHeavyEntree(entree: Recipe): boolean {
+  const n = entree.name.toLowerCase();
+  return ['braise','braised','pot roast','short rib','short ribs','beef bourguignon',
+    'osso buco','carnitas','pulled pork'].some(k => n.includes(k));
+}
+
+function isCreamyEntree(entree: Recipe): boolean {
+  const n = entree.name.toLowerCase();
+  return ['creamy','cream sauce','alfredo','beurre blanc','marry me'].some(k => n.includes(k));
+}
+
+function isSweetGlazedEntree(entree: Recipe): boolean {
+  const n = entree.name.toLowerCase();
+  return ['honey','maple','sweet','glazed','teriyaki','balsamic glaze'].some(k => n.includes(k));
+}
+
+// ── Clash prevention ──────────────────────────────────────────────────────────
+
+function isHeavySide(side: Recipe): boolean {
+  const n = (side.name || '').toLowerCase();
+  return ['braised','braise','gratin','au gratin','casserole','mashed','creamy','cheesy'].some(k => n.includes(k));
+}
+
+function isCreamySide(side: Recipe): boolean {
+  const n = (side.name || '').toLowerCase();
+  return ['creamy','cream','alfredo','gratin','au gratin','polenta','whipped'].some(k => n.includes(k));
+}
+
+function isSweetSide(side: Recipe): boolean {
+  const n = (side.name || '').toLowerCase();
+  return ['honey','maple','sweet','candied','glazed','caramel'].some(k => n.includes(k));
+}
+
+// ── Main pairing function ─────────────────────────────────────────────────────
+
+function getSuggestedSides(entree: Recipe, allSides: Recipe[], protocols: string[]): Recipe[] {
+  // 1. Classify entree — no sides for standalone complete dishes
+  if (isStandaloneComplete(entree)) return [];
 
   const entreeHasStarch = hasBuiltInStarch(entree);
+  const entreeIsPasta   = isPastaEntree(entree);
+  const entreeIsTaco    = isTacoEntree(entree);
+  const entreeIsSandwich = isSandwichEntree(entree);
+  const entreeIsHeavy   = isHeavyEntree(entree);
+  const entreeIsCreamy  = isCreamyEntree(entree);
+  const entreeIsSweet   = isSweetGlazedEntree(entree);
 
-  // Filter by protocol compliance
-  let sides = protocols.length > 0
-    ? allSides.filter(s => protocols.every(p => { const t = s.dietTags?.[p]; return t && (t.native || t.mod); }))
-    : [...allSides];
+  // 2. Protocol filtering — prefer native, allow mod, exclude non-compliant
+  const isCompliant = (s: Recipe) => protocols.length === 0 ||
+    protocols.every(p => { const t = s.dietTags?.[p]; return t && (t.native || t.mod); });
 
-  // Score each candidate
-  const scored = sides.map(s => {
+  // Keto override: filter out starch-role sides (they'll be replaced below)
+  const isKeto = protocols.includes('K');
+
+  let pool = allSides.filter(isCompliant);
+
+  // 3. Score and filter each candidate
+  const scored = pool.map(s => {
+    const role = inferSideRole(s);
+
+    // Pasta entrees: only pair with salad or sauce
+    if (entreeIsPasta && role !== 'salad' && role !== 'sauce') return null;
+
+    // Hard block: two starches
+    if (entreeHasStarch && !entreeIsTaco && !entreeIsSandwich && role === 'starch') return null;
+
+    // Hard block: two heavy dishes
+    if (entreeIsHeavy && isHeavySide(s)) return null;
+
+    // Hard block: two competing cream-heavy dishes
+    if (entreeIsCreamy && isCreamySide(s)) return null;
+
+    // Hard block: sweet side with sweet-glazed entree
+    if (entreeIsSweet && isSweetSide(s)) return null;
+
+    // Cuisine compatibility
     let score = cuisineCompatScore(entree.cuisine || '', s.cuisine || '');
     if (score === 0) return null; // blocked anti-pairing
-    if (entreeHasStarch && hasBuiltInStarch(s)) score -= 1; // downrank starch-on-starch
-    if (protocols.length > 0 && protocols.every(p => s.dietTags?.[p]?.native)) score += 0.5; // prefer native
-    return { recipe: s, score };
-  }).filter(Boolean) as { recipe: Recipe; score: number }[];
+
+    // Prefer native compliance
+    if (protocols.length > 0 && protocols.every(p => s.dietTags?.[p]?.native)) score += 0.5;
+
+    // Keto: downrank starch sides further (they shouldn't appear unless keto-friendly)
+    if (isKeto && role === 'starch') score -= 2;
+
+    return { recipe: s, score, role };
+  }).filter(Boolean) as { recipe: Recipe; score: number; role: string }[];
 
   scored.sort((a, b) => b.score - a.score);
-  return scored.slice(0, 3).map(x => x.recipe);
+
+  // 4. Balance the result: aim for 1 starch + 1 vegetable for protein-only entrees,
+  //    salad-or-veg for pasta, flexible for tacos/sandwiches.
+  if (entreeIsPasta) {
+    return scored.slice(0, 2).map(x => x.recipe);
+  }
+
+  if (entreeIsTaco || entreeIsSandwich) {
+    return scored.slice(0, 3).map(x => x.recipe);
+  }
+
+  // Protein-only / simple braise: try to return 1 starch + 1 vegetable
+  const starch = scored.find(x => x.role === 'starch');
+  const veg    = scored.find(x => x.role === 'vegetable' || x.role === 'salad');
+  const sauce  = scored.find(x => x.role === 'sauce');
+
+  const picks: Recipe[] = [];
+  if (starch) picks.push(starch.recipe);
+  if (veg)    picks.push(veg.recipe);
+  if (sauce && picks.length < 3) picks.push(sauce.recipe);
+
+  // If we couldn't fill 2 slots with balanced picks, fill from top scored
+  if (picks.length < 2) {
+    for (const { recipe } of scored) {
+      if (!picks.find(p => p.id === recipe.id)) picks.push(recipe);
+      if (picks.length >= 3) break;
+    }
+  }
+
+  return picks.slice(0, 3);
+}
+
+// Infer the functional role of a side dish from its meal_type and name.
+// Used so the cycle button only swaps within the same role (starch ↔ starch, etc.)
+function inferSideRole(recipe: Recipe): 'starch' | 'vegetable' | 'salad' | 'sauce' {
+  if (recipe.meal_type === 'sauce') return 'sauce';
+  if (recipe.meal_type === 'salad') return 'salad';
+  const name = (recipe.name || '').toLowerCase();
+  const starchWords = ['rice', 'pasta', 'noodle', 'bread', 'tortilla', 'couscous', 'quinoa',
+    'potato', 'potatoes', 'orzo', 'polenta', 'grits', 'farro', 'mashed', 'bean', 'beans',
+    'lentil', 'lentils', 'chickpea', 'chickpeas', 'plantain'];
+  if (starchWords.some(k => name.includes(k))) return 'starch';
+  return 'vegetable';
+}
+
+// Build the alternatives list for a given side: same role, compatible cuisine,
+// protocol-compliant, excluding the side itself.
+function computeAlternatives(
+  side: Recipe,
+  allSides: Recipe[],
+  entree: Recipe,
+  protocols: string[],
+): Recipe[] {
+  const role = inferSideRole(side);
+  return allSides
+    .filter(s => {
+      if (s.id === side.id) return false;
+      if (inferSideRole(s) !== role) return false;
+      if (cuisineCompatScore(entree.cuisine || '', s.cuisine || '') === 0) return false;
+      if (protocols.length > 0 &&
+          !protocols.every(p => { const t = s.dietTags?.[p]; return t && (t.native || t.mod); }))
+        return false;
+      return true;
+    })
+    .slice(0, 8);
 }
 
 // ─────────────────────────────────────────────
@@ -396,11 +572,12 @@ interface DayCardProps {
   onAddSide:       () => void;
   onRemoveEntree:  () => void;
   onRemoveSide:    (id: string) => void;
+  onCycleSide:     (idx: number) => void;
   onChefSides:     () => void;
   onUpgrade:       () => void;
 }
 
-function DayCard({ date, meal, isLocked, isPaid, onAddEntree, onAddSide, onRemoveEntree, onRemoveSide, onChefSides, onUpgrade }: DayCardProps) {
+function DayCard({ date, meal, isLocked, isPaid, onAddEntree, onAddSide, onRemoveEntree, onRemoveSide, onCycleSide, onChefSides, onUpgrade }: DayCardProps) {
   const today = isToday(date);
   const { entree, sides } = meal;
 
@@ -451,15 +628,24 @@ function DayCard({ date, meal, isLocked, isPaid, onAddEntree, onAddSide, onRemov
         <View style={dc.sidesSection}>
           <Text style={dc.sidesLabel}>SIDES</Text>
 
-          {sides.map(side => (
-            <View key={side.id} style={dc.sideRow}>
-              <Text style={dc.sideBullet}>·</Text>
-              <Text style={dc.sideName}>{side.name}</Text>
-              <TouchableOpacity onPress={() => onRemoveSide(side.id)} hitSlop={{ top: 6, right: 6, bottom: 6, left: 6 }}>
-                <Text style={dc.sideRemove}>✕</Text>
-              </TouchableOpacity>
-            </View>
-          ))}
+          {sides.map((slot, idx) => {
+            const side     = slot.options[slot.optIdx];
+            const canCycle = slot.options.length > 1;
+            return (
+              <View key={`${side.id}-${idx}`} style={dc.sideRow}>
+                <Text style={dc.sideBullet}>·</Text>
+                <Text style={dc.sideName}>{side.name}</Text>
+                {canCycle && (
+                  <TouchableOpacity onPress={() => onCycleSide(idx)} hitSlop={{ top: 8, right: 8, bottom: 8, left: 8 }}>
+                    <Text style={dc.cycleBtn}>↻</Text>
+                  </TouchableOpacity>
+                )}
+                <TouchableOpacity onPress={() => onRemoveSide(side.id)} hitSlop={{ top: 6, right: 6, bottom: 6, left: 6 }}>
+                  <Text style={dc.sideRemove}>✕</Text>
+                </TouchableOpacity>
+              </View>
+            );
+          })}
 
           <View style={dc.sideActions}>
             <TouchableOpacity style={dc.addSideBtn} onPress={onAddSide} activeOpacity={0.75}>
@@ -504,6 +690,7 @@ const dc = StyleSheet.create({
   sideRow:      { flexDirection: 'row', alignItems: 'center', gap: 8 },
   sideBullet:   { color: Colors.textMuted, fontSize: 16, lineHeight: 20 },
   sideName:     { flex: 1, fontFamily: Fonts.body, fontSize: 14, color: Colors.textSecondary },
+  cycleBtn:     { color: Colors.gold, fontSize: 14, paddingHorizontal: 2 },
   sideRemove:   { color: Colors.textMuted, fontSize: 11 },
 
   sideActions:      { flexDirection: 'row', gap: 8, marginTop: 2 },
@@ -761,7 +948,8 @@ export default function MealPlanScreen() {
           source:     'mealplan',
         });
       }
-      dayMeal.sides.forEach(side => {
+      dayMeal.sides.forEach(slot => {
+        const side = slot.options[slot.optIdx];
         items.push({
           recipeId:   side.id,
           recipeName: side.name,
@@ -804,8 +992,10 @@ export default function MealPlanScreen() {
     setPlan(p => {
       const day = p[key] || { entree: null, sides: [] };
       if (addingRole === 'entree') return { ...p, [key]: { ...day, entree: recipe } };
-      if (day.sides.find(s => s.id === recipe.id)) return p;
-      return { ...p, [key]: { ...day, sides: [...day.sides, recipe] } };
+      if (day.sides.find(s => s.options[s.optIdx].id === recipe.id)) return p;
+      // Manually added sides get no alternatives (no ↻ button)
+      const slot: SideSlot = { options: [recipe], optIdx: 0 };
+      return { ...p, [key]: { ...day, sides: [...day.sides, slot] } };
     });
     setAddingToDay(null);
   }
@@ -817,8 +1007,20 @@ export default function MealPlanScreen() {
   function handleRemoveSide(key: string, sideId: string) {
     setPlan(p => ({
       ...p,
-      [key]: { ...(p[key] || { entree: null, sides: [] }), sides: (p[key]?.sides || []).filter(s => s.id !== sideId) },
+      [key]: { ...(p[key] || { entree: null, sides: [] }), sides: (p[key]?.sides || []).filter(s => s.options[s.optIdx].id !== sideId) },
     }));
+  }
+
+  function handleCycleSide(key: string, idx: number) {
+    setPlan(p => {
+      const day = p[key];
+      if (!day) return p;
+      const sides = [...day.sides];
+      const slot  = sides[idx];
+      if (!slot || slot.options.length <= 1) return p;
+      sides[idx] = { ...slot, optIdx: (slot.optIdx + 1) % slot.options.length };
+      return { ...p, [key]: { ...day, sides } };
+    });
   }
 
   // ── Chef sides ───────────────────────────────────────────────────────────────
@@ -837,11 +1039,14 @@ export default function MealPlanScreen() {
 
   function handleAddChefSide(side: Recipe) {
     if (!chefSidesDay) return;
-    const key = chefSidesDay;
+    const key    = chefSidesDay;
+    const entree = plan[key]?.entree;
+    const alts   = entree ? computeAlternatives(side, allSides, entree, profile.protocols) : [];
+    const slot: SideSlot = { options: [side, ...alts], optIdx: 0 };
     setPlan(p => {
       const day = p[key] || { entree: null, sides: [] };
-      if (day.sides.find(s => s.id === side.id)) return p;
-      return { ...p, [key]: { ...day, sides: [...day.sides, side] } };
+      if (day.sides.find(s => s.options[s.optIdx].id === side.id)) return p;
+      return { ...p, [key]: { ...day, sides: [...day.sides, slot] } };
     });
   }
 
@@ -905,6 +1110,7 @@ export default function MealPlanScreen() {
               onAddSide={()   => { setAddingToDay(key); setAddingRole('side');   }}
               onRemoveEntree={() => handleRemoveEntree(key)}
               onRemoveSide={id  => handleRemoveSide(key, id)}
+              onCycleSide={idx  => handleCycleSide(key, idx)}
               onChefSides={() => handleChefSides(key)}
               onUpgrade={() => setPremiumVisible(true)}
             />
