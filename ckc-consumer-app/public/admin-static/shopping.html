@@ -157,9 +157,9 @@ html,body{height:100%;background:var(--bg);color:var(--text-primary);font-family
 /* ── Diet test tokens ── */
 #diet-token-bar{display:flex;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;scrollbar-width:none}
 #diet-token-bar::-webkit-scrollbar{display:none}
-.diet-token{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--border);background:transparent;font-family:var(--font-body);font-size:10px;font-weight:500;letter-spacing:.04em;color:var(--text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;padding:0}
-.diet-token:hover{border-color:var(--border2);color:var(--text-secondary)}
-.diet-token.active{background:rgba(0,0,0,0.3)}
+.diet-token{width:38px;height:38px;border-radius:50%;border:1.5px solid;background:transparent;font-family:var(--font-body);font-size:10px;font-weight:700;letter-spacing:.02em;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;padding:0;opacity:0.45}
+.diet-token:hover{opacity:0.75}
+.diet-token.active{opacity:1;color:#0f0f0d!important}
 .diet-clear-btn{border:1px solid var(--border);border-radius:100px;padding:5px 14px;font-size:11px;color:var(--text-muted);cursor:pointer;background:transparent;font-family:var(--font-body);white-space:nowrap;transition:all .15s;margin-left:4px}
 .diet-clear-btn:hover{border-color:var(--border2);color:var(--text-secondary)}
 
@@ -251,14 +251,14 @@ html,body{height:100%;background:var(--bg);color:var(--text-primary);font-family
 
       <!-- Diet test tokens -->
       <div id="diet-token-bar">
-        <button class="diet-token" data-diet="AIP" data-color="#e07878" onclick="toggleDietToken('AIP')" title="AIP">AIP</button>
-        <button class="diet-token" data-diet="DF"  data-color="#7cb87a" onclick="toggleDietToken('DF')"  title="Dairy-Free">DF</button>
-        <button class="diet-token" data-diet="GF"  data-color="#d4a843" onclick="toggleDietToken('GF')"  title="Gluten-Free">GF</button>
-        <button class="diet-token" data-diet="K"   data-color="#c4935a" onclick="toggleDietToken('K')"   title="Keto">K</button>
-        <button class="diet-token" data-diet="LF"  data-color="#e8a87c" onclick="toggleDietToken('LF')"  title="Low-FODMAP">LF</button>
-        <button class="diet-token" data-diet="LH"  data-color="#da6a9b" onclick="toggleDietToken('LH')"  title="Low-Histamine">LH</button>
-        <button class="diet-token" data-diet="V"   data-color="#6aabda" onclick="toggleDietToken('V')"   title="Vegan">V</button>
-        <button class="diet-token" data-diet="Vg"  data-color="#9b8fd4" onclick="toggleDietToken('Vg')"  title="Vegetarian">Vg</button>
+        <button class="diet-token" data-diet="AIP" data-color="#e07878" onclick="toggleDietToken('AIP')" title="AIP"          style="border-color:#e07878;color:#e07878">AIP</button>
+        <button class="diet-token" data-diet="DF"  data-color="#6aabda" onclick="toggleDietToken('DF')"  title="Dairy-Free"    style="border-color:#6aabda;color:#6aabda">DF</button>
+        <button class="diet-token" data-diet="GF"  data-color="#d4943a" onclick="toggleDietToken('GF')"  title="Gluten-Free"   style="border-color:#d4943a;color:#d4943a">GF</button>
+        <button class="diet-token" data-diet="K"   data-color="#9b8ee0" onclick="toggleDietToken('K')"   title="Keto"          style="border-color:#9b8ee0;color:#9b8ee0">K</button>
+        <button class="diet-token" data-diet="LF"  data-color="#d4a843" onclick="toggleDietToken('LF')"  title="Low-FODMAP"    style="border-color:#d4a843;color:#d4a843">LF</button>
+        <button class="diet-token" data-diet="LH"  data-color="#c47fc4" onclick="toggleDietToken('LH')"  title="Low-Histamine" style="border-color:#c47fc4;color:#c47fc4">LH</button>
+        <button class="diet-token" data-diet="V"   data-color="#7cb87a" onclick="toggleDietToken('V')"   title="Vegan"         style="border-color:#7cb87a;color:#7cb87a">V</button>
+        <button class="diet-token" data-diet="Vg"  data-color="#5bbfb5" onclick="toggleDietToken('Vg')"  title="Vegetarian"    style="border-color:#5bbfb5;color:#5bbfb5">Vg</button>
         <button class="diet-clear-btn" onclick="clearDietToken()" title="Clear diet filter">Clear all</button>
       </div>
 
@@ -2028,9 +2028,7 @@ function applyDietTokenStyles() {
     const isActive = btn.dataset.diet === activeDietToken;
     const color = btn.dataset.color || '#fff';
     btn.classList.toggle('active', isActive);
-    btn.style.borderColor = isActive ? color : '';
-    btn.style.color       = isActive ? color : '';
-    btn.style.background  = isActive ? color + '18' : '';
+    btn.style.background = isActive ? color : '';
   });
 }
 
