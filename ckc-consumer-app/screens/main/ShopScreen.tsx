@@ -594,7 +594,6 @@ export default function ShopScreen() {
   // Diet mode: default ON when user has active protocols
   const [dietModeEnabled, setDietModeEnabled] = useState(() => profile.protocols.length > 0);
 
-
   const allRecipes = SAMPLE_RECIPES;
 
   // ── Aggregate ingredients ────────────────────────────────────────────────────

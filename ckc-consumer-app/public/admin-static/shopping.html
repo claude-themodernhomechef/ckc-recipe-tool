@@ -76,6 +76,10 @@ html,body{height:100%;background:var(--bg);color:var(--text-primary);font-family
 .rc-name{font-size:13px;font-weight:400;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rc-meta{font-size:11px;color:var(--text-muted);margin-top:2px;display:flex;gap:6px}
 .rc-protein{color:var(--accent);font-weight:500}
+
+/* Diet tag circles — native=solid fill, modified=dashed border */
+.diet-pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;min-height:0}
+.diet-token-circle{width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;letter-spacing:.02em;flex-shrink:0}
 .rc-add-btn{width:28px;height:28px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--text-muted);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .12s;line-height:1}
 .recipe-card.in-menu .rc-add-btn{border-color:var(--green);color:var(--green);font-size:14px}
 .recipe-card:hover .rc-add-btn{border-color:var(--border2);color:var(--text-primary)}
@@ -149,6 +153,21 @@ html,body{height:100%;background:var(--bg);color:var(--text-primary);font-family
 .no-data-banner .icon{font-size:16px;flex-shrink:0;margin-top:1px}
 .no-data-banner p{font-size:12px;color:var(--accent);line-height:1.5}
 .no-data-banner code{font-family:monospace;background:rgba(201,169,107,0.15);padding:1px 5px;border-radius:3px;font-size:11px}
+
+/* ── Diet test tokens ── */
+#diet-token-bar{display:flex;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;scrollbar-width:none}
+#diet-token-bar::-webkit-scrollbar{display:none}
+.diet-token{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--border);background:transparent;font-family:var(--font-body);font-size:10px;font-weight:500;letter-spacing:.04em;color:var(--text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;padding:0}
+.diet-token:hover{border-color:var(--border2);color:var(--text-secondary)}
+.diet-token.active{background:rgba(0,0,0,0.3)}
+.diet-clear-btn{border:1px solid var(--border);border-radius:100px;padding:5px 14px;font-size:11px;color:var(--text-muted);cursor:pointer;background:transparent;font-family:var(--font-body);white-space:nowrap;transition:all .15s;margin-left:4px}
+.diet-clear-btn:hover{border-color:var(--border2);color:var(--text-secondary)}
+
+/* Compliance badges on menu cards */
+.menu-card .compliance-badge{position:absolute;bottom:36px;left:0;right:0;text-align:center;font-size:9px;letter-spacing:.06em;padding:2px 4px;font-family:var(--font-body)}
+.compliance-native{background:rgba(124,184,122,0.85);color:#0f0f0d}
+.compliance-mod{background:rgba(201,169,107,0.85);color:#0f0f0d}
+.compliance-none{background:rgba(201,107,107,0.85);color:#fff}
 </style>
 </head>
 <body>
@@ -228,6 +247,19 @@ html,body{height:100%;background:var(--bg);color:var(--text-primary);font-family
         <div id="menu-cards">
           <span class="menu-empty">← Pick recipes from the left to build your menu</span>
         </div>
+      </div>
+
+      <!-- Diet test tokens -->
+      <div id="diet-token-bar">
+        <button class="diet-token" data-diet="AIP" data-color="#e07878" onclick="toggleDietToken('AIP')" title="AIP">AIP</button>
+        <button class="diet-token" data-diet="DF"  data-color="#7cb87a" onclick="toggleDietToken('DF')"  title="Dairy-Free">DF</button>
+        <button class="diet-token" data-diet="GF"  data-color="#d4a843" onclick="toggleDietToken('GF')"  title="Gluten-Free">GF</button>
+        <button class="diet-token" data-diet="K"   data-color="#c4935a" onclick="toggleDietToken('K')"   title="Keto">K</button>
+        <button class="diet-token" data-diet="LF"  data-color="#e8a87c" onclick="toggleDietToken('LF')"  title="Low-FODMAP">LF</button>
+        <button class="diet-token" data-diet="LH"  data-color="#da6a9b" onclick="toggleDietToken('LH')"  title="Low-Histamine">LH</button>
+        <button class="diet-token" data-diet="V"   data-color="#6aabda" onclick="toggleDietToken('V')"   title="Vegan">V</button>
+        <button class="diet-token" data-diet="Vg"  data-color="#9b8fd4" onclick="toggleDietToken('Vg')"  title="Vegetarian">Vg</button>
+        <button class="diet-clear-btn" onclick="clearDietToken()" title="Clear diet filter">Clear all</button>
       </div>
 
       <!-- Shopping list -->
@@ -411,6 +443,44 @@ function filterRecipes() {
 // ─────────────────────────────────────────────
 // Recipe list
 // ─────────────────────────────────────────────
+function normalizeDietTags(dietTags) {
+  if (!dietTags) return {};
+  const out = {};
+  for (const [code, val] of Object.entries(dietTags)) {
+    if (val && typeof val === 'object' && ('native' in val || 'mod' in val)) {
+      out[code] = { native: !!val.native, mod: !!val.mod, notes: val.notes || '' };
+    } else if (typeof val === 'string') {
+      const hasNote = val.trim().length > 0;
+      out[code] = { native: !hasNote, mod: hasNote, notes: val.trim() };
+    } else if (val) {
+      out[code] = { native: true, mod: false, notes: '' };
+    }
+  }
+  return out;
+}
+
+const DIET_COLORS = {
+  AIP:'#e07878', DF:'#6aabda', GF:'#d4943a', K:'#9b8ee0',
+  LF:'#d4a843',  LH:'#c47fc4', V:'#7cb87a',  Vg:'#5bbfb5',
+};
+const DIET_ORDER = ['AIP','DF','GF','K','LF','LH','V','Vg'];
+
+function renderDietPills(dietTags) {
+  const dt = normalizeDietTags(dietTags);
+  const tags = DIET_ORDER.filter(k => dt[k] && (dt[k].native || dt[k].mod));
+  if (!tags.length) return '';
+  const circles = tags.map(k => {
+    const color = DIET_COLORS[k] || '#aaa';
+    const isNative = dt[k].native;
+    const tip = dt[k].notes ? ` title="${esc(dt[k].notes)}"` : '';
+    const style = isNative
+      ? `background:${color};color:#0f0f0d;border:1.5px solid ${color}`
+      : `background:transparent;color:${color};border:1.5px dashed ${color}`;
+    return `<span class="diet-token-circle" style="${style}"${tip}>${k}</span>`;
+  }).join('');
+  return `<div class="diet-pills">${circles}</div>`;
+}
+
 function renderRecipeList(recipes) {
   const container = document.getElementById('recipe-list');
   const inMenuSet = new Set(menuItems.map(m => m.recipe.name));
@@ -428,6 +498,7 @@ function renderRecipeList(recipes) {
           <span>${esc(r.blogger||'')}</span>
           ${rating ? `<span>${rating}</span>` : ''}
         </div>
+        ${renderDietPills(r.dietTags)}
       </div>
       <button class="rc-add-btn" title="${inMenu ? 'Remove from menu' : 'Add to menu'}">${inMenu ? '✓' : '+'}</button>
     </div>`;
@@ -469,18 +540,30 @@ function updateMenuStrip() {
     return;
   }
 
-  container.innerHTML = menuItems.map((m, i) => `
+  container.innerHTML = menuItems.map((m, i) => {
+    const compliance = getCompliance(m.recipe, activeDietToken);
+    const badgeHtml = compliance
+      ? `<div class="compliance-badge ${
+          compliance === 'native' ? 'compliance-native' :
+          compliance === 'mod'    ? 'compliance-mod'    : 'compliance-none'
+        }">${
+          compliance === 'native' ? '✓ Compliant' :
+          compliance === 'mod'    ? '~ Modified'  : '✕ Not compliant'
+        }</div>`
+      : '';
+    return `
     <div class="menu-card">
       <img src="${esc(m.recipe.image||'')}" alt="" onerror="this.style.background='var(--surface2)';this.src=''">
       <button class="menu-card-remove" onclick="removeFromMenu(${i})">×</button>
+      ${badgeHtml}
       <div class="menu-card-name">${esc(m.recipe.name)}</div>
       <div class="menu-servings">
         <button class="srv-btn" onclick="changeServings(${i},-1)">−</button>
         <span class="srv-label">${m.servings}×</span>
         <button class="srv-btn" onclick="changeServings(${i},1)">+</button>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
 function removeFromMenu(idx) {
@@ -1933,6 +2016,47 @@ function capFirst(s) {
 
 function shortenTitle(t) {
   return t.length > 30 ? t.slice(0,28)+'…' : t;
+}
+
+// ─────────────────────────────────────────────
+// Diet test tokens
+// ─────────────────────────────────────────────
+let activeDietToken = null;
+
+function applyDietTokenStyles() {
+  document.querySelectorAll('.diet-token').forEach(btn => {
+    const isActive = btn.dataset.diet === activeDietToken;
+    const color = btn.dataset.color || '#fff';
+    btn.classList.toggle('active', isActive);
+    btn.style.borderColor = isActive ? color : '';
+    btn.style.color       = isActive ? color : '';
+    btn.style.background  = isActive ? color + '18' : '';
+  });
+}
+
+function toggleDietToken(key) {
+  activeDietToken = activeDietToken === key ? null : key;
+  applyDietTokenStyles();
+  const sel = document.getElementById('filter-diet');
+  if (sel) { sel.value = activeDietToken || ''; filterRecipes(); }
+  updateMenuStrip();
+}
+
+function clearDietToken() {
+  activeDietToken = null;
+  applyDietTokenStyles();
+  const sel = document.getElementById('filter-diet');
+  if (sel) { sel.value = ''; filterRecipes(); }
+  updateMenuStrip();
+}
+
+function getCompliance(recipe, dietKey) {
+  if (!dietKey || !recipe.dietTags) return null;
+  const tag = recipe.dietTags[dietKey];
+  if (!tag) return 'none';
+  if (tag.native) return 'native';
+  if (tag.mod)    return 'mod';
+  return 'none';
 }
 </script>
 
