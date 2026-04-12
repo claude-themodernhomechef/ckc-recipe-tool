@@ -1091,6 +1091,7 @@ const INGREDIENT_DB = {
   'ground cardamon':'pantry-staples',
   'hummus':'pantry-staples',
   'garlic sauce':'dairy',
+  'tzatziki':'dairy',
   'chicken drumsticks':'protein',
   'white mushrooms':'produce',
   'buttermilk':'dairy',
@@ -2082,26 +2083,40 @@ let activeDietToken = null;
 // Swap logic (mirrors consumer ShopScreen)
 // ─────────────────────────────────────────────
 
+// Strip leading quantity/determiner prefix from a swap "from" term
+// e.g. "the 1/2 cup crumbled feta" → "feta"
+// e.g. "1 tablespoon soy sauce" → "soy sauce"
+function cleanSwapTerm(t) {
+  return t
+    .replace(/^(the|a|an)\s+/i, '')
+    .replace(/^\d[\d/. ]*\s*(cup|tablespoon|teaspoon|tbsp|tsp|oz|lb|g|kg|ml|clove|head|bunch|can|pkg|sprig|stalk|pinch|dash|inch|qt|pt)s?\s+/i, '')
+    .replace(/\b(crumbled|shredded|grated|diced|chopped|minced|sliced|halved|quartered|ground|fresh|dried|frozen|large|medium|small|whole|plain|unsweetened|reduced-fat|full-fat|boneless|skinless)\s+/gi, '')
+    .trim();
+}
+
 function parseSwapPairs(notes) {
   const result = [];
   const s = notes.toLowerCase();
   const insteadRe = /use\s+(.+?)\s+instead\s+of\s+(.+?)(?:[,.]|$)/gi;
   let m;
-  while ((m = insteadRe.exec(s)) !== null) result.push({ from: m[2].trim(), to: m[1].trim() });
+  while ((m = insteadRe.exec(s)) !== null) result.push({ from: cleanSwapTerm(m[2].trim()), to: m[1].trim() });
   const replaceRe = /replace\s+(.+?)\s+with\s+(.+?)(?:[,.]|$)/gi;
   while ((m = replaceRe.exec(s)) !== null) {
     const to = m[2].trim();
-    m[1].split(/\s+and\s+/i).forEach(f => result.push({ from: f.trim(), to }));
+    m[1].split(/\s+and\s+/i).forEach(f => result.push({ from: cleanSwapTerm(f.trim()), to }));
   }
   const skipRe = /(?:skip|omit)\s+([^,.\n]+)/gi;
-  while ((m = skipRe.exec(s)) !== null) result.push({ from: m[1].split(',')[0].trim(), to: null });
+  while ((m = skipRe.exec(s)) !== null) result.push({ from: cleanSwapTerm(m[1].split(',')[0].trim()), to: null });
   return result;
 }
 
 function fuzzyMatch(parsedTerm, ingredientName) {
   const clean = x => x.replace(/\b(cloves?|heads?|tbsp\s+of|tsp\s+of|cups?\s+of|\bof\b)\b/g, '').replace(/\s+/g, ' ').trim();
   const a = clean(parsedTerm), b = clean(ingredientName);
-  return b.includes(a) || a.includes(b);
+  if (b.includes(a) || a.includes(b)) return true;
+  // Word-level overlap: if any significant word (>3 chars) from a appears in b
+  const words = a.split(/\s+/).filter(w => w.length > 3);
+  return words.length > 0 && words.some(w => b.includes(w));
 }
 
 function buildSwapMap(dietKey) {
