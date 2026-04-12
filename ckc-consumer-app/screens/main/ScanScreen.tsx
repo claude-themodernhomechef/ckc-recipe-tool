@@ -449,11 +449,11 @@ function ScanLoadingView({ variant, protocolLabel }: { variant: 'recipe' | 'pant
 //  Main Screen
 // ─────────────────────────────────────────────
 
-export default function ScanScreen() {
+export default function ScanScreen({ initialMode }: { initialMode?: Mode }) {
   const { profile, savePantryIngredients } = useUser();
   const activeProtocols = profile.protocols.length > 0 ? profile.protocols : ['GF'];
 
-  const [mode, setMode]                   = useState<Mode>(null);
+  const [mode, setMode]                   = useState<Mode>(initialMode ?? null);
   const [recipeStep, setRecipeStep]       = useState<RecipeStep>('input');
   const [pantryStep, setPantryStep]       = useState<PantryStep>('input');
   const [inputMethod, setInputMethod]     = useState<InputMethod>('url');

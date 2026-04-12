@@ -227,6 +227,12 @@ const bottom = StyleSheet.create({
 
 export default function MainTabs() {
   const [active, setActive] = useState<TabId>('discover');
+  const [scanInitialMode, setScanInitialMode] = useState<'recipe' | 'pantry' | null>(null);
+
+  function navigateTo(tab: TabId, opts?: { scanMode?: 'recipe' | 'pantry' }) {
+    if (opts?.scanMode) setScanInitialMode(opts.scanMode);
+    setActive(tab);
+  }
   const { width } = useWindowDimensions();
   const isDesktop = Platform.OS === 'web' && width >= 900;
 
@@ -238,9 +244,9 @@ export default function MainTabs() {
     switch (active) {
       case 'discover': return <DiscoverScreen />;
       case 'mealplan': return <MealPlanScreen />;
-      case 'scan':     return <ScanScreen />;
+      case 'scan':     return <ScanScreen initialMode={scanInitialMode} />;
       case 'shop':     return <ShopScreen />;
-      case 'profile':  return <ProfileScreen onNavigate={setActive} />;
+      case 'profile':  return <ProfileScreen onNavigate={(tab, opts) => navigateTo(tab, opts)} />;
     }
   })();
 

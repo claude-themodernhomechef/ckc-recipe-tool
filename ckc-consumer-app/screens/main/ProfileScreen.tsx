@@ -16,7 +16,7 @@ import DietTag from '../components/DietTag';
 import PremiumGate from '../components/PremiumGate';
 import SectionLabel from '../components/SectionLabel';
 
-export default function ProfileScreen({ onNavigate }: { onNavigate?: (tab: TabId) => void }) {
+export default function ProfileScreen({ onNavigate }: { onNavigate?: (tab: TabId, opts?: { scanMode?: 'recipe' | 'pantry' }) => void }) {
   const { profile, signOut } = useUser();
 
   const savedRecipeObjects = SAMPLE_RECIPES.filter(r =>
@@ -116,7 +116,7 @@ export default function ProfileScreen({ onNavigate }: { onNavigate?: (tab: TabId
               <TouchableOpacity
                 style={styles.scanButton}
                 activeOpacity={0.7}
-                onPress={() => onNavigate?.('scan')}
+                onPress={() => onNavigate?.('scan', { scanMode: 'pantry' })}
               >
                 <Text style={styles.scanButtonText}>Scan Pantry</Text>
               </TouchableOpacity>
