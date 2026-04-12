@@ -450,7 +450,7 @@ function ScanLoadingView({ variant, protocolLabel }: { variant: 'recipe' | 'pant
 // ─────────────────────────────────────────────
 
 export default function ScanScreen() {
-  const { profile } = useUser();
+  const { profile, savePantryIngredients } = useUser();
   const activeProtocols = profile.protocols.length > 0 ? profile.protocols : ['GF'];
 
   const [mode, setMode]                   = useState<Mode>(null);
@@ -465,6 +465,7 @@ export default function ScanScreen() {
   const [pantryResults, setPantryResults]   = useState<PantryResult[]>([]);
   const [errorMsg, setErrorMsg]             = useState<string | null>(null);
   const [pantryToggles, setPantryToggles]   = useState<Record<string, boolean | null>>({});
+  const [pantrySaved, setPantrySaved]       = useState(false);
 
   // Web file input refs
   const recipeFileInputRef  = useRef<any>(null);
@@ -502,6 +503,13 @@ export default function ScanScreen() {
     setPantryResults([]);
     setErrorMsg(null);
     setPantryToggles({});
+    setPantrySaved(false);
+  }
+
+  function handleSavePantry() {
+    const names = pantryResults.map(r => r.name);
+    savePantryIngredients(names);
+    setPantrySaved(true);
   }
 
   async function pickImage(target: 'recipe' | 'pantry', zoneKey?: string) {
@@ -981,6 +989,17 @@ export default function ScanScreen() {
                 </View>
               );
             })}
+
+            <TouchableOpacity
+              style={[styles.savePantryBtn, pantrySaved && styles.savePantryBtnSaved]}
+              onPress={handleSavePantry}
+              disabled={pantrySaved}
+              activeOpacity={0.85}
+            >
+              <Text style={[styles.savePantryBtnText, pantrySaved && { color: Colors.gold }]}>
+                {pantrySaved ? 'Saved to Profile ✓' : 'Save to My Pantry'}
+              </Text>
+            </TouchableOpacity>
           </ScrollView>
         </SafeAreaView>
       );
@@ -1441,6 +1460,24 @@ const styles = StyleSheet.create({
   },
   scanBtnDisabled: { opacity: 0.35 },
   scanBtnText: {
+    fontFamily: Fonts.bodyMedium,
+    fontSize: 15,
+    color: '#000',
+  },
+  savePantryBtn: {
+    backgroundColor: Colors.gold,
+    borderRadius: 100,
+    paddingVertical: 15,
+    alignItems: 'center',
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  savePantryBtnSaved: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: Colors.gold,
+  },
+  savePantryBtnText: {
     fontFamily: Fonts.bodyMedium,
     fontSize: 15,
     color: '#000',

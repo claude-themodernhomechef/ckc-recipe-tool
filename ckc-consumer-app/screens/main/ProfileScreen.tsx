@@ -93,6 +93,23 @@ export default function ProfileScreen() {
           </View>
         )}
 
+        {/* ── My Pantry ── */}
+        {profile.pantryIngredients.length > 0 && (
+          <View style={styles.section}>
+            <View style={styles.sectionRow}>
+              <SectionLabel>My Pantry</SectionLabel>
+              <Text style={styles.sectionCount}>{profile.pantryIngredients.length} items</Text>
+            </View>
+            <View style={styles.pantryGrid}>
+              {profile.pantryIngredients.map((name, i) => (
+                <View key={i} style={styles.pantryChip}>
+                  <Text style={styles.pantryChipText}>{name}</Text>
+                </View>
+              ))}
+            </View>
+          </View>
+        )}
+
         {/* ── Saved recipes ── */}
         <View style={styles.section}>
           <View style={styles.sectionRow}>
@@ -270,6 +287,26 @@ const styles = StyleSheet.create({
   tagNeutralText: {
     fontFamily: Fonts.body,
     fontSize: 12,
+    color: Colors.textSecondary,
+  },
+
+  // Pantry ingredients
+  pantryGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  pantryChip: {
+    backgroundColor: Colors.surface,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    borderRadius: 100,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+  },
+  pantryChipText: {
+    fontFamily: Fonts.body,
+    fontSize: 13,
     color: Colors.textSecondary,
   },
 

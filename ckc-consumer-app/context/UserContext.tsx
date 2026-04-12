@@ -12,6 +12,7 @@ export interface UserProfile {
   proteins: string[];    // preferred proteins from setup
   household: number;     // household size
   savedRecipes: string[]; // saved recipe IDs
+  pantryIngredients: string[]; // ingredients extracted from pantry scans
 }
 
 interface UserContextValue {
@@ -21,6 +22,7 @@ interface UserContextValue {
   saveRecipe: (recipeId: string) => void;
   unsaveRecipe: (recipeId: string) => void;
   isSaved: (recipeId: string) => boolean;
+  savePantryIngredients: (items: string[]) => void;
   signOut: () => void;
 }
 
@@ -32,6 +34,7 @@ const defaultProfile: UserProfile = {
   proteins: [],
   household: 2,
   savedRecipes: [],
+  pantryIngredients: [],
 };
 
 const UserContext = createContext<UserContextValue>({
@@ -41,6 +44,7 @@ const UserContext = createContext<UserContextValue>({
   saveRecipe: () => {},
   unsaveRecipe: () => {},
   isSaved: () => false,
+  savePantryIngredients: () => {},
   signOut: () => {},
 });
 
@@ -64,12 +68,21 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     return savedRecipeIds.includes(recipeId);
   }
 
+  function savePantryIngredients(items: string[]) {
+    // Merge with existing, deduplicate by lowercase name
+    setProfile(p => {
+      const existing = new Set(p.pantryIngredients.map(n => n.toLowerCase()));
+      const newItems = items.filter(n => !existing.has(n.toLowerCase()));
+      return { ...p, pantryIngredients: [...p.pantryIngredients, ...newItems] };
+    });
+  }
+
   function signOut() {
     // No-op: auth not wired up in this build
   }
 
   return (
-    <UserContext.Provider value={{ profile, savedRecipeIds, setName, saveRecipe, unsaveRecipe, isSaved, signOut }}>
+    <UserContext.Provider value={{ profile, savedRecipeIds, setName, saveRecipe, unsaveRecipe, isSaved, savePantryIngredients, signOut }}>
       {children}
     </UserContext.Provider>
   );
