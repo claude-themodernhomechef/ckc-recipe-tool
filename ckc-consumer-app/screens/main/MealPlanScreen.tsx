@@ -124,17 +124,20 @@ function cuisineCompatScore(entree: string, side: string): number {
   if (e === s) return 3;
   if (!s || s === 'american') return 2; // universal donor
   const adjacent: Record<string, string[]> = {
-    'middle eastern': ['mediterranean'],
-    'mediterranean':  ['middle eastern'],
-    'asian':          ['thai'],
-    'thai':           ['asian'],
+    'middle eastern':      ['mediterranean'],
+    'mediterranean':       ['middle eastern'],
+    'asian':               ['thai'],
+    'thai':                ['asian'],
+    'mexican':             ['latin/south american'],
+    'latin/south american':['mexican'],
   };
   if ((adjacent[e] || []).includes(s)) return 2;
   const blocked: Record<string, string[]> = {
-    'asian':   ['italian', 'mexican'],
-    'thai':    ['italian', 'mexican'],
+    'asian':   ['italian', 'mexican', 'latin/south american'],
+    'thai':    ['italian', 'mexican', 'latin/south american'],
     'italian': ['asian', 'thai'],
     'mexican': ['asian', 'thai'],
+    'latin/south american': ['asian', 'thai', 'italian'],
   };
   if ((blocked[e] || []).includes(s)) return 0;
   return 1;
@@ -168,9 +171,28 @@ function isTacoEntree(entree: Recipe): boolean {
   return n.includes('taco') || n.includes('fajita') || n.includes('burrito');
 }
 
+function isLettuceWrapEntree(entree: Recipe): boolean {
+  const n = entree.name.toLowerCase();
+  // Lettuce is not a starch — lettuce wraps always need a starch side (unlike bread-based wraps)
+  return n.includes('lettuce wrap') || n.includes('lettuce cup');
+}
+
 function isSandwichEntree(entree: Recipe): boolean {
   const n = entree.name.toLowerCase();
+  // Lettuce wraps need starch — don't treat them as flexible sandwiches
+  if (n.includes('lettuce wrap') || n.includes('lettuce cup')) return false;
   return ['sandwich','burger','wrap','quesadilla','pita','flatbread'].some(k => n.includes(k));
+}
+
+// A dry/plain entree (grilled/roasted/seared protein with no sauce in the name) benefits from a sauce.
+// Per spec: sauces appear in only ~7% of historical menus. Gate them behind this check.
+function isDryPlainEntree(entree: Recipe): boolean {
+  const n = entree.name.toLowerCase();
+  const hasSauceAlready = ['sauce','glazed','glaze','creamy','braised','braise','curry',
+    'stew','teriyaki','marinara','pesto','gravy','chimichurri','salsa'].some(k => n.includes(k));
+  if (hasSauceAlready) return false;
+  return ['grilled','roasted','seared','baked','broiled','pan-seared','skewer',
+    'kabob','kebab','poached'].some(k => n.includes(k));
 }
 
 function isHeavyEntree(entree: Recipe): boolean {
@@ -206,20 +228,55 @@ function isSweetSide(side: Recipe): boolean {
   return ['honey','maple','sweet','candied','glazed','caramel'].some(k => n.includes(k));
 }
 
+// ── Signature pairings (proven historical repeaters, Section 7) ──────────────
+// Returns a bonus score added to a side when it matches a known signature pairing.
+// Signature sides always sort to the front of the suggestions list.
+const SIGNATURE_PAIRINGS: Array<{ entreeKey: string; sideKeys: string[] }> = [
+  { entreeKey: 'sticky grapefruit miso salmon',        sideKeys: ['asian cucumber salad','black rice','edamame','garlicky broccolini','spicy mayo'] },
+  { entreeKey: 'pomegranate chicken',                  sideKeys: ['kabocha squash'] },
+  { entreeKey: 'chicken fajita',                       sideKeys: ['frijoles de la olla','jalapeno verde','creamy jalapeno'] },
+  { entreeKey: 'chipotle honey pot roast taco',        sideKeys: ['tropical salad','mango vinaigrette'] },
+  { entreeKey: 'coconut braised chicken',              sideKeys: ['broccoli white rice','cheesey broccoli'] },
+  { entreeKey: 'halibut with citrus',                  sideKeys: ['stewed lentils'] },
+];
+
+function getSignatureBonus(entreeName: string, sideName: string): number {
+  const e = entreeName.toLowerCase();
+  const s = sideName.toLowerCase();
+  for (const { entreeKey, sideKeys } of SIGNATURE_PAIRINGS) {
+    if (e.includes(entreeKey) || entreeKey.split(' ').slice(0, 3).every(w => e.includes(w))) {
+      if (sideKeys.some(sk => s.includes(sk) || sk.split(' ').every(w => s.includes(w)))) {
+        return 2; // large bonus — floats signature sides to top
+      }
+    }
+  }
+  return 0;
+}
+
 // ── Main pairing function ─────────────────────────────────────────────────────
 
 function getSuggestedSides(entree: Recipe, allSides: Recipe[], protocols: string[]): Recipe[] {
   // 1. Classify entree — no sides for standalone complete dishes
   if (isStandaloneComplete(entree)) return [];
 
-  const entreeHasStarch  = hasBuiltInStarch(entree);
-  const entreeIsPasta    = isPastaEntree(entree);
-  const entreeIsTaco     = isTacoEntree(entree);
-  const entreeIsSandwich = isSandwichEntree(entree);
-  const entreeIsHeavy    = isHeavyEntree(entree);
-  const entreeIsCreamy   = isCreamyEntree(entree);
-  const entreeIsSweet    = isSweetGlazedEntree(entree);
-  const needsStarch      = !entreeHasStarch && !entreeIsPasta;
+  const entreeHasStarch    = hasBuiltInStarch(entree);
+  const entreeIsPasta      = isPastaEntree(entree);
+  const entreeIsTaco       = isTacoEntree(entree);
+  const entreeIsSandwich   = isSandwichEntree(entree);
+  const entreeIsLettuceWrap = isLettuceWrapEntree(entree);
+  const entreeIsHeavy      = isHeavyEntree(entree);
+  const entreeIsCreamy     = isCreamyEntree(entree);
+  const entreeIsSweet      = isSweetGlazedEntree(entree);
+  const entreeIsDry        = isDryPlainEntree(entree);
+
+  // Lettuce wraps explicitly need starch (lettuce ≠ bread/starch)
+  const needsStarch = entreeIsLettuceWrap || (!entreeHasStarch && !entreeIsPasta);
+
+  // Fish affinity: historically veg/salad outranks starch for fish (Section 7)
+  const isFish = ['fish','salmon','halibut','cod','tuna','tilapia','mahi','sea bass',
+    'trout','snapper','branzino','sole','flounder','bass'].some(k =>
+    (entree.protein_type || '').toLowerCase().includes(k) ||
+    entree.name.toLowerCase().includes(k));
 
   // 2. Protocol filtering
   const isCompliant = (s: Recipe) => protocols.length === 0 ||
@@ -234,20 +291,32 @@ function getSuggestedSides(entree: Recipe, allSides: Recipe[], protocols: string
 
     // Hard blocks
     if (entreeIsPasta && role !== 'salad' && role !== 'sauce') return null;
-    if (entreeHasStarch && !entreeIsTaco && !entreeIsSandwich && role === 'starch') return null;
+    if (entreeHasStarch && !entreeIsTaco && !entreeIsSandwich && !entreeIsLettuceWrap && role === 'starch') return null;
     if (entreeIsHeavy  && isHeavySide(s))  return null;
     if (entreeIsCreamy && isCreamySide(s)) return null;
     if (entreeIsSweet  && isSweetSide(s))  return null;
+
+    // Sauce rarity: ~7% historically. Only recommend if entree is dry/plain or a taco.
+    if (role === 'sauce' && !entreeIsDry && !entreeIsTaco) return null;
 
     // Cuisine score (0 = blocked, 1 = ok, 2 = adjacent/neutral, 3 = same)
     const cuisineScore = cuisineCompatScore(entree.cuisine || '', s.cuisine || '');
     if (cuisineScore === 0) return null;
 
-    // Role-need bonus: starch is highest priority for protein-only entrees (per spec)
+    // Role-need bonus — fish: veg > starch; all others: starch > veg when starch needed
     let roleBonus = 0;
-    if (needsStarch && role === 'starch')                      roleBonus = 0.4;
-    else if (role === 'vegetable' || role === 'salad')         roleBonus = 0.3;
-    else if (role === 'sauce')                                 roleBonus = 0.1;
+    if (isFish) {
+      if (role === 'vegetable' || role === 'salad')    roleBonus = 0.4;
+      else if (needsStarch && role === 'starch')       roleBonus = 0.3;
+      else if (role === 'sauce' && entreeIsDry)        roleBonus = 0.15;
+    } else {
+      if (needsStarch && role === 'starch')            roleBonus = 0.4;
+      else if (role === 'vegetable' || role === 'salad') roleBonus = 0.3;
+      else if (role === 'sauce' && entreeIsDry)        roleBonus = 0.15;
+    }
+
+    // Signature pairing bonus — floats proven historical matches to front
+    const signatureBonus = getSignatureBonus(entree.name, s.name);
 
     // Native compliance bonus
     const complianceBonus = (protocols.length > 0 && protocols.every(p => s.dietTags?.[p]?.native)) ? 0.2 : 0;
@@ -255,15 +324,18 @@ function getSuggestedSides(entree: Recipe, allSides: Recipe[], protocols: string
     // Keto penalty on starches
     const ketoPenalty = (isKeto && role === 'starch') ? 2 : 0;
 
-    const totalScore = cuisineScore + roleBonus + complianceBonus - ketoPenalty;
+    const totalScore = cuisineScore + roleBonus + signatureBonus + complianceBonus - ketoPenalty;
     return { recipe: s, score: totalScore, role };
   }).filter(Boolean) as { recipe: Recipe; score: number; role: string }[];
 
   // 4. Sort: highest score first, ties broken by role priority then prep time
   scored.sort((a, b) => {
     if (b.score !== a.score) return b.score - a.score;
-    // Within same score: starch > veg/salad > sauce
-    const rolePriority = (r: string) => r === 'starch' ? 2 : r === 'sauce' ? 0 : 1;
+    // Within same score: starch > veg/salad > sauce (except fish where veg > starch)
+    const rolePriority = (r: string) => {
+      if (isFish) return r === 'vegetable' || r === 'salad' ? 2 : r === 'starch' ? 1 : 0;
+      return r === 'starch' ? 2 : r === 'sauce' ? 0 : 1;
+    };
     if (rolePriority(b.role) !== rolePriority(a.role)) return rolePriority(b.role) - rolePriority(a.role);
     // Prefer shorter prep time
     return (a.recipe.prep_time ?? 999) - (b.recipe.prep_time ?? 999);
@@ -287,23 +359,38 @@ function inferSideRole(recipe: Recipe): 'starch' | 'vegetable' | 'salad' | 'sauc
 }
 
 // Build the alternatives list for a given side: same role, compatible cuisine,
-// protocol-compliant, excluding the side itself.
+// protocol-compliant, clash-free, excluding the side itself.
 function computeAlternatives(
   side: Recipe,
   allSides: Recipe[],
   entree: Recipe,
   protocols: string[],
 ): Recipe[] {
-  const role = inferSideRole(side);
+  const role     = inferSideRole(side);
+  const isHeavy  = isHeavyEntree(entree);
+  const isCreamy = isCreamyEntree(entree);
+  const isSweet  = isSweetGlazedEntree(entree);
+
   return allSides
     .filter(s => {
       if (s.id === side.id) return false;
       if (inferSideRole(s) !== role) return false;
       if (cuisineCompatScore(entree.cuisine || '', s.cuisine || '') === 0) return false;
+      // Apply same clash-prevention hard blocks as the main pairing function
+      if (isHeavy  && isHeavySide(s))  return false;
+      if (isCreamy && isCreamySide(s)) return false;
+      if (isSweet  && isSweetSide(s))  return false;
       if (protocols.length > 0 &&
           !protocols.every(p => { const t = s.dietTags?.[p]; return t && (t.native || t.mod); }))
         return false;
       return true;
+    })
+    // Sort same-cuisine first, then by prep time
+    .sort((a, b) => {
+      const cA = cuisineCompatScore(entree.cuisine || '', a.cuisine || '');
+      const cB = cuisineCompatScore(entree.cuisine || '', b.cuisine || '');
+      if (cB !== cA) return cB - cA;
+      return (a.prep_time ?? 999) - (b.prep_time ?? 999);
     })
     .slice(0, 8);
 }
