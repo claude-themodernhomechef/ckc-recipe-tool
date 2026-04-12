@@ -240,7 +240,7 @@ export default function MainTabs() {
       case 'mealplan': return <MealPlanScreen />;
       case 'scan':     return <ScanScreen />;
       case 'shop':     return <ShopScreen />;
-      case 'profile':  return <ProfileScreen />;
+      case 'profile':  return <ProfileScreen onNavigate={setActive} />;
     }
   })();
 

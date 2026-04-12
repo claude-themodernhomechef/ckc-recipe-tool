@@ -7,6 +7,7 @@
 
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Pressable } from 'react-native';
+import { TabId } from '../../navigation/MainTabs';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Fonts } from '../../constants/theme';
 import { useUser } from '../../context/UserContext';
@@ -15,7 +16,7 @@ import DietTag from '../components/DietTag';
 import PremiumGate from '../components/PremiumGate';
 import SectionLabel from '../components/SectionLabel';
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ onNavigate }: { onNavigate?: (tab: TabId) => void }) {
   const { profile, signOut } = useUser();
 
   const savedRecipeObjects = SAMPLE_RECIPES.filter(r =>
@@ -94,12 +95,14 @@ export default function ProfileScreen() {
         )}
 
         {/* ── My Pantry ── */}
-        {profile.pantryIngredients.length > 0 && (
-          <View style={styles.section}>
-            <View style={styles.sectionRow}>
-              <SectionLabel>My Pantry</SectionLabel>
+        <View style={styles.section}>
+          <View style={styles.sectionRow}>
+            <SectionLabel>My Pantry</SectionLabel>
+            {profile.pantryIngredients.length > 0 && (
               <Text style={styles.sectionCount}>{profile.pantryIngredients.length} items</Text>
-            </View>
+            )}
+          </View>
+          {profile.pantryIngredients.length > 0 ? (
             <View style={styles.pantryGrid}>
               {profile.pantryIngredients.map((name, i) => (
                 <View key={i} style={styles.pantryChip}>
@@ -107,8 +110,19 @@ export default function ProfileScreen() {
                 </View>
               ))}
             </View>
-          </View>
-        )}
+          ) : (
+            <View style={styles.pantryEmpty}>
+              <Text style={styles.emptyNote}>No pantry ingredients scanned yet.</Text>
+              <TouchableOpacity
+                style={styles.scanButton}
+                activeOpacity={0.7}
+                onPress={() => onNavigate?.('scan')}
+              >
+                <Text style={styles.scanButtonText}>Scan Pantry</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
 
         {/* ── Saved recipes ── */}
         <View style={styles.section}>
@@ -291,6 +305,23 @@ const styles = StyleSheet.create({
   },
 
   // Pantry ingredients
+  pantryEmpty: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  scanButton: {
+    borderWidth: 1,
+    borderColor: Colors.gold,
+    borderRadius: 100,
+    paddingHorizontal: 16,
+    paddingVertical: 6,
+  },
+  scanButtonText: {
+    fontFamily: Fonts.bodyMedium,
+    fontSize: 13,
+    color: Colors.gold,
+  },
   pantryGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
