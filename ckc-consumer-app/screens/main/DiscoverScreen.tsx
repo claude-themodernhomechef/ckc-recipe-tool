@@ -241,11 +241,6 @@ function SwipeCard({ recipe, onSwipeLeft, onSwipeRight, onTap, activeProtocols, 
         <Animated.View style={[styles.swipeOverlay, styles.overlayLeft, { opacity: passOpacity }]}>
           <Text style={styles.overlayText}>PASS</Text>
         </Animated.View>
-        {recipe.prep_time ? (
-          <View style={styles.prepTimePill}>
-            <Text style={styles.prepTimeText}>{recipe.prep_time} min</Text>
-          </View>
-        ) : null}
       </View>
 
       {/* Card body */}
@@ -597,7 +592,6 @@ export default function DiscoverScreen() {
                       {item.cuisine}
                       {item.cuisine && item.protein_type ? ' · ' : ''}
                       {normalizeProtein(item.protein_type ?? '')}
-                      {item.prep_time ? `  ·  ${item.prep_time} min` : ''}
                     </Text>
                   </View>
 
