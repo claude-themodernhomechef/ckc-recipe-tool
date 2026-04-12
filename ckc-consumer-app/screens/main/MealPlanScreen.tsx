@@ -215,86 +215,65 @@ function getSuggestedSides(entree: Recipe, allSides: Recipe[], protocols: string
   // 1. Classify entree — no sides for standalone complete dishes
   if (isStandaloneComplete(entree)) return [];
 
-  const entreeHasStarch = hasBuiltInStarch(entree);
-  const entreeIsPasta   = isPastaEntree(entree);
-  const entreeIsTaco    = isTacoEntree(entree);
+  const entreeHasStarch  = hasBuiltInStarch(entree);
+  const entreeIsPasta    = isPastaEntree(entree);
+  const entreeIsTaco     = isTacoEntree(entree);
   const entreeIsSandwich = isSandwichEntree(entree);
-  const entreeIsHeavy   = isHeavyEntree(entree);
-  const entreeIsCreamy  = isCreamyEntree(entree);
-  const entreeIsSweet   = isSweetGlazedEntree(entree);
+  const entreeIsHeavy    = isHeavyEntree(entree);
+  const entreeIsCreamy   = isCreamyEntree(entree);
+  const entreeIsSweet    = isSweetGlazedEntree(entree);
+  const needsStarch      = !entreeHasStarch && !entreeIsPasta;
 
-  // 2. Protocol filtering — prefer native, allow mod, exclude non-compliant
+  // 2. Protocol filtering
   const isCompliant = (s: Recipe) => protocols.length === 0 ||
     protocols.every(p => { const t = s.dietTags?.[p]; return t && (t.native || t.mod); });
-
-  // Keto override: filter out starch-role sides (they'll be replaced below)
   const isKeto = protocols.includes('K');
 
-  let pool = allSides.filter(isCompliant);
+  const pool = allSides.filter(isCompliant);
 
-  // 3. Score and filter each candidate
+  // 3. Score each candidate
   const scored = pool.map(s => {
     const role = inferSideRole(s);
 
-    // Pasta entrees: only pair with salad or sauce
+    // Hard blocks
     if (entreeIsPasta && role !== 'salad' && role !== 'sauce') return null;
-
-    // Hard block: two starches
     if (entreeHasStarch && !entreeIsTaco && !entreeIsSandwich && role === 'starch') return null;
-
-    // Hard block: two heavy dishes
-    if (entreeIsHeavy && isHeavySide(s)) return null;
-
-    // Hard block: two competing cream-heavy dishes
+    if (entreeIsHeavy  && isHeavySide(s))  return null;
     if (entreeIsCreamy && isCreamySide(s)) return null;
+    if (entreeIsSweet  && isSweetSide(s))  return null;
 
-    // Hard block: sweet side with sweet-glazed entree
-    if (entreeIsSweet && isSweetSide(s)) return null;
+    // Cuisine score (0 = blocked, 1 = ok, 2 = adjacent/neutral, 3 = same)
+    const cuisineScore = cuisineCompatScore(entree.cuisine || '', s.cuisine || '');
+    if (cuisineScore === 0) return null;
 
-    // Cuisine compatibility
-    let score = cuisineCompatScore(entree.cuisine || '', s.cuisine || '');
-    if (score === 0) return null; // blocked anti-pairing
+    // Role-need bonus: starch is highest priority for protein-only entrees (per spec)
+    let roleBonus = 0;
+    if (needsStarch && role === 'starch')                      roleBonus = 0.4;
+    else if (role === 'vegetable' || role === 'salad')         roleBonus = 0.3;
+    else if (role === 'sauce')                                 roleBonus = 0.1;
 
-    // Prefer native compliance
-    if (protocols.length > 0 && protocols.every(p => s.dietTags?.[p]?.native)) score += 0.5;
+    // Native compliance bonus
+    const complianceBonus = (protocols.length > 0 && protocols.every(p => s.dietTags?.[p]?.native)) ? 0.2 : 0;
 
-    // Keto: downrank starch sides further (they shouldn't appear unless keto-friendly)
-    if (isKeto && role === 'starch') score -= 2;
+    // Keto penalty on starches
+    const ketoPenalty = (isKeto && role === 'starch') ? 2 : 0;
 
-    return { recipe: s, score, role };
+    const totalScore = cuisineScore + roleBonus + complianceBonus - ketoPenalty;
+    return { recipe: s, score: totalScore, role };
   }).filter(Boolean) as { recipe: Recipe; score: number; role: string }[];
 
-  scored.sort((a, b) => b.score - a.score);
+  // 4. Sort: highest score first, ties broken by role priority then prep time
+  scored.sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score;
+    // Within same score: starch > veg/salad > sauce
+    const rolePriority = (r: string) => r === 'starch' ? 2 : r === 'sauce' ? 0 : 1;
+    if (rolePriority(b.role) !== rolePriority(a.role)) return rolePriority(b.role) - rolePriority(a.role);
+    // Prefer shorter prep time
+    return (a.recipe.prep_time ?? 999) - (b.recipe.prep_time ?? 999);
+  });
 
-  // 4. Balance the result: aim for 1 starch + 1 vegetable for protein-only entrees,
-  //    salad-or-veg for pasta, flexible for tacos/sandwiches.
-  if (entreeIsPasta) {
-    return scored.slice(0, 2).map(x => x.recipe);
-  }
-
-  if (entreeIsTaco || entreeIsSandwich) {
-    return scored.slice(0, 3).map(x => x.recipe);
-  }
-
-  // Protein-only / simple braise: try to return 1 starch + 1 vegetable
-  const starch = scored.find(x => x.role === 'starch');
-  const veg    = scored.find(x => x.role === 'vegetable' || x.role === 'salad');
-  const sauce  = scored.find(x => x.role === 'sauce');
-
-  const picks: Recipe[] = [];
-  if (starch) picks.push(starch.recipe);
-  if (veg)    picks.push(veg.recipe);
-  if (sauce && picks.length < 3) picks.push(sauce.recipe);
-
-  // If we couldn't fill 2 slots with balanced picks, fill from top scored
-  if (picks.length < 2) {
-    for (const { recipe } of scored) {
-      if (!picks.find(p => p.id === recipe.id)) picks.push(recipe);
-      if (picks.length >= 3) break;
-    }
-  }
-
-  return picks.slice(0, 3);
+  // 5. Return up to 8 for modal cycling — the modal shows one at a time
+  return scored.slice(0, 8).map(x => x.recipe);
 }
 
 // Infer the functional role of a side dish from its meal_type and name.
@@ -798,8 +777,15 @@ const am = StyleSheet.create({
 });
 
 // ─────────────────────────────────────────────
-// ChefSidesModal — pairing suggestions
+// ChefSidesModal — single-card pairing view
 // ─────────────────────────────────────────────
+
+const ROLE_LABEL: Record<string, string> = {
+  starch:    'STARCH',
+  vegetable: 'VEGETABLE',
+  salad:     'SALAD',
+  sauce:     'SAUCE',
+};
 
 function ChefSidesModal({
   visible, entree, suggestions, loading, onAdd, onClose,
@@ -811,12 +797,23 @@ function ChefSidesModal({
   onAdd:       (r: Recipe) => void;
   onClose:     () => void;
 }) {
+  const [idx, setIdx] = React.useState(0);
+
+  // Reset to first suggestion whenever the list changes
+  React.useEffect(() => { setIdx(0); }, [suggestions]);
+
+  const current = suggestions[idx];
+  const total   = suggestions.length;
+  const role    = current ? inferSideRole(current) : null;
+
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
       <View style={cm.overlay}>
         <TouchableOpacity style={cm.backdrop} onPress={onClose} activeOpacity={1} />
         <View style={cm.sheet}>
           <View style={cm.handle} />
+
+          {/* Header */}
           <View style={cm.header}>
             <View>
               <Text style={cm.title}>✦ Chef Pairings</Text>
@@ -832,7 +829,7 @@ function ChefSidesModal({
               <ActivityIndicator color={Colors.gold} />
               <Text style={cm.loadingText}>Finding the best pairings…</Text>
             </View>
-          ) : suggestions.length === 0 ? (
+          ) : !current ? (
             <View style={cm.empty}>
               <Text style={cm.emptyTitle}>Pairings Coming Soon</Text>
               <Text style={cm.emptySub}>
@@ -840,22 +837,44 @@ function ChefSidesModal({
               </Text>
             </View>
           ) : (
-            <ScrollView style={cm.list} contentContainerStyle={cm.listContent}>
-              {suggestions.map(side => (
-                <TouchableOpacity key={side.id} style={cm.sideRow} onPress={() => { onAdd(side); onClose(); }} activeOpacity={0.75}>
-                  {side.photo_url
-                    ? <Image source={{ uri: side.photo_url }} style={cm.thumb} />
-                    : <View style={[cm.thumb, { backgroundColor: side.placeholder_color }]} />}
-                  <View style={cm.sideInfo}>
-                    <Text style={cm.sideName}>{side.name}</Text>
-                    <Text style={cm.sideMeta}>
-                      {[side.cuisine, side.prep_time ? `${side.prep_time} min` : null].filter(Boolean).join(' · ')}
-                    </Text>
-                  </View>
-                  <Text style={cm.addText}>Add</Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
+            <View style={cm.body}>
+              {/* Side image */}
+              {current.photo_url
+                ? <Image source={{ uri: current.photo_url }} style={cm.image} />
+                : <View style={[cm.image, { backgroundColor: current.placeholder_color }]} />}
+
+              {/* Role pill + name row */}
+              <View style={cm.infoBlock}>
+                <View style={cm.topRow}>
+                  {role && <View style={cm.rolePill}><Text style={cm.roleText}>{ROLE_LABEL[role]}</Text></View>}
+                  {total > 1 && (
+                    <TouchableOpacity
+                      style={cm.cycleBtn}
+                      onPress={() => setIdx(i => (i + 1) % total)}
+                      hitSlop={{ top: 10, right: 10, bottom: 10, left: 10 }}
+                    >
+                      <Text style={cm.cycleBtnText}>↻</Text>
+                      <Text style={cm.cycleCount}>{idx + 1} / {total}</Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+                <Text style={cm.sideName}>{current.name}</Text>
+                {(current.cuisine || current.prep_time) ? (
+                  <Text style={cm.sideMeta}>
+                    {[current.cuisine, current.prep_time ? `${current.prep_time} min` : null].filter(Boolean).join(' · ')}
+                  </Text>
+                ) : null}
+              </View>
+
+              {/* Add button */}
+              <TouchableOpacity
+                style={cm.addBtn}
+                onPress={() => { onAdd(current); onClose(); }}
+                activeOpacity={0.85}
+              >
+                <Text style={cm.addBtnText}>Add This Side</Text>
+              </TouchableOpacity>
+            </View>
           )}
         </View>
       </View>
@@ -866,7 +885,7 @@ function ChefSidesModal({
 const cm = StyleSheet.create({
   overlay:     { flex: 1, justifyContent: 'flex-end' },
   backdrop:    { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.6)' },
-  sheet:       { backgroundColor: Colors.surface, borderTopLeftRadius: 24, borderTopRightRadius: 24, maxHeight: '70%', paddingBottom: 32, borderWidth: 1, borderBottomWidth: 0, borderColor: Colors.gold },
+  sheet:       { backgroundColor: Colors.surface, borderTopLeftRadius: 24, borderTopRightRadius: 24, paddingBottom: 36, borderWidth: 1, borderBottomWidth: 0, borderColor: Colors.gold },
   handle:      { width: 36, height: 4, borderRadius: 2, backgroundColor: Colors.border, alignSelf: 'center', marginTop: 10, marginBottom: 4 },
   header:      { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: Colors.border },
   title:       { fontFamily: Fonts.display, fontSize: 22, color: Colors.gold },
@@ -874,14 +893,19 @@ const cm = StyleSheet.create({
   close:       { color: Colors.textMuted, fontSize: 18, paddingTop: 4 },
   loading:     { padding: 40, alignItems: 'center', gap: 12 },
   loadingText: { fontFamily: Fonts.body, fontSize: 14, color: Colors.textMuted },
-  list:        { flex: 1 },
-  listContent: { paddingHorizontal: 16, paddingTop: 8 },
-  sideRow:     { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: Colors.border },
-  thumb:       { width: 56, height: 42, borderRadius: 8, backgroundColor: Colors.surfaceElevated },
-  sideInfo:    { flex: 1, gap: 3 },
-  sideName:    { fontFamily: Fonts.body, fontSize: 14, color: Colors.textPrimary },
-  sideMeta:    { fontFamily: Fonts.body, fontSize: 12, color: Colors.textMuted },
-  addText:     { fontFamily: Fonts.bodyMedium, fontSize: 13, color: Colors.gold },
+  body:        { paddingHorizontal: 20, paddingTop: 20, gap: 16 },
+  image:       { width: '100%', height: 180, borderRadius: 14, backgroundColor: Colors.surfaceElevated },
+  infoBlock:   { gap: 6 },
+  topRow:      { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  rolePill:    { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 100, borderWidth: 1, borderColor: Colors.border, backgroundColor: Colors.surfaceElevated },
+  roleText:    { fontFamily: Fonts.bodyMedium, fontSize: 10, color: Colors.textMuted, letterSpacing: 1.2 },
+  cycleBtn:    { flexDirection: 'row', alignItems: 'center', gap: 5 },
+  cycleBtnText:{ fontFamily: Fonts.body, fontSize: 18, color: Colors.gold },
+  cycleCount:  { fontFamily: Fonts.body, fontSize: 12, color: Colors.textMuted },
+  sideName:    { fontFamily: Fonts.display, fontSize: 24, color: Colors.textPrimary, lineHeight: 30 },
+  sideMeta:    { fontFamily: Fonts.body, fontSize: 13, color: Colors.textMuted },
+  addBtn:      { backgroundColor: Colors.gold, borderRadius: 100, paddingVertical: 15, alignItems: 'center', marginTop: 4 },
+  addBtnText:  { fontFamily: Fonts.bodyMedium, fontSize: 16, color: '#000' },
   empty:       { padding: 32, alignItems: 'center', gap: 12 },
   emptyTitle:  { fontFamily: Fonts.display, fontSize: 22, color: Colors.textPrimary },
   emptySub:    { fontFamily: Fonts.body, fontSize: 14, color: Colors.textSecondary, textAlign: 'center', lineHeight: 22 },
