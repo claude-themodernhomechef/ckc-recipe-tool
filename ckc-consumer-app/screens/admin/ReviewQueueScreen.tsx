@@ -467,34 +467,43 @@ const DIET_CATEGORY_FLAGS: Record<string, string[]> = {
 
 // ── Swap parsing (ported from ShopScreen) ─────────────────────────────────────
 
+// Strip leading quantities like "6 Tbsp", "1 1/2 tsp", "2" from ingredient references in swap notes
+function stripLeadingQty(s: string): string {
+  return s
+    .replace(/^[\d\s/½¼¾⅓⅔.]+\s*(tbsp|tsp|tablespoons?|teaspoons?|cups?|oz|lb|g|ml|pounds?|ounces?)\.?\s*/i, '')
+    .replace(/\s+entirely\s*$/i, '')
+    .trim();
+}
+
 function parseSwapPairs(notes: string): Array<{ from: string; to: string | null }> {
   const result: Array<{ from: string; to: string | null }> = [];
   const s = notes.toLowerCase();
   let m: RegExpExecArray | null;
 
-  // stop patterns: comma, period, em-dash, en-dash (notes often use "— the fructans remain…")
-  const STOP = /[,.–—\u2013\u2014]|$|\s+[—–]/;
   const stopStr = `(?:[,.\\u2013\\u2014]|\\s+[—–]|$)`;
 
   const insteadRe = new RegExp(`use\\s+(.+?)\\s+instead\\s+of\\s+(.+?)${stopStr}`, 'gi');
   while ((m = insteadRe.exec(s)) !== null) {
-    result.push({ from: m[2].trim(), to: m[1].trim() });
+    result.push({ from: stripLeadingQty(m[2].trim()), to: m[1].trim() });
   }
 
   const replaceRe = new RegExp(`replace\\s+(.+?)\\s+with\\s+(.+?)${stopStr}`, 'gi');
   while ((m = replaceRe.exec(s)) !== null) {
     const to = m[2].trim().replace(/\s+[—–].*$/, '').trim();
-    m[1].split(/\s+and\s+/i).forEach(f => result.push({ from: f.trim(), to }));
+    m[1].split(/\s+and\s+/i).forEach(f => result.push({ from: stripLeadingQty(f.trim()), to }));
   }
 
   const removeRe = /remove\s+([^,.\n—–\u2013\u2014]+)/gi;
   while ((m = removeRe.exec(s)) !== null) {
-    result.push({ from: m[1].trim(), to: null });
+    m[1].split(/\s+and\s+/i).forEach(f => {
+      const clean = stripLeadingQty(f.trim());
+      if (clean) result.push({ from: clean, to: null });
+    });
   }
 
   const skipRe = /(?:skip|omit)\s+([^,.\n—–\u2013\u2014]+)/gi;
   while ((m = skipRe.exec(s)) !== null) {
-    result.push({ from: m[1].split(',')[0].trim(), to: null });
+    result.push({ from: stripLeadingQty(m[1].split(',')[0].trim()), to: null });
   }
 
   return result;

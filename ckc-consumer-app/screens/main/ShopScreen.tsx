@@ -9,7 +9,7 @@
  *     Selection saves back to organicPreference (profile default going forward)
  */
 
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useMemo, useState, useCallback, useEffect } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity,
   SectionList, Share, Platform, Modal, FlatList, TextInput,
@@ -23,6 +23,7 @@ import DietTag from '../components/DietTag';
 import { useMenu, OrganicPreference } from '../../context/MenuContext';
 import { useUser } from '../../context/UserContext';
 import { SAMPLE_RECIPES, Recipe } from '../../data/sampleRecipes';
+import { fetchRecipesByIds } from '../../lib/firestore';
 import {
   parseIngredient, fmtQty, fmtNum, getDairyGroup,
   SHOPPING_CATEGORIES, normalizeProtein,
@@ -174,6 +175,14 @@ function capFirst(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
+// Strip leading quantities like "6 Tbsp", "1 1/2 tsp", "2" from ingredient references in swap notes
+function stripLeadingQty(s: string): string {
+  return s
+    .replace(/^[\d\s/½¼¾⅓⅔.]+\s*(tbsp|tsp|tablespoons?|teaspoons?|cups?|oz|lb|g|ml|pounds?|ounces?)\.?\s*/i, '')
+    .replace(/\s+entirely\s*$/i, '')
+    .trim();
+}
+
 // Parses free-text swap notes into explicit (from → to) pairs
 function parseSwapPairs(notes: string): Array<{ from: string; to: string | null }> {
   const result: Array<{ from: string; to: string | null }> = [];
@@ -183,20 +192,29 @@ function parseSwapPairs(notes: string): Array<{ from: string; to: string | null 
   const insteadRe = /use\s+(.+?)\s+instead\s+of\s+(.+?)(?:[,.]|$)/gi;
   let m: RegExpExecArray | null;
   while ((m = insteadRe.exec(s)) !== null) {
-    result.push({ from: m[2].trim(), to: m[1].trim() });
+    result.push({ from: stripLeadingQty(m[2].trim()), to: m[1].trim() });
   }
 
   // "Replace X (and Z) with Y" → multiple froms
   const replaceRe = /replace\s+(.+?)\s+with\s+(.+?)(?:[,.]|$)/gi;
   while ((m = replaceRe.exec(s)) !== null) {
     const to = m[2].trim();
-    m[1].split(/\s+and\s+/i).forEach(f => result.push({ from: f.trim(), to }));
+    m[1].split(/\s+and\s+/i).forEach(f => result.push({ from: stripLeadingQty(f.trim()), to }));
+  }
+
+  // "Remove X (and Z)" → crossed out
+  const removeRe = /remove\s+([^,.\n—–\u2013\u2014]+)/gi;
+  while ((m = removeRe.exec(s)) !== null) {
+    m[1].split(/\s+and\s+/i).forEach(f => {
+      const clean = stripLeadingQty(f.trim());
+      if (clean) result.push({ from: clean, to: null });
+    });
   }
 
   // "Skip X" / "Omit X" → { from: X, to: null }
   const skipRe = /(?:skip|omit)\s+([^,.\n]+)/gi;
   while ((m = skipRe.exec(s)) !== null) {
-    result.push({ from: m[1].split(',')[0].trim(), to: null });
+    result.push({ from: stripLeadingQty(m[1].split(',')[0].trim()), to: null });
   }
 
   return result;
@@ -593,8 +611,16 @@ export default function ShopScreen() {
   const [paywallEntree,   setPaywallEntree]   = useState(false);
   // Diet mode: default ON when user has active protocols
   const [dietModeEnabled, setDietModeEnabled] = useState(() => profile.protocols.length > 0);
+  const [allRecipes, setAllRecipes] = useState<Recipe[]>(SAMPLE_RECIPES);
 
-  const allRecipes = SAMPLE_RECIPES;
+  // Fetch the actual Firestore recipe docs for whatever's in the menu
+  useEffect(() => {
+    const ids = menuItems.map(m => m.recipeId).filter(Boolean);
+    if (!ids.length) return;
+    fetchRecipesByIds(ids).then(recipes => {
+      if (recipes.length > 0) setAllRecipes(recipes);
+    }).catch(() => {}); // silently fall back to SAMPLE_RECIPES
+  }, [menuItems]);
 
   // ── Aggregate ingredients ────────────────────────────────────────────────────
   const aggregated = useMemo(() => aggregateIngredients(menuItems, allRecipes), [menuItems]);
