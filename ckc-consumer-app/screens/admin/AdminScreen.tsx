@@ -23,21 +23,17 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Fonts } from '../../constants/theme';
 import AdminSwipeScreen      from './AdminSwipeScreen';
 import DecisionsCatalogScreen from './DecisionsCatalogScreen';
-import NeedsReviewScreen     from './NeedsReviewScreen';
-import AdminShoppingScreen   from './AdminShoppingScreen';
 import ReviewQueueScreen     from './ReviewQueueScreen';
 
 const ADMIN_PASSWORD =
   (typeof process !== 'undefined' && process.env.EXPO_PUBLIC_ADMIN_PASSWORD) || 'ckc-admin';
 
-type TabId = 'swipe' | 'catalog' | 'review' | 'queue' | 'shopping';
+type TabId = 'swipe' | 'catalog' | 'queue';
 
 const TABS: { id: TabId; label: string; icon: string }[] = [
-  { id: 'swipe',    label: 'Swipe',          icon: '⇄' },
-  { id: 'catalog',  label: 'Catalog',        icon: '▤' },
-  { id: 'queue',    label: 'Review Queue',   icon: '✓' },
-  { id: 'review',   label: 'Needs Review',   icon: '◉' },
-  { id: 'shopping', label: 'Shopping List',  icon: '⊕' },
+  { id: 'swipe',   label: 'Swipe',        icon: '⇄' },
+  { id: 'catalog', label: 'Catalog',      icon: '▤' },
+  { id: 'queue',   label: 'Review Queue', icon: '✓' },
 ];
 
 // ── Password gate ─────────────────────────────────────────────────────────────
@@ -268,11 +264,9 @@ export default function AdminScreen() {
 
   const content = (() => {
     switch (tab) {
-      case 'swipe':    return <AdminSwipeScreen />;
-      case 'catalog':  return <DecisionsCatalogScreen />;
-      case 'queue':    return <ReviewQueueScreen />;
-      case 'review':   return <NeedsReviewScreen />;
-      case 'shopping': return <AdminShoppingScreen />;
+      case 'swipe':   return <AdminSwipeScreen />;
+      case 'catalog': return <DecisionsCatalogScreen />;
+      case 'queue':   return <ReviewQueueScreen />;
     }
   })();
 
