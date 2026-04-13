@@ -315,23 +315,27 @@ function parseSwapPairs(notes: string): Array<{ from: string; to: string | null 
   const s = notes.toLowerCase();
   let m: RegExpExecArray | null;
 
-  const insteadRe = /use\s+(.+?)\s+instead\s+of\s+(.+?)(?:[,.]|$)/gi;
+  // stop patterns: comma, period, em-dash, en-dash (notes often use "— the fructans remain…")
+  const STOP = /[,.–—\u2013\u2014]|$|\s+[—–]/;
+  const stopStr = `(?:[,.\\u2013\\u2014]|\\s+[—–]|$)`;
+
+  const insteadRe = new RegExp(`use\\s+(.+?)\\s+instead\\s+of\\s+(.+?)${stopStr}`, 'gi');
   while ((m = insteadRe.exec(s)) !== null) {
     result.push({ from: m[2].trim(), to: m[1].trim() });
   }
 
-  const replaceRe = /replace\s+(.+?)\s+with\s+(.+?)(?:[,.]|$)/gi;
+  const replaceRe = new RegExp(`replace\\s+(.+?)\\s+with\\s+(.+?)${stopStr}`, 'gi');
   while ((m = replaceRe.exec(s)) !== null) {
-    const to = m[2].trim();
+    const to = m[2].trim().replace(/\s+[—–].*$/, '').trim();
     m[1].split(/\s+and\s+/i).forEach(f => result.push({ from: f.trim(), to }));
   }
 
-  const removeRe = /remove\s+([^,.\n]+)/gi;
+  const removeRe = /remove\s+([^,.\n—–\u2013\u2014]+)/gi;
   while ((m = removeRe.exec(s)) !== null) {
     result.push({ from: m[1].trim(), to: null });
   }
 
-  const skipRe = /(?:skip|omit)\s+([^,.\n]+)/gi;
+  const skipRe = /(?:skip|omit)\s+([^,.\n—–\u2013\u2014]+)/gi;
   while ((m = skipRe.exec(s)) !== null) {
     result.push({ from: m[1].split(',')[0].trim(), to: null });
   }
@@ -442,19 +446,18 @@ function ShoppingList({
 
             // Gold swap row — replacement ingredient
             if (item._type === 'swap') {
+              const c = item._color ?? Colors.gold;
               return (
-                <View key={key} style={[sl.row, sl.rowSwap]}>
-                  <View style={[sl.checkbox, sl.checkboxSwap]}>
-                    <Text style={sl.swapIcon}>↑</Text>
+                <View key={key} style={[sl.row, sl.rowSwap, { borderLeftColor: c }]}>
+                  <View style={[sl.checkbox, sl.checkboxSwap, { borderColor: c, backgroundColor: c + '22' }]}>
+                    <Text style={[sl.swapIcon, { color: c }]}>↑</Text>
                   </View>
                   <View style={sl.rowBody}>
-                    <Text style={sl.swapName}>{item.name}</Text>
-                    <View style={sl.swapMeta}>
-                      <View style={[sl.protocolChip, { borderColor: (item._color ?? Colors.gold) + '88' }]}>
-                        <Text style={[sl.protocolText, { color: item._color ?? Colors.gold }]}>{item._protocol}</Text>
-                      </View>
-                      <Text style={sl.swapSource}>replaces {item._swapFor}</Text>
-                    </View>
+                    <Text style={[sl.swapName, { color: c }]}>{item.name}</Text>
+                    <Text style={sl.swapSource}>
+                      <Text style={{ color: c }}>{item._protocol} swap</Text>
+                      {' · replaces '}{item._swapFor}
+                    </Text>
                   </View>
                 </View>
               );
@@ -462,17 +465,16 @@ function ShoppingList({
 
             // Crossed-out row — ingredient removed by diet
             if (item._type === 'crossed') {
+              const c = item._color ?? Colors.red;
               return (
-                <View key={key} style={[sl.row, sl.rowCrossed]}>
-                  <View style={[sl.checkbox, sl.checkboxCrossed]} />
+                <View key={key} style={[sl.row, sl.rowCrossed, { borderLeftColor: c }]}>
+                  <View style={[sl.checkbox, sl.checkboxCrossed, { borderColor: c, backgroundColor: c + '22' }]} />
                   <View style={sl.rowBody}>
                     <Text style={sl.crossedName}>{item.name}</Text>
-                    <View style={sl.swapMeta}>
-                      <View style={[sl.protocolChip, { borderColor: (item._color ?? Colors.red) + '88' }]}>
-                        <Text style={[sl.protocolText, { color: item._color ?? Colors.red }]}>{item._protocol}</Text>
-                      </View>
-                      <Text style={sl.swapSource}>removed</Text>
-                    </View>
+                    <Text style={sl.swapSource}>
+                      <Text style={{ color: c }}>{item._protocol} swap</Text>
+                      {' · removed'}
+                    </Text>
                   </View>
                 </View>
               );
@@ -511,8 +513,8 @@ const sl = StyleSheet.create({
   catBadge:       { backgroundColor: Colors.surfaceElevated, borderRadius: 100, paddingHorizontal: 7, paddingVertical: 1 },
   catCount:       { fontFamily: Fonts.body, fontSize: 10, color: Colors.textMuted },
   row:            { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 7, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.04)' },
-  rowSwap:        { backgroundColor: 'rgba(212,168,67,0.07)', borderRadius: 6, paddingHorizontal: 6 },
-  rowCrossed:     { backgroundColor: 'rgba(201,107,107,0.07)', borderRadius: 6, paddingHorizontal: 6 },
+  rowSwap:        { backgroundColor: 'rgba(212,168,67,0.07)', borderRadius: 6, paddingHorizontal: 6, borderLeftWidth: 2, borderLeftColor: Colors.gold },
+  rowCrossed:     { backgroundColor: 'rgba(201,107,107,0.07)', borderRadius: 6, paddingHorizontal: 6, borderLeftWidth: 2, borderLeftColor: Colors.red },
   checkbox:       { width: 18, height: 18, borderRadius: 4, borderWidth: 1.5, borderColor: Colors.border, alignItems: 'center', justifyContent: 'center', flexShrink: 0 },
   checkboxDone:   { backgroundColor: Colors.green, borderColor: Colors.green },
   checkboxSwap:   { borderColor: Colors.gold, backgroundColor: Colors.gold + '22' },
@@ -524,9 +526,6 @@ const sl = StyleSheet.create({
   name:           { fontFamily: Fonts.body, fontSize: 14, color: Colors.textPrimary, flex: 1 },
   swapName:       { fontFamily: Fonts.bodyMedium, fontSize: 13, color: Colors.gold },
   crossedName:    { fontFamily: Fonts.body, fontSize: 13, color: Colors.textMuted, textDecorationLine: 'line-through' },
-  swapMeta:       { flexDirection: 'row', alignItems: 'center', gap: 6 },
-  protocolChip:   { borderWidth: 1, borderRadius: 4, paddingHorizontal: 5, paddingVertical: 1 },
-  protocolText:   { fontFamily: Fonts.bodyMedium, fontSize: 9, letterSpacing: 0.5 },
   swapSource:     { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted },
   done:           { opacity: 0.35, textDecorationLine: 'line-through' },
 });
