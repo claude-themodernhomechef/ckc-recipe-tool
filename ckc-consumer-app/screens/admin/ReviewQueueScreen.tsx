@@ -475,6 +475,12 @@ function stripLeadingQty(s: string): string {
     .trim();
 }
 
+// Extract the leading quantity string (e.g. "6 Tbsp") without stripping it
+function extractLeadingQty(s: string): string {
+  const m = s.match(/^([\d\s/½¼¾⅓⅔.]+\s*(?:tbsp|tsp|tablespoons?|teaspoons?|cups?|oz|lb|g|ml|pounds?|ounces?)\.?)\s*/i);
+  return m ? m[1].trim() : '';
+}
+
 function parseSwapPairs(notes: string): Array<{ from: string; to: string | null }> {
   const result: Array<{ from: string; to: string | null }> = [];
   const s = notes.toLowerCase();
@@ -484,13 +490,23 @@ function parseSwapPairs(notes: string): Array<{ from: string; to: string | null 
 
   const insteadRe = new RegExp(`use\\s+(.+?)\\s+instead\\s+of\\s+(.+?)${stopStr}`, 'gi');
   while ((m = insteadRe.exec(s)) !== null) {
-    result.push({ from: stripLeadingQty(m[2].trim()), to: m[1].trim() });
+    const rawFrom = m[2].trim();
+    const rawTo   = m[1].trim();
+    const qty     = extractLeadingQty(rawFrom);
+    const to      = (qty && !extractLeadingQty(rawTo)) ? `${qty} ${rawTo}` : rawTo;
+    result.push({ from: stripLeadingQty(rawFrom), to });
   }
 
   const replaceRe = new RegExp(`replace\\s+(.+?)\\s+with\\s+(.+?)${stopStr}`, 'gi');
   while ((m = replaceRe.exec(s)) !== null) {
-    const to = m[2].trim().replace(/\s+[—–].*$/, '').trim();
-    m[1].split(/\s+and\s+/i).forEach(f => result.push({ from: stripLeadingQty(f.trim()), to }));
+    const rawTo    = m[2].trim().replace(/\s+[—–].*$/, '').trim();
+    const toHasQty = extractLeadingQty(rawTo) !== '';
+    m[1].split(/\s+and\s+/i).forEach(f => {
+      const rawFrom = f.trim();
+      const qty     = extractLeadingQty(rawFrom);
+      const to      = (qty && !toHasQty) ? `${qty} ${rawTo}` : rawTo;
+      result.push({ from: stripLeadingQty(rawFrom), to });
+    });
   }
 
   const removeRe = /remove\s+([^,.\n—–\u2013\u2014]+)/gi;
