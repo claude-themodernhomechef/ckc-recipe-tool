@@ -10,10 +10,12 @@ import {
   DMSans_500Medium,
 } from '@expo-google-fonts/dm-sans';
 import { Ionicons } from '@expo/vector-icons';
+import { useEffect } from 'react';
 import { View } from 'react-native';
 import { Colors } from './constants/theme';
 import { UserProvider } from './context/UserContext';
 import { MenuProvider } from './context/MenuContext';
+import { loadIngredientCategories } from './lib/ingredientParser';
 
 import SplashScreen          from './screens/SplashScreen';
 import WelcomeScreen         from './screens/WelcomeScreen';
@@ -116,6 +118,11 @@ export default function App() {
     DMSans_500Medium,
     ...Ionicons.font,
   });
+
+  // Load ingredient categories from Firestore once at startup
+  useEffect(() => {
+    loadIngredientCategories();
+  }, []);
 
   if (!fontsLoaded) {
     return <View style={{ flex: 1, backgroundColor: Colors.bg }} />;
