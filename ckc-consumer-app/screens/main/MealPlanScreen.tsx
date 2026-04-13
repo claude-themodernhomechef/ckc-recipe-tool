@@ -319,15 +319,16 @@ function getSuggestedSides(entree: Recipe, allSides: Recipe[], protocols: string
     if (cuisineScore === 0) return null;
 
     // Role-need bonus — fish: veg > starch; all others: starch > veg when starch needed
+    // Starch bonus is 1.2 so it beats same-cuisine veg (cuisineScore gap of 1 point)
     let roleBonus = 0;
     if (isFish) {
-      if (role === 'vegetable' || role === 'salad')    roleBonus = 0.4;
-      else if (needsStarch && role === 'starch')       roleBonus = 0.3;
-      else if (role === 'sauce' && entreeIsDry)        roleBonus = 0.15;
+      if (role === 'vegetable' || role === 'salad')    roleBonus = 1.2;
+      else if (needsStarch && role === 'starch')       roleBonus = 0.8;
+      else if (role === 'sauce' && entreeIsDry)        roleBonus = 0.3;
     } else {
-      if (needsStarch && role === 'starch')            roleBonus = 0.4;
-      else if (role === 'vegetable' || role === 'salad') roleBonus = 0.3;
-      else if (role === 'sauce' && entreeIsDry)        roleBonus = 0.15;
+      if (needsStarch && role === 'starch')            roleBonus = 1.2;
+      else if (role === 'vegetable' || role === 'salad') roleBonus = 0.8;
+      else if (role === 'sauce' && entreeIsDry)        roleBonus = 0.3;
     }
 
     // Signature pairing bonus — floats proven historical matches to front
