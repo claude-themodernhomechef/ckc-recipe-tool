@@ -41,23 +41,27 @@ Examples of the correct note style:
 
 Replace 3 garlic cloves and 1/3 cup of the olive oil with 3 tablespoons garlic-infused oil. Use the remaining olive oil (approximately 1 tablespoon) as needed for consistency.
 
-Replace shallots and garlic cloves with 2 tablespoons garlic-infused oil (mixed into the glaze). The ginger, rice vinegar, bok choy, pork, orange juice, and brown sugar are all LF-compliant. Omit the whole orange halves from the pan to avoid consuming the high-FODMAP solids.
+Replace shallots and garlic cloves with 2 tablespoons garlic-infused oil.
 
-Remove black pepper entirely. Remove dijon mustard entirely (fermented, high-histamine). Remove or reduce parmesan (aged cheese, high-histamine). Lemon can remain in moderate amounts. Recipe is otherwise low-histamine compliant with these removals.
+Remove black pepper entirely. Remove dijon mustard entirely. Remove or reduce parmesan.
 
-Replace 1 cup white rice with 1 cup cauliflower rice. Replace warm pita or naan with butter lettuce or iceberg lettuce wraps. All other ingredients remain unchanged.
+Replace 1 cup white rice with 1 cup cauliflower rice. Replace warm pita or naan with butter lettuce or iceberg lettuce wraps.
 
 Replace 60ml milk with 60ml unsweetened oat milk or full-fat canned coconut milk. Replace 20g butter with 20g olive oil or dairy-free butter.
 
 Replace all-purpose flour with a 1:1 GF flour blend. Replace flour tortillas with corn tortillas or a GF variety.
 `;
 
-const SYSTEM_PROMPT = `You rewrite diet compliance modification notes for recipes.
+const SYSTEM_PROMPT = `You write diet compliance modification notes for recipes.
 
 Style rules:
-- Imperative sentences: "Replace X with Y.", "Remove X entirely.", "Use X instead of Y."
+- Imperative sentences only: "Replace X with Y.", "Remove X entirely.", "Use X instead of Y."
 - Specific quantities when known (e.g., "Replace 2 garlic cloves with 1 tbsp garlic-infused oil")
-- Note what stays compliant when helpful: "All other ingredients are LF-compliant."
+- Only describe the swap or removal — nothing else
+- Do NOT explain why the swap works or describe the science behind it
+- Do NOT list ingredients that are already compliant
+- Do NOT say "all other ingredients are compliant" or anything similar
+- No em dashes (—) anywhere in the note
 - Multiple swaps as separate sentences in a flowing paragraph
 - No bullet points, no headers, no markdown
 - No mention of diet protocol names within the note text
@@ -65,7 +69,7 @@ Style rules:
 
 ${STYLE_EXAMPLES}
 
-You will be given a flagged ingredient and the reason it was flagged. Write a modification note instructing how to swap or remove it to make the recipe compliant. Keep it concise and specific.`;
+You will be given a flagged ingredient and the reason it was flagged. Write a modification note instructing how to swap or remove it. Keep it short and purely instructional.`;
 
 async function generateSwapNote(
   recipeName: string,
