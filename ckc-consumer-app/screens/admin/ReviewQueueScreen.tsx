@@ -461,7 +461,7 @@ const DIET_CATEGORY_FLAGS: Record<string, string[]> = {
   DF:  ['dairy'],                     // Dairy-Free   → cross out all dairy
   V:   ['protein', 'dairy'],          // Vegan        → cross out meat & dairy
   Vg:  ['protein'],                   // Vegetarian   → cross out meat only
-  GF:  ['pantry-staples'],            // Gluten-Free  → flag pantry (some have gluten)
+  // GF removed — pantry-staples is too broad; GF swaps come from parsed swap notes only
   // AIP / LF / LH / K are too nuanced to map to broad categories
 };
 
