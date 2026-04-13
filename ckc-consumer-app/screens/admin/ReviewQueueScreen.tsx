@@ -515,7 +515,10 @@ function fuzzyMatch(term: string, name: string): boolean {
      .replace(/\s+/g, ' ').trim();
   const a = clean(term);
   const b = clean(name);
-  return b.includes(a) || a.includes(b);
+  // Also compare without spaces to handle "cornstarch" vs "corn starch"
+  const aFlat = a.replace(/\s+/g, '');
+  const bFlat = b.replace(/\s+/g, '');
+  return b.includes(a) || a.includes(b) || bFlat.includes(aFlat) || aFlat.includes(bFlat);
 }
 
 // ── Shopping list ─────────────────────────────────────────────────────────────
