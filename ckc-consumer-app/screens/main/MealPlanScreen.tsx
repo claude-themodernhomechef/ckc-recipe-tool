@@ -49,6 +49,13 @@ const COOK_TIMES: { label: string; sublabel: string; value: CookTime }[] = [
 ];
 
 const STARCH_KEYWORDS = ['rice', 'pasta', 'noodle', 'bread', 'tortilla', 'couscous', 'quinoa', 'potato', 'potatoes', 'orzo', 'polenta'];
+const VEGETABLE_KEYWORDS = [
+  'broccoli', 'bok choy', 'spinach', 'kale', 'asparagus', 'zucchini', 'squash',
+  'cauliflower', 'brussels', 'cabbage', 'carrot', 'carrots', 'green bean', 'green beans',
+  'snap pea', 'snow pea', 'edamame', 'eggplant', 'mushroom', 'mushrooms', 'pepper', 'peppers',
+  'tomato', 'tomatoes', 'artichoke', 'leek', 'fennel', 'celery', 'cucumber', 'beet', 'beets',
+  'corn', 'pea', 'peas', 'onion', 'onions', 'scallion', 'chard', 'arugula', 'watercress',
+];
 
 // ─────────────────────────────────────────────
 // Types
@@ -116,6 +123,12 @@ function hasBuiltInStarch(recipe: Recipe): boolean {
   const text = [...(recipe.ingredients || []), recipe.name, recipe.menu_description || '']
     .join(' ').toLowerCase();
   return STARCH_KEYWORDS.some(k => text.includes(k));
+}
+
+// Check name only — ingredients/description can mention veggies as garnish
+function hasBuiltInVeg(recipe: Recipe): boolean {
+  const n = recipe.name.toLowerCase();
+  return VEGETABLE_KEYWORDS.some(k => n.includes(k));
 }
 
 function cuisineCompatScore(entree: string, side: string): number {
@@ -260,6 +273,7 @@ function getSuggestedSides(entree: Recipe, allSides: Recipe[], protocols: string
   if (isStandaloneComplete(entree)) return [];
 
   const entreeHasStarch    = hasBuiltInStarch(entree);
+  const entreeHasVeg       = hasBuiltInVeg(entree);
   const entreeIsPasta      = isPastaEntree(entree);
   const entreeIsTaco       = isTacoEntree(entree);
   const entreeIsSandwich   = isSandwichEntree(entree);
@@ -292,6 +306,7 @@ function getSuggestedSides(entree: Recipe, allSides: Recipe[], protocols: string
     // Hard blocks
     if (entreeIsPasta && role !== 'salad' && role !== 'sauce') return null;
     if (entreeHasStarch && !entreeIsTaco && !entreeIsSandwich && !entreeIsLettuceWrap && role === 'starch') return null;
+    if (entreeHasVeg   && role === 'vegetable') return null;
     if (entreeIsHeavy  && isHeavySide(s))  return null;
     if (entreeIsCreamy && isCreamySide(s)) return null;
     if (entreeIsSweet  && isSweetSide(s))  return null;
