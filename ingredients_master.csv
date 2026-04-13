@@ -373,7 +373,7 @@ tortilla chips,pantry-consumables,1,"Tortilla chips, for serving"
 apricot preserves,produce,1,1 cup apricot preserves
 fennel bulbs,produce,1,2 small fennel bulbs
 crusty bread,pantry-consumables,1,Crusty bread for serving (optional)
-vegetable or peanut oil,pantry-staples,1,1.5 tbsp vegetable or peanut oil
+oil,pantry-staples,1,oil
 white sugar,pantry-staples,1,1 tsp white sugar ((omit if using Mirin))
 cooking wine,pantry-staples,1,1 teaspoon cooking wine
 aioli,pantry-staples,1,4 tablespoons aioli (or 4 tablespoons mayonnaise mixed with one crushed garlic clove)
@@ -406,7 +406,7 @@ granulated garlic,produce,1,1 tsp. granulated garlic (or garlic powder)
 chicken tenders,protein,1,1  pound boneless skinless chicken tenders
 pickle juice,pantry-staples,1,2 tablespoons pickle juice
 pepperoncini,pantry-staples,1,"1-2  pepperoncini, chopped"
-sundried tomatoes,produce,1,⅓ cup sundried tomatoes (chopped)
+sundried tomatoes,pantry-staples,1,⅓ cup sundried tomatoes (chopped)
 salsa,pantry-staples,1,"Salsa, for serving"
 chili oil,pantry-staples,1,"chili oil, (optional, for serving)"
 yellow squash,produce,1,1  yellow squash (chopped)
@@ -436,7 +436,7 @@ non-dairy creamer,dairy,1,1 cup unsweetened non-dairy creamer
 bread,pantry-consumables,1,bread for serving
 blackberries,produce,1,1 cup fresh blackberries
 greek-style yogurt,dairy,1,3/4 cup Greek-style yogurt
-pepperoncini pepper brine,produce,1,1 tablespoon pepperoncini pepper brine
+pepperoncini pepper brine,pantry-staples,1,1 tablespoon pepperoncini pepper brine
 vegan mayonnaise,pantry-staples,1,1 tablespoon vegan mayonnaise
 pepperoncini peppers,pantry-staples,1,"½ cup pepperoncini peppers, chopped fine"
 navy beans,pantry-consumables,1,"1 ½ cups cooked navy beans, drained and rinsed"
@@ -604,8 +604,7 @@ tzakiki sauce,pantry-staples,1,1-2 cups Tzakiki sauce
 peperoncini,pantry-staples,1,"peperoncini, for serving"
 shredded chicken,protein,1,"2 cups cooked, chopped/shredded chicken"
 black tea bags,pantry-staples,1,2  black tea bags ((or 2 tablespoons black tea leaves))
-chipotle chili pepper,produce,1,1  chipotle chili pepper (from a can of chipotle peppers in adobo sauce)*
-sesame or peanut oil,pantry-staples,1,1/2 cup sesame or peanut oil
+chipotle chili pepper,pantry-staples,1,1  chipotle chili pepper (from a can of chipotle peppers in adobo sauce)*
 chiles,produce,1,"2 dried chiles (chile de arbol, japones, or bird’s eye), optional"
 beef stew meat,protein,1,1 1/2 pounds cubed beef stew meat
 crab,protein,1,"8 oz lump crab meat, (drained)"
@@ -664,7 +663,6 @@ sunflower oil,pantry-staples,1,"about 7 tablespoons sunflower oil, for frying"
 strawberries,produce,1,2 cups sliced strawberries
 seafood stock,pantry-consumables,1,1 cup seafood stock
 lime,pantry-staples,1,"1  lime, zest and juice, divided"
-back pepper,produce,1,Back pepper
 sprouted english muffin,pantry-consumables,1,1  Sprouted English Muffin
 pretzels,pantry-consumables,1,1/3 cup finely crushed pretzels
 summer squash,produce,1,"1 medium summer squash, sliced"
@@ -676,7 +674,7 @@ chilies,produce,1,/* optional */  extra chilies (For added heat.)
 wonton strips,pantry-consumables,1,1/2 cup wonton strips
 yuzu juice,pantry-staples,1,2 tbsp yuzu juice
 jerk seasoning,pantry-staples,1,1 Tbsp jerk seasoning
-"peas, defrosted",produce,1,"1 cup frozen peas, defrosted"
+frozen peas,frozen,1,"1 cup frozen peas, defrosted"
 branzino,protein,1,4   Branzinos (cleaned and gutted)
 bulb fennel,produce,1,1Bulb Fennel
 cavolo nero,produce,1,200g Cavolo Nero
@@ -741,7 +739,7 @@ lime,produce,1,"3–4 limes: 1 halved, to serve, and the rest juiced to get 3 tb
 phyllo dough,pantry-consumables,1,6  sheets phyllo dough (defrosted)
 sour orange juice,pantry-staples,1,¾ cup sour orange juice (or regular orange juice)
 ancho chilies-rehydrated,produce,1,2 Dried Ancho Chilies-rehydrated
-mexican guajillo pepper,produce,1,1 dried Mexican Guajillo Pepper ( feel free to experiment with other Mexican dried chilies)
+mexican guajillo pepper,pantry-staples,1,1 dried Mexican Guajillo Pepper ( feel free to experiment with other Mexican dried chilies)
 creole seasoning,pantry-staples,1,1 teaspoon creole seasoning
 apple juice,pantry-staples,1,1/2 cup apple juice
 chicken fillets,protein,1,2  chicken fillets (thinly sliced)
@@ -802,7 +800,7 @@ vegan mayo,pantry-staples,1,1/4 cup vegan mayo
 kosher salt,pantry-staples,1,3/4 tsp kosher / cooking salt
 fusilli,pantry-consumables,1,12 oz. fusilli pasta
 tilapia,protein,1,2 big fillets of tilapia
-splash of tequila,pantry-staples,1,splash of tequila
+tequila,pantry-staples,1,splash of tequila
 chile powder,pantry-staples,1,a few pinches of chile powder
 veal cutlets,protein,1,8 (2-oz.) veal cutlets from veal top round
 jarred salsa verde,pantry-staples,1,1/2 cup jarred salsa verde (or tomatillo salsa)
