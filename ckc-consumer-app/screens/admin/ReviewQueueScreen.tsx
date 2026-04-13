@@ -308,7 +308,56 @@ const dc = StyleSheet.create({
   noNotes:          { fontFamily: Fonts.body, fontSize: 13, color: Colors.textMuted, paddingTop: 4 },
 });
 
+// ── Swap parsing (ported from ShopScreen) ─────────────────────────────────────
+
+function parseSwapPairs(notes: string): Array<{ from: string; to: string | null }> {
+  const result: Array<{ from: string; to: string | null }> = [];
+  const s = notes.toLowerCase();
+  let m: RegExpExecArray | null;
+
+  const insteadRe = /use\s+(.+?)\s+instead\s+of\s+(.+?)(?:[,.]|$)/gi;
+  while ((m = insteadRe.exec(s)) !== null) {
+    result.push({ from: m[2].trim(), to: m[1].trim() });
+  }
+
+  const replaceRe = /replace\s+(.+?)\s+with\s+(.+?)(?:[,.]|$)/gi;
+  while ((m = replaceRe.exec(s)) !== null) {
+    const to = m[2].trim();
+    m[1].split(/\s+and\s+/i).forEach(f => result.push({ from: f.trim(), to }));
+  }
+
+  const removeRe = /remove\s+([^,.\n]+)/gi;
+  while ((m = removeRe.exec(s)) !== null) {
+    result.push({ from: m[1].trim(), to: null });
+  }
+
+  const skipRe = /(?:skip|omit)\s+([^,.\n]+)/gi;
+  while ((m = skipRe.exec(s)) !== null) {
+    result.push({ from: m[1].split(',')[0].trim(), to: null });
+  }
+
+  return result;
+}
+
+function fuzzyMatch(term: string, name: string): boolean {
+  const clean = (x: string) =>
+    x.replace(/\b(cloves?|heads?|tbsp\s+of|tsp\s+of|cups?\s+of|\bof\b)\b/g, '')
+     .replace(/\s+/g, ' ').trim();
+  const a = clean(term);
+  const b = clean(name);
+  return b.includes(a) || a.includes(b);
+}
+
 // ── Shopping list ─────────────────────────────────────────────────────────────
+
+type IngItem = {
+  qty: number; unit: string; name: string; category: string;
+  _type: 'normal' | 'swap' | 'crossed';
+  _swapFor?: string;    // for 'swap': ingredient this replaces
+  _swapTo?:  string;    // for 'crossed': what it was replaced with
+  _protocol?: string;
+  _color?:    string;
+};
 
 function ShoppingList({
   ingredients, dietTags, activeDietFilter,
@@ -319,24 +368,62 @@ function ShoppingList({
 }) {
   const [checked, setChecked] = useState<Record<string, boolean>>({});
 
-  const grouped = useMemo(() => {
-    const map: Record<string, { qty: number; unit: string; name: string; category: string }[]> = {};
-    SHOPPING_CATEGORIES.forEach(c => { map[c.key] = []; });
-    ingredients.forEach(raw => {
-      if (!raw.trim()) return;
-      const parsed = parseIngredient(raw);
-      if (!parsed.name) return;
-      const cat = parsed.category || 'pantry-staples';
-      if (!map[cat]) map[cat] = [];
-      map[cat].push({ qty: parsed.qty ?? 0, unit: parsed.unit ?? '', name: parsed.name, category: cat });
-    });
-    return SHOPPING_CATEGORIES.map(c => ({ ...c, items: map[c.key] ?? [] })).filter(c => c.items.length > 0);
+  // Parse all ingredients into base items
+  const baseItems = useMemo((): { qty: number; unit: string; name: string; category: string }[] => {
+    return ingredients
+      .filter(r => r.trim())
+      .map(raw => {
+        const p = parseIngredient(raw);
+        return p.name ? { qty: p.qty ?? 0, unit: p.unit ?? '', name: p.name, category: p.category || 'pantry-staples' } : null;
+      })
+      .filter(Boolean) as { qty: number; unit: string; name: string; category: string }[];
   }, [ingredients]);
 
-  // Show swap note when a diet filter is active and has a mod note
-  const swapNotes = activeDietFilter.size > 0
-    ? [...activeDietFilter].map(code => dietTags?.[code]?.notes).filter(Boolean)
-    : [];
+  // Build swap map from active diet modification notes
+  const swapMap = useMemo((): Map<string, { to: string | null; protocol: string; color: string }> => {
+    if (activeDietFilter.size === 0 || !dietTags) return new Map();
+    const map = new Map<string, { to: string | null; protocol: string; color: string }>();
+    for (const code of activeDietFilter) {
+      const notes = dietTags[code]?.notes;
+      if (!notes || !dietTags[code]?.mod) continue;
+      const color = (DIET_COLORS as Record<string, string>)[code] ?? Colors.gold;
+      const pairs = parseSwapPairs(notes);
+      for (const pair of pairs) {
+        for (const item of baseItems) {
+          if (fuzzyMatch(pair.from, item.name) && !map.has(item.name)) {
+            map.set(item.name, { to: pair.to, protocol: code, color });
+          }
+        }
+      }
+    }
+    return map;
+  }, [activeDietFilter, dietTags, baseItems]);
+
+  // Group into categories, injecting swap/crossed rows
+  const grouped = useMemo(() => {
+    const map: Record<string, IngItem[]> = {};
+    SHOPPING_CATEGORIES.forEach(c => { map[c.key] = []; });
+
+    for (const item of baseItems) {
+      const cat = item.category || 'pantry-staples';
+      if (!map[cat]) map[cat] = [];
+      const swapInfo = swapMap.get(item.name);
+
+      if (swapInfo) {
+        if (swapInfo.to) {
+          // Gold swap row: the replacement
+          map[cat].push({ qty: 0, unit: '', name: swapInfo.to, category: cat, _type: 'swap', _swapFor: item.name, _protocol: swapInfo.protocol, _color: swapInfo.color });
+        } else {
+          // Crossed out: ingredient is removed
+          map[cat].push({ ...item, _type: 'crossed', _protocol: swapInfo.protocol, _color: swapInfo.color });
+        }
+      } else {
+        map[cat].push({ ...item, _type: 'normal' });
+      }
+    }
+
+    return SHOPPING_CATEGORIES.map(c => ({ ...c, items: map[c.key] ?? [] })).filter(c => c.items.length > 0);
+  }, [baseItems, swapMap]);
 
   if (!ingredients.length) {
     return <Text style={sl.empty}>No ingredients — add them in the edit section below</Text>;
@@ -344,11 +431,6 @@ function ShoppingList({
 
   return (
     <View>
-      {swapNotes.map((note, i) => (
-        <View key={i} style={sl.swapNote}>
-          <Text style={sl.swapNoteText}>{note}</Text>
-        </View>
-      ))}
       {grouped.map(cat => (
         <View key={cat.key} style={sl.category}>
           <View style={sl.catHeader}>
@@ -356,7 +438,47 @@ function ShoppingList({
             <View style={sl.catBadge}><Text style={sl.catCount}>{cat.items.length}</Text></View>
           </View>
           {cat.items.map((item, i) => {
-            const key  = `${cat.key}-${i}`;
+            const key = `${cat.key}-${i}`;
+
+            // Gold swap row — replacement ingredient
+            if (item._type === 'swap') {
+              return (
+                <View key={key} style={[sl.row, sl.rowSwap]}>
+                  <View style={[sl.checkbox, sl.checkboxSwap]}>
+                    <Text style={sl.swapIcon}>↑</Text>
+                  </View>
+                  <View style={sl.rowBody}>
+                    <Text style={sl.swapName}>{item.name}</Text>
+                    <View style={sl.swapMeta}>
+                      <View style={[sl.protocolChip, { borderColor: (item._color ?? Colors.gold) + '88' }]}>
+                        <Text style={[sl.protocolText, { color: item._color ?? Colors.gold }]}>{item._protocol}</Text>
+                      </View>
+                      <Text style={sl.swapSource}>replaces {item._swapFor}</Text>
+                    </View>
+                  </View>
+                </View>
+              );
+            }
+
+            // Crossed-out row — ingredient removed by diet
+            if (item._type === 'crossed') {
+              return (
+                <View key={key} style={[sl.row, sl.rowCrossed]}>
+                  <View style={[sl.checkbox, sl.checkboxCrossed]} />
+                  <View style={sl.rowBody}>
+                    <Text style={sl.crossedName}>{item.name}</Text>
+                    <View style={sl.swapMeta}>
+                      <View style={[sl.protocolChip, { borderColor: (item._color ?? Colors.red) + '88' }]}>
+                        <Text style={[sl.protocolText, { color: item._color ?? Colors.red }]}>{item._protocol}</Text>
+                      </View>
+                      <Text style={sl.swapSource}>removed</Text>
+                    </View>
+                  </View>
+                </View>
+              );
+            }
+
+            // Normal row
             const done = checked[key];
             return (
               <TouchableOpacity
@@ -382,21 +504,31 @@ function ShoppingList({
 }
 
 const sl = StyleSheet.create({
-  empty:        { fontFamily: Fonts.body, fontSize: 13, color: Colors.textMuted, fontStyle: 'italic', paddingVertical: 8 },
-  swapNote:     { backgroundColor: 'rgba(212,168,67,0.08)', borderWidth: 1, borderColor: '#d4a843', borderRadius: 8, padding: 12, marginBottom: 14 },
-  swapNoteText: { fontFamily: Fonts.body, fontSize: 13, color: '#d4a843', lineHeight: 19 },
-  category:     { marginBottom: 20 },
-  catHeader:    { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8, paddingBottom: 6, borderBottomWidth: 1, borderBottomColor: Colors.border },
-  catLabel:     { fontFamily: Fonts.bodyMedium, fontSize: 10, color: Colors.textMuted, letterSpacing: 1 },
-  catBadge:     { backgroundColor: Colors.surfaceElevated, borderRadius: 100, paddingHorizontal: 7, paddingVertical: 1 },
-  catCount:     { fontFamily: Fonts.body, fontSize: 10, color: Colors.textMuted },
-  row:          { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 7, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.04)' },
-  checkbox:     { width: 18, height: 18, borderRadius: 4, borderWidth: 1.5, borderColor: Colors.border, alignItems: 'center', justifyContent: 'center' },
-  checkboxDone: { backgroundColor: Colors.green, borderColor: Colors.green },
-  checkmark:    { fontSize: 11, color: Colors.bg, fontFamily: Fonts.bodyMedium },
-  qty:          { fontFamily: Fonts.bodyMedium, fontSize: 13, color: Colors.textMuted, minWidth: 52 },
-  name:         { fontFamily: Fonts.body, fontSize: 14, color: Colors.textPrimary, flex: 1 },
-  done:         { opacity: 0.35, textDecorationLine: 'line-through' },
+  empty:          { fontFamily: Fonts.body, fontSize: 13, color: Colors.textMuted, fontStyle: 'italic', paddingVertical: 8 },
+  category:       { marginBottom: 20 },
+  catHeader:      { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8, paddingBottom: 6, borderBottomWidth: 1, borderBottomColor: Colors.border },
+  catLabel:       { fontFamily: Fonts.bodyMedium, fontSize: 10, color: Colors.textMuted, letterSpacing: 1 },
+  catBadge:       { backgroundColor: Colors.surfaceElevated, borderRadius: 100, paddingHorizontal: 7, paddingVertical: 1 },
+  catCount:       { fontFamily: Fonts.body, fontSize: 10, color: Colors.textMuted },
+  row:            { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 7, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.04)' },
+  rowSwap:        { backgroundColor: 'rgba(212,168,67,0.07)', borderRadius: 6, paddingHorizontal: 6 },
+  rowCrossed:     { backgroundColor: 'rgba(201,107,107,0.07)', borderRadius: 6, paddingHorizontal: 6 },
+  checkbox:       { width: 18, height: 18, borderRadius: 4, borderWidth: 1.5, borderColor: Colors.border, alignItems: 'center', justifyContent: 'center', flexShrink: 0 },
+  checkboxDone:   { backgroundColor: Colors.green, borderColor: Colors.green },
+  checkboxSwap:   { borderColor: Colors.gold, backgroundColor: Colors.gold + '22' },
+  checkboxCrossed:{ borderColor: Colors.red, backgroundColor: Colors.red + '22' },
+  checkmark:      { fontSize: 11, color: Colors.bg, fontFamily: Fonts.bodyMedium },
+  swapIcon:       { fontSize: 11, color: Colors.gold, fontFamily: Fonts.bodyMedium },
+  rowBody:        { flex: 1, gap: 3 },
+  qty:            { fontFamily: Fonts.bodyMedium, fontSize: 13, color: Colors.textMuted, minWidth: 52 },
+  name:           { fontFamily: Fonts.body, fontSize: 14, color: Colors.textPrimary, flex: 1 },
+  swapName:       { fontFamily: Fonts.bodyMedium, fontSize: 13, color: Colors.gold },
+  crossedName:    { fontFamily: Fonts.body, fontSize: 13, color: Colors.textMuted, textDecorationLine: 'line-through' },
+  swapMeta:       { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  protocolChip:   { borderWidth: 1, borderRadius: 4, paddingHorizontal: 5, paddingVertical: 1 },
+  protocolText:   { fontFamily: Fonts.bodyMedium, fontSize: 9, letterSpacing: 0.5 },
+  swapSource:     { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted },
+  done:           { opacity: 0.35, textDecorationLine: 'line-through' },
 });
 
 // ── Right panel ───────────────────────────────────────────────────────────────
