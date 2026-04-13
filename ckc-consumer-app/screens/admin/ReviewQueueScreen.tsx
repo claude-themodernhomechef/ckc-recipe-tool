@@ -18,8 +18,65 @@ import {
   collection, query, where, getDocs, doc, updateDoc, writeBatch,
 } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
+import { resolveReviewItem, ReviewItem } from '../../lib/firestore';
 import { Colors, Fonts } from '../../constants/theme';
 import DietTag, { DIET_COLORS } from '../components/DietTag';
+
+// ── AI swap note generator (same as NeedsReviewScreen) ────────────────────────
+
+const ANTHROPIC_KEY = (typeof process !== 'undefined' && process.env.EXPO_PUBLIC_ANTHROPIC_API_KEY) ?? '';
+
+const SWAP_SYSTEM_PROMPT = `You write diet compliance modification notes for recipes.
+
+Style rules:
+- Imperative sentences only: "Replace X with Y.", "Remove X entirely.", "Use X instead of Y."
+- Specific quantities when known (e.g., "Replace 2 garlic cloves with 1 tbsp garlic-infused oil")
+- Only describe the swap or removal — nothing else
+- Do NOT explain why the swap works or describe the science behind it
+- Do NOT list ingredients that are already compliant
+- Do NOT say "all other ingredients are compliant" or anything similar
+- No em dashes (—) anywhere in the note
+- Multiple swaps as separate sentences in a flowing paragraph
+- No bullet points, no headers, no markdown
+- No mention of diet protocol names within the note text
+- End with a period`;
+
+async function generateSwapNote(
+  recipeName: string,
+  protocol: string,
+  ingredient: string,
+  reason: string,
+  existingNote?: string,
+): Promise<string> {
+  const body = [
+    `Recipe: ${recipeName}`,
+    `Protocol: ${protocol}`,
+    `Flagged ingredient: ${ingredient}`,
+    `Reason flagged: ${reason}`,
+    existingNote ? `Existing note: ${existingNote}` : '',
+    '',
+    'Write a modification note for this ingredient swap/removal:',
+  ].filter(Boolean).join('\n');
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type':         'application/json',
+      'x-api-key':            ANTHROPIC_KEY,
+      'anthropic-version':    '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true',
+    },
+    body: JSON.stringify({
+      model:      'claude-sonnet-4-6',
+      max_tokens: 400,
+      system:     SWAP_SYSTEM_PROMPT,
+      messages:   [{ role: 'user', content: body }],
+    }),
+  });
+  if (!res.ok) throw new Error(`Claude API ${res.status}`);
+  const data = await res.json();
+  return (data.content?.[0]?.text ?? '').trim();
+}
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -55,6 +112,7 @@ interface RecipeDoc {
   ingredients?:      string[];
   chefNotes?:        string;
   dietTags?:         Record<string, DietTagData>;
+  reviewItems?:      ReviewItem[];
   processingStatus?: string;
   _approved?:        boolean;
 }
@@ -228,84 +286,172 @@ const rr = StyleSheet.create({
 // ── Diet tag edit card ────────────────────────────────────────────────────────
 
 function DietCard({
-  code, tag, onChange,
+  code, tag, onChange, recipeName, reviewFlags, onFlagResolved,
 }: {
-  code: string; tag?: DietTagData; onChange: (code: string, updated: DietTagData) => void;
+  code:            string;
+  tag?:            DietTagData;
+  onChange:        (code: string, updated: DietTagData) => void;
+  recipeName?:     string;
+  reviewFlags?:    ReviewItem[];
+  onFlagResolved?: (ingredient: string, decision: 'compliant' | 'replace' | 'remove' | 'skip', note?: string) => void;
 }) {
   const state     = getDietState(tag);
   const notes     = tag?.notes ?? '';
   const color     = (DIET_COLORS as Record<string, string>)[code] ?? Colors.textMuted;
   const showNotes = state === 'mod' || notes.trim().length > 0;
 
+  const [generatingFor, setGeneratingFor] = useState<string | null>(null);
+
   function setDietState(next: DietState) {
     onChange(code, { native: next === 'native', mod: next === 'mod', notes: next === 'none' ? '' : notes });
   }
 
+  async function handleFlag(flag: ReviewItem, decision: 'compliant' | 'replace' | 'remove' | 'skip') {
+    if (decision === 'replace') {
+      setGeneratingFor(flag.ingredient);
+      try {
+        const note = await generateSwapNote(recipeName ?? '', code, flag.ingredient, flag.reason, tag?.notes);
+        onChange(code, { native: false, mod: true, notes: note });
+        onFlagResolved?.(flag.ingredient, 'replace', note);
+      } catch (e) {
+        console.warn('generateSwapNote failed', e);
+        onFlagResolved?.(flag.ingredient, 'replace');
+      }
+      setGeneratingFor(null);
+    } else {
+      if (decision === 'compliant') onChange(code, { ...tag, native: true, mod: false, notes: notes });
+      if (decision === 'remove')    onChange(code, { native: false, mod: false, notes: '' });
+      onFlagResolved?.(flag.ingredient, decision);
+    }
+  }
+
+  const unresolvedFlags = (reviewFlags ?? []).filter(f => !f.resolved);
+
   return (
-    <View style={dc.row}>
-      <View style={dc.left}>
-        <View style={dc.badgeRow}>
-          <View style={[
-            dc.circle,
-            state === 'native' ? { backgroundColor: color, borderColor: color } :
-            state === 'mod'    ? { backgroundColor: 'transparent', borderColor: color, borderStyle: 'dashed' as any } :
-                                 { backgroundColor: 'transparent', borderColor: Colors.border },
-          ]} />
-          <View style={[dc.badge, { backgroundColor: color + '26' }]}>
-            <Text style={[dc.code, { color }]}>{code}</Text>
+    <View style={dc.wrap}>
+      <View style={dc.row}>
+        <View style={dc.left}>
+          <View style={dc.badgeRow}>
+            <View style={[
+              dc.circle,
+              state === 'native' ? { backgroundColor: color, borderColor: color } :
+              state === 'mod'    ? { backgroundColor: 'transparent', borderColor: color, borderStyle: 'dashed' as any } :
+                                   { backgroundColor: 'transparent', borderColor: Colors.border },
+            ]} />
+            <View style={[dc.badge, { backgroundColor: color + '26' }]}>
+              <Text style={[dc.code, { color }]}>{code}</Text>
+            </View>
+            {unresolvedFlags.length > 0 && (
+              <View style={dc.flagBadge}>
+                <Text style={dc.flagBadgeText}>{unresolvedFlags.length} flag{unresolvedFlags.length !== 1 ? 's' : ''}</Text>
+              </View>
+            )}
+          </View>
+          <View style={dc.toggleRow}>
+            {(['native', 'mod', 'none'] as DietState[]).map(s => (
+              <TouchableOpacity
+                key={s}
+                style={[dc.toggle, state === s && dc[`toggle_${s}` as keyof typeof dc]]}
+                onPress={() => setDietState(s)}
+              >
+                <Text style={[dc.toggleText, state === s && dc[`toggleText_${s}` as keyof typeof dc]]}>
+                  {s === 'native' ? 'Native' : s === 'mod' ? 'Mod' : 'None'}
+                </Text>
+              </TouchableOpacity>
+            ))}
           </View>
         </View>
-        <View style={dc.toggleRow}>
-          {(['native', 'mod', 'none'] as DietState[]).map(s => (
-            <TouchableOpacity
-              key={s}
-              style={[dc.toggle, state === s && dc[`toggle_${s}` as keyof typeof dc]]}
-              onPress={() => setDietState(s)}
-            >
-              <Text style={[dc.toggleText, state === s && dc[`toggleText_${s}` as keyof typeof dc]]}>
-                {s === 'native' ? 'Native' : s === 'mod' ? 'Mod' : 'None'}
-              </Text>
-            </TouchableOpacity>
-          ))}
+        <View style={dc.right}>
+          {showNotes ? (
+            <TextInput
+              style={dc.notes}
+              value={notes}
+              onChangeText={v => onChange(code, { native: tag?.native ?? false, mod: tag?.mod ?? false, notes: v })}
+              placeholder="Modification note…"
+              placeholderTextColor={Colors.textMuted}
+              multiline
+            />
+          ) : (
+            <Text style={dc.noNotes}>—</Text>
+          )}
         </View>
       </View>
-      <View style={dc.right}>
-        {showNotes ? (
-          <TextInput
-            style={dc.notes}
-            value={notes}
-            onChangeText={v => onChange(code, { native: tag?.native ?? false, mod: tag?.mod ?? false, notes: v })}
-            placeholder="Modification note…"
-            placeholderTextColor={Colors.textMuted}
-            multiline
-          />
-        ) : (
-          <Text style={dc.noNotes}>—</Text>
-        )}
-      </View>
+
+      {/* Unresolved flags for this protocol */}
+      {unresolvedFlags.map((flag, i) => (
+        <View key={i} style={dc.flagRow}>
+          <View style={dc.flagHeader}>
+            <Text style={dc.flagIngredient}>{flag.ingredient}</Text>
+            {flag.category ? <Text style={dc.flagCat}>{flag.category.replace(/_/g, ' ')}</Text> : null}
+          </View>
+          <Text style={dc.flagReason}>{flag.reason}</Text>
+          {flag.caution ? <Text style={dc.flagCaution}>FIG: {flag.caution}</Text> : null}
+          {generatingFor === flag.ingredient ? (
+            <View style={dc.generating}>
+              <ActivityIndicator size="small" color={Colors.gold} />
+              <Text style={dc.generatingText}>Generating swap note…</Text>
+            </View>
+          ) : (
+            <View style={dc.flagBtns}>
+              <TouchableOpacity style={[dc.flagBtn, dc.flagBtnCompliant]} onPress={() => handleFlag(flag, 'compliant')}>
+                <Text style={dc.flagBtnText}>Compliant</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[dc.flagBtn, dc.flagBtnReplace]} onPress={() => handleFlag(flag, 'replace')}>
+                <Text style={dc.flagBtnText}>Replace ✦</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[dc.flagBtn, dc.flagBtnRemove]} onPress={() => handleFlag(flag, 'remove')}>
+                <Text style={dc.flagBtnText}>Remove</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[dc.flagBtn, dc.flagBtnSkip]} onPress={() => handleFlag(flag, 'skip')}>
+                <Text style={dc.flagBtnText}>Skip</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
+      ))}
     </View>
   );
 }
 
 const dc = StyleSheet.create({
-  row:              { flexDirection: 'row', alignItems: 'flex-start', gap: 14, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.05)' },
-  left:             { width: 170, flexShrink: 0 },
-  right:            { flex: 1 },
-  badgeRow:         { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
-  circle:           { width: 14, height: 14, borderRadius: 7, borderWidth: 1.5 },
-  badge:            { borderRadius: 4, paddingHorizontal: 8, paddingVertical: 2, alignSelf: 'flex-start' },
-  code:             { fontFamily: Fonts.bodyMedium, fontSize: 11, letterSpacing: 0.5 },
-  toggleRow:        { flexDirection: 'row', gap: 6 },
-  toggle:           { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 100, borderWidth: 1, borderColor: Colors.border },
-  toggleText:       { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted },
-  toggle_native:    { backgroundColor: 'rgba(124,184,122,0.15)', borderColor: '#7cb87a' },
-  toggleText_native:{ color: '#7cb87a' },
-  toggle_mod:       { backgroundColor: 'rgba(212,168,67,0.15)', borderColor: '#d4a843' },
-  toggleText_mod:   { color: '#d4a843' },
-  toggle_none:      { backgroundColor: 'rgba(201,107,107,0.15)', borderColor: '#c96b6b' },
-  toggleText_none:  { color: '#c96b6b' },
-  notes:            { backgroundColor: Colors.surfaceElevated, borderWidth: 1, borderColor: Colors.border, borderRadius: 6, padding: 10, fontFamily: Fonts.body, fontSize: 13, color: Colors.textSecondary, lineHeight: 20, minHeight: 44 },
-  noNotes:          { fontFamily: Fonts.body, fontSize: 13, color: Colors.textMuted, paddingTop: 4 },
+  wrap:              { borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.05)' },
+  row:               { flexDirection: 'row', alignItems: 'flex-start', gap: 14, paddingVertical: 10 },
+  left:              { width: 170, flexShrink: 0 },
+  right:             { flex: 1 },
+  badgeRow:          { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
+  circle:            { width: 14, height: 14, borderRadius: 7, borderWidth: 1.5 },
+  badge:             { borderRadius: 4, paddingHorizontal: 8, paddingVertical: 2, alignSelf: 'flex-start' },
+  code:              { fontFamily: Fonts.bodyMedium, fontSize: 11, letterSpacing: 0.5 },
+  flagBadge:         { backgroundColor: Colors.gold + '22', borderRadius: 4, paddingHorizontal: 6, paddingVertical: 2 },
+  flagBadgeText:     { fontFamily: Fonts.bodyMedium, fontSize: 9, color: Colors.gold },
+  toggleRow:         { flexDirection: 'row', gap: 6 },
+  toggle:            { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 100, borderWidth: 1, borderColor: Colors.border },
+  toggleText:        { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted },
+  toggle_native:     { backgroundColor: 'rgba(124,184,122,0.15)', borderColor: '#7cb87a' },
+  toggleText_native: { color: '#7cb87a' },
+  toggle_mod:        { backgroundColor: 'rgba(212,168,67,0.15)', borderColor: '#d4a843' },
+  toggleText_mod:    { color: '#d4a843' },
+  toggle_none:       { backgroundColor: 'rgba(201,107,107,0.15)', borderColor: '#c96b6b' },
+  toggleText_none:   { color: '#c96b6b' },
+  notes:             { backgroundColor: Colors.surfaceElevated, borderWidth: 1, borderColor: Colors.border, borderRadius: 6, padding: 10, fontFamily: Fonts.body, fontSize: 13, color: Colors.textSecondary, lineHeight: 20, minHeight: 44 },
+  noNotes:           { fontFamily: Fonts.body, fontSize: 13, color: Colors.textMuted, paddingTop: 4 },
+
+  // Flag rows
+  flagRow:           { marginLeft: 8, marginBottom: 12, padding: 12, backgroundColor: Colors.surface, borderRadius: 8, borderWidth: 1, borderColor: Colors.gold + '44', gap: 6 },
+  flagHeader:        { flexDirection: 'row', alignItems: 'center', gap: 8, flexWrap: 'wrap' },
+  flagIngredient:    { fontFamily: Fonts.bodyMedium, fontSize: 13, color: Colors.textPrimary },
+  flagCat:           { fontFamily: Fonts.body, fontSize: 10, color: Colors.textMuted, backgroundColor: Colors.surfaceElevated, borderRadius: 4, paddingHorizontal: 6, paddingVertical: 2 },
+  flagReason:        { fontFamily: Fonts.body, fontSize: 12, color: Colors.textSecondary, lineHeight: 17 },
+  flagCaution:       { fontFamily: Fonts.body, fontSize: 11, color: Colors.gold },
+  generating:        { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 4 },
+  generatingText:    { fontFamily: Fonts.body, fontSize: 12, color: Colors.textMuted },
+  flagBtns:          { flexDirection: 'row', gap: 6, flexWrap: 'wrap', marginTop: 4 },
+  flagBtn:           { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 6, borderWidth: 1 },
+  flagBtnCompliant:  { borderColor: Colors.green,  backgroundColor: Colors.green + '18' },
+  flagBtnReplace:    { borderColor: Colors.gold,   backgroundColor: Colors.gold  + '18' },
+  flagBtnRemove:     { borderColor: Colors.red,    backgroundColor: Colors.red   + '18' },
+  flagBtnSkip:       { borderColor: Colors.border, backgroundColor: Colors.surface },
+  flagBtnText:       { fontFamily: Fonts.bodyMedium, fontSize: 11, color: Colors.textPrimary },
 });
 
 // ── Swap parsing (ported from ShopScreen) ─────────────────────────────────────
@@ -669,6 +815,28 @@ function RecipePanel({
     update({ ingredients: ings });
   }
 
+  async function handleFlagResolved(code: string, ingredient: string, decision: 'compliant' | 'replace' | 'remove' | 'skip', note?: string) {
+    const updatedItems = (local.reviewItems ?? []).map(i =>
+      i.protocol === code && i.ingredient === ingredient && !i.resolved
+        ? { ...i, resolved: true, finalDecision: decision, swapNote: note || '' }
+        : i
+    );
+    // Update local state (dietTag already updated via onChange inside DietCard)
+    setLocal(prev => ({ ...prev, reviewItems: updatedItems }));
+    // Write flag resolution to Firestore (handles its own dietTag update)
+    try {
+      await resolveReviewItem(
+        local._id,
+        code,
+        ingredient,
+        decision,
+        (local.dietTags ?? {}) as Record<string, Record<string, unknown>>,
+        local.reviewItems ?? [],
+        note,
+      );
+    } catch (e) { console.warn('resolveReviewItem failed', e); }
+  }
+
   function toggleDietFilter(code: string) {
     setActiveDiet(prev => {
       const next = new Set(prev);
@@ -746,6 +914,9 @@ function RecipePanel({
               code={code}
               tag={local.dietTags?.[code]}
               onChange={updateDietTag}
+              recipeName={local.name}
+              reviewFlags={(local.reviewItems ?? []).filter(f => f.protocol === code)}
+              onFlagResolved={(ingredient, decision, note) => handleFlagResolved(code, ingredient, decision, note)}
             />
           ))}
         </View>
