@@ -28,6 +28,8 @@ export interface Recipe {
   rating: string;
   dietTags: Record<string, DietTag>;
   ingredients: string[];
+  builtInStarch?: boolean;
+  builtInVeg?: boolean;
   status?: 'yes' | 'no' | 'maybe' | 'pending';
   processingStatus?: 'complete' | 'pending_review' | 'failed' | 'error';
 }

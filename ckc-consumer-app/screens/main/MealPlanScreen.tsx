@@ -272,8 +272,9 @@ function getSuggestedSides(entree: Recipe, allSides: Recipe[], protocols: string
   // 1. Classify entree — no sides for standalone complete dishes
   if (isStandaloneComplete(entree)) return [];
 
-  const entreeHasStarch    = hasBuiltInStarch(entree);
-  const entreeHasVeg       = hasBuiltInVeg(entree);
+  // Use Firestore-stamped fields (set by label_builtin_components.js) — not name inference
+  const entreeHasStarch    = entree.builtInStarch ?? hasBuiltInStarch(entree);
+  const entreeHasVeg       = entree.builtInVeg    ?? hasBuiltInVeg(entree);
   const entreeIsPasta      = isPastaEntree(entree);
   const entreeIsTaco       = isTacoEntree(entree);
   const entreeIsSandwich   = isSandwichEntree(entree);
