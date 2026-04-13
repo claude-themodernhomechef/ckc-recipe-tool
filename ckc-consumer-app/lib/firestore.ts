@@ -29,6 +29,13 @@ function placeholderColor(seed: string): string {
 }
 
 // Map a Firestore document to the Recipe type the app uses
+function normalizeStatus(raw: string): Recipe['status'] {
+  if (raw === 'approved') return 'yes';
+  if (raw === 'rejected') return 'no';
+  if (raw === 'yes' || raw === 'no' || raw === 'maybe') return raw;
+  return 'pending';
+}
+
 function docToRecipe(id: string, data: Record<string, unknown>): Recipe {
   return {
     id,
@@ -49,7 +56,7 @@ function docToRecipe(id: string, data: Record<string, unknown>): Recipe {
     ingredients:      (data.ingredients     as string[]) || [],
     builtInStarch:    (data.builtInStarch   as boolean) || false,
     builtInVeg:       (data.builtInVeg      as boolean) || false,
-    status:           (data.status          as Recipe['status']) || 'yes',
+    status:           normalizeStatus(data.status as string),
     processingStatus: (data.processingStatus as Recipe['processingStatus']) || undefined,
   };
 }
@@ -102,7 +109,7 @@ export async function fetchRecipes(limitCount: number = 200): Promise<Recipe[]> 
   try {
     const q = query(
       collection(db, 'recipes'),
-      where('status', '==', 'yes'),
+      where('status', '==', 'approved'),
       where('meal_type', '==', 'entree'),
       limit(limitCount),
     );
@@ -141,7 +148,7 @@ export async function fetchSideDishes(): Promise<Recipe[]> {
   try {
     const q = query(
       collection(db, 'recipes'),
-      where('status', '==', 'yes'),
+      where('status', '==', 'approved'),
       where('meal_type', 'in', ['side', 'salad', 'sauce']),
       limit(300),
     );
