@@ -86,6 +86,26 @@ export function categorizeIngredient(name: string): string {
   return 'pantry-staples';
 }
 
+// Returns category + whether it was a real DB match (matched: false = fallback default)
+export function categorizeIngredientWithMatch(name: string): { category: string; matched: boolean } {
+  const lower = name.toLowerCase();
+  if (INGREDIENT_DB[lower]) return { category: INGREDIENT_DB[lower], matched: true };
+  for (const key of DB_KEYS_BY_LENGTH) {
+    const escaped = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const re = new RegExp('(?:^|\\s)' + escaped + '(?:\\s|$)');
+    if (re.test(lower)) return { category: INGREDIENT_DB[key], matched: true };
+  }
+  const [match, distance] = findClosestMatch(lower);
+  if (distance <= 2 && match) return { category: INGREDIENT_DB[match], matched: true };
+  return { category: 'pantry-staples', matched: false };
+}
+
+// Call after saving a new ingredient to Firestore — keeps in-memory DB in sync
+export function addIngredientToDb(name: string, category: string): void {
+  INGREDIENT_DB[name.toLowerCase()] = category;
+  rebuildDbIndex();
+}
+
 // ── Parser tables ──────────────────────────────────────────────────────────────
 
 const FRACTION_MAP: Record<string, string> = {

@@ -13,7 +13,7 @@ import {
   View, Text, TextInput, TouchableOpacity, ScrollView, FlatList,
   Image, ActivityIndicator, Alert, StyleSheet, Modal, Pressable,
 } from 'react-native';
-import { parseIngredient, fmtQty, SHOPPING_CATEGORIES } from '../../lib/ingredientParser';
+import { parseIngredient, fmtQty, SHOPPING_CATEGORIES, categorizeIngredientWithMatch, addIngredientToDb } from '../../lib/ingredientParser';
 import {
   collection, query, where, getDocs, doc, updateDoc, writeBatch,
 } from 'firebase/firestore';
@@ -357,10 +357,11 @@ function fuzzyMatch(term: string, name: string): boolean {
 type IngItem = {
   qty: number; unit: string; name: string; category: string;
   _type: 'normal' | 'swap' | 'crossed';
-  _swapFor?: string;    // for 'swap': ingredient this replaces
-  _swapTo?:  string;    // for 'crossed': what it was replaced with
+  _swapFor?: string;
+  _swapTo?:  string;
   _protocol?: string;
   _color?:    string;
+  _matched?:  boolean;  // false = not found in ingredientCategories DB
 };
 
 function ShoppingList({
@@ -371,17 +372,22 @@ function ShoppingList({
   activeDietFilter: Set<string>;
 }) {
   const [checked, setChecked] = useState<Record<string, boolean>>({});
+  const [savedIngredients, setSavedIngredients] = useState<Set<string>>(new Set());
+  const [pickerItem, setPickerItem] = useState<{ name: string; category: string } | null>(null);
+  const [savingCategory, setSavingCategory] = useState(false);
 
   // Parse all ingredients into base items
-  const baseItems = useMemo((): { qty: number; unit: string; name: string; category: string }[] => {
+  const baseItems = useMemo((): { qty: number; unit: string; name: string; category: string; matched: boolean }[] => {
     return ingredients
       .filter(r => r.trim())
       .map(raw => {
         const p = parseIngredient(raw);
-        return p.name ? { qty: p.qty ?? 0, unit: p.unit ?? '', name: p.name, category: p.category || 'pantry-staples' } : null;
+        if (!p.name) return null;
+        const { category, matched } = categorizeIngredientWithMatch(p.name);
+        return { qty: p.qty ?? 0, unit: p.unit ?? '', name: p.name, category, matched };
       })
-      .filter(Boolean) as { qty: number; unit: string; name: string; category: string }[];
-  }, [ingredients]);
+      .filter(Boolean) as { qty: number; unit: string; name: string; category: string; matched: boolean }[];
+  }, [ingredients, savedIngredients]);
 
   // Build swap map from active diet modification notes
   const swapMap = useMemo((): Map<string, { to: string | null; protocol: string; color: string }> => {
@@ -422,12 +428,34 @@ function ShoppingList({
           map[cat].push({ ...item, _type: 'crossed', _protocol: swapInfo.protocol, _color: swapInfo.color });
         }
       } else {
-        map[cat].push({ ...item, _type: 'normal' });
+        map[cat].push({ ...item, _type: 'normal', _matched: item.matched });
       }
     }
 
     return SHOPPING_CATEGORIES.map(c => ({ ...c, items: map[c.key] ?? [] })).filter(c => c.items.length > 0);
   }, [baseItems, swapMap]);
+
+  async function saveCategory(name: string, category: string) {
+    setSavingCategory(true);
+    try {
+      const { collection: col, doc: docFn, setDoc } = await import('firebase/firestore');
+      const { db: firestoreDb } = await import('../../lib/firebase');
+      const docId = name.toLowerCase().replace(/\//g, '-').replace(/[^a-z0-9\-_ ']/g, '').trim();
+      await setDoc(docFn(col(firestoreDb, 'ingredientCategories'), docId), {
+        name,
+        category,
+        frequency: 1,
+        exampleRaw: name,
+      });
+      addIngredientToDb(name, category);
+      setSavedIngredients(prev => new Set([...prev, name]));
+      setPickerItem(null);
+    } catch (e) {
+      console.warn('Failed to save ingredient category:', e);
+    } finally {
+      setSavingCategory(false);
+    }
+  }
 
   if (!ingredients.length) {
     return <Text style={sl.empty}>No ingredients — add them in the edit section below</Text>;
@@ -482,25 +510,83 @@ function ShoppingList({
 
             // Normal row
             const done = checked[key];
+            const isUnmatched = item._matched === false && !savedIngredients.has(item.name);
+            const isSaved = savedIngredients.has(item.name);
             return (
               <TouchableOpacity
                 key={key}
-                style={sl.row}
-                onPress={() => setChecked(prev => ({ ...prev, [key]: !prev[key] }))}
+                style={[
+                  sl.row,
+                  isUnmatched && sl.rowUnmatched,
+                  isSaved && sl.rowIngSaved,
+                ]}
+                onPress={() => {
+                  if (isUnmatched) {
+                    setPickerItem({ name: item.name, category: 'pantry-staples' });
+                  } else {
+                    setChecked(prev => ({ ...prev, [key]: !prev[key] }));
+                  }
+                }}
                 activeOpacity={0.7}
               >
-                <View style={[sl.checkbox, done && sl.checkboxDone]}>
+                <View style={[
+                  sl.checkbox,
+                  done && sl.checkboxDone,
+                  isUnmatched && sl.checkboxUnmatched,
+                  isSaved && sl.checkboxIngSaved,
+                ]}>
                   {done && <Text style={sl.checkmark}>✓</Text>}
+                  {isUnmatched && <Text style={sl.unmatchedIcon}>?</Text>}
+                  {isSaved && <Text style={sl.checkmark}>✓</Text>}
                 </View>
                 <Text style={[sl.qty, done && sl.done]}>
                   {item.qty ? fmtQty(item.qty, item.unit, item.category) : item.unit || ''}
                 </Text>
-                <Text style={[sl.name, done && sl.done]}>{item.name}</Text>
+                <Text style={[
+                  sl.name,
+                  done && sl.done,
+                  isUnmatched && sl.nameUnmatched,
+                  isSaved && sl.nameIngSaved,
+                ]}>{item.name}</Text>
+                {isUnmatched && (
+                  <Text style={sl.unmatchedHint}>tap to assign</Text>
+                )}
               </TouchableOpacity>
             );
           })}
         </View>
       ))}
+
+      {/* ── Unmatched ingredient category picker ── */}
+      {pickerItem && (
+        <Modal transparent animationType="slide" onRequestClose={() => setPickerItem(null)}>
+          <Pressable style={sl.modalOverlay} onPress={() => setPickerItem(null)}>
+            <Pressable style={sl.modalSheet} onPress={e => e.stopPropagation()}>
+              <View style={sl.modalHeader}>
+                <Text style={sl.modalTitle}>Assign category</Text>
+                <TouchableOpacity onPress={() => setPickerItem(null)}>
+                  <Text style={sl.modalClose}>✕</Text>
+                </TouchableOpacity>
+              </View>
+              <Text style={sl.modalIngName}>"{pickerItem.name}"</Text>
+              <Text style={sl.modalSub}>Not found in ingredient database — pick a category to save it</Text>
+              {SHOPPING_CATEGORIES.map(cat => (
+                <TouchableOpacity
+                  key={cat.key}
+                  style={sl.modalOption}
+                  onPress={() => !savingCategory && saveCategory(pickerItem.name, cat.key)}
+                  activeOpacity={0.7}
+                >
+                  <Text style={sl.modalOptionText}>{cat.label}</Text>
+                  {savingCategory && pickerItem.category === cat.key && (
+                    <ActivityIndicator size="small" color={Colors.green} />
+                  )}
+                </TouchableOpacity>
+              ))}
+            </Pressable>
+          </Pressable>
+        </Modal>
+      )}
     </View>
   );
 }
@@ -528,6 +614,25 @@ const sl = StyleSheet.create({
   crossedName:    { fontFamily: Fonts.body, fontSize: 13, color: Colors.textMuted, textDecorationLine: 'line-through' },
   swapSource:     { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted },
   done:           { opacity: 0.35, textDecorationLine: 'line-through' },
+  // Unmatched ingredient styles
+  rowUnmatched:     { backgroundColor: 'rgba(201,107,107,0.07)', borderRadius: 6, paddingHorizontal: 6, borderLeftWidth: 2, borderLeftColor: Colors.red },
+  rowIngSaved:      { backgroundColor: 'rgba(124,184,122,0.07)', borderRadius: 6, paddingHorizontal: 6, borderLeftWidth: 2, borderLeftColor: Colors.green },
+  checkboxUnmatched:{ borderColor: Colors.red, backgroundColor: Colors.red + '22' },
+  checkboxIngSaved: { borderColor: Colors.green, backgroundColor: Colors.green + '22' },
+  unmatchedIcon:    { fontSize: 11, color: Colors.red, fontFamily: Fonts.bodyMedium },
+  nameUnmatched:    { color: Colors.red },
+  nameIngSaved:     { color: Colors.green },
+  unmatchedHint:    { fontFamily: Fonts.body, fontSize: 10, color: Colors.red, opacity: 0.7 },
+  // Category picker modal
+  modalOverlay:     { flex: 1, backgroundColor: 'rgba(0,0,0,0.6)', justifyContent: 'flex-end' },
+  modalSheet:       { backgroundColor: Colors.surface, borderTopLeftRadius: 16, borderTopRightRadius: 16, paddingBottom: 40 },
+  modalHeader:      { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 16, borderBottomWidth: 1, borderBottomColor: Colors.border },
+  modalTitle:       { fontFamily: Fonts.bodyMedium, fontSize: 15, color: Colors.textPrimary },
+  modalClose:       { fontFamily: Fonts.body, fontSize: 16, color: Colors.textMuted, padding: 4 },
+  modalIngName:     { fontFamily: Fonts.bodyMedium, fontSize: 14, color: Colors.textPrimary, paddingHorizontal: 20, paddingTop: 14 },
+  modalSub:         { fontFamily: Fonts.body, fontSize: 12, color: Colors.textMuted, paddingHorizontal: 20, paddingBottom: 12 },
+  modalOption:      { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: Colors.border },
+  modalOptionText:  { fontFamily: Fonts.body, fontSize: 14, color: Colors.textPrimary },
 });
 
 // ── Right panel ───────────────────────────────────────────────────────────────
