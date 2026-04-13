@@ -31,6 +31,8 @@ function placeholderColor(seed: string): string {
 // Map a Firestore document to the Recipe type the app uses
 function normalizeStatus(raw: string): Recipe['status'] {
   if (raw === 'yes' || raw === 'no' || raw === 'maybe') return raw;
+  // 'needs_review' = old format where Cloud Function overwrote 'yes'; treat as approved
+  if (raw === 'needs_review') return 'yes';
   return 'pending';
 }
 

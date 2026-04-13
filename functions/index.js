@@ -48,14 +48,6 @@ setGlobalOptions({ timeoutSeconds: 540, memory: '1GiB' });
 const DIET_RULES = fs.readFileSync(path.join(__dirname, 'CKC_Diet_Compliance_Rules.md'), 'utf8');
 const CHEF_GUIDE = fs.readFileSync(path.join(__dirname, 'CKC_Chef_Notes_Guide.md'),      'utf8');
 
-// ── Menu description examples ─────────────────────────────────────────────────
-const MENU_DESC_EXAMPLES = `Menu Description examples (all lowercase, no period):
-- "pan-seared salmon over garlic butter orzo with roasted cherry tomatoes and fresh basil"
-- "ground turkey slow-cooked with chipotle and red bell peppers, topped with sharp cheddar, green onion, and cilantro"
-- "silky roasted beet and chickpea hummus garnished with aleppo pepper, za'atar, and a drizzle of olive oil"
-- "grilled fresh peaches over fluffy quinoa with cherry tomatoes, cucumber, red onion, and fresh herbs in a light citrus vinaigrette"
-- "crispy pan-fried chicken thighs glazed with honey, soy, and garlic over jasmine rice with scallions"`;
-
 // ── Protocol → Supabase column ────────────────────────────────────────────────
 const PROTO_FIELD = {
   AIP: 'aip_friendly',
@@ -71,16 +63,10 @@ const PROTO_FIELD = {
 // ── Claude system prompts ─────────────────────────────────────────────────────
 const CHEF_SYSTEM = `${CHEF_GUIDE}
 
-${MENU_DESC_EXAMPLES}
-
-For a given recipe, generate:
-1. Chef's Notes — practical cooking tips following the guide above. Return as a single paragraph, notes separated by " | ". No bullet points, no headers, no diet protocol names.
-2. Menu Description — a single lowercase phrase describing the dish (no period).
+For a given recipe, generate Chef's Notes — practical cooking tips following the guide above. Return as a single paragraph, notes separated by " | ". No bullet points, no headers, no diet protocol names.
 
 Reply in this exact format:
-CHEFS_NOTES: [notes text]
----
-MENU_DESC: [description text]`;
+CHEFS_NOTES: [notes text]`;
 
 const DIET_SYSTEM = `You are a dietary compliance analyst for a recipe app.
 
@@ -110,7 +96,7 @@ exports.enrichOnYes = onDocumentUpdated('recipes/{recipeId}', async (event) => {
   const before = event.data.before.data();
   const after  = event.data.after.data();
 
-  // Only run when status transitions TO "yes"
+  // Only run when status transitions TO "yes" (swipe decision — triggers enrichment)
   if (after.status !== 'yes' || before.status === 'yes') return null;
 
   // Skip if already enriched (chefNotes is the sentinel field)
@@ -145,9 +131,9 @@ exports.enrichOnYes = onDocumentUpdated('recipes/{recipeId}', async (event) => {
       return null;
     }
 
-    // ── Step 2: Chef's Notes + Menu Description ─────────────────────────────
-    console.log(`[${recipeId}] Generating Chef's Notes + Menu Description`);
-    const { chefNotes, menuDescription } = await generateChefContent(
+    // ── Step 2: Chef's Notes ────────────────────────────────────────────────
+    console.log(`[${recipeId}] Generating Chef's Notes`);
+    const { chefNotes } = await generateChefContent(
       anthropic, after.name, after.cuisine || '', after.course || '', ingredients
     );
 
@@ -238,15 +224,15 @@ exports.enrichOnYes = onDocumentUpdated('recipes/{recipeId}', async (event) => {
       console.log(`[${recipeId}] ${uncertainItems.length} uncertain item(s) → review_queue`);
     }
 
-    // ── Step 6: Write back to Firestore ─────────────────────────────────────
+    // ── Step 6: Write back to Firestore, move to review queue ───────────────
     const processingStatus = uncertainItems.length > 0 ? 'pending_review' : 'complete';
 
     await ref.update({
       ingredients,
       chefNotes,
-      menuDescription,
       dietTags:         confirmedTags,
       processingStatus,
+      // status ('yes') is preserved — swipe decision is permanent
       enrichedAt:       admin.firestore.FieldValue.serverTimestamp(),
       enrichmentError:  admin.firestore.FieldValue.delete(),
     });
@@ -335,10 +321,8 @@ async function generateChefContent(anthropic, name, cuisine, course, ingredients
 
       const text   = resp.content[0].text;
       const notesM = text.match(/CHEFS_NOTES:\s*([\s\S]+?)(?=\n---|$)/);
-      const descM  = text.match(/MENU_DESC:\s*([\s\S]+?)(?=\n---|$)/);
       return {
-        chefNotes:       notesM ? notesM[1].trim() : '',
-        menuDescription: descM  ? descM[1].trim()  : '',
+        chefNotes: notesM ? notesM[1].trim() : '',
       };
     } catch (err) {
       if (attempt === 3) throw err;

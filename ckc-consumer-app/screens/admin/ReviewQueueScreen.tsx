@@ -11,7 +11,7 @@
 import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity, ScrollView, FlatList,
-  Image, ActivityIndicator, Alert, StyleSheet, Modal, Pressable,
+  Image, ActivityIndicator, Alert, StyleSheet, Modal, Pressable, Linking,
 } from 'react-native';
 import { parseIngredient, fmtQty, SHOPPING_CATEGORIES, categorizeIngredientWithMatch, addIngredientToDb } from '../../lib/ingredientParser';
 import {
@@ -454,6 +454,17 @@ const dc = StyleSheet.create({
   flagBtnText:       { fontFamily: Fonts.bodyMedium, fontSize: 11, color: Colors.textPrimary },
 });
 
+// ── Diet → category fallback (when notes aren't in "Replace X with Y" format) ──
+// When a mod diet is active and no specific swap note matches, we automatically
+// flag items in the diet's known problem categories so they show as needing a swap.
+const DIET_CATEGORY_FLAGS: Record<string, string[]> = {
+  DF:  ['dairy'],                     // Dairy-Free   → cross out all dairy
+  V:   ['protein', 'dairy'],          // Vegan        → cross out meat & dairy
+  Vg:  ['protein'],                   // Vegetarian   → cross out meat only
+  GF:  ['pantry-staples'],            // Gluten-Free  → flag pantry (some have gluten)
+  // AIP / LF / LH / K are too nuanced to map to broad categories
+};
+
 // ── Swap parsing (ported from ShopScreen) ─────────────────────────────────────
 
 function parseSwapPairs(notes: string): Array<{ from: string; to: string | null }> {
@@ -507,42 +518,52 @@ type IngItem = {
   _swapTo?:  string;
   _protocol?: string;
   _color?:    string;
-  _matched?:  boolean;  // false = not found in ingredientCategories DB
+  _matched?:  boolean;
+  _isCategoryFlag?: boolean;
+  _rawIndex?: number;   // index in original ingredients[] array
+  _raw?: string;        // original raw string e.g. "½ cup feta cheese crumbled"
 };
 
 function ShoppingList({
-  ingredients, dietTags, activeDietFilter,
+  ingredients, dietTags, activeDietFilter, onEditIngredient, onEditSwap,
 }: {
   ingredients: string[];
   dietTags?: Record<string, DietTagData>;
   activeDietFilter: Set<string>;
+  onEditIngredient?: (rawIndex: number, newRaw: string) => void;
+  onEditSwap?: (protocol: string, oldSwapText: string, newSwapText: string) => void;
 }) {
-  const [checked, setChecked] = useState<Record<string, boolean>>({});
+  const [editingIdx, setEditingIdx]         = useState<number | null>(null);
+  const [editingVal, setEditingVal]         = useState('');
+  const [editingSwapKey, setEditingSwapKey] = useState<string | null>(null); // `${protocol}-${swapFor}`
+  const [editingSwapVal, setEditingSwapVal] = useState('');
   const [savedIngredients, setSavedIngredients] = useState<Set<string>>(new Set());
   const [pickerItem, setPickerItem] = useState<{ name: string; category: string } | null>(null);
   const [savingCategory, setSavingCategory] = useState(false);
 
-  // Parse all ingredients into base items
-  const baseItems = useMemo((): { qty: number; unit: string; name: string; category: string; matched: boolean }[] => {
+  // Parse all ingredients into base items (keep original index for editing)
+  const baseItems = useMemo((): { qty: number; unit: string; name: string; category: string; matched: boolean; rawIndex: number; raw: string }[] => {
     return ingredients
-      .filter(r => r.trim())
-      .map(raw => {
+      .map((raw, rawIndex) => {
+        if (!raw.trim()) return null;
         const p = parseIngredient(raw);
         if (!p.name) return null;
         const { category, matched } = categorizeIngredientWithMatch(p.name);
-        return { qty: p.qty ?? 0, unit: p.unit ?? '', name: p.name, category, matched };
+        return { qty: p.qty ?? 0, unit: p.unit ?? '', name: p.name, category, matched, rawIndex, raw };
       })
-      .filter(Boolean) as { qty: number; unit: string; name: string; category: string; matched: boolean }[];
+      .filter(Boolean) as { qty: number; unit: string; name: string; category: string; matched: boolean; rawIndex: number; raw: string }[];
   }, [ingredients, savedIngredients]);
 
-  // Build swap map from active diet modification notes
+  // Build swap map from active diet modification notes (notes-based swaps only)
   const swapMap = useMemo((): Map<string, { to: string | null; protocol: string; color: string }> => {
     if (activeDietFilter.size === 0 || !dietTags) return new Map();
     const map = new Map<string, { to: string | null; protocol: string; color: string }>();
     for (const code of activeDietFilter) {
-      const notes = dietTags[code]?.notes;
-      if (!notes || !dietTags[code]?.mod) continue;
+      const tagData = dietTags[code];
+      if (!tagData?.mod) continue;
       const color = (DIET_COLORS as Record<string, string>)[code] ?? Colors.gold;
+      const notes = tagData.notes ?? '';
+      if (!notes.trim()) continue;
       const pairs = parseSwapPairs(notes);
       for (const pair of pairs) {
         for (const item of baseItems) {
@@ -567,22 +588,44 @@ function ShoppingList({
 
       if (swapInfo) {
         if (swapInfo.to) {
-          // Gold swap row: the replacement
+          // Gold swap row: specific replacement from notes
           map[cat].push({ qty: 0, unit: '', name: swapInfo.to, category: cat, _type: 'swap', _swapFor: item.name, _protocol: swapInfo.protocol, _color: swapInfo.color });
         } else {
-          // Crossed out: ingredient is removed
-          map[cat].push({ ...item, _type: 'crossed', _protocol: swapInfo.protocol, _color: swapInfo.color });
+          map[cat].push({ ...item, _type: 'crossed', _protocol: swapInfo.protocol, _color: swapInfo.color, _isCategoryFlag: false, _rawIndex: item.rawIndex, _raw: item.raw });
         }
       } else {
-        map[cat].push({ ...item, _type: 'normal', _matched: item.matched });
+        // Category-level fallback: when a diet is active, flag ingredients in that
+        // diet's known problem categories. No mod check — if DF is native the recipe
+        // has no dairy anyway; if it does have dairy, flagging it is correct.
+        let catFlag: { protocol: string; color: string } | null = null;
+        if (activeDietFilter.size > 0) {
+          for (const code of activeDietFilter) {
+            const flagCats = DIET_CATEGORY_FLAGS[code] ?? [];
+            if (flagCats.includes(cat)) {
+              catFlag = { protocol: code, color: (DIET_COLORS as Record<string, string>)[code] ?? Colors.gold };
+              break;
+            }
+          }
+        }
+
+        if (catFlag) {
+          map[cat].push({ ...item, _type: 'crossed', _protocol: catFlag.protocol, _color: catFlag.color, _isCategoryFlag: true, _rawIndex: item.rawIndex, _raw: item.raw });
+        } else {
+          map[cat].push({ ...item, _type: 'normal', _matched: item.matched, _rawIndex: item.rawIndex, _raw: item.raw });
+        }
       }
     }
 
     return SHOPPING_CATEGORIES.map(c => ({ ...c, items: map[c.key] ?? [] })).filter(c => c.items.length > 0);
-  }, [baseItems, swapMap]);
+  }, [baseItems, swapMap, activeDietFilter, dietTags]);
 
   async function saveCategory(name: string, category: string) {
-    setSavingCategory(true);
+    // Update UI immediately — don't wait for Firestore
+    addIngredientToDb(name, category);
+    setSavedIngredients(prev => new Set([...prev, name]));
+    setPickerItem(null);
+
+    // Persist to Firestore in the background
     try {
       const { collection: col, doc: docFn, setDoc } = await import('firebase/firestore');
       const { db: firestoreDb } = await import('../../lib/firebase');
@@ -593,13 +636,8 @@ function ShoppingList({
         frequency: 1,
         exampleRaw: name,
       });
-      addIngredientToDb(name, category);
-      setSavedIngredients(prev => new Set([...prev, name]));
-      setPickerItem(null);
     } catch (e) {
-      console.warn('Failed to save ingredient category:', e);
-    } finally {
-      setSavingCategory(false);
+      console.warn('[saveCategory] Firestore write failed (UI already updated):', e);
     }
   }
 
@@ -618,11 +656,53 @@ function ShoppingList({
           {cat.items.map((item, i) => {
             const key = `${cat.key}-${i}`;
 
-            // Gold swap row — replacement ingredient
+            // Gold swap row — replacement ingredient (tap to edit)
             if (item._type === 'swap') {
               const c = item._color ?? Colors.gold;
+              const swapKey = `${item._protocol}-${item._swapFor}`;
+              const isEditingSwap = editingSwapKey === swapKey;
+
+              if (isEditingSwap) {
+                return (
+                  <View key={key} style={[sl.editRow, { borderLeftWidth: 2, borderLeftColor: c }]}>
+                    <View style={sl.editFields}>
+                      <TextInput
+                        style={[sl.editInput, { borderColor: c }]}
+                        value={editingSwapVal}
+                        onChangeText={setEditingSwapVal}
+                        autoFocus
+                        selectTextOnFocus
+                        placeholderTextColor={Colors.textMuted}
+                      />
+                      <Text style={[sl.editHint, { color: c + 'aa' }]}>
+                        {item._protocol} swap · replaces {item._swapFor}
+                      </Text>
+                    </View>
+                    <TouchableOpacity
+                      style={[sl.editSave, { borderColor: c, backgroundColor: c + '22' }]}
+                      onPress={() => {
+                        if (editingSwapVal.trim() && item._protocol) {
+                          onEditSwap?.(item._protocol, item.name, editingSwapVal.trim());
+                        }
+                        setEditingSwapKey(null);
+                      }}
+                    >
+                      <Text style={[sl.editSaveText, { color: c }]}>Save</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={sl.editCancel} onPress={() => setEditingSwapKey(null)}>
+                      <Text style={sl.editCancelText}>✕</Text>
+                    </TouchableOpacity>
+                  </View>
+                );
+              }
+
               return (
-                <View key={key} style={[sl.row, sl.rowSwap, { borderLeftColor: c }]}>
+                <TouchableOpacity
+                  key={key}
+                  style={[sl.row, sl.rowSwap, { borderLeftColor: c }]}
+                  onPress={() => { setEditingSwapKey(swapKey); setEditingSwapVal(item.name); }}
+                  activeOpacity={0.7}
+                >
                   <View style={[sl.checkbox, sl.checkboxSwap, { borderColor: c, backgroundColor: c + '22' }]}>
                     <Text style={[sl.swapIcon, { color: c }]}>↑</Text>
                   </View>
@@ -633,13 +713,14 @@ function ShoppingList({
                       {' · replaces '}{item._swapFor}
                     </Text>
                   </View>
-                </View>
+                </TouchableOpacity>
               );
             }
 
-            // Crossed-out row — ingredient removed by diet
+            // Crossed-out row — ingredient removed or needs swap
             if (item._type === 'crossed') {
               const c = item._color ?? Colors.red;
+              const label = item._isCategoryFlag ? 'needs swap — update note above' : 'removed';
               return (
                 <View key={key} style={[sl.row, sl.rowCrossed, { borderLeftColor: c }]}>
                   <View style={[sl.checkbox, sl.checkboxCrossed, { borderColor: c, backgroundColor: c + '22' }]} />
@@ -647,56 +728,72 @@ function ShoppingList({
                     <Text style={sl.crossedName}>{item.name}</Text>
                     <Text style={sl.swapSource}>
                       <Text style={{ color: c }}>{item._protocol} swap</Text>
-                      {' · removed'}
+                      {' · '}{label}
                     </Text>
                   </View>
                 </View>
               );
             }
 
-            // Normal row
-            const done = checked[key];
+            // Normal row — tap to edit inline
             const isUnmatched = item._matched === false && !savedIngredients.has(item.name);
-            const isSaved = savedIngredients.has(item.name);
+            const isEditing = editingIdx === item._rawIndex;
+
+            if (isEditing) {
+              return (
+                <View key={key} style={sl.editRow}>
+                  <View style={sl.editFields}>
+                    <TextInput
+                      style={sl.editInput}
+                      value={editingVal}
+                      onChangeText={setEditingVal}
+                      autoFocus
+                      selectTextOnFocus
+                      placeholder="e.g. 1 cup feta cheese crumbled"
+                      placeholderTextColor={Colors.textMuted}
+                    />
+                    <Text style={sl.editHint}>Edit quantity and ingredient name, then tap Save</Text>
+                  </View>
+                  <TouchableOpacity
+                    style={sl.editSave}
+                    onPress={() => {
+                      if (item._rawIndex !== undefined && editingVal.trim()) {
+                        onEditIngredient?.(item._rawIndex, editingVal.trim());
+                      }
+                      setEditingIdx(null);
+                    }}
+                  >
+                    <Text style={sl.editSaveText}>Save</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={sl.editCancel}
+                    onPress={() => setEditingIdx(null)}
+                  >
+                    <Text style={sl.editCancelText}>✕</Text>
+                  </TouchableOpacity>
+                </View>
+              );
+            }
+
             return (
               <TouchableOpacity
                 key={key}
-                style={[
-                  sl.row,
-                  isUnmatched && sl.rowUnmatched,
-                  isSaved && sl.rowIngSaved,
-                ]}
+                style={[sl.row, isUnmatched && sl.rowUnmatched]}
                 onPress={() => {
-                  if (isUnmatched) {
-                    setPickerItem({ name: item.name, category: 'pantry-staples' });
-                  } else {
-                    setChecked(prev => ({ ...prev, [key]: !prev[key] }));
+                  if (item._rawIndex !== undefined) {
+                    setEditingIdx(item._rawIndex);
+                    setEditingVal(item._raw ?? item.name);
                   }
                 }}
                 activeOpacity={0.7}
               >
-                <View style={[
-                  sl.checkbox,
-                  done && sl.checkboxDone,
-                  isUnmatched && sl.checkboxUnmatched,
-                  isSaved && sl.checkboxIngSaved,
-                ]}>
-                  {done && <Text style={sl.checkmark}>✓</Text>}
+                <View style={[sl.checkbox, isUnmatched && sl.checkboxUnmatched]}>
                   {isUnmatched && <Text style={sl.unmatchedIcon}>?</Text>}
-                  {isSaved && <Text style={sl.checkmark}>✓</Text>}
                 </View>
-                <Text style={[sl.qty, done && sl.done]}>
+                <Text style={sl.qty}>
                   {item.qty ? fmtQty(item.qty, item.unit, item.category) : item.unit || ''}
                 </Text>
-                <Text style={[
-                  sl.name,
-                  done && sl.done,
-                  isUnmatched && sl.nameUnmatched,
-                  isSaved && sl.nameIngSaved,
-                ]}>{item.name}</Text>
-                {isUnmatched && (
-                  <Text style={sl.unmatchedHint}>tap to assign</Text>
-                )}
+                <Text style={[sl.name, isUnmatched && sl.nameUnmatched]}>{item.name}</Text>
               </TouchableOpacity>
             );
           })}
@@ -706,8 +803,14 @@ function ShoppingList({
       {/* ── Unmatched ingredient category picker ── */}
       {pickerItem && (
         <Modal transparent animationType="slide" onRequestClose={() => setPickerItem(null)}>
-          <Pressable style={sl.modalOverlay} onPress={() => setPickerItem(null)}>
-            <Pressable style={sl.modalSheet} onPress={e => e.stopPropagation()}>
+          <View style={sl.modalOverlay}>
+            {/* Backdrop tap-to-close sits behind the sheet */}
+            <TouchableOpacity
+              style={StyleSheet.absoluteFillObject}
+              onPress={() => setPickerItem(null)}
+              activeOpacity={1}
+            />
+            <View style={sl.modalSheet}>
               <View style={sl.modalHeader}>
                 <Text style={sl.modalTitle}>Assign category</Text>
                 <TouchableOpacity onPress={() => setPickerItem(null)}>
@@ -715,22 +818,22 @@ function ShoppingList({
                 </TouchableOpacity>
               </View>
               <Text style={sl.modalIngName}>"{pickerItem.name}"</Text>
-              <Text style={sl.modalSub}>Not found in ingredient database — pick a category to save it</Text>
+              <Text style={sl.modalSub}>Not in ingredient database — pick a category to save it</Text>
               {SHOPPING_CATEGORIES.map(cat => (
                 <TouchableOpacity
                   key={cat.key}
                   style={sl.modalOption}
-                  onPress={() => !savingCategory && saveCategory(pickerItem.name, cat.key)}
+                  onPress={() => {
+                    if (!savingCategory) saveCategory(pickerItem.name, cat.key);
+                  }}
                   activeOpacity={0.7}
                 >
                   <Text style={sl.modalOptionText}>{cat.label}</Text>
-                  {savingCategory && pickerItem.category === cat.key && (
-                    <ActivityIndicator size="small" color={Colors.green} />
-                  )}
+                  {savingCategory && <ActivityIndicator size="small" color={Colors.green} />}
                 </TouchableOpacity>
               ))}
-            </Pressable>
-          </Pressable>
+            </View>
+          </View>
         </Modal>
       )}
     </View>
@@ -744,18 +847,18 @@ const sl = StyleSheet.create({
   catLabel:       { fontFamily: Fonts.bodyMedium, fontSize: 10, color: Colors.textMuted, letterSpacing: 1 },
   catBadge:       { backgroundColor: Colors.surfaceElevated, borderRadius: 100, paddingHorizontal: 7, paddingVertical: 1 },
   catCount:       { fontFamily: Fonts.body, fontSize: 10, color: Colors.textMuted },
-  row:            { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 7, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.04)' },
+  row:            { flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.04)' },
   rowSwap:        { backgroundColor: 'rgba(212,168,67,0.07)', borderRadius: 6, paddingHorizontal: 6, borderLeftWidth: 2, borderLeftColor: Colors.gold },
   rowCrossed:     { backgroundColor: 'rgba(201,107,107,0.07)', borderRadius: 6, paddingHorizontal: 6, borderLeftWidth: 2, borderLeftColor: Colors.red },
-  checkbox:       { width: 18, height: 18, borderRadius: 4, borderWidth: 1.5, borderColor: Colors.border, alignItems: 'center', justifyContent: 'center', flexShrink: 0 },
+  checkbox:       { width: 22, height: 22, borderRadius: 5, borderWidth: 1.5, borderColor: Colors.border, alignItems: 'center', justifyContent: 'center', flexShrink: 0 },
   checkboxDone:   { backgroundColor: Colors.green, borderColor: Colors.green },
   checkboxSwap:   { borderColor: Colors.gold, backgroundColor: Colors.gold + '22' },
   checkboxCrossed:{ borderColor: Colors.red, backgroundColor: Colors.red + '22' },
-  checkmark:      { fontSize: 11, color: Colors.bg, fontFamily: Fonts.bodyMedium },
-  swapIcon:       { fontSize: 11, color: Colors.gold, fontFamily: Fonts.bodyMedium },
+  checkmark:      { fontSize: 12, color: Colors.bg, fontFamily: Fonts.bodyMedium },
+  swapIcon:       { fontSize: 12, color: Colors.gold, fontFamily: Fonts.bodyMedium },
   rowBody:        { flex: 1, gap: 3 },
-  qty:            { fontFamily: Fonts.bodyMedium, fontSize: 13, color: Colors.textMuted, minWidth: 52 },
-  name:           { fontFamily: Fonts.body, fontSize: 14, color: Colors.textPrimary, flex: 1 },
+  qty:            { fontFamily: Fonts.bodyMedium, fontSize: 14, color: Colors.gold, minWidth: 60 },
+  name:           { fontFamily: Fonts.body, fontSize: 16, color: Colors.textPrimary, flex: 1 },
   swapName:       { fontFamily: Fonts.bodyMedium, fontSize: 13, color: Colors.gold },
   crossedName:    { fontFamily: Fonts.body, fontSize: 13, color: Colors.textMuted, textDecorationLine: 'line-through' },
   swapSource:     { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted },
@@ -767,8 +870,16 @@ const sl = StyleSheet.create({
   checkboxIngSaved: { borderColor: Colors.green, backgroundColor: Colors.green + '22' },
   unmatchedIcon:    { fontSize: 11, color: Colors.red, fontFamily: Fonts.bodyMedium },
   nameUnmatched:    { color: Colors.red },
-  nameIngSaved:     { color: Colors.green },
   unmatchedHint:    { fontFamily: Fonts.body, fontSize: 10, color: Colors.red, opacity: 0.7 },
+  editPencil:       { fontSize: 11, color: Colors.textMuted, fontFamily: Fonts.body },
+  editRow:          { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.04)' },
+  editFields:       { flex: 1, gap: 4 },
+  editInput:        { backgroundColor: Colors.surfaceElevated, borderWidth: 1, borderColor: Colors.borderActive, borderRadius: 6, paddingHorizontal: 10, paddingVertical: 7, fontFamily: Fonts.body, fontSize: 14, color: Colors.textPrimary },
+  editHint:         { fontFamily: Fonts.body, fontSize: 10, color: Colors.textMuted, paddingHorizontal: 2 },
+  editSave:         { paddingHorizontal: 12, paddingVertical: 7, backgroundColor: Colors.green + '22', borderRadius: 6, borderWidth: 1, borderColor: Colors.green },
+  editSaveText:     { fontFamily: Fonts.bodyMedium, fontSize: 12, color: Colors.green },
+  editCancel:       { paddingHorizontal: 8, paddingVertical: 6 },
+  editCancelText:   { fontFamily: Fonts.body, fontSize: 16, color: Colors.textMuted },
   // Category picker modal
   modalOverlay:     { flex: 1, backgroundColor: 'rgba(0,0,0,0.6)', justifyContent: 'flex-end' },
   modalSheet:       { backgroundColor: Colors.surface, borderTopLeftRadius: 16, borderTopRightRadius: 16, paddingBottom: 40 },
@@ -866,7 +977,7 @@ function RecipePanel({
 
   return (
     <View style={pp.wrap}>
-      <ScrollView style={pp.scroll} contentContainerStyle={pp.content}>
+      <ScrollView style={pp.scroll} contentContainerStyle={pp.content} keyboardShouldPersistTaps="handled">
 
         {/* ── Recipe card ── */}
         <View style={pp.card}>
@@ -881,7 +992,11 @@ function RecipePanel({
               placeholder="Recipe name"
               placeholderTextColor={Colors.textMuted}
             />
-            {local.url ? <Text style={pp.url} numberOfLines={1}>{local.url}</Text> : null}
+            {local.url ? (
+              <TouchableOpacity onPress={() => Linking.openURL(local.url!)} activeOpacity={0.7}>
+                <Text style={[pp.url, pp.urlLink]} numberOfLines={1}>{local.url}</Text>
+              </TouchableOpacity>
+            ) : null}
             <View style={pp.metaRow}>
               {([
                 { label: 'BLOGGER',  key: 'blogger'  as const },
@@ -986,6 +1101,36 @@ function RecipePanel({
             ingredients={local.ingredients ?? []}
             dietTags={local.dietTags}
             activeDietFilter={activeDiet}
+            onEditSwap={async (protocol, oldSwapText, newSwapText) => {
+              const tag = local.dietTags?.[protocol];
+              if (!tag) return;
+              // Replace the old swap text with the new one inside the modification note
+              const updatedNote = (tag.notes ?? '').split(oldSwapText).join(newSwapText);
+              const updatedTags = {
+                ...(local.dietTags ?? {}),
+                [protocol]: { ...tag, notes: updatedNote },
+              };
+              update({ dietTags: updatedTags });
+              if (local._id) {
+                try {
+                  await updateDoc(doc(db, 'recipes', local._id), { dietTags: updatedTags });
+                } catch (e) { console.warn('Swap note save failed:', e); }
+              }
+            }}
+            onEditIngredient={async (rawIndex, newRaw) => {
+              const ings = [...(local.ingredients ?? [])];
+              ings[rawIndex] = newRaw;
+              // Update local state immediately
+              update({ ingredients: ings });
+              // Also write directly to Firestore now — don't rely on debounce
+              if (local._id) {
+                try {
+                  await updateDoc(doc(db, 'recipes', local._id), { ingredients: ings });
+                } catch (e) {
+                  console.warn('Shopping list ingredient save failed:', e);
+                }
+              }
+            }}
           />
         </View>
 
@@ -1022,6 +1167,7 @@ const pp = StyleSheet.create({
   cardBody:         { flex: 1 },
   nameInput:        { fontFamily: Fonts.display, fontSize: 24, color: Colors.textPrimary, borderBottomWidth: 1, borderBottomColor: Colors.border, paddingBottom: 4, marginBottom: 8 },
   url:              { fontFamily: Fonts.body, fontSize: 11, color: '#6aabda', marginBottom: 10 },
+  urlLink:          { textDecorationLine: 'underline' },
   metaRow:          { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   metaItem:         { minWidth: 88 },
   metaLabel:        { fontFamily: Fonts.body, fontSize: 9, color: Colors.textMuted, letterSpacing: 0.8, textTransform: 'uppercase', marginBottom: 3 },
@@ -1089,11 +1235,18 @@ export default function ReviewQueueScreen() {
   async function loadQueue() {
     setLoading(true);
     try {
-      const snap = await getDocs(
-        query(collection(db, 'recipes'), where('status', '==', 'needs_review'))
-      );
-      const docs: RecipeDoc[] = snap.docs.map(d => ({ _id: d.id, ...d.data() } as RecipeDoc));
-      setRecipes(docs);
+      // Fetch both pending-review AND already-approved so approved recipes
+      // stay in the sidebar permanently (shadowed) even after refresh.
+      const [pendingSnap, approvedSnap] = await Promise.all([
+        // 'needs_review' = old format (Cloud Function used to overwrite status)
+        // 'yes' = new format (swipe decision preserved, processingStatus tracks pipeline stage)
+        getDocs(query(collection(db, 'recipes'), where('status', 'in', ['yes', 'needs_review']))),
+        getDocs(query(collection(db, 'recipes'), where('status', '==', 'approved'))),
+      ]);
+      const pending  = pendingSnap.docs.map(d => ({ _id: d.id, ...d.data() } as RecipeDoc));
+      const approved = approvedSnap.docs.map(d => ({ _id: d.id, ...d.data(), _approved: true } as RecipeDoc));
+      // Pending first, approved after (so unreviewed recipes are at the top)
+      setRecipes([...pending, ...approved]);
     } catch (e: any) {
       Alert.alert('Error', e.message);
     }
@@ -1291,7 +1444,9 @@ export default function ReviewQueueScreen() {
           </View>
 
           {/* Count */}
-          <Text style={s.listCount}>{filtered.length} of {recipes.length} recipes</Text>
+          <Text style={s.listCount}>
+            {filtered.filter(r => !r._approved).length} pending · {filtered.filter(r => r._approved).length} approved
+          </Text>
 
           {/* Recipe list */}
           <FlatList
