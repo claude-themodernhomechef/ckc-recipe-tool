@@ -119,10 +119,10 @@ function isToday(d: Date): boolean {
 // Pairing helpers  (simplified from pairing_analysis.md)
 // ─────────────────────────────────────────────
 
+// Check name only — ingredients/description often say "serve over rice" but rice isn't built-in
 function hasBuiltInStarch(recipe: Recipe): boolean {
-  const text = [...(recipe.ingredients || []), recipe.name, recipe.menu_description || '']
-    .join(' ').toLowerCase();
-  return STARCH_KEYWORDS.some(k => text.includes(k));
+  const n = recipe.name.toLowerCase();
+  return STARCH_KEYWORDS.some(k => n.includes(k));
 }
 
 // Check name only — ingredients/description can mention veggies as garnish
