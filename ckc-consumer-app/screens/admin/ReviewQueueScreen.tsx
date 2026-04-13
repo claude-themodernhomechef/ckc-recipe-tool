@@ -414,7 +414,6 @@ function RecipePanel({
 }) {
   const [local, setLocal]           = useState<RecipeDoc>(recipe);
   const [activeDiet, setActiveDiet] = useState<Set<string>>(new Set());
-  const [showEdit, setShowEdit]     = useState(false);
 
   useEffect(() => { setLocal(recipe); setActiveDiet(new Set()); }, [recipe._id]);
 
@@ -502,10 +501,60 @@ function RecipePanel({
           </View>
         </View>
 
-        {/* ── Diet filter circles (like shopping list right panel) ── */}
-        <View style={pp.dietSection}>
+        {/* ── Diet Protocols — full edit cards with modification notes ── */}
+        <View style={[pp.editSection, savedFields.has('dietTags') ? pp.sectionSaved : null]}>
+          <Text style={pp.sectionLabel}>DIET PROTOCOLS</Text>
+          {DIETS.map(code => (
+            <DietCard
+              key={code}
+              code={code}
+              tag={local.dietTags?.[code]}
+              onChange={updateDietTag}
+            />
+          ))}
+        </View>
+
+        {/* ── Chef's Notes ── */}
+        <View style={[pp.editSection, sectionStyle(['chefNotes'])]}>
+          <Text style={pp.sectionLabel}>CHEF'S NOTES</Text>
+          <TextInput
+            style={pp.notesInput}
+            value={local.chefNotes ?? ''}
+            onChangeText={v => update({ chefNotes: v })}
+            multiline
+            placeholder="Auto-generated from ingredients — edit if needed…"
+            placeholderTextColor={Colors.textMuted}
+          />
+        </View>
+
+        {/* ── Ingredients ── */}
+        <View style={[pp.editSection, sectionStyle(['ingredients'])]}>
+          <Text style={pp.sectionLabel}>
+            INGREDIENTS ({local.ingredients?.length ?? 0}) — tap any line to edit
+          </Text>
+          <View style={pp.ingGrid}>
+            {(local.ingredients ?? []).map((ing, i) => (
+              <TextInput
+                key={i}
+                style={pp.ingLine}
+                value={ing}
+                onChangeText={v => updateIngredient(i, v)}
+                placeholderTextColor={Colors.textMuted}
+              />
+            ))}
+          </View>
+          <TouchableOpacity
+            style={pp.addIngBtn}
+            onPress={() => update({ ingredients: [...(local.ingredients ?? []), ''] })}
+          >
+            <Text style={pp.addIngText}>+ Add ingredient</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* ── Shopping List — diet filter circles + parsed ingredients ── */}
+        <View style={pp.shopSection}>
           <View style={pp.dietHeader}>
-            <Text style={pp.sectionLabel}>DIET PROTOCOLS</Text>
+            <Text style={pp.sectionLabel}>SHOPPING LIST</Text>
             {activeDiet.size > 0 && (
               <TouchableOpacity onPress={() => setActiveDiet(new Set())}>
                 <Text style={pp.clearDiet}>Clear all</Text>
@@ -523,81 +572,15 @@ function RecipePanel({
                     onPress={() => toggleDietFilter(code)}
                   />
                 ))
-              : <Text style={pp.noDiets}>No diet tags — set them in the edit section below</Text>
+              : <Text style={pp.noDiets}>Set diet protocols above to filter the shopping list</Text>
             }
           </ScrollView>
-        </View>
-
-        {/* ── Shopping list ── */}
-        <View style={pp.shopSection}>
-          <Text style={pp.sectionLabel}>SHOPPING LIST</Text>
           <ShoppingList
             ingredients={local.ingredients ?? []}
             dietTags={local.dietTags}
             activeDietFilter={activeDiet}
           />
         </View>
-
-        {/* ── Edit toggle ── */}
-        <TouchableOpacity style={pp.editToggle} onPress={() => setShowEdit(v => !v)}>
-          <Text style={pp.editToggleText}>
-            {showEdit ? '▲  Hide edit fields' : '▼  Edit diet tags, chef\'s notes & ingredients'}
-          </Text>
-        </TouchableOpacity>
-
-        {showEdit && (
-          <>
-            {/* Diet tags */}
-            <View style={[pp.editSection, savedFields.has('dietTags') ? pp.sectionSaved : null]}>
-              <Text style={pp.sectionLabel}>DIET TAGS</Text>
-              {DIETS.map(code => (
-                <DietCard
-                  key={code}
-                  code={code}
-                  tag={local.dietTags?.[code]}
-                  onChange={updateDietTag}
-                />
-              ))}
-            </View>
-
-            {/* Chef's notes */}
-            <View style={[pp.editSection, sectionStyle(['chefNotes'])]}>
-              <Text style={pp.sectionLabel}>CHEF'S NOTES</Text>
-              <TextInput
-                style={pp.notesInput}
-                value={local.chefNotes ?? ''}
-                onChangeText={v => update({ chefNotes: v })}
-                multiline
-                placeholder="Auto-generated from ingredients — edit if needed…"
-                placeholderTextColor={Colors.textMuted}
-              />
-            </View>
-
-            {/* Ingredients */}
-            <View style={[pp.editSection, sectionStyle(['ingredients'])]}>
-              <Text style={pp.sectionLabel}>
-                INGREDIENTS ({local.ingredients?.length ?? 0}) — tap any line to edit
-              </Text>
-              <View style={pp.ingGrid}>
-                {(local.ingredients ?? []).map((ing, i) => (
-                  <TextInput
-                    key={i}
-                    style={pp.ingLine}
-                    value={ing}
-                    onChangeText={v => updateIngredient(i, v)}
-                    placeholderTextColor={Colors.textMuted}
-                  />
-                ))}
-              </View>
-              <TouchableOpacity
-                style={pp.addIngBtn}
-                onPress={() => update({ ingredients: [...(local.ingredients ?? []), ''] })}
-              >
-                <Text style={pp.addIngText}>+ Add ingredient</Text>
-              </TouchableOpacity>
-            </View>
-          </>
-        )}
 
       </ScrollView>
 
@@ -647,10 +630,6 @@ const pp = StyleSheet.create({
 
   // Shopping list
   shopSection:      { gap: 10 },
-
-  // Edit toggle
-  editToggle:       { paddingVertical: 12, borderTopWidth: 1, borderBottomWidth: 1, borderColor: Colors.border, alignItems: 'center' },
-  editToggleText:   { fontFamily: Fonts.bodyMedium, fontSize: 12, color: Colors.textSecondary, letterSpacing: 0.5 },
 
   // Edit sections
   editSection:      { gap: 10 },
