@@ -302,7 +302,7 @@ burrata,dairy,2,Stracciatella cheese or burrata
 chervil,produce,2,"20g chervil, roughly chopped"
 poppy seeds,pantry-staples,2,3 tablespoons white poppy seeds ( or 10 cashew nuts or almond flour)
 kecap manis,pantry-staples,2,3/4 to 1 tsp tsp sweet soy sauce / kecap manis ((Note 2))
-san marzano tomatoes,pantry-consumables,2,1 (28 ounce) can san marzano tomatoes (crushed by hand)
+whole san marzano canned tomatoes,pantry-consumables,2,1 (28 ounce) can san marzano tomatoes (crushed by hand)
 lamb,protein,2,1-2 lb. beef or lamb bone in – cut into 3-4’” chunks
 lasagna noodles,pantry-consumables,2,9 no-boil lasagna noodles**
 vanilla extract,pantry-staples,2,2 teaspoons vanilla extract
@@ -377,7 +377,9 @@ vegetable or peanut oil,pantry-staples,1,1.5 tbsp vegetable or peanut oil
 white sugar,pantry-staples,1,1 tsp white sugar ((omit if using Mirin))
 cooking wine,pantry-staples,1,1 teaspoon cooking wine
 aioli,pantry-staples,1,4 tablespoons aioli (or 4 tablespoons mayonnaise mixed with one crushed garlic clove)
-"seeds, pumpkin, sesame, sunflower, etc",pantry-staples,1,"1/3 cup toasted seeds, pumpkin, sesame, sunflower, etc."
+pumpkin seeds,pantry-staples,1,pumpkin seeds
+sesame seeds,pantry-staples,1,sesame seeds
+sunflower seeds,pantry-staples,1,sunflower seeds
 cheese,dairy,1,Cheese (optional)
 chili sauce,pantry-staples,1,1-2 tablespoons chili sauce
 white miso paste,pantry-staples,1,3 tbsp white miso paste
@@ -426,7 +428,7 @@ green curry paste,pantry-consumables,1,4 Tbsp Green Curry Paste (DIY or store-bo
 iceberg lettuce,produce,1,4 Cups Iceberg Lettuce (finely chopped; this is about one head)
 salami,protein,1,1/2 Cup Salami (finely chopped)
 mango chutney,pantry-staples,1,2 tablespoons mango chutney
-"bone-in, skin-on meat chicken",protein,1,"4 pieces bone-in, skin-on dark meat chicken"
+"bone-in, skin-on chicken",protein,1,"4 pieces bone-in, skin-on dark meat chicken"
 safflower oil,pantry-staples,1,safflower oil (or any vegetable oil)
 hard herbs,produce,1,"3 large sprigs hard herbs (rosemary, thyme, oregano, etc.)"
 moroccan spice,pantry-staples,1,1 TBSP Moroccan spice
@@ -441,21 +443,21 @@ navy beans,pantry-consumables,1,"1 ½ cups cooked navy beans, drained and rinsed
 farro,pantry-consumables,1,1 ½ cups cooked farro
 non-dairy milk,dairy,1,3/4 cup unsweetened non-dairy milk
 chicken flavor “better than bouillon”,protein,1,"1 teaspoon chicken flavor “Better Than Bouillon”, (or 1 chicken bouillon cube)"
-"x1 strips lemon zest""",produce,1,"2 2x1"" strips lemon zest"
-"fennel, lengthwise, bulb stalks fronds",produce,1,"1 fennel, halved lengthwise, bulb and stalks thinly sliced, fronds coarsely chopped"
-sprinkle of salt,pantry-staples,1,Sprinkle of salt
+Lemon zest,produce,1,"2 2x1"" strips lemon zest"
+fennel,produce,1,"1 fennel, halved lengthwise, bulb and stalks thinly sliced, fronds coarsely chopped"
+salt,pantry-staples,1,Sprinkle of salt
 brioche buns,pantry-consumables,1,"4 brioche buns, toasted"
-himalayan pink salt,pantry-staples,1,4 tsps Himalayan pink salt
+salt,pantry-staples,1,4 tsps Himalayan pink salt
 chicken bouillon cubes,pantry-staples,1,2  chicken bouillon cubes
 chili garlic sauce,pantry-staples,1,4 tablespoons chili garlic sauce
-kabocha squash — cut into 1-inch-thick wedges,produce,1,"3 pounds kabocha squash — peeled, seeded and cut into 1-inch-thick wedges"
-"corn, canned",pantry-consumables,1,"1/4 cup corn, canned (drained)"
+kabocha squash,produce,1,"3 pounds kabocha squash — peeled, seeded and cut into 1-inch-thick wedges"
+canned corn kernels,pantry-consumables,1,"1/4 cup corn, canned (drained)"
 beef shanks,protein,1,"2½-3 pounds beef shanks, about 4 pieces total"
 chicken or vegetable bouillon,protein,1,2 tablespoons chicken or vegetable bouillon (Better than Bouillon)
 vine tomatoes,produce,1,"2  medium vine tomatoes (cored, seeded, and chopped)"
-+ 1/8 teaspoon salt,pantry-staples,1,1/4 + 1/8 teaspoon fine salt
+salt,pantry-staples,1,1/4 + 1/8 teaspoon fine salt
 evaporated milk,dairy,1,1 (5-ounce can) evaporated milk
-"ham bone, preferably with meat",protein,1,"1 (2- to 3-pound) smoked ham bone, preferably with meat"
+bone in smoked ham,protein,1,"1 (2- to 3-pound) smoked ham bone, preferably with meat"
 chili peppers,pantry-staples,1,2  dried chili peppers
 apple cider,produce,1,2 cups fresh apple cider*  ((not apple cider vinegar))
 dehydrated onion,produce,1,1 tablespoon dehydrated minced onion
@@ -463,11 +465,11 @@ mild chile flake,pantry-staples,1,1 teaspoon mild chile flake (such as Aleppo pe
 anchovy paste,pantry-staples,1,1/2 tsp. anchovy paste ((or 1 tsp. finely chopped capers))
 prosciutto,protein,1,3 ounces thinly sliced prosciutto
 apple butter,dairy,1,1 tablespoon apple butter ((optional))
-"chili, cut in half",produce,1,"1  hot chili, cut in half"
-wide strips of lime zest from 1 lime,produce,1,wide strips of lime zest from 1 lime
+Hot chili,produce,1,"1  hot chili, cut in half"
+lime zest,produce,1,wide strips of lime zest from 1 lime
 chili paste,pantry-staples,1,3-4 tablespoons chili paste
-pink himalayan salt,pantry-staples,1,2 teaspoons pink Himalayan salt
-himalayan salt,pantry-staples,1,½ teaspoon fine Himalayan salt
+salt,pantry-staples,1,2 teaspoons pink Himalayan salt
+salt,pantry-staples,1,½ teaspoon fine Himalayan salt
 salt pork,protein,1,"1/4 pound salt pork, diced"
 firecracker marinade,pantry-consumables,1,Firecracker marinade
 chilli powder,pantry-staples,1,1/2 tsp chilli powder ((adjust spiciness to taste) (Note 2))
@@ -476,15 +478,15 @@ seafood seasoning,pantry-staples,1,1 teaspoon seafood seasoning (like Primal Pal
 paleo mayo,pantry-staples,1,3 tablespoons paleo mayo (homemade or store bought)
 celery root,produce,1,1  medium celery root (about 1 pound)
 croutons,pantry-consumables,1,"Croutons, for serving"
-frozen/thawed fire-roasted corn,produce,1,1 cup frozen/thawed (or canned) fire-roasted corn ((sub sweet corn))
-splash of lime juice,pantry-staples,1,splash of fresh lime juice ((optional))
+frozen fire-roasted corn,produce,1,1 cup frozen/thawed (or canned) fire-roasted corn ((sub sweet corn))
+Lime juice,pantry-staples,1,splash of fresh lime juice ((optional))
 grain-free tortillas,pantry-consumables,1,"Grain-free tortillas, (warmed)"
 packet onion soup mix,produce,1,1 1-oz packet onion soup mix
 canned pumpkin purée,pantry-consumables,1,6 ounces canned pumpkin purée (1/2 of a can )
 plant-based milk of choice,dairy,1,1 cup plant-based milk of choice (unflavored and unsweetened )
 chicken bouillon paste,protein,1,"1 teaspoon chicken bouillon paste* ((5mL), (optional))"
-"evaporated milk , warmed",dairy,1,"1/2 - 3/4 cups evaporated milk ((120-180mL), warmed (or use cream or half and half))"
-lb-pound chicken,protein,1,3-4  lb-pound whole chicken (butterflied & dried)
+evaporated milk,dairy,1,"1/2 - 3/4 cups evaporated milk ((120-180mL), warmed (or use cream or half and half))"
+Whole chicken,protein,1,3-4  lb-pound whole chicken (butterflied & dried)
 yellow pepperoncinis,pantry-staples,1,2 tablespoons yellow pepperoncinis
 yellow miso paste,pantry-staples,1,2-3 tbsp yellow miso paste
 poultry seasoning,pantry-staples,1,2 tsp. poultry seasoning
@@ -496,53 +498,54 @@ sweetener,pantry-staples,1,"1-2 tablespoons sweetener (such as maple syrup, ho
 bundle red leaf lettuce,produce,1,1  bundle red leaf lettuce
 beef finger ribs,protein,1,2 1/2 lbs beef finger ribs
 vermouth,pantry-staples,1,2/3 cup dry vermouth*
-"french baguette, 1 inch",pantry-consumables,1,"1/2  french baguette, sliced 1 inch thick"
+french baguette,pantry-consumables,1,"1/2  french baguette, sliced 1 inch thick"
 long noodles of choice,pantry-consumables,1,16 oz  (454 grams) long noodles of choice
 cream,dairy,1,"1 1/2 cups cream (, full fat (Note 1))"
 beef bouillon cubes,protein,1,2  beef bouillon cubes (crushed)
 water chestnuts,pantry-staples,1,1 (8-ounce) can water chestnuts (drained)
-"genoa salami, cut in half or",protein,1,"4-6 oz thinly sliced Genoa salami, cut in half or julienned"
+genoa salami,protein,1,"4-6 oz thinly sliced Genoa salami, cut in half or julienned"
 pepperoncinis,pantry-staples,1,¼ cup sliced pepperoncinis
 thai sweet sauce,pantry-staples,1,3 tablespoons thai sweet sauce
 "chicken flavor “better than bouillon”, or 1 chicken bouillon cube",protein,1,"1 teaspoon chicken flavor “Better Than Bouillon”, or 1 chicken bouillon cube"
 crispy wonton strips,pantry-consumables,1,Optional: Crispy wonton strips
 chinkiang vinegar,pantry-staples,1,2 tablespoons Chinkiang vinegar
 baked beans,pantry-consumables,1,2 - 28 oz cans baked beans  ((I like Bush&#39;s classic))
-vinegar-based sauce,pantry-staples,1,"1/3 cup vinegar-based hot sauce, (like Frank&#39;s)"
+Hot sauce,pantry-staples,1,"1/3 cup vinegar-based hot sauce, (like Frank&#39;s)"
 vinegar,pantry-staples,1,2 Tablespoons Vinegar
 beef,protein,1,"1 lb beef (stewing beef or flank steak/flat iron, thinly sliced)"
 wild mushrooms,produce,1,"12 ounces wild mushrooms, torn"
-"vine-ripened tomatoes , cut into 1/3-inch cubes, with their juices",produce,1,"5 large vine-ripened tomatoes (1¾ lbs), cut into ⅓-inch cubes, with their juices"
+vine-ripened tomatoes,produce,1,"5 large vine-ripened tomatoes (1¾ lbs), cut into ⅓-inch cubes, with their juices"
 celery seed,pantry-staples,1,1 tsp celery seed
 chipotle chile powder,pantry-staples,1,1 tablespoon chipotle chile powder
 grapefruit juice,pantry-staples,1,2 tbsp / 30 ml fresh grapefruit juice
-"wavy plantain chips, i am obsessed with these!",produce,1,"wavy plantain chips, I am obsessed with these!"
+plantain chips,produce,1,"wavy plantain chips, I am obsessed with these!"
 jalapeño brine,pantry-staples,1,2 tablespoons pickled jalapeño brine
 refried beans,pantry-consumables,1,1 1/2 cups warm refried beans (optional)
 capers in brine,pantry-staples,1,2 Tbsp. capers in brine
 dill pickle relish,pantry-staples,1,1/3 cup dill pickle relish (optional)
-‘nduja paste,pantry-staples,1,"1 tablespoon ‘nduja paste (optional, can substitute with harissa paste or Italian sausage)"
+nduja paste,pantry-staples,1,"1 tablespoon ‘nduja paste (optional, can substitute with harissa paste or Italian sausage)"
 trout filets,protein,1,"2  salmon or trout fillets, skinless ((6oz / 200g each))"
-chicken flavor “better than bouillon” or 1 chicken bouillon cube,protein,1,1 teaspoon chicken flavor “Better Than Bouillon” or 1 chicken bouillon cube
+chicken flavor “better than bouillon”,protein,1,1 teaspoon chicken flavor “Better Than Bouillon” or 1 chicken bouillon cube
 chinese 5 spice,pantry-staples,1,1-3 teaspoons Chinese 5 spice
 english peas,produce,1,1 cup frozen English peas
 chinese cooking wine,pantry-staples,1,"1 tbsp Chinese cooking wine ((dry sherry, mirin or sake, Note 3))"
-veg,frozen,1,"2 cups frozen diced veg ((carrots, peas, corn mix, Note 4 fresh veg))"
+Frozen vegetable medley,frozen,1,"2 cups frozen diced veg ((carrots, peas, corn mix, Note 4 fresh veg))"
 kohlrabi,produce,1,"2 medium kohlrabi, peeled and medium diced"
 watercress,produce,1,"watercress, for serving (optional)"
-red wine or sherry vinegar,pantry-staples,1,2 tablespoons red wine or sherry vinegar
+red wine vinegar,pantry-staples,1,2 tablespoons red wine or sherry vinegar
+Sherry wine vinegar,pantry-staples,1,2 tablespoons red wine or sherry vinegar
 burrito wraps,pantry-consumables,1,8 large burrito wraps ((approx. 25cm / 10-inch diameter each))
 vegan cheese,dairy,1,1 1/2 cups shredded vegan cheese (100 g)
 red chile,produce,1,"1 red chile (, optional)"
-lager like negro modelo,pantry-staples,1,24 oz (2 bottles) dark lager like Negro Modelo*
+negro modelo,pantry-staples,1,24 oz (2 bottles) dark lager like Negro Modelo*
 clam juice,pantry-staples,1,8 ounces clam juice
-two 6.5 oz cans clams,pantry-consumables,1,"Two 6.5 oz cans clams (drained, juice reserved)"
-"tomatoes, on a box grater yielding 4 cups of sauce",pantry-staples,1,"4 large tomatoes, grated on a box grater yielding about 4 cups of sauce"
+Canned clams,pantry-consumables,1,"Two 6.5 oz cans clams (drained, juice reserved)"
+tomatoes,pantry-staples,1,"4 large tomatoes, grated on a box grater yielding about 4 cups of sauce"
 hardy herbs,produce,1,"2 sprigs hardy herbs (such as avocado leaves, rosemary, thyme, or bay)"
 tender herbs,produce,1,"3 small sprigs tender herbs (such as epazote, cilantro, basil, or mint)"
-"beans , picked through",pantry-consumables,1,"1 lb. dried beans (such as pinto, black, cannellini, or kidney), rinsed, picked through"
+Dried beans,pantry-consumables,1,"1 lb. dried beans (such as pinto, black, cannellini, or kidney), rinsed, picked through"
 sea bass,protein,1,2 pieces of skin-on sea bass
-one 0.75-ounce package “poultry blend” herbs,produce,1,"one 0.75-ounce package “poultry blend” fresh herbs (or approx. 2 sprigs fresh rosemary, 2 sprigs fresh sage, and 10–12 sprigs fresh thyme)"
+Fresh poultry blend,produce,1,"one 0.75-ounce package “poultry blend” fresh herbs (or approx. 2 sprigs fresh rosemary, 2 sprigs fresh sage, and 10–12 sprigs fresh thyme)"
 rice flour,pantry-consumables,1,½ cup rice flour (can sub all-purpose flour)
 jarred artichoke hearts,produce,1,"1/3 cup marinated jarred artichoke hearts, roughly chopped"
 french green beans,pantry-consumables,1,"8 oz. French green beans (haricots verts), halved"
@@ -550,7 +553,7 @@ white meat fish,protein,1,1 pound white meat fish
 tequila,pantry-staples,1,2-3 tablespoons tequila ((optional))
 distilled white vinegar,pantry-staples,1,¼ cup distilled white vinegar
 table salt,pantry-staples,1,1/2 tsp table salt
-warmed greek flatbreads,pantry-consumables,1,4  warmed Greek flatbreads
+greek flatbreads,pantry-consumables,1,4  warmed Greek flatbreads
 parsley flakes,pantry-staples,1,¼ teaspoon dried parsley flakes
 shahi jeera,pantry-staples,1,¼ to ½ teaspoon shahi jeera ((leave out if you don&#39;t have))
 romano cheese,dairy,1,⅓ cup Romano cheese
@@ -560,15 +563,15 @@ baharat,pantry-staples,1,2 teaspoons Baharat
 peach preserves,produce,1,1/4 cup peach preserves (no added sugar)
 haddock,protein,1,"1 lb Haddock (or other white fish like cod, halibut, sable or bass)"
 sweet chili jam,pantry-staples,1,1 teaspoon sweet chili jam
-ziti,pantry-consumables,1,1 pound uncooked ziti
+Dry ziti pasta,pantry-consumables,1,1 pound uncooked ziti
 tapioca starch,pantry-consumables,1,1/4 cup tapioca starch (or potato starch)
 sweet chili sauce,pantry-staples,1,3 Tablespoons sweet chili sauce
-scant 1 teaspoon mustard powder,pantry-staples,1,scant 1 teaspoon mustard powder
+mustard powder,pantry-staples,1,scant 1 teaspoon mustard powder
 napa cabbage,produce,1,6 cups napa cabbage (sliced )
 prunes,produce,1,1/2 lb. prunes
 italian blend herbs,produce,1,1 teaspoon Italian blend herbs  (or Herbs de Provence)
 chinese black vinegar,pantry-staples,1,2 tablespoons Chinese black vinegar (or sub with rice wine vinegar)
-"red chinese chilies, seeds removed",pantry-staples,1,"5- 15 dried red Chinese chilies, halved and seeds removed (SEE NOTES, dont use Thai Chilies)"
+red chinese chilies,pantry-staples,1,"5- 15 dried red Chinese chilies, halved and seeds removed (SEE NOTES, dont use Thai Chilies)"
 okra,produce,1,"500 grams bhindi (okra, chopped into rounds)"
 amchur,pantry-staples,1,1 teaspoon amchur (dried mango powder)
 ancho chiles,produce,1,7  ancho chiles ((ends trimmed and de-seeded))
@@ -583,10 +586,11 @@ dash pepper flakes,pantry-staples,1,"Dash crushed pepper flakes, (optional)"
 nonstick cooking spray,pantry-staples,1,nonstick cooking spray
 everything bagel seasoning,pantry-staples,1,2 Tablespoons Everything Bagel Spice
 balsamic glaze,pantry-staples,1,Balsamic glaze (to serve)
-flour or all-purpose gluten-free flour,pantry-consumables,1,1/4 cup flour or all-purpose gluten-free flour
+all-purpose flour,pantry-consumables,1,1/4 cup flour or all-purpose gluten-free flour
+gluten-free flour,pantry-consumables,1,1/4 cup flour or all-purpose gluten-free flour
 seasoned salt,pantry-staples,1,1-2 teaspoons seasoned salt
 miso paste,pantry-staples,1,1 tablespoon miso paste
-"plum tomatoes, lengthwise",produce,1,"4 plum tomatoes, quartered lengthwise"
+plum tomatoes,produce,1,"4 plum tomatoes, quartered lengthwise"
 slider buns,pantry-consumables,1,"12  slider buns, halved and toasted"
 dill pickle chips,produce,1,24  dill pickle chips
 dill pickles,produce,1,2 tablespoons finely chopped dill pickles
@@ -595,7 +599,7 @@ curry leaves,produce,1,1 sprig curry leaves ( or 8 pudina/mint leaves)
 trader joe’s chicken shawarma,protein,1,1 package Trader Joe’s chicken shawarma (or see notes making the chicken from scratch!)
 better than bouillon chicken base,protein,1,1 tablespoon Better Than Bouillon chicken base
 vegetables,frozen,1,"2 cups frozen vegetables ((peas, carrots, corn))"
-"lime, juice",pantry-staples,1,"1 small lime, zested and juice (or lemon)"
+lime,pantry-staples,1,"1 small lime, zested and juice (or lemon)"
 tzakiki sauce,pantry-staples,1,1-2 cups Tzakiki sauce
 peperoncini,pantry-staples,1,"peperoncini, for serving"
 shredded chicken,protein,1,"2 cups cooked, chopped/shredded chicken"
@@ -614,7 +618,6 @@ molasses,pantry-staples,1,1 tablespoon molasses
 cheese of your choice,dairy,1,1 cup shredded cheese of your choice (I like to use a blend of cheddar and mozzarella)
 low sodium vegetarian broth,pantry-consumables,1,3 ½ cups low sodium vegetarian broth (or chicken broth if not vegetarian)
 swiss cheese,dairy,1,2 cups shredded Swiss cheese
-sauce:,pantry-staples,1,Sauce:
 beansprouts,pantry-consumables,1,4 cups beansprouts
 prawn crackers,protein,1,"15  prawn crackers (, optional (Note 6))"
 tempeh,protein,1,"200g / 7 oz  tempeh ((or firm tofu, Note 7))"
@@ -622,12 +625,12 @@ sunflower sprouts,produce,1,fresh sunflower sprouts
 pizza dough,pantry-consumables,1,"1 lb pizza dough ball, divided into two or three"
 pizza sauce,pantry-consumables,1,Pizza sauce
 garlic salt,pantry-staples,1,Garlic salt (optional)
-mayo + more to your liking,pantry-staples,1,¾ cup mayo + more to your liking ((I used Primal Kitchen avocado oil mayo))
+mayo,pantry-staples,1,¾ cup mayo + more to your liking ((I used Primal Kitchen avocado oil mayo))
 seasoned rice wine vinegar,pantry-consumables,1,2 tablespoons seasoned rice wine vinegar
 caper brine,pantry-staples,1,2 tsp caper brine
 coleslaw mix,produce,1,4 cups coleslaw mix
 groundnut oil,pantry-staples,1,1/2 tbsp of groundnut oil.
-"a stock cube, mixed with 200ml of boiling water",pantry-consumables,1,"1/2 a stock cube, mixed with 200ml of boiling water."
+better than bouillon chicken base,pantry-consumables,1,"1/2 a stock cube, mixed with 200ml of boiling water."
 crunchy peanut butter,dairy,1,Tbsp of crunchy peanut butter.
 coconut yogurt,dairy,1,"Coconut yoghurt, to serve (not incl. in nutritional breakdown)."
 pumpkin,produce,1,1 can  pumpkin  (15 oz. )
@@ -646,30 +649,30 @@ crackers,pantry-consumables,1,1 Teaspoon Crackers
 birdseye chilies,produce,1,"2 medium Birdseye chilies (sliced and seeds removed, if you don&#39;t like heat!)"
 teriyaki sauce,pantry-staples,1,Teriyaki sauce
 grain of choice,pantry-consumables,1,Grain of choice
-freshly-squeezed lime juice,pantry-staples,1,2 Tbsps freshly-squeezed lime juice
+Lime juice,pantry-staples,1,2 Tbsps freshly-squeezed lime juice
 gouda cheese slices,dairy,1,4 slices Gouda cheese slices
 sweet peppers,pantry-staples,1,4  Sweet Peppers (mixed colors)
-cans,pantry-consumables,1,2 13.5- ounce cans unsweetened (full-fat coconut milk)
+Full-fat coconut milk,pantry-consumables,1,2 13.5- ounce cans unsweetened (full-fat coconut milk)
 chinkiang black vinegar,pantry-staples,1,1/2  teaspoon  Chinkiang black vinegar (or rice wine vinegar)
-"salt, more to taste",pantry-staples,1,"1/4– 1/2 teaspoon salt, more to taste"
-"pepper, more to taste",produce,1,"1/4 teaspoon pepper, more to taste"
-"little gem lettuce, 3-4 heads, leaves separated, washed",produce,1,"little gem lettuce, 3-4 heads, leaves separated, washed (or sub 2 romaine lettuce hearts, torn)"
-"nonstick cooking spray, for grilling",pantry-staples,1,"nonstick cooking spray, for grilling"
+salt,pantry-staples,1,"1/4– 1/2 teaspoon salt, more to taste"
+pepper,produce,1,"1/4 teaspoon pepper, more to taste"
+little gem lettuce,produce,1,"little gem lettuce, 3-4 heads, leaves separated, washed (or sub 2 romaine lettuce hearts, torn)"
+cooking spray,pantry-staples,1,"nonstick cooking spray, for grilling"
 fajita seasoning,pantry-staples,1,1½ tablespoons fajita seasoning
 rotini,pantry-consumables,1,½ pound Rotini pasta
-"sunflower oil, for frying",pantry-staples,1,"about 7 tablespoons sunflower oil, for frying"
+sunflower oil,pantry-staples,1,"about 7 tablespoons sunflower oil, for frying"
 strawberries,produce,1,2 cups sliced strawberries
 seafood stock,pantry-consumables,1,1 cup seafood stock
-"lime, zest juice",pantry-staples,1,"1  lime, zest and juice, divided"
+lime,pantry-staples,1,"1  lime, zest and juice, divided"
 back pepper,produce,1,Back pepper
 sprouted english muffin,pantry-consumables,1,1  Sprouted English Muffin
 pretzels,pantry-consumables,1,1/3 cup finely crushed pretzels
 summer squash,produce,1,"1 medium summer squash, sliced"
-squeezed lime juice - from 1-2 limes,pantry-staples,1,3-4 tbsp of freshly squeezed lime juice - from 1-2 limes
+lime,pantry-staples,1,3-4 tbsp of freshly squeezed lime juice - from 1-2 limes
 apricots,pantry-staples,1,1/4 cup dried apricots
-cut up assorted fish,protein,1,"1 pound cut up assorted fish (eg. shrimp,prawns, cod, haddock, calamari, mussels, clams etc)"
+"assorted fish (eg. shrimp, prawns, cod, haddock, calamari, mussels, clams etc))",protein,1,"1 pound cut up assorted fish (eg. shrimp,prawns, cod, haddock, calamari, mussels, clams etc)"
 bird’s-eye chilies,produce,1,1-2 pieces bird’s-eye chilies (Adjust to taste.)
-/ chilies,produce,1,/* optional */  extra chilies (For added heat.)
+chilies,produce,1,/* optional */  extra chilies (For added heat.)
 wonton strips,pantry-consumables,1,1/2 cup wonton strips
 yuzu juice,pantry-staples,1,2 tbsp yuzu juice
 jerk seasoning,pantry-staples,1,1 Tbsp jerk seasoning
@@ -680,7 +683,7 @@ cavolo nero,produce,1,200g Cavolo Nero
 paccheri,pantry-consumables,1,500g Paccheri
 herbes de provence,produce,1,1 tsp herbes de provence
 hard shell tacos,pantry-consumables,1,12  hard shell tacos
-"lime zest, plus 1/4 cup lime juice",pantry-staples,1,"1 tablespoon lime zest, plus 1/4 cup lime juice"
+lime,pantry-staples,1,"1 tablespoon lime zest, plus 1/4 cup lime juice"
 vine tomato,produce,1,2 Vine Tomato
 monterrey jack cheese,dairy,1,"2 1/2 cups Monterrey jack cheese, shredded"
 distilled vinegar,pantry-staples,1,2 tablespoons distilled vinegar
@@ -688,7 +691,6 @@ chinese chili peppers,pantry-staples,1,6  dried Chinese chili peppers
 achiote paste,pantry-staples,1,1 tablespoon achiote paste (see Recipe Notes)
 chili,produce,1,"1 tablespoon fresh chili, finely minced (optional, or sub jalapeno, Thai red chili)"
 baby gold potatoes,produce,1,2 pounds baby gold potatoes
-each salt pepper,pantry-staples,1,1/4 tsp each salt and pepper
 lemon pepper seasoning,pantry-staples,1,1.5 tsp lemon pepper seasoning
 party wings,protein,1,1 1/2 pounds party wings
 spice,pantry-staples,1,1/4 teaspoon 5-spice (optional)
@@ -699,34 +701,34 @@ mace,pantry-staples,1,2 strands mace ((optional))
 five-spice powder,pantry-staples,1,1/4 teaspoon five-spice powder
 plant-based milk,dairy,1,1 cup unsweetened plant-based milk (240mL)
 shawarma seasoning,pantry-staples,1,1-2 teaspoons shawarma seasoning (*see notes)
-"salt, more if needed",pantry-staples,1,"1/8 tsp salt, more if needed"
+salt,pantry-staples,1,"1/8 tsp salt, more if needed"
 red peppers,pantry-staples,1,"¼ cup roasted red peppers (, drained and chopped)"
 sweetened condensed milk,pantry-consumables,1,3 tablespoons sweetened condensed milk
 labneh,dairy,1,½ cup labneh (or use thick Greek yogurt)
-chicken tenders/strips,protein,1,1 pound boneless chicken tenders/strips
+chicken tenderloin,protein,1,1 pound boneless chicken tenders/strips
 tortilla strips,pantry-consumables,1,tortilla strips
-bibb lettuce cups to make lettuce wraps,produce,1,Bibb lettuce cups to make lettuce wraps
+Bibb lettuce cups,produce,1,Bibb lettuce cups to make lettuce wraps
 red chile peppers,produce,1,"2  red chile peppers (, sliced (Optional))"
 prepared hummus,pantry-staples,1,2 cups prepared hummus
 white distilled vinegar,pantry-staples,1,½ cup white distilled vinegar
 parsnips,produce,1,2 lbs parsnips (peeled and cored)
-bunch lacinto,produce,1,"1  bunch Lacinto (Dino kale, de-stemmed, and roughly chopped)"
+bunch lacinto kale,produce,1,"1  bunch Lacinto (Dino kale, de-stemmed, and roughly chopped)"
 string beans,pantry-consumables,1,1/2 lb string beans ((washed and trimmed - about 1 1/2 cups))
-"ketchup, preferably",pantry-staples,1,"1 1/4 cups ketchup, preferably organic"
+ketchup,pantry-staples,1,"1 1/4 cups ketchup, preferably organic"
 ground mustard,pantry-staples,1,2 teaspoons ground mustard
 sake,pantry-staples,1,2 tablespoons Japanese sake
 barberries,pantry-staples,1,Optional: 1/8 cup barberries
 mixed salad leaves,produce,1,100 g / 3½ oz mixed salad leaves
-flesh zest half a lemon,produce,1,flesh and zest half a lemon
-orange: 8 strips of zest,produce,1,1 orange: 8 strips of zest
-"chestnuts, broken",pantry-staples,1,"200g cooked chestnuts, roughly broken"
-lemons; 5 shaved strips of zest 21/2 tbsp juice,pantry-staples,1,2 lemons; 5 shaved strips of zest and 2½ tbsp juice
+Lemon zest,produce,1,flesh and zest half a lemon
+orange,produce,1,1 orange: 8 strips of zest
+chestnuts,pantry-staples,1,"200g cooked chestnuts, roughly broken"
+lemons,pantry-staples,1,2 lemons; 5 shaved strips of zest and 2½ tbsp juice
 currants,pantry-staples,1,100g currants
-"capers, plus 2 tbsp of their brine",pantry-staples,1,"40g capers, plus 2 tbsp of their brine"
+capers,pantry-staples,1,"40g capers, plus 2 tbsp of their brine"
 arak,pantry-staples,1,"100ml arak, ouzo or Pernod"
-"orange, juiced to get 3 tbsp",produce,1,"1 orange, zested and juiced to get 3 tbsp."
+orange,produce,1,"1 orange, zested and juiced to get 3 tbsp."
 hazelnuts,pantry-staples,1,"100g hazelnuts, toasted and roughly chopped"
-"crustless sourdough, broken",pantry-consumables,1,"125g crustless sourdough, roughly broken"
+crustless sourdough,pantry-consumables,1,"125g crustless sourdough, roughly broken"
 asafoetida,pantry-staples,1,1/4 teaspoon asofetida ((hing))
 turnips,produce,1,1 lb turnips (peeled and cubed)
 other desired herbs,produce,1,other desired herbs (I used a pinch of fresh thyme and cilantro)
@@ -734,8 +736,8 @@ sherry vinegar,pantry-staples,1,2 Tbsp. sherry vinegar ((sub white balsamic vine
 paneer,dairy,1,225 grams paneer (cut into cubes)
 green pepper,produce,1,1 medium green pepper (cut into 1-inch cubes)
 inch cinnamon stick,pantry-staples,1,1 inch cinnamon stick
-"bone-in, skin-on chicken- a mix of breasts thighs are perfect",protein,1,"6 pieces bone-in, skin-on chicken- a mix of breasts and thighs are perfect"
-"limes: 1 to serve, the rest juiced to get 3 tbsp",produce,1,"3–4 limes: 1 halved, to serve, and the rest juiced to get 3 tbsp"
+"bone-in, skin-on chicken breast and thigh’s",protein,1,"6 pieces bone-in, skin-on chicken- a mix of breasts and thighs are perfect"
+lime,produce,1,"3–4 limes: 1 halved, to serve, and the rest juiced to get 3 tbsp"
 phyllo dough,pantry-consumables,1,6  sheets phyllo dough (defrosted)
 sour orange juice,pantry-staples,1,¾ cup sour orange juice (or regular orange juice)
 ancho chilies-rehydrated,produce,1,2 Dried Ancho Chilies-rehydrated
@@ -746,12 +748,12 @@ chicken fillets,protein,1,2  chicken fillets (thinly sliced)
 mascarpone,dairy,1,4 ounces mascarpone (at room temperature)
 yellow mustard,pantry-staples,1,2 tsp yellow mustard
 chicken gyozas,protein,1,20 chicken gyozas (or potstickers)
-brine from a jar of capers,pantry-staples,1,2 teaspoons brine from a jar of capers
-"mini sweet peppers, into rounds",pantry-staples,1,"Mini sweet peppers, thinly sliced into rounds"
-to-3 1/2-pound butternut squash,dairy,1,1 3-to-3 1/2-pound butternut squash
+capers in brine,pantry-staples,1,2 teaspoons brine from a jar of capers
+mini sweet peppers,pantry-staples,1,"Mini sweet peppers, thinly sliced into rounds"
+butternut squash,dairy,1,1 3-to-3 1/2-pound butternut squash
 mild chilli powder,pantry-staples,1,1/2 tsp mild chilli powder
-"seasonal greens, to serve",produce,1,"seasonal greens, to serve"
-x 75g jar of salmon paste,protein,1,1 x 75g jar of salmon (or other fish) paste
+seasonal greens,produce,1,"seasonal greens, to serve"
+salmon paste,protein,1,1 x 75g jar of salmon (or other fish) paste
 pimento berry,produce,1,0.5tbsp Pimento Berry
 fenugreek seeds,pantry-staples,1,0.5tbsp Fenugreek Seeds
 clove,pantry-staples,1,1tsp Clove
@@ -759,12 +761,12 @@ coco bread,pantry-consumables,1,Coco Bread (to serve)
 mixed herbs,produce,1,"½ cup finely chopped mixed fresh herbs (parsley, chives, and mint)"
 italian dressing,pantry-staples,1,1 cup Italian dressing
 serano chili,produce,1,"1 serano chili, thinly sliced"
-"chanterelle mushrooms, cleaned",produce,1,"10 ounces chanterelle mushrooms, cleaned and torn"
+chanterelle mushrooms,produce,1,"10 ounces chanterelle mushrooms, cleaned and torn"
 pea shoots,produce,1,"1 handful fresh pea shoots, for garnish"
 scallops,protein,1,1 ½ pounds sea scallops
-fig preserves/jam,pantry-staples,1,1 tablespoon fig preserves/jam ((optional))
+fig preserves,pantry-staples,1,1 tablespoon fig preserves/jam ((optional))
 berbere spice mix,pantry-staples,1,¾ tsp berbere spice mix
-"flatbreads, to serve",pantry-consumables,1,"Flatbreads, to serve"
+flatbreads,pantry-consumables,1,"Flatbreads, to serve"
 virgin olive,pantry-staples,1,¼ cup extra virgin olive
 rack of lamb,protein,1,2  lamb racks
 pattypan squash,produce,1,5  small pattypan squash (sliced in half)
@@ -772,17 +774,17 @@ spicy zhoug sauce,pantry-staples,1,1/4 cup spicy zhoug sauce  (or use fresh bas
 bottom round roast,protein,1,3 pounds bottom round roast
 belgian style ale,pantry-staples,1,2 cups Belgian style ale
 "lean, skin-on pork belly",protein,1,"1 1/2 pounds lean, skin-on pork belly"
-tomatoes-on-the-vine,produce,1,"2  tomatoes-on-the-vine, chopped"
+tomatoes on the vine,produce,1,"2  tomatoes-on-the-vine, chopped"
 kimchi,pantry-consumables,1,Kimchi
 caraway seeds,pantry-staples,1,"1/2 teaspoon caraway seeds ( optional, but good)"
 dry ranch seasoning mix,pantry-staples,1,3 tablespoons dry Ranch seasoning mix (about two packets)
 spicy mayo,pantry-staples,1,"spicy mayo, for serving"
 mexican crema,dairy,1,1/2 cup Mexican crema  ((or sour cream))
-x 6-inch tortillas,pantry-consumables,1,8 x 6-inch tortillas (corn or flour or a corn &amp; flour blend)
+6-inch tortillas,pantry-consumables,1,8 x 6-inch tortillas (corn or flour or a corn &amp; flour blend)
 salted creamy peanut butter,dairy,1,"4 Tbsp salted creamy peanut butter  ((or almond, cashew, or sunflower butter))"
 mixed vegetables,produce,1,"4 cups mixed chopped vegetables  ((we used red bell pepper, broccoli, carrots &amp; kale))"
 mesquite seasoning,pantry-staples,1,2 teaspoons mesquite seasoning (see note)
-"wonton wrappers, cut into squares",pantry-consumables,1,"1 package wonton wrappers, cut into squares"
+wonton wrappers,pantry-consumables,1,"1 package wonton wrappers, cut into squares"
 mexican cheeses,dairy,1,1 1/2 cups Mexican cheeses ((cheddar/pepperjack/colby jack))
 puff pastry,pantry-consumables,1,"1 sheet frozen puff pastry, thawed"
 kalua pork,protein,1,kalua pork (((click [url:1]HERE for my easy 3 ingredient recipe))
@@ -794,25 +796,25 @@ aged gouda,dairy,1,"2 oz aged gouda, grated"
 little gems washed rough,produce,1,4 cups little gems ((from 2 small heads) washed and rough chopped)
 sweet chilli sauce,pantry-staples,1,1 tbsp sweet chilli sauce (store bought or homemade)
 chilli pepper,produce,1,1 small chilli pepper (deseeded and finely chopped)
-"meyer lemon juice, plus 1 meyer lemon",pantry-staples,1,"1/8 cup Meyer lemon juice, plus 1 Meyer lemon sliced thin (or use regular lemons)"
+Meyer lemon juice,pantry-staples,1,"1/8 cup Meyer lemon juice, plus 1 Meyer lemon sliced thin (or use regular lemons)"
 sweet red chili sauce,pantry-staples,1,2 Tbsp. sweet red chili sauce ((I use Thai Kitchen brand))
 vegan mayo,pantry-staples,1,1/4 cup vegan mayo
-kosher / cooking salt,pantry-staples,1,3/4 tsp kosher / cooking salt
+kosher salt,pantry-staples,1,3/4 tsp kosher / cooking salt
 fusilli,pantry-consumables,1,12 oz. fusilli pasta
 tilapia,protein,1,2 big fillets of tilapia
 splash of tequila,pantry-staples,1,splash of tequila
 chile powder,pantry-staples,1,a few pinches of chile powder
-veal cutlets from veal top round,protein,1,8 (2-oz.) veal cutlets from veal top round
+veal cutlets,protein,1,8 (2-oz.) veal cutlets from veal top round
 jarred salsa verde,pantry-staples,1,1/2 cup jarred salsa verde (or tomatillo salsa)
 greens,produce,1,"1-2 cups greens ( arugula, spinach, watercress)"
-squeeze of lemon juice,pantry-staples,1,Large squeeze of fresh lemon juice
+lemon juice,pantry-staples,1,Large squeeze of fresh lemon juice
 beef brisket,protein,1,"1  PLAIN brisket, 3 pounds (NOT corned beef brisket)"
 unsulphured molasses,pantry-staples,1,1/3 cup unsulphured organic molasses
 pork ribs,protein,1,2 full racks baby back pork ribs
 calabrian chile,produce,1,"1 Calabrian chile, minced"
 pineapple juice,pantry-staples,1,2 tablespoon pineapple juice
-limes/lime juice,pantry-staples,1,limes/lime juice
-tapioca flour/starch,pantry-consumables,1,2 tbsp tapioca flour/starch
+lime juice,pantry-staples,1,limes/lime juice
+tapioca flour,pantry-consumables,1,2 tbsp tapioca flour/starch
 extra-virgin olive,pantry-staples,1,1 tablespoon extra-virgin olive
 chipotle chiles,pantry-consumables,1,1 Tbsp. minced chipotle chiles (from a can of chipotle chiles in adobo sauce)
 za’atar spice,pantry-staples,1,1 ½ teaspoons za’atar spice
