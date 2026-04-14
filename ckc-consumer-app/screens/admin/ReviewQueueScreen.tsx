@@ -765,19 +765,27 @@ function ShoppingList({
         <View
           key={cat.key}
           style={[sl.category, dragOverCategory === cat.key && draggingItem?.fromCategory !== cat.key && sl.categoryDropTarget]}
-          {...{
-            onDragOver: (e: any) => { e.preventDefault(); const di = draggingItemRef.current; if (di && di.fromCategory !== cat.key) setDragOverCategory(cat.key); },
-            onDragLeave: () => setDragOverCategory(null),
-            onDrop: (e: any) => {
+          ref={(el: any) => {
+            const node = el?._nativeTag ?? el;
+            if (!node?.addEventListener) return;
+            // Remove old listeners before re-attaching to avoid duplicates
+            node._dragHandlersAttached = node._dragHandlersAttached || false;
+            if (node._dragHandlersAttached) return;
+            node._dragHandlersAttached = true;
+            node.addEventListener('dragover', (e: DragEvent) => {
+              e.preventDefault();
+              const di = draggingItemRef.current;
+              if (di && di.fromCategory !== cat.key) setDragOverCategory(cat.key);
+            });
+            node.addEventListener('dragleave', () => setDragOverCategory(null));
+            node.addEventListener('drop', (e: DragEvent) => {
               e.preventDefault();
               setDragOverCategory(null);
               const di = draggingItemRef.current;
-              if (di && di.fromCategory !== cat.key) {
-                saveCategory(di.name, cat.key);
-              }
+              if (di && di.fromCategory !== cat.key) saveCategory(di.name, cat.key);
               draggingItemRef.current = null;
               setDraggingItem(null);
-            },
+            });
           }}
         >
           <View style={sl.catHeader}>
@@ -968,10 +976,23 @@ function ShoppingList({
                 {isDraggable && (
                   <View
                     style={sl.dragHandle}
-                    {...{
-                      draggable: true,
-                      onDragStart: (e: any) => { e.dataTransfer?.setData('text/plain', item.name); const val = { name: item.name, fromCategory: cat.key }; draggingItemRef.current = val; setDraggingItem(val); },
-                      onDragEnd:   () => { draggingItemRef.current = null; setDraggingItem(null); setDragOverCategory(null); },
+                    ref={(el: any) => {
+                      const node = el?._nativeTag ?? el;
+                      if (!node?.addEventListener) return;
+                      if (node._dragHandlersAttached) return;
+                      node._dragHandlersAttached = true;
+                      node.setAttribute('draggable', 'true');
+                      node.addEventListener('dragstart', (e: DragEvent) => {
+                        e.dataTransfer?.setData('text/plain', item.name);
+                        const val = { name: item.name, fromCategory: cat.key };
+                        draggingItemRef.current = val;
+                        setDraggingItem(val);
+                      });
+                      node.addEventListener('dragend', () => {
+                        draggingItemRef.current = null;
+                        setDraggingItem(null);
+                        setDragOverCategory(null);
+                      });
                     }}
                   >
                     <Text style={sl.dragHandleText}>⠿</Text>
