@@ -1061,7 +1061,7 @@ const sl = StyleSheet.create({
   catLabel:       { fontFamily: Fonts.bodyMedium, fontSize: 10, color: Colors.textMuted, letterSpacing: 1 },
   catBadge:       { backgroundColor: Colors.surfaceElevated, borderRadius: 100, paddingHorizontal: 7, paddingVertical: 1 },
   catCount:       { fontFamily: Fonts.body, fontSize: 10, color: Colors.textMuted },
-  revertBtn:      { marginLeft: 'auto', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 4, borderWidth: 1, borderColor: Colors.textMuted + '55' },
+  revertBtn:      { marginLeft: 'auto', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 4, borderWidth: 1, borderColor: Colors.border },
   revertBtnText:  { fontFamily: Fonts.body, fontSize: 10, color: Colors.textMuted },
   row:            { flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.04)' },
   rowSwap:        { backgroundColor: 'rgba(212,168,67,0.07)', borderRadius: 6, paddingHorizontal: 6, borderLeftWidth: 2, borderLeftColor: Colors.gold },
