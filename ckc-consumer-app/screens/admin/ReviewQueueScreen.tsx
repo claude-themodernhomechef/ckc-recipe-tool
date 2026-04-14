@@ -1000,7 +1000,7 @@ function ShoppingList({
               );
             }
 
-            const isDraggable = item._type === 'normal' && !isUnmatched;
+            const isDraggable = item._type === 'normal'; // unmatched items can also be dragged to categorize
             const isBeingDragged = false; // visual feedback removed — ref-only drag tracking
             return (
               // Wrap in a plain View so the drag handle sits outside TouchableOpacity
