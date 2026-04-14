@@ -824,10 +824,8 @@ function ShoppingList({
                   if (item._raw !== undefined) {
                     const overrides: { name?: string; qty?: string } = {};
                     if (editingName.trim()) overrides.name = editingName.trim();
-                    if (editingQty.trim())  overrides.qty  = editingQty.trim();
-                    if (Object.keys(overrides).length > 0) {
-                      onSaveNameOverride?.(item._raw, overrides);
-                    }
+                    overrides.qty = editingQty.trim();
+                    onSaveNameOverride?.(item._raw, overrides);
                   }
                   setEditingIdx(null);
                 }, 150);
@@ -840,17 +838,15 @@ function ShoppingList({
                 if (item._raw !== undefined) {
                   const overrides: { name?: string; qty?: string } = {};
                   if (editingName.trim()) overrides.name = editingName.trim();
-                  if (editingQty.trim())  overrides.qty  = editingQty.trim();
-                  if (Object.keys(overrides).length > 0) {
-                    onSaveNameOverride?.(item._raw, overrides);
-                  }
+                  overrides.qty = editingQty.trim();
+                  onSaveNameOverride?.(item._raw, overrides);
                 }
                 setEditingIdx(null);
               };
               return (
                 <View key={key} style={sl.editRow}>
                   <TextInput
-                    style={[sl.editInput, sl.editQtyInput]}
+                    style={[sl.editInput, sl.editQtyInput, editingQty.trim() === '' && sl.editInputWarning]}
                     value={editingQty}
                     onChangeText={setEditingQty}
                     autoFocus
@@ -900,7 +896,7 @@ function ShoppingList({
                   } else if (item._rawIndex !== undefined) {
                     setEditingIdx(item._rawIndex);
                     // Pre-fill qty and name with current display values
-                    setEditingQty(item._qtyOverride ?? (item.qty ? fmtQty(item.qty, item.unit, item.category) : item.unit || ''));
+                    setEditingQty(item._qtyOverride !== undefined ? item._qtyOverride : (item.qty ? fmtQty(item.qty, item.unit, item.category) : item.unit || ''));
                     setEditingName(item.name);
                   }
                 }}
@@ -909,8 +905,8 @@ function ShoppingList({
                 <View style={[sl.checkbox, isUnmatched && sl.checkboxUnmatched]}>
                   {isUnmatched && <Text style={sl.unmatchedIcon}>?</Text>}
                 </View>
-                <Text style={sl.qty}>
-                  {item._qtyOverride ?? (item.qty ? fmtQty(item.qty, item.unit, item.category) : item.unit || '')}
+                <Text style={[sl.qty, item._qtyOverride === '' && sl.qtyWarning]}>
+                  {item._qtyOverride !== undefined ? item._qtyOverride : (item.qty ? fmtQty(item.qty, item.unit, item.category) : item.unit || '')}
                 </Text>
                 <Text style={[sl.name, isUnmatched && sl.nameUnmatched]}>{item.name}</Text>
               </TouchableOpacity>
@@ -996,6 +992,8 @@ const sl = StyleSheet.create({
   editInput:        { backgroundColor: Colors.surfaceElevated, borderWidth: 1, borderColor: Colors.borderActive, borderRadius: 6, paddingHorizontal: 10, paddingVertical: 7, fontFamily: Fonts.body, fontSize: 14, color: Colors.textPrimary },
   editQtyInput:     { width: 80, flexShrink: 0 },
   editNameInput:    { flex: 1 },
+  editInputWarning: { borderColor: Colors.red },
+  qtyWarning:       { color: Colors.red },
   editHint:         { fontFamily: Fonts.body, fontSize: 10, color: Colors.textMuted, paddingHorizontal: 2 },
   editSave:         { paddingHorizontal: 12, paddingVertical: 7, backgroundColor: Colors.green + '22', borderRadius: 6, borderWidth: 1, borderColor: Colors.green },
   editSaveText:     { fontFamily: Fonts.bodyMedium, fontSize: 12, color: Colors.green },
