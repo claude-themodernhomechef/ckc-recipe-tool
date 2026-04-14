@@ -109,12 +109,13 @@ interface RecipeDoc {
   protein?:          string;
   rating?:           string;
   servings?:         string | number;
-  ingredients?:      string[];
-  chefNotes?:        string;
-  dietTags?:         Record<string, DietTagData>;
-  reviewItems?:      ReviewItem[];
-  processingStatus?: string;
-  _approved?:        boolean;
+  ingredients?:             string[];
+  ingredientNameOverrides?: Record<string, string>; // raw ingredient string → display name override
+  chefNotes?:               string;
+  dietTags?:                Record<string, DietTagData>;
+  reviewItems?:             ReviewItem[];
+  processingStatus?:        string;
+  _approved?:               boolean;
 }
 
 function getDietState(tag?: DietTagData): DietState {
@@ -553,12 +554,13 @@ type IngItem = {
 };
 
 function ShoppingList({
-  ingredients, dietTags, activeDietFilter, onEditIngredient, onEditSwap,
+  ingredients, ingredientNameOverrides, dietTags, activeDietFilter, onSaveNameOverride, onEditSwap,
 }: {
   ingredients: string[];
+  ingredientNameOverrides?: Record<string, string>;
   dietTags?: Record<string, DietTagData>;
   activeDietFilter: Set<string>;
-  onEditIngredient?: (rawIndex: number, newRaw: string) => void;
+  onSaveNameOverride?: (raw: string, displayName: string) => void;
   onEditSwap?: (protocol: string, oldSwapText: string, newSwapText: string) => void;
 }) {
   const [editingIdx, setEditingIdx]         = useState<number | null>(null);
@@ -577,10 +579,12 @@ function ShoppingList({
         const p = parseIngredient(raw);
         if (!p.name) return null;
         const { category, matched } = categorizeIngredientWithMatch(p.name);
-        return { qty: p.qty ?? 0, unit: p.unit ?? '', name: p.name, category, matched, rawIndex, raw };
+        // Use saved Firestore override if present, otherwise parser output
+        const name = ingredientNameOverrides?.[raw] ?? p.name;
+        return { qty: p.qty ?? 0, unit: p.unit ?? '', name, category, matched, rawIndex, raw };
       })
       .filter(Boolean) as { qty: number; unit: string; name: string; category: string; matched: boolean; rawIndex: number; raw: string }[];
-  }, [ingredients, savedIngredients]);
+  }, [ingredients, savedIngredients, ingredientNameOverrides]);
 
   // Build swap map from active diet modification notes (notes-based swaps only)
   const swapMap = useMemo((): Map<string, { to: string | null; protocol: string; color: string }> => {
@@ -818,24 +822,18 @@ function ShoppingList({
                       onChangeText={setEditingVal}
                       autoFocus
                       selectTextOnFocus
-                      placeholder="e.g. 1 cup feta cheese crumbled"
+                      placeholder="Display name for shopping list…"
                       placeholderTextColor={Colors.textMuted}
                     />
-                    <Text style={sl.editHint}>Edit quantity and ingredient name, then tap Save</Text>
+                    <Text style={sl.editHint}>Override how this ingredient appears on the shopping list. Recipe data is not changed.</Text>
                   </View>
                   <TouchableOpacity
                     style={sl.editSave}
                     onPress={() => {
-                      if (item._rawIndex !== undefined && editingVal.trim()) {
-                        onEditIngredient?.(item._rawIndex, editingVal.trim());
-                        // After save, if the new text still doesn't match the DB, open the category picker
-                        const parsed = parseIngredient(editingVal.trim());
-                        if (parsed.name) {
-                          const { matched } = categorizeIngredientWithMatch(parsed.name);
-                          if (!matched) {
-                            setPickerItem({ name: parsed.name, category: parsed.category });
-                          }
-                        }
+                      const displayName = editingVal.trim();
+                      if (item._raw !== undefined && displayName) {
+                        // Save display name override — does NOT modify the recipe ingredient
+                        onSaveNameOverride?.(item._raw, displayName);
                       }
                       setEditingIdx(null);
                     }}
@@ -862,7 +860,8 @@ function ShoppingList({
                     setPickerItem({ name: item.name, category: item.category ?? 'pantry-staples' });
                   } else if (item._rawIndex !== undefined) {
                     setEditingIdx(item._rawIndex);
-                    setEditingVal(item._raw ?? item.name);
+                    // Pre-fill with current display name (override or parser output) — not the raw
+                    setEditingVal(item.name);
                   }
                 }}
                 activeOpacity={0.7}
@@ -1179,12 +1178,12 @@ function RecipePanel({
           </ScrollView>
           <ShoppingList
             ingredients={local.ingredients ?? []}
+            ingredientNameOverrides={local.ingredientNameOverrides}
             dietTags={local.dietTags}
             activeDietFilter={activeDiet}
             onEditSwap={async (protocol, oldSwapText, newSwapText) => {
               const tag = local.dietTags?.[protocol];
               if (!tag) return;
-              // Replace the old swap text with the new one inside the modification note
               const updatedNote = (tag.notes ?? '').split(oldSwapText).join(newSwapText);
               const updatedTags = {
                 ...(local.dietTags ?? {}),
@@ -1197,18 +1196,13 @@ function RecipePanel({
                 } catch (e) { console.warn('Swap note save failed:', e); }
               }
             }}
-            onEditIngredient={async (rawIndex, newRaw) => {
-              const ings = [...(local.ingredients ?? [])];
-              ings[rawIndex] = newRaw;
-              // Update local state immediately
-              update({ ingredients: ings });
-              // Also write directly to Firestore now — don't rely on debounce
+            onSaveNameOverride={async (raw, displayName) => {
+              const overrides = { ...(local.ingredientNameOverrides ?? {}), [raw]: displayName };
+              update({ ingredientNameOverrides: overrides });
               if (local._id) {
                 try {
-                  await updateDoc(doc(db, 'recipes', local._id), { ingredients: ings });
-                } catch (e) {
-                  console.warn('Shopping list ingredient save failed:', e);
-                }
+                  await updateDoc(doc(db, 'recipes', local._id), { ingredientNameOverrides: overrides });
+                } catch (e) { console.warn('Name override save failed:', e); }
               }
             }}
           />
