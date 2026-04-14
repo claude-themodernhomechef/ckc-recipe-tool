@@ -787,6 +787,14 @@ function ShoppingList({
                     onPress={() => {
                       if (item._rawIndex !== undefined && editingVal.trim()) {
                         onEditIngredient?.(item._rawIndex, editingVal.trim());
+                        // After save, if the new text still doesn't match the DB, open the category picker
+                        const parsed = parseIngredient(editingVal.trim());
+                        if (parsed.name) {
+                          const { matched } = categorizeIngredientWithMatch(parsed.name);
+                          if (!matched) {
+                            setPickerItem({ name: parsed.name, category: parsed.category });
+                          }
+                        }
                       }
                       setEditingIdx(null);
                     }}
@@ -808,7 +816,10 @@ function ShoppingList({
                 key={key}
                 style={[sl.row, isUnmatched && sl.rowUnmatched]}
                 onPress={() => {
-                  if (item._rawIndex !== undefined) {
+                  if (isUnmatched) {
+                    // Open category picker directly for unmatched items
+                    setPickerItem({ name: item.name, category: item.category ?? 'pantry-staples' });
+                  } else if (item._rawIndex !== undefined) {
                     setEditingIdx(item._rawIndex);
                     setEditingVal(item._raw ?? item.name);
                   }
