@@ -16,16 +16,184 @@ export const SHOPPING_CATEGORIES = [
 
 // ── Ingredient → category database ────────────────────────────────────────────
 
-// Ingredient → category database — loaded at startup from Firestore (ingredientCategories collection)
-let INGREDIENT_DB: Record<string, string> = {};
-let DB_KEYS_BY_LENGTH: string[] = [];
+// Hardcoded baseline — covers the most common ingredients so the app works immediately
+// without waiting for Firestore. Firestore loading (below) adds/overrides on top.
+const BASELINE_DB: Record<string, string> = {
+  // ── Protein ──────────────────────────────────────────────────────────────────
+  'chicken breast':'protein','chicken breasts':'protein','chicken thigh':'protein',
+  'chicken thighs':'protein','chicken drumstick':'protein','chicken drumsticks':'protein',
+  'chicken wings':'protein','whole chicken':'protein','rotisserie chicken':'protein',
+  'ground chicken':'protein','ground turkey':'protein','turkey breast':'protein',
+  'ground beef':'protein','beef':'protein','flank steak':'protein','skirt steak':'protein',
+  'ribeye':'protein','sirloin':'protein','chuck roast':'protein','brisket':'protein',
+  'short ribs':'protein','lamb chops':'protein','rack of lamb':'protein',
+  'ground lamb':'protein','lamb shoulder':'protein',
+  'pork chops':'protein','pork loin chops':'protein','bone-in pork chops':'protein',
+  'bone-in pork loin chops':'protein','pork loin':'protein','center cut pork chops':'protein',
+  'pork tenderloin':'protein','pork shoulder':'protein','pork belly':'protein',
+  'bacon':'protein','pancetta':'protein','prosciutto':'protein','ham':'protein',
+  'sausage':'protein','italian sausage':'protein','chorizo':'protein',
+  'salmon':'protein','salmon fillet':'protein','salmon fillets':'protein',
+  'tuna':'protein','tuna steak':'protein','cod':'protein','halibut':'protein',
+  'tilapia':'protein','mahi mahi':'protein','sea bass':'protein','trout':'protein',
+  'shrimp':'protein','prawns':'protein','scallops':'protein','crab':'protein',
+  'lobster':'protein','clams':'protein','mussels':'protein','squid':'protein',
+  'tofu':'protein','firm tofu':'protein','silken tofu':'protein','tempeh':'protein',
+  'edamame':'protein','lentils':'protein','black beans':'protein',
+  'chickpeas':'protein','white beans':'protein','kidney beans':'protein',
+  'pinto beans':'protein','navy beans':'protein','cannellini beans':'protein',
+  'eggs':'dairy','egg':'dairy','egg yolk':'dairy','egg yolks':'dairy',
+  'egg white':'dairy','egg whites':'dairy',
+
+  // ── Produce ──────────────────────────────────────────────────────────────────
+  'garlic':'produce','garlic cloves':'produce','garlic clove':'produce',
+  'onion':'produce','yellow onion':'produce','white onion':'produce',
+  'red onion':'produce','sweet onion':'produce','shallot':'produce','shallots':'produce',
+  'scallion':'produce','scallions':'produce','leek':'produce','leeks':'produce',
+  'ginger':'produce','fresh ginger':'produce',
+  'tomato':'produce','tomatoes':'produce','cherry tomatoes':'produce',
+  'grape tomatoes':'produce','roma tomatoes':'produce','heirloom tomatoes':'produce',
+  'red bell pepper':'produce','green bell pepper':'produce','yellow bell pepper':'produce',
+  'orange bell pepper':'produce','bell pepper':'produce','bell peppers':'produce',
+  'jalapeño':'produce','jalapeno':'produce','jalapenos':'produce','jalapeños':'produce',
+  'serrano':'produce','poblano':'produce','anaheim pepper':'produce',
+  'chili':'produce','chilies':'produce','chilli':'produce',
+  'cucumber':'produce','zucchini':'produce','yellow squash':'produce',
+  'butternut squash':'produce','acorn squash':'produce','delicata squash':'produce',
+  'eggplant':'produce','aubergine':'produce',
+  'broccoli':'produce','cauliflower':'produce','brussels sprouts':'produce',
+  'cabbage':'produce','red cabbage':'produce','napa cabbage':'produce','bok choy':'produce',
+  'kale':'produce','spinach':'produce','arugula':'produce','swiss chard':'produce',
+  'collard greens':'produce','romaine':'produce','mixed greens':'produce',
+  'asparagus':'produce','green beans':'produce','snap peas':'produce','snow peas':'produce',
+  'peas':'produce','corn':'produce','artichoke':'produce','fennel':'produce',
+  'celery':'produce','carrots':'produce','carrot':'produce','parsnip':'produce',
+  'turnip':'produce','beet':'produce','beets':'produce','radish':'produce','radishes':'produce',
+  'potato':'produce','potatoes':'produce','sweet potato':'produce','sweet potatoes':'produce',
+  'yukon gold potatoes':'produce','russet potatoes':'produce','red potatoes':'produce',
+  'mushroom':'produce','mushrooms':'produce','cremini mushrooms':'produce',
+  'shiitake mushrooms':'produce','portobello mushroom':'produce','oyster mushrooms':'produce',
+  'avocado':'produce','lime':'produce','lemon':'produce','orange':'produce',
+  'grapefruit':'produce','apple':'produce','pear':'produce','mango':'produce',
+  'pineapple':'produce','peach':'produce','nectarine':'produce','plum':'produce',
+  'strawberry':'produce','strawberries':'produce','blueberries':'produce',
+  'raspberries':'produce','blackberries':'produce','grapes':'produce','banana':'produce',
+  'cilantro':'produce','parsley':'produce','basil':'produce','mint':'produce',
+  'dill':'produce','thyme':'produce','rosemary':'produce','sage':'produce',
+  'oregano leaves':'produce','tarragon':'produce','chives':'produce',
+  'cilantro leaves':'produce','lemon juice':'produce','lime juice':'produce',
+  'lemon zest':'produce','lime zest':'produce','orange zest':'produce',
+
+  // ── Dairy ────────────────────────────────────────────────────────────────────
+  'butter':'dairy','unsalted butter':'dairy','salted butter':'dairy',
+  'vegan butter':'dairy','ghee':'dairy',
+  'milk':'dairy','whole milk':'dairy','skim milk':'dairy','2% milk':'dairy',
+  'oat milk':'dairy','almond milk':'dairy','coconut milk':'dairy','soy milk':'dairy',
+  'heavy cream':'dairy','heavy whipping cream':'dairy','half and half':'dairy',
+  'sour cream':'dairy','cream cheese':'dairy','ricotta':'dairy',
+  'mascarpone':'dairy','cottage cheese':'dairy',
+  'parmesan':'dairy','mozzarella':'dairy','cheddar':'dairy','feta':'dairy',
+  'gruyere':'dairy','brie':'dairy','goat cheese':'dairy','gouda':'dairy',
+  'provolone':'dairy','swiss cheese':'dairy','pepper jack':'dairy',
+  'mexican cheese':'dairy','queso fresco':'dairy','cotija':'dairy',
+  'plain greek yogurt':'dairy','greek yogurt':'dairy','yogurt':'dairy',
+  'kefir':'dairy',
+  'tzatziki':'dairy','tzatziki sauce':'dairy',
+
+  // ── Pantry Staples ───────────────────────────────────────────────────────────
+  'olive oil':'pantry-staples','extra virgin olive oil':'pantry-staples',
+  'neutral oil':'pantry-staples','vegetable oil':'pantry-staples',
+  'canola oil':'pantry-staples','avocado oil':'pantry-staples',
+  'sesame oil':'pantry-staples','coconut oil':'pantry-staples',
+  'salt':'pantry-staples','black pepper':'pantry-staples',
+  'garlic powder':'pantry-staples','onion powder':'pantry-staples',
+  'paprika':'pantry-staples','smoked paprika':'pantry-staples',
+  'cumin':'pantry-staples','ground cumin':'pantry-staples',
+  'coriander':'pantry-staples','ground coriander':'pantry-staples',
+  'turmeric':'pantry-staples','ground turmeric':'pantry-staples',
+  'chili powder':'pantry-staples','cayenne':'pantry-staples',
+  'red pepper flakes':'pantry-staples','chilli flakes':'pantry-staples',
+  'chili flakes':'pantry-staples','crushed red pepper':'pantry-staples',
+  'oregano':'pantry-staples','dried oregano':'pantry-staples',
+  'dried thyme':'pantry-staples','dried basil':'pantry-staples',
+  'dried rosemary':'pantry-staples','bay leaf':'pantry-staples','bay leaves':'pantry-staples',
+  'cinnamon':'pantry-staples','ground cinnamon':'pantry-staples',
+  'ground cardamom':'pantry-staples','cardamom':'pantry-staples',
+  'ground ginger':'pantry-staples','allspice':'pantry-staples',
+  'nutmeg':'pantry-staples','ground nutmeg':'pantry-staples',
+  'cloves':'pantry-staples','ground cloves':'pantry-staples',
+  'cumin seeds':'pantry-staples','coriander seeds':'pantry-staples',
+  'mustard seeds':'pantry-staples','fennel seeds':'pantry-staples',
+  'za\'atar':'pantry-staples','zaatar':'pantry-staples','sumac':'pantry-staples',
+  'curry powder':'pantry-staples','garam masala':'pantry-staples',
+  'ras el hanout':'pantry-staples','chinese five spice':'pantry-staples',
+  'italian seasoning':'pantry-staples','everything bagel seasoning':'pantry-staples',
+  'flour':'pantry-staples','all purpose flour':'pantry-staples',
+  'almond flour':'pantry-staples','tapioca flour':'pantry-staples',
+  'cornstarch':'pantry-staples','corn starch':'pantry-staples','arrowroot':'pantry-staples',
+  'baking soda':'pantry-staples','baking powder':'pantry-staples',
+  'sugar':'pantry-staples','white sugar':'pantry-staples',
+  'brown sugar':'pantry-staples','light brown sugar':'pantry-staples',
+  'dark brown sugar':'pantry-staples','powdered sugar':'pantry-staples',
+  'honey':'pantry-staples','maple syrup':'pantry-staples','agave':'pantry-staples',
+  'vanilla extract':'pantry-staples','vanilla':'pantry-staples',
+  'soy sauce':'pantry-staples','low sodium soy sauce':'pantry-staples',
+  'tamari':'pantry-staples','coconut aminos':'pantry-staples',
+  'fish sauce':'pantry-staples','oyster sauce':'pantry-staples',
+  'worcestershire sauce':'pantry-staples','hot sauce':'pantry-staples',
+  'sriracha':'pantry-staples','gochujang':'pantry-staples',
+  'tomato paste':'pantry-staples','tomato sauce':'pantry-staples',
+  'diced tomatoes':'pantry-staples','crushed tomatoes':'pantry-staples',
+  'fire roasted tomatoes':'pantry-staples','whole peeled tomatoes':'pantry-staples',
+  'chicken broth/stock':'pantry-staples','vegetable broth/stock':'pantry-staples',
+  'beef broth/stock':'pantry-staples','fish stock':'pantry-staples',
+  'white wine':'pantry-staples','red wine':'pantry-staples',
+  'red wine vinegar':'pantry-staples','white wine vinegar':'pantry-staples',
+  'apple cider vinegar':'pantry-staples','balsamic vinegar':'pantry-staples',
+  'rice vinegar':'pantry-staples','distilled white vinegar':'pantry-staples',
+  'dijon mustard':'pantry-staples','whole grain mustard':'pantry-staples',
+  'mayonnaise':'pantry-staples','tahini':'pantry-staples',
+  'peanut butter':'pantry-staples','almond butter':'pantry-staples',
+  'capers':'pantry-staples','olives':'pantry-staples','kalamata olives':'pantry-staples',
+  'sun dried tomatoes':'pantry-staples','artichoke hearts':'pantry-staples',
+  'roasted red peppers':'pantry-staples',
+  'white rice':'pantry-staples','jasmine rice':'pantry-staples',
+  'basmati rice':'pantry-staples','brown rice':'pantry-staples',
+  'cauliflower rice':'pantry-staples',
+  'pasta':'pantry-staples','spaghetti':'pantry-staples','penne':'pantry-staples',
+  'fettuccine':'pantry-staples','rigatoni':'pantry-staples','orzo':'pantry-staples',
+  'quinoa':'pantry-staples','couscous':'pantry-staples','farro':'pantry-staples',
+  'breadcrumbs':'pantry-staples','panko':'pantry-staples',
+  'nutritional yeast':'pantry-staples',
+  'sesame seeds':'pantry-staples','pine nuts':'pantry-staples',
+  'walnuts':'pantry-staples','almonds':'pantry-staples','pecans':'pantry-staples',
+  'cashews':'pantry-staples','peanuts':'pantry-staples','pistachios':'pantry-staples',
+
+  // ── Pantry Consumables ───────────────────────────────────────────────────────
+  'tortillas':'pantry-consumables','flour tortillas':'pantry-consumables',
+  'corn tortillas':'pantry-consumables','pita':'pantry-consumables',
+  'naan':'pantry-consumables','bread':'pantry-consumables',
+  'sandwich bread':'pantry-consumables','sourdough':'pantry-consumables',
+  'baguette':'pantry-consumables','ciabatta':'pantry-consumables',
+  'taco shells':'pantry-consumables','rice paper':'pantry-consumables',
+  'lasagna noodles':'pantry-consumables',
+  'coconut cream':'pantry-consumables','full fat coconut milk':'pantry-consumables',
+
+  // ── Frozen ───────────────────────────────────────────────────────────────────
+  'frozen peas':'frozen','frozen corn':'frozen','frozen spinach':'frozen',
+  'frozen edamame':'frozen','frozen broccoli':'frozen',
+};
+
+// Runtime DB — starts as a copy of the baseline; Firestore loading adds/overrides
+let INGREDIENT_DB: Record<string, string> = { ...BASELINE_DB };
+let DB_KEYS_BY_LENGTH: string[] = Object.keys(INGREDIENT_DB).sort((a, b) => b.length - a.length);
 
 function rebuildDbIndex(): void {
   DB_KEYS_BY_LENGTH = Object.keys(INGREDIENT_DB).sort((a, b) => b.length - a.length);
 }
 
-// Call this once at app startup to load categories from Firestore.
-// Until it resolves, categorizeIngredient() falls back to "pantry-staples".
+// Call this once at app startup to load additional categories from Firestore.
+// Merges on top of BASELINE_DB — Firestore entries override if names match.
 export async function loadIngredientCategories(): Promise<void> {
   try {
     const { collection, getDocs } = await import('firebase/firestore');
@@ -38,9 +206,9 @@ export async function loadIngredientCategories(): Promise<void> {
       }
     });
     rebuildDbIndex();
-    console.log(`[ingredientParser] Loaded ${Object.keys(INGREDIENT_DB).length} ingredient categories from Firestore`);
+    console.log(`[ingredientParser] Loaded ${Object.keys(INGREDIENT_DB).length} ingredient categories`);
   } catch (e) {
-    console.warn('[ingredientParser] ingredientCategories load failed:', e);
+    console.warn('[ingredientParser] ingredientCategories load failed, using baseline only:', e);
   }
 }
 
@@ -160,7 +328,7 @@ const STOP_WORDS = [
   // Quantity / usage qualifiers
   'optional','or more','to taste','divided','room temperature',
   'softened','melted','cooled','drained','rinsed','torn','trimmed',
-  'thin','thick','fine','finely','coarsely','thinly','bite-sized','bite-size',
+  'thin','fine','finely','coarsely','thinly','bite-sized','bite-size',
   'warm','hot','cold','chilled','thawed',
   'good','quality','best','organic','store-bought','homemade','low-sodium',
   'unsweetened','reduced-fat','full-fat','raw','uncooked','cooked',
@@ -330,6 +498,21 @@ export function parseIngredient(raw: string): {
   if (!raw) return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw };
   let str = raw.trim();
 
+  // 0a. Normalize salt+pepper compound variations to canonical "salt + pepper"
+  // Handles: "salt and pepper", "salt & pepper", "salt/pepper", "kosher salt and pepper",
+  //          "sea salt and pepper", "salt and black pepper", "pepper and salt", etc.
+  //          Preserves "to taste" if present.
+  {
+    const lower = str.toLowerCase();
+    const hasSalt   = /\bsalt\b/.test(lower);
+    const hasPepper = /\bpepper\b/.test(lower);
+    const isCompound = hasSalt && hasPepper && /\bsalt\b.{0,15}\bpepper\b|\bpepper\b.{0,15}\bsalt\b/.test(lower);
+    if (isCompound) {
+      const toTaste = /to\s+taste|as\s+needed/i.test(str);
+      str = toTaste ? 'salt + pepper, to taste' : 'salt + pepper';
+    }
+  }
+
   // 0. Decode HTML entities and strip footnote markers
   str = str
     .replace(/\xa0/g, ' ')
@@ -348,8 +531,12 @@ export function parseIngredient(raw: string): {
   for (const [k, v] of Object.entries(FRACTION_MAP)) str = str.split(k).join(v);
   str = str.trim();
 
-  // 2. Strip long cooking notes in parens (15+ chars) — keep short ones like "(6 oz)" or "(optional)"
-  str = str.replace(/\(\([^)]*\)\)/g, '').replace(/\([^)]{15,}\)/g, '').replace(/\(Note\s*\d*\)/gi, '').trim();
+  // 2. Strip parenthetical notes that are clearly recipe instructions, NOT purchase specs.
+  // Keep: size/weight specs like "(1 1/2-inch-thick)", "(6 oz)", "(bone-in)"
+  // Strip: recipe notes like "(see note)", "(Note 1)", double-parens
+  str = str.replace(/\(\([^)]*\)\)/g, '').replace(/\(Note\s*\d*\)/gi, '').trim();
+  // Only strip long parens that contain letters suggesting a recipe note (e.g. "see", "page", "about")
+  str = str.replace(/\((?:see|about|note|if|for|use|make|recipe)[^)]*\)/gi, '').trim();
 
   // 3. Vague quantities — return early with no scalable number
   const strLower = str.toLowerCase();
