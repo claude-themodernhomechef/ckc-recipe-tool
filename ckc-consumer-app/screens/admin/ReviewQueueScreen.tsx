@@ -600,6 +600,7 @@ function ShoppingList({
   const [newQty, setNewQty]                 = useState('');
   const [newName, setNewName]               = useState('');
   const [draggingItem, setDraggingItem]     = useState<{ name: string; fromCategory: string } | null>(null);
+  const draggingItemRef = useRef<{ name: string; fromCategory: string } | null>(null);
   const [dragOverCategory, setDragOverCategory] = useState<string | null>(null);
   // Persists across re-renders so blur/focus on the edit fields can reliably cancel each other
   const blurTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -765,14 +766,16 @@ function ShoppingList({
           key={cat.key}
           style={[sl.category, dragOverCategory === cat.key && draggingItem?.fromCategory !== cat.key && sl.categoryDropTarget]}
           {...{
-            onDragOver: (e: any) => { e.preventDefault(); if (draggingItem && draggingItem.fromCategory !== cat.key) setDragOverCategory(cat.key); },
+            onDragOver: (e: any) => { e.preventDefault(); const di = draggingItemRef.current; if (di && di.fromCategory !== cat.key) setDragOverCategory(cat.key); },
             onDragLeave: () => setDragOverCategory(null),
             onDrop: (e: any) => {
               e.preventDefault();
               setDragOverCategory(null);
-              if (draggingItem && draggingItem.fromCategory !== cat.key) {
-                saveCategory(draggingItem.name, cat.key);
+              const di = draggingItemRef.current;
+              if (di && di.fromCategory !== cat.key) {
+                saveCategory(di.name, cat.key);
               }
+              draggingItemRef.current = null;
               setDraggingItem(null);
             },
           }}
@@ -967,8 +970,8 @@ function ShoppingList({
                     style={sl.dragHandle}
                     {...{
                       draggable: true,
-                      onDragStart: (e: any) => { e.dataTransfer?.setData('text/plain', item.name); setDraggingItem({ name: item.name, fromCategory: cat.key }); },
-                      onDragEnd:   () => { setDraggingItem(null); setDragOverCategory(null); },
+                      onDragStart: (e: any) => { e.dataTransfer?.setData('text/plain', item.name); const val = { name: item.name, fromCategory: cat.key }; draggingItemRef.current = val; setDraggingItem(val); },
+                      onDragEnd:   () => { draggingItemRef.current = null; setDraggingItem(null); setDragOverCategory(null); },
                     }}
                   >
                     <Text style={sl.dragHandleText}>⠿</Text>
