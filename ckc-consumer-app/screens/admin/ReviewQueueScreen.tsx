@@ -1042,7 +1042,7 @@ function ShoppingList({
                     {isUnmatched && <Text style={sl.unmatchedIcon}>?</Text>}
                   </View>
                   <Text style={[sl.qty, item._qtyOverride === '' && sl.qtyWarning]}>
-                    {item._qtyOverride !== undefined ? item._qtyOverride : (item.qty ? fmtQty(item.qty, item.unit, item.category) : item.unit || '')}
+                    {item._qtyOverride === '' ? '?' : item._qtyOverride !== undefined ? item._qtyOverride : (item.qty ? fmtQty(item.qty, item.unit, item.category) : item.unit || '')}
                   </Text>
                   <Text style={[sl.name, isUnmatched && sl.nameUnmatched]}>{item.name}</Text>
                   {item._rawIndex !== undefined && (
