@@ -113,6 +113,8 @@ interface RecipeDoc {
   ingredientNameOverrides?: Record<string, { name?: string; qty?: string }>; // raw → display overrides
   chefNotes?:               string;
   dietTags?:                Record<string, DietTagData>;
+  dietTagsOriginal?:        Record<string, DietTagData>; // snapshot before first edit — used for revert
+  ingredientsOriginal?:     string[];                    // snapshot before first edit — used for revert
   reviewItems?:             ReviewItem[];
   processingStatus?:        string;
   _approved?:               boolean;
@@ -287,10 +289,11 @@ const rr = StyleSheet.create({
 // ── Diet tag edit card ────────────────────────────────────────────────────────
 
 function DietCard({
-  code, tag, onChange, recipeName, reviewFlags, onFlagResolved,
+  code, tag, originalTag, onChange, recipeName, reviewFlags, onFlagResolved,
 }: {
   code:            string;
   tag?:            DietTagData;
+  originalTag?:    DietTagData;
   onChange:        (code: string, updated: DietTagData) => void;
   recipeName?:     string;
   reviewFlags?:    ReviewItem[];
@@ -364,14 +367,29 @@ function DietCard({
         </View>
         <View style={dc.right}>
           {showNotes ? (
-            <TextInput
-              style={dc.notes}
-              value={notes}
-              onChangeText={v => onChange(code, { native: tag?.native ?? false, mod: tag?.mod ?? false, notes: v })}
-              placeholder="Modification note…"
-              placeholderTextColor={Colors.textMuted}
-              multiline
-            />
+            <View style={dc.notesWrap}>
+              <TextInput
+                style={dc.notes}
+                value={notes}
+                onChangeText={v => onChange(code, { native: tag?.native ?? false, mod: tag?.mod ?? false, notes: v })}
+                placeholder="Modification note…"
+                placeholderTextColor={Colors.textMuted}
+                multiline
+              />
+              {originalTag && (
+                originalTag.notes !== tag?.notes ||
+                originalTag.native !== tag?.native ||
+                originalTag.mod !== tag?.mod
+              ) && (
+                <TouchableOpacity
+                  style={dc.revertTagBtn}
+                  onPress={() => onChange(code, originalTag)}
+                  activeOpacity={0.7}
+                >
+                  <Text style={dc.revertTagText}>↺ Revert</Text>
+                </TouchableOpacity>
+              )}
+            </View>
           ) : (
             <Text style={dc.noNotes}>—</Text>
           )}
@@ -434,8 +452,11 @@ const dc = StyleSheet.create({
   toggleText_mod:    { color: '#d4a843' },
   toggle_none:       { backgroundColor: 'rgba(201,107,107,0.15)', borderColor: '#c96b6b' },
   toggleText_none:   { color: '#c96b6b' },
+  notesWrap:         { flex: 1 },
   notes:             { backgroundColor: Colors.surfaceElevated, borderWidth: 1, borderColor: Colors.border, borderRadius: 6, padding: 10, fontFamily: Fonts.body, fontSize: 13, color: Colors.textSecondary, lineHeight: 20, minHeight: 44 },
   noNotes:           { fontFamily: Fonts.body, fontSize: 13, color: Colors.textMuted, paddingTop: 4 },
+  revertTagBtn:      { marginTop: 4, alignSelf: 'flex-end' },
+  revertTagText:     { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted },
 
   // Flag rows
   flagRow:           { marginLeft: 8, marginBottom: 12, padding: 12, backgroundColor: Colors.surface, borderRadius: 8, borderWidth: 1, borderColor: Colors.gold + '44', gap: 6 },
@@ -1216,9 +1237,17 @@ function RecipePanel({
   useEffect(() => { setLocal(recipe); setActiveDiet(new Set()); }, [recipe._id]);
 
   function update(fields: Partial<RecipeDoc>) {
-    const updated = { ...local, ...fields };
+    const extra: Partial<RecipeDoc> = {};
+    // Snapshot originals on first edit so we can revert later
+    if ('dietTags' in fields && !local.dietTagsOriginal && local.dietTags) {
+      extra.dietTagsOriginal = local.dietTags;
+    }
+    if ('ingredients' in fields && !local.ingredientsOriginal && local.ingredients?.length) {
+      extra.ingredientsOriginal = local.ingredients;
+    }
+    const updated = { ...local, ...extra, ...fields };
     setLocal(updated);
-    onChange(fields);
+    onChange({ ...extra, ...fields });
   }
 
   function updateDietTag(code: string, tag: DietTagData) {
@@ -1333,6 +1362,7 @@ function RecipePanel({
               key={code}
               code={code}
               tag={local.dietTags?.[code]}
+              originalTag={local.dietTagsOriginal?.[code]}
               onChange={updateDietTag}
               recipeName={local.name}
               reviewFlags={(local.reviewItems ?? []).filter(f => f.protocol === code)}
@@ -1468,6 +1498,27 @@ function RecipePanel({
       <View style={pp.actionBar}>
         <Text style={pp.savingText}>{saving ? 'Saving…' : 'All changes auto-save'}</Text>
         <View style={pp.btns}>
+          {(local.dietTagsOriginal || local.ingredientsOriginal) && (
+            <TouchableOpacity
+              style={pp.btnRevert}
+              onPress={() => Alert.alert(
+                'Revert All Changes',
+                'Restore diet notes and ingredients to their original state? This cannot be undone.',
+                [
+                  { text: 'Cancel', style: 'cancel' },
+                  { text: 'Revert', style: 'destructive', onPress: () => {
+                    const revertFields: Partial<RecipeDoc> = { ingredientNameOverrides: {} };
+                    if (local.dietTagsOriginal) revertFields.dietTags = local.dietTagsOriginal;
+                    if (local.ingredientsOriginal) revertFields.ingredients = local.ingredientsOriginal;
+                    update(revertFields);
+                  }},
+                ]
+              )}
+              activeOpacity={0.7}
+            >
+              <Text style={pp.btnRevertText}>↺ Revert All</Text>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity style={pp.btnSkip} onPress={onSkip}>
             <Text style={pp.btnSkipText}>Skip</Text>
           </TouchableOpacity>
@@ -1540,6 +1591,8 @@ const pp = StyleSheet.create({
   btnRejectText:    { fontFamily: Fonts.bodyMedium, fontSize: 13, color: Colors.red },
   btnApprove:       { paddingHorizontal: 18, paddingVertical: 9, borderRadius: 100, borderWidth: 1.5, borderColor: Colors.green, backgroundColor: Colors.green + '18' },
   btnApproveText:   { fontFamily: Fonts.bodyMedium, fontSize: 13, color: Colors.green },
+  btnRevert:        { paddingHorizontal: 18, paddingVertical: 9, borderRadius: 100, borderWidth: 1, borderColor: Colors.textMuted, backgroundColor: 'transparent' },
+  btnRevertText:    { fontFamily: Fonts.bodyMedium, fontSize: 13, color: Colors.textMuted },
 });
 
 // ── Main screen ───────────────────────────────────────────────────────────────
