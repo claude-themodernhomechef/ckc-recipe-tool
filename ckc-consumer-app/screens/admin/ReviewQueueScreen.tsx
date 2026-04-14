@@ -793,19 +793,13 @@ function ShoppingList({
             if (node._dov) node.removeEventListener('dragover', node._dov);
             if (node._dlv) node.removeEventListener('dragleave', node._dlv);
             if (node._drp) node.removeEventListener('drop', node._drp);
-            node._dov = (e: DragEvent) => {
-              e.preventDefault();
-              const di = draggingItemRef.current;
-              if (di && di.fromCategory !== cat.key) setDragOverCategory(cat.key);
-            };
-            node._dlv = () => setDragOverCategory(null);
+            node._dov = (e: DragEvent) => { e.preventDefault(); };
+            node._dlv = () => {};
             node._drp = (e: DragEvent) => {
               e.preventDefault();
-              setDragOverCategory(null);
               const di = draggingItemRef.current;
               if (di && di.fromCategory !== cat.key) saveCategory(di.name, cat.key);
               draggingItemRef.current = null;
-              setDraggingItem(null);
             };
             node.addEventListener('dragover', node._dov);
             node.addEventListener('dragleave', node._dlv);
@@ -1009,16 +1003,9 @@ function ShoppingList({
                       node.setAttribute('draggable', 'true');
                       node._ds = (e: DragEvent) => {
                         e.dataTransfer?.setData('text/plain', item.name);
-                        const val = { name: item.name, fromCategory: cat.key };
-                        draggingItemRef.current = val;
-                        // Defer state update so React re-render doesn't replace
-                        // event listeners mid-drag and break the drag operation
-                        setTimeout(() => setDraggingItem(val), 0);
+                        draggingItemRef.current = { name: item.name, fromCategory: cat.key };
                       };
-                      node._de = () => {
-                        draggingItemRef.current = null;
-                        setTimeout(() => { setDraggingItem(null); setDragOverCategory(null); }, 0);
-                      };
+                      node._de = () => { draggingItemRef.current = null; };
                       node.addEventListener('dragstart', node._ds);
                       node.addEventListener('dragend', node._de);
                     }}
@@ -1500,8 +1487,7 @@ function RecipePanel({
       <View style={pp.actionBar}>
         <Text style={pp.savingText}>{saving ? 'Saving…' : 'All changes auto-save'}</Text>
         <View style={pp.btns}>
-          {(local.dietTagsOriginal || local.ingredientsOriginal) && (
-            confirmRevert ? (
+          {confirmRevert ? (
               <View style={pp.confirmWrap}>
                 <Text style={pp.confirmText}>Revert all changes to original?</Text>
                 <TouchableOpacity style={pp.confirmYes} onPress={() => {
@@ -1517,11 +1503,10 @@ function RecipePanel({
                   <Text style={pp.confirmNoText}>Cancel</Text>
                 </TouchableOpacity>
               </View>
-            ) : (
-              <TouchableOpacity style={pp.btnRevert} onPress={() => setConfirmRevert(true)} activeOpacity={0.7}>
-                <Text style={pp.btnRevertText}>↺ Revert All</Text>
-              </TouchableOpacity>
-            )
+          ) : (
+            <TouchableOpacity style={pp.btnRevert} onPress={() => setConfirmRevert(true)} activeOpacity={0.7}>
+              <Text style={pp.btnRevertText}>↺ Revert All</Text>
+            </TouchableOpacity>
           )}
           <TouchableOpacity style={pp.btnSkip} onPress={onSkip}>
             <Text style={pp.btnSkipText}>Skip</Text>
