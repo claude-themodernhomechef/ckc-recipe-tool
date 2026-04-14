@@ -620,9 +620,8 @@ function ShoppingList({
   const [addingNewCategory, setAddingNewCategory] = useState<string | null>(null);
   const [newQty, setNewQty]                 = useState('');
   const [newName, setNewName]               = useState('');
-  const [draggingItem, setDraggingItem]     = useState<{ name: string; fromCategory: string } | null>(null);
   const draggingItemRef = useRef<{ name: string; fromCategory: string } | null>(null);
-  const [dragOverCategory, setDragOverCategory] = useState<string | null>(null);
+  const saveCategoryRef = useRef<(name: string, category: string) => void>(() => {});
   // Persists across re-renders so blur/focus on the edit fields can reliably cancel each other
   const blurTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -776,6 +775,36 @@ function ShoppingList({
     }
   }
 
+  // Keep saveCategoryRef current so document-level drop handler always calls latest version
+  saveCategoryRef.current = saveCategory;
+
+  // Document-level drag listeners — avoids per-container event bubbling issues in RN Web
+  useEffect(() => {
+    const onDragOver = (e: DragEvent) => { if (draggingItemRef.current) e.preventDefault(); };
+    const onDrop = (e: DragEvent) => {
+      e.preventDefault();
+      const di = draggingItemRef.current;
+      if (!di) return;
+      draggingItemRef.current = null;
+      // Walk up from the drop target to find a category container (data-cat-key attribute)
+      let el = e.target as HTMLElement | null;
+      while (el) {
+        const catKey = el.getAttribute?.('data-cat-key');
+        if (catKey && catKey !== di.fromCategory) {
+          saveCategoryRef.current(di.name, catKey);
+          break;
+        }
+        el = el.parentElement;
+      }
+    };
+    document.addEventListener('dragover', onDragOver);
+    document.addEventListener('drop', onDrop);
+    return () => {
+      document.removeEventListener('dragover', onDragOver);
+      document.removeEventListener('drop', onDrop);
+    };
+  }, []);
+
   if (!ingredients.length) {
     return <Text style={sl.empty}>No ingredients — add them in the edit section below</Text>;
   }
@@ -785,25 +814,11 @@ function ShoppingList({
       {grouped.map(cat => (
         <View
           key={cat.key}
-          style={[sl.category, dragOverCategory === cat.key && draggingItem?.fromCategory !== cat.key && sl.categoryDropTarget]}
+          style={sl.category}
           ref={(el: any) => {
-            const node = el;
-            if (!node?.addEventListener) return;
-            // Always replace listeners so re-renders get fresh closures (cat.key, saveCategory)
-            if (node._dov) node.removeEventListener('dragover', node._dov);
-            if (node._dlv) node.removeEventListener('dragleave', node._dlv);
-            if (node._drp) node.removeEventListener('drop', node._drp);
-            node._dov = (e: DragEvent) => { e.preventDefault(); };
-            node._dlv = () => {};
-            node._drp = (e: DragEvent) => {
-              e.preventDefault();
-              const di = draggingItemRef.current;
-              if (di && di.fromCategory !== cat.key) saveCategory(di.name, cat.key);
-              draggingItemRef.current = null;
-            };
-            node.addEventListener('dragover', node._dov);
-            node.addEventListener('dragleave', node._dlv);
-            node.addEventListener('drop', node._drp);
+            // Tag the DOM node with the category key so the document-level drop handler
+            // can identify which category was dropped on by walking up the tree
+            if (el?.setAttribute) el.setAttribute('data-cat-key', cat.key);
           }}
         >
           <View style={sl.catHeader}>
@@ -986,7 +1001,7 @@ function ShoppingList({
             }
 
             const isDraggable = item._type === 'normal' && !isUnmatched;
-            const isBeingDragged = draggingItem?.name === item.name && draggingItem?.fromCategory === cat.key;
+            const isBeingDragged = false; // visual feedback removed — ref-only drag tracking
             return (
               // Wrap in a plain View so the drag handle sits outside TouchableOpacity
               // (TouchableOpacity intercepts mousedown and blocks browser drag)
