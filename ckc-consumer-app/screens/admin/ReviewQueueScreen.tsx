@@ -586,7 +586,7 @@ function ShoppingList({
   onDeleteIngredient?: (rawIndex: number) => void;
   onRevertCategory?: (rawStrings: string[]) => void;
 }) {
-  const [editingIdx, setEditingIdx]         = useState<number | null>(null);
+  const [editingIdx, setEditingIdx]         = useState<string | null>(null); // keyed by _raw string (unique per expanded item)
   const [editingName, setEditingName]       = useState('');
   const [editingQty, setEditingQty]         = useState('');
   const [editingSwapKey, setEditingSwapKey] = useState<string | null>(null); // `${protocol}-${swapFor}`
@@ -884,7 +884,7 @@ function ShoppingList({
 
             // Normal row — tap to edit inline
             const isUnmatched = item._matched === false && !savedIngredients.has(item.name);
-            const isEditing = editingIdx === item._rawIndex;
+            const isEditing = editingIdx === item._raw;
 
             if (isEditing) {
               const onFieldBlur = () => {
@@ -963,8 +963,8 @@ function ShoppingList({
                 onPress={() => {
                   if (isUnmatched) {
                     setPickerItem({ name: item.name, category: item.category ?? 'pantry-staples' });
-                  } else if (item._rawIndex !== undefined) {
-                    setEditingIdx(item._rawIndex);
+                  } else if (item._raw !== undefined) {
+                    setEditingIdx(item._raw);
                     // Pre-fill qty and name with current display values
                     setEditingQty(item._qtyOverride !== undefined ? item._qtyOverride : (item.qty ? fmtQty(item.qty, item.unit, item.category) : item.unit || ''));
                     setEditingName(item.name);
