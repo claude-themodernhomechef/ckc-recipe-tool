@@ -563,6 +563,7 @@ type IngItem = {
   qty: number; unit: string; name: string; category: string;
   _type: 'normal' | 'swap' | 'crossed';
   _qtyOverride?: string;  // display override for qty (e.g. "¼ tsp", "1½ lb")
+  _uid?: string;          // unique edit key: `${rawIndex}:${raw}`
   _swapFor?: string;
   _swapTo?:  string;
   _protocol?: string;
@@ -605,8 +606,8 @@ function ShoppingList({
 
   // Parse all ingredients into base items (keep original index for editing).
   // "each:" lines are expanded first: "¼ tsp each: paprika, thyme" → two rows, both pointing to the same rawIndex.
-  const baseItems = useMemo((): { qty: number; unit: string; name: string; category: string; matched: boolean; rawIndex: number; raw: string; qtyOverride?: string }[] => {
-    const result: { qty: number; unit: string; name: string; category: string; matched: boolean; rawIndex: number; raw: string; qtyOverride?: string }[] = [];
+  const baseItems = useMemo((): { qty: number; unit: string; name: string; category: string; matched: boolean; rawIndex: number; raw: string; uid: string; qtyOverride?: string }[] => {
+    const result: { qty: number; unit: string; name: string; category: string; matched: boolean; rawIndex: number; raw: string; uid: string; qtyOverride?: string }[] = [];
     for (let rawIndex = 0; rawIndex < ingredients.length; rawIndex++) {
       const original = ingredients[rawIndex];
       if (!original.trim()) continue;
@@ -618,7 +619,8 @@ function ShoppingList({
         const override = ingredientNameOverrides?.[raw];
         const name      = override?.name ?? p.name;
         const qtyOverride = override?.qty;
-        result.push({ qty: p.qty ?? 0, unit: p.unit ?? '', name, category, matched, rawIndex, raw, qtyOverride });
+        const uid = `${rawIndex}:${raw}`;
+        result.push({ qty: p.qty ?? 0, unit: p.unit ?? '', name, category, matched, rawIndex, raw, uid, qtyOverride });
       }
     }
     return result;
@@ -672,7 +674,7 @@ function ShoppingList({
         } else {
           const key = `${cat}::${item.name}`;
           if (!placed.has(key)) {
-            const row: IngItem = { ...item, _type: 'crossed', _protocol: swapInfo.protocol, _color: swapInfo.color, _isCategoryFlag: false, _rawIndex: item.rawIndex, _raw: item.raw };
+            const row: IngItem = { ...item, _type: 'crossed', _protocol: swapInfo.protocol, _color: swapInfo.color, _isCategoryFlag: false, _rawIndex: item.rawIndex, _raw: item.raw, _uid: item.uid };
             map[cat].push(row);
             placed.set(key, row);
           } else {
@@ -702,11 +704,11 @@ function ShoppingList({
           const existing = placed.get(key)!;
           if (existing.unit === item.unit) existing.qty = (existing.qty || 0) + (item.qty || 0);
         } else if (catFlag) {
-          const row: IngItem = { ...item, _type: 'crossed', _protocol: catFlag.protocol, _color: catFlag.color, _isCategoryFlag: true, _rawIndex: item.rawIndex, _raw: item.raw };
+          const row: IngItem = { ...item, _type: 'crossed', _protocol: catFlag.protocol, _color: catFlag.color, _isCategoryFlag: true, _rawIndex: item.rawIndex, _raw: item.raw, _uid: item.uid };
           map[cat].push(row);
           placed.set(key, row);
         } else {
-          const row: IngItem = { ...item, _type: 'normal', _matched: item.matched, _rawIndex: item.rawIndex, _raw: item.raw, _qtyOverride: item.qtyOverride };
+          const row: IngItem = { ...item, _type: 'normal', _matched: item.matched, _rawIndex: item.rawIndex, _raw: item.raw, _uid: item.uid, _qtyOverride: item.qtyOverride };
           map[cat].push(row);
           placed.set(key, row);
         }
@@ -884,7 +886,7 @@ function ShoppingList({
 
             // Normal row — tap to edit inline
             const isUnmatched = item._matched === false && !savedIngredients.has(item.name);
-            const isEditing = editingIdx === item._raw;
+            const isEditing = item._uid !== undefined && editingIdx === item._uid;
 
             if (isEditing) {
               const onFieldBlur = () => {
@@ -963,8 +965,8 @@ function ShoppingList({
                 onPress={() => {
                   if (isUnmatched) {
                     setPickerItem({ name: item.name, category: item.category ?? 'pantry-staples' });
-                  } else if (item._raw !== undefined) {
-                    setEditingIdx(item._raw);
+                  } else if (item._uid !== undefined) {
+                    setEditingIdx(item._uid);
                     // Pre-fill qty and name with current display values
                     setEditingQty(item._qtyOverride !== undefined ? item._qtyOverride : (item.qty ? fmtQty(item.qty, item.unit, item.category) : item.unit || ''));
                     setEditingName(item.name);
