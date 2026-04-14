@@ -600,6 +600,8 @@ function ShoppingList({
   const [newName, setNewName]               = useState('');
   const [draggingItem, setDraggingItem]     = useState<{ name: string; fromCategory: string } | null>(null);
   const [dragOverCategory, setDragOverCategory] = useState<string | null>(null);
+  // Persists across re-renders so blur/focus on the edit fields can reliably cancel each other
+  const blurTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Parse all ingredients into base items (keep original index for editing).
   // "each:" lines are expanded first: "¼ tsp each: paprika, thyme" → two rows, both pointing to the same rawIndex.
@@ -885,11 +887,8 @@ function ShoppingList({
             const isEditing = editingIdx === item._rawIndex;
 
             if (isEditing) {
-              // Use a ref-based blur timer so tabbing between the two fields doesn't
-              // accidentally trigger a save mid-edit (cancel on focus, fire on true blur).
-              const blurTimer = { current: null as ReturnType<typeof setTimeout> | null };
               const onFieldBlur = () => {
-                blurTimer.current = setTimeout(() => {
+                blurTimerRef.current = setTimeout(() => {
                   if (item._raw !== undefined) {
                     const overrides: { name?: string; qty?: string } = {};
                     if (editingName.trim()) overrides.name = editingName.trim();
@@ -900,10 +899,10 @@ function ShoppingList({
                 }, 150);
               };
               const onFieldFocus = () => {
-                if (blurTimer.current) clearTimeout(blurTimer.current);
+                if (blurTimerRef.current) { clearTimeout(blurTimerRef.current); blurTimerRef.current = null; }
               };
               const commitEdit = () => {
-                if (blurTimer.current) clearTimeout(blurTimer.current);
+                if (blurTimerRef.current) { clearTimeout(blurTimerRef.current); blurTimerRef.current = null; }
                 if (item._raw !== undefined) {
                   const overrides: { name?: string; qty?: string } = {};
                   if (editingName.trim()) overrides.name = editingName.trim();
