@@ -959,52 +959,53 @@ function ShoppingList({
             const isDraggable = item._type === 'normal' && !isUnmatched;
             const isBeingDragged = draggingItem?.name === item.name && draggingItem?.fromCategory === cat.key;
             return (
-              <TouchableOpacity
-                key={key}
-                style={[sl.row, isUnmatched && sl.rowUnmatched, isBeingDragged && sl.rowDragging]}
-                onPress={() => {
-                  if (isUnmatched) {
-                    setPickerItem({ name: item.name, category: item.category ?? 'pantry-staples' });
-                  } else if (item._uid !== undefined) {
-                    setEditingIdx(item._uid);
-                    // Pre-fill qty and name with current display values
-                    setEditingQty(item._qtyOverride !== undefined ? item._qtyOverride : (item.qty ? fmtQty(item.qty, item.unit, item.category) : item.unit || ''));
-                    setEditingName(item.name);
-                  }
-                }}
-                activeOpacity={0.7}
-              >
-                {/* Drag handle — only this element is draggable, keeping clicks on the row clean */}
+              // Wrap in a plain View so the drag handle sits outside TouchableOpacity
+              // (TouchableOpacity intercepts mousedown and blocks browser drag)
+              <View key={key} style={[sl.rowWrap, isBeingDragged && sl.rowDragging]}>
                 {isDraggable && (
                   <View
                     style={sl.dragHandle}
                     {...{
                       draggable: true,
-                      onDragStart: (e: any) => { e.stopPropagation(); setDraggingItem({ name: item.name, fromCategory: cat.key }); },
+                      onDragStart: (e: any) => { e.preventDefault(); e.dataTransfer?.setData('text/plain', item.name); setDraggingItem({ name: item.name, fromCategory: cat.key }); },
                       onDragEnd:   () => { setDraggingItem(null); setDragOverCategory(null); },
                     }}
                   >
                     <Text style={sl.dragHandleText}>⠿</Text>
                   </View>
                 )}
-                <View style={[sl.checkbox, isUnmatched && sl.checkboxUnmatched]}>
-                  {isUnmatched && <Text style={sl.unmatchedIcon}>?</Text>}
-                </View>
-                <Text style={[sl.qty, item._qtyOverride === '' && sl.qtyWarning]}>
-                  {item._qtyOverride !== undefined ? item._qtyOverride : (item.qty ? fmtQty(item.qty, item.unit, item.category) : item.unit || '')}
-                </Text>
-                <Text style={[sl.name, isUnmatched && sl.nameUnmatched]}>{item.name}</Text>
-                {item._rawIndex !== undefined && (
-                  <TouchableOpacity
-                    style={sl.deleteBtn}
-                    onPress={e => { e.stopPropagation?.(); onDeleteIngredient?.(item._rawIndex!); }}
-                    activeOpacity={0.7}
-                    hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-                  >
-                    <Text style={sl.deleteBtnText}>✕</Text>
-                  </TouchableOpacity>
-                )}
-              </TouchableOpacity>
+                <TouchableOpacity
+                  style={[sl.row, isUnmatched && sl.rowUnmatched]}
+                  onPress={() => {
+                    if (isUnmatched) {
+                      setPickerItem({ name: item.name, category: item.category ?? 'pantry-staples' });
+                    } else if (item._uid !== undefined) {
+                      setEditingIdx(item._uid);
+                      setEditingQty(item._qtyOverride !== undefined ? item._qtyOverride : (item.qty ? fmtQty(item.qty, item.unit, item.category) : item.unit || ''));
+                      setEditingName(item.name);
+                    }
+                  }}
+                  activeOpacity={0.7}
+                >
+                  <View style={[sl.checkbox, isUnmatched && sl.checkboxUnmatched]}>
+                    {isUnmatched && <Text style={sl.unmatchedIcon}>?</Text>}
+                  </View>
+                  <Text style={[sl.qty, item._qtyOverride === '' && sl.qtyWarning]}>
+                    {item._qtyOverride !== undefined ? item._qtyOverride : (item.qty ? fmtQty(item.qty, item.unit, item.category) : item.unit || '')}
+                  </Text>
+                  <Text style={[sl.name, isUnmatched && sl.nameUnmatched]}>{item.name}</Text>
+                  {item._rawIndex !== undefined && (
+                    <TouchableOpacity
+                      style={sl.deleteBtn}
+                      onPress={e => { e.stopPropagation?.(); onDeleteIngredient?.(item._rawIndex!); }}
+                      activeOpacity={0.7}
+                      hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                    >
+                      <Text style={sl.deleteBtnText}>✕</Text>
+                    </TouchableOpacity>
+                  )}
+                </TouchableOpacity>
+              </View>
             );
           })}
 
@@ -1108,7 +1109,7 @@ const sl = StyleSheet.create({
   catCount:       { fontFamily: Fonts.body, fontSize: 10, color: Colors.textMuted },
   revertBtn:      { marginLeft: 'auto', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 4, borderWidth: 1, borderColor: Colors.border },
   revertBtnText:  { fontFamily: Fonts.body, fontSize: 10, color: Colors.textMuted },
-  row:            { flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.04)' },
+  row:            { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.04)' },
   rowSwap:        { backgroundColor: 'rgba(212,168,67,0.07)', borderRadius: 6, paddingHorizontal: 6, borderLeftWidth: 2, borderLeftColor: Colors.gold },
   rowCrossed:     { backgroundColor: 'rgba(201,107,107,0.07)', borderRadius: 6, paddingHorizontal: 6, borderLeftWidth: 2, borderLeftColor: Colors.red },
   checkbox:       { width: 22, height: 22, borderRadius: 5, borderWidth: 1.5, borderColor: Colors.border, alignItems: 'center', justifyContent: 'center', flexShrink: 0 },
@@ -1134,7 +1135,8 @@ const sl = StyleSheet.create({
   unmatchedHint:    { fontFamily: Fonts.body, fontSize: 10, color: Colors.red, opacity: 0.7 },
   deleteBtn:        { marginLeft: 'auto', paddingLeft: 8, paddingVertical: 4 },
   deleteBtnText:    { fontSize: 13, color: Colors.textMuted },
-  dragHandle:       { paddingRight: 6, justifyContent: 'center', cursor: 'grab' } as any,
+  rowWrap:          { flexDirection: 'row', alignItems: 'center' },
+  dragHandle:       { paddingHorizontal: 6, paddingVertical: 10, justifyContent: 'center', cursor: 'grab' } as any,
   dragHandleText:   { fontSize: 14, color: Colors.textMuted },
   rowDragging:      { opacity: 0.4 },
   categoryDropTarget: { borderWidth: 1.5, borderColor: Colors.gold, borderRadius: 8, paddingHorizontal: 8, backgroundColor: Colors.gold + '0a' },
