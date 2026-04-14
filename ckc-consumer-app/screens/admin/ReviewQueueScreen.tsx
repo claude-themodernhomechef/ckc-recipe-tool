@@ -787,7 +787,7 @@ function ShoppingList({
           key={cat.key}
           style={[sl.category, dragOverCategory === cat.key && draggingItem?.fromCategory !== cat.key && sl.categoryDropTarget]}
           ref={(el: any) => {
-            const node = el?._nativeTag ?? el;
+            const node = el;
             if (!node?.addEventListener) return;
             // Always replace listeners so re-renders get fresh closures (cat.key, saveCategory)
             if (node._dov) node.removeEventListener('dragover', node._dov);
@@ -995,7 +995,7 @@ function ShoppingList({
                   <View
                     style={sl.dragHandle}
                     ref={(el: any) => {
-                      const node = el?._nativeTag ?? el;
+                      const node = el;
                       if (!node?.addEventListener) return;
                       // Always replace listeners so re-renders get fresh closures
                       if (node._ds) node.removeEventListener('dragstart', node._ds);
