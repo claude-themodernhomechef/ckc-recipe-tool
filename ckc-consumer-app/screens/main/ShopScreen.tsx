@@ -157,6 +157,20 @@ function aggregateIngredients(
     }
   }
 
+  // Remove sub-components already covered by a compound entry in the same category.
+  // e.g. if "salt and pepper" exists, remove standalone "salt" and "pepper".
+  const allNames = [...agg.keys()];
+  for (const name of allNames) {
+    const entry = agg.get(name)!;
+    const coveredByCompound = allNames.some(other =>
+      other !== name &&
+      agg.get(other)?.category === entry.category &&
+      other.length > name.length &&
+      new RegExp(`(?:^|\\s|and|&)${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:\\s|and|&|$)`, 'i').test(other)
+    );
+    if (coveredByCompound) agg.delete(name);
+  }
+
   return agg;
 }
 

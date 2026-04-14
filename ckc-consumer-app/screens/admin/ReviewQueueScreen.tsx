@@ -609,6 +609,10 @@ function ShoppingList({
     const map: Record<string, IngItem[]> = {};
     SHOPPING_CATEGORIES.forEach(c => { map[c.key] = []; });
 
+    // Track which names have already been placed per category to deduplicate
+    // (e.g. "salt" listed 3× in a recipe → one row with summed qty)
+    const placed = new Map<string, IngItem>(); // key: `${cat}::${name}`
+
     for (const item of baseItems) {
       const cat = item.category || 'pantry-staples';
       if (!map[cat]) map[cat] = [];
@@ -616,10 +620,24 @@ function ShoppingList({
 
       if (swapInfo) {
         if (swapInfo.to) {
-          // Gold swap row: specific replacement from notes
-          map[cat].push({ qty: 0, unit: '', name: swapInfo.to, category: cat, _type: 'swap', _swapFor: item.name, _protocol: swapInfo.protocol, _color: swapInfo.color });
+          // Gold swap row: specific replacement from notes — dedupe by swap target name
+          const key = `${cat}::swap::${swapInfo.to}`;
+          if (!placed.has(key)) {
+            const row: IngItem = { qty: 0, unit: '', name: swapInfo.to, category: cat, _type: 'swap', _swapFor: item.name, _protocol: swapInfo.protocol, _color: swapInfo.color };
+            map[cat].push(row);
+            placed.set(key, row);
+          }
         } else {
-          map[cat].push({ ...item, _type: 'crossed', _protocol: swapInfo.protocol, _color: swapInfo.color, _isCategoryFlag: false, _rawIndex: item.rawIndex, _raw: item.raw });
+          const key = `${cat}::${item.name}`;
+          if (!placed.has(key)) {
+            const row: IngItem = { ...item, _type: 'crossed', _protocol: swapInfo.protocol, _color: swapInfo.color, _isCategoryFlag: false, _rawIndex: item.rawIndex, _raw: item.raw };
+            map[cat].push(row);
+            placed.set(key, row);
+          } else {
+            // Sum qty for duplicates
+            const existing = placed.get(key)!;
+            if (existing.unit === item.unit) existing.qty = (existing.qty || 0) + (item.qty || 0);
+          }
         }
       } else {
         // Category-level fallback: when a diet is active, flag ingredients in that
@@ -636,12 +654,35 @@ function ShoppingList({
           }
         }
 
-        if (catFlag) {
-          map[cat].push({ ...item, _type: 'crossed', _protocol: catFlag.protocol, _color: catFlag.color, _isCategoryFlag: true, _rawIndex: item.rawIndex, _raw: item.raw });
+        const key = `${cat}::${item.name}`;
+        if (placed.has(key)) {
+          // Merge duplicate: sum qty if units match
+          const existing = placed.get(key)!;
+          if (existing.unit === item.unit) existing.qty = (existing.qty || 0) + (item.qty || 0);
+        } else if (catFlag) {
+          const row: IngItem = { ...item, _type: 'crossed', _protocol: catFlag.protocol, _color: catFlag.color, _isCategoryFlag: true, _rawIndex: item.rawIndex, _raw: item.raw };
+          map[cat].push(row);
+          placed.set(key, row);
         } else {
-          map[cat].push({ ...item, _type: 'normal', _matched: item.matched, _rawIndex: item.rawIndex, _raw: item.raw });
+          const row: IngItem = { ...item, _type: 'normal', _matched: item.matched, _rawIndex: item.rawIndex, _raw: item.raw };
+          map[cat].push(row);
+          placed.set(key, row);
         }
       }
+    }
+
+    // Post-process: remove sub-components already covered by a compound entry.
+    // e.g. if "salt and pepper" is in the list, remove standalone "salt" and "pepper".
+    for (const cat of Object.keys(map)) {
+      const names = map[cat].map(i => i.name);
+      map[cat] = map[cat].filter(item => {
+        // Keep if no other entry's name contains this name as a whole word/token
+        return !names.some(other =>
+          other !== item.name &&
+          other.length > item.name.length &&
+          new RegExp(`(?:^|\\s|and|&)${item.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:\\s|and|&|$)`, 'i').test(other)
+        );
+      });
     }
 
     return SHOPPING_CATEGORIES.map(c => ({ ...c, items: map[c.key] ?? [] })).filter(c => c.items.length > 0);
