@@ -574,7 +574,7 @@ type IngItem = {
 };
 
 function ShoppingList({
-  ingredients, ingredientNameOverrides, dietTags, activeDietFilter, onSaveNameOverride, onEditSwap,
+  ingredients, ingredientNameOverrides, dietTags, activeDietFilter, onSaveNameOverride, onEditSwap, onAddIngredient, onDeleteIngredient, onRevertCategory,
 }: {
   ingredients: string[];
   ingredientNameOverrides?: Record<string, { name?: string; qty?: string }>;
@@ -582,6 +582,9 @@ function ShoppingList({
   activeDietFilter: Set<string>;
   onSaveNameOverride?: (raw: string, overrides: { name?: string; qty?: string }) => void;
   onEditSwap?: (protocol: string, oldSwapText: string, newSwapText: string) => void;
+  onAddIngredient?: (raw: string) => void;
+  onDeleteIngredient?: (rawIndex: number) => void;
+  onRevertCategory?: (rawStrings: string[]) => void;
 }) {
   const [editingIdx, setEditingIdx]         = useState<number | null>(null);
   const [editingName, setEditingName]       = useState('');
@@ -591,6 +594,9 @@ function ShoppingList({
   const [savedIngredients, setSavedIngredients] = useState<Set<string>>(new Set());
   const [pickerItem, setPickerItem] = useState<{ name: string; category: string } | null>(null);
   const [savingCategory, setSavingCategory] = useState(false);
+  const [addingNew, setAddingNew]           = useState(false);
+  const [newQty, setNewQty]                 = useState('');
+  const [newName, setNewName]               = useState('');
 
   // Parse all ingredients into base items (keep original index for editing).
   // "each:" lines are expanded first: "¼ tsp each: paprika, thyme" → two rows, both pointing to the same rawIndex.
@@ -752,6 +758,20 @@ function ShoppingList({
           <View style={sl.catHeader}>
             <Text style={sl.catLabel}>{cat.label.toUpperCase()}</Text>
             <View style={sl.catBadge}><Text style={sl.catCount}>{cat.items.length}</Text></View>
+            {(() => {
+              const overriddenRaws = cat.items
+                .filter(it => it._raw !== undefined && ingredientNameOverrides?.[it._raw] !== undefined)
+                .map(it => it._raw!);
+              return overriddenRaws.length > 0 ? (
+                <TouchableOpacity
+                  style={sl.revertBtn}
+                  onPress={() => onRevertCategory?.(overriddenRaws)}
+                  activeOpacity={0.7}
+                >
+                  <Text style={sl.revertBtnText}>Revert</Text>
+                </TouchableOpacity>
+              ) : null;
+            })()}
           </View>
           {cat.items.map((item, i) => {
             const key = `${cat.key}-${i}`;
@@ -933,11 +953,66 @@ function ShoppingList({
                   {item._qtyOverride !== undefined ? item._qtyOverride : (item.qty ? fmtQty(item.qty, item.unit, item.category) : item.unit || '')}
                 </Text>
                 <Text style={[sl.name, isUnmatched && sl.nameUnmatched]}>{item.name}</Text>
+                {item._rawIndex !== undefined && (
+                  <TouchableOpacity
+                    style={sl.deleteBtn}
+                    onPress={e => { e.stopPropagation?.(); onDeleteIngredient?.(item._rawIndex!); }}
+                    activeOpacity={0.7}
+                    hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                  >
+                    <Text style={sl.deleteBtnText}>✕</Text>
+                  </TouchableOpacity>
+                )}
               </TouchableOpacity>
             );
           })}
         </View>
       ))}
+
+      {/* ── Add ingredient row ── */}
+      {addingNew ? (
+        <View style={sl.editRow}>
+          <TextInput
+            style={[sl.editInput, sl.editQtyInput, newQty.trim() === '' && sl.editInputWarning]}
+            value={newQty}
+            onChangeText={setNewQty}
+            autoFocus
+            placeholder="Qty"
+            placeholderTextColor={Colors.textMuted}
+            returnKeyType="next"
+          />
+          <TextInput
+            style={[sl.editInput, sl.editNameInput]}
+            value={newName}
+            onChangeText={setNewName}
+            placeholder="Ingredient name"
+            placeholderTextColor={Colors.textMuted}
+            returnKeyType="done"
+            onSubmitEditing={() => {
+              const raw = [newQty.trim(), newName.trim()].filter(Boolean).join(' ');
+              if (raw) { onAddIngredient?.(raw); }
+              setAddingNew(false); setNewQty(''); setNewName('');
+            }}
+          />
+          <TouchableOpacity
+            style={sl.editSave}
+            onPress={() => {
+              const raw = [newQty.trim(), newName.trim()].filter(Boolean).join(' ');
+              if (raw) { onAddIngredient?.(raw); }
+              setAddingNew(false); setNewQty(''); setNewName('');
+            }}
+          >
+            <Text style={sl.editSaveText}>Add</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={sl.editCancel} onPress={() => { setAddingNew(false); setNewQty(''); setNewName(''); }}>
+            <Text style={sl.editCancelText}>✕</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <TouchableOpacity style={sl.addRow} onPress={() => setAddingNew(true)} activeOpacity={0.7}>
+          <Text style={sl.addRowText}>+ Add ingredient</Text>
+        </TouchableOpacity>
+      )}
 
       {/* ── Unmatched ingredient category picker ── */}
       {pickerItem && (
@@ -986,6 +1061,8 @@ const sl = StyleSheet.create({
   catLabel:       { fontFamily: Fonts.bodyMedium, fontSize: 10, color: Colors.textMuted, letterSpacing: 1 },
   catBadge:       { backgroundColor: Colors.surfaceElevated, borderRadius: 100, paddingHorizontal: 7, paddingVertical: 1 },
   catCount:       { fontFamily: Fonts.body, fontSize: 10, color: Colors.textMuted },
+  revertBtn:      { marginLeft: 'auto', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 4, borderWidth: 1, borderColor: Colors.textMuted + '55' },
+  revertBtnText:  { fontFamily: Fonts.body, fontSize: 10, color: Colors.textMuted },
   row:            { flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.04)' },
   rowSwap:        { backgroundColor: 'rgba(212,168,67,0.07)', borderRadius: 6, paddingHorizontal: 6, borderLeftWidth: 2, borderLeftColor: Colors.gold },
   rowCrossed:     { backgroundColor: 'rgba(201,107,107,0.07)', borderRadius: 6, paddingHorizontal: 6, borderLeftWidth: 2, borderLeftColor: Colors.red },
@@ -1010,6 +1087,10 @@ const sl = StyleSheet.create({
   unmatchedIcon:    { fontSize: 11, color: Colors.red, fontFamily: Fonts.bodyMedium },
   nameUnmatched:    { color: Colors.red },
   unmatchedHint:    { fontFamily: Fonts.body, fontSize: 10, color: Colors.red, opacity: 0.7 },
+  deleteBtn:        { marginLeft: 'auto', paddingLeft: 8, paddingVertical: 4 },
+  deleteBtnText:    { fontSize: 13, color: Colors.textMuted },
+  addRow:           { flexDirection: 'row', alignItems: 'center', paddingVertical: 10, marginTop: 4 },
+  addRowText:       { fontFamily: Fonts.body, fontSize: 13, color: Colors.textMuted },
   editPencil:       { fontSize: 11, color: Colors.textMuted, fontFamily: Fonts.body },
   editRow:          { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.04)' },
   editFields:       { flex: 1, gap: 4 },
@@ -1267,6 +1348,34 @@ function RecipePanel({
                 try {
                   await updateDoc(doc(db, 'recipes', local._id), { ingredientNameOverrides: overrides });
                 } catch (e) { console.warn('Name override save failed:', e); }
+              }
+            }}
+            onAddIngredient={async (raw) => {
+              const ings = [...(local.ingredients ?? []), raw];
+              update({ ingredients: ings });
+              if (local._id) {
+                try {
+                  await updateDoc(doc(db, 'recipes', local._id), { ingredients: ings });
+                } catch (e) { console.warn('Add ingredient failed:', e); }
+              }
+            }}
+            onDeleteIngredient={async (rawIndex) => {
+              const ings = (local.ingredients ?? []).filter((_, i) => i !== rawIndex);
+              update({ ingredients: ings });
+              if (local._id) {
+                try {
+                  await updateDoc(doc(db, 'recipes', local._id), { ingredients: ings });
+                } catch (e) { console.warn('Delete ingredient failed:', e); }
+              }
+            }}
+            onRevertCategory={async (rawStrings) => {
+              const overrides = { ...(local.ingredientNameOverrides ?? {}) };
+              for (const raw of rawStrings) delete overrides[raw];
+              update({ ingredientNameOverrides: overrides });
+              if (local._id) {
+                try {
+                  await updateDoc(doc(db, 'recipes', local._id), { ingredientNameOverrides: overrides });
+                } catch (e) { console.warn('Revert category failed:', e); }
               }
             }}
           />
