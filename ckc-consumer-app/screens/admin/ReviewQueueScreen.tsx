@@ -1011,12 +1011,13 @@ function ShoppingList({
                         e.dataTransfer?.setData('text/plain', item.name);
                         const val = { name: item.name, fromCategory: cat.key };
                         draggingItemRef.current = val;
-                        setDraggingItem(val);
+                        // Defer state update so React re-render doesn't replace
+                        // event listeners mid-drag and break the drag operation
+                        setTimeout(() => setDraggingItem(val), 0);
                       };
                       node._de = () => {
                         draggingItemRef.current = null;
-                        setDraggingItem(null);
-                        setDragOverCategory(null);
+                        setTimeout(() => { setDraggingItem(null); setDragOverCategory(null); }, 0);
                       };
                       node.addEventListener('dragstart', node._ds);
                       node.addEventListener('dragend', node._de);
