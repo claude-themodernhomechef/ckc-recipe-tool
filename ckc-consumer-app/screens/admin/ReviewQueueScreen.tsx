@@ -1233,8 +1233,9 @@ function RecipePanel({
 }) {
   const [local, setLocal]           = useState<RecipeDoc>(recipe);
   const [activeDiet, setActiveDiet] = useState<Set<string>>(new Set());
+  const [confirmRevert, setConfirmRevert] = useState(false);
 
-  useEffect(() => { setLocal(recipe); setActiveDiet(new Set()); }, [recipe._id]);
+  useEffect(() => { setLocal(recipe); setActiveDiet(new Set()); setConfirmRevert(false); }, [recipe._id]);
 
   function update(fields: Partial<RecipeDoc>) {
     const extra: Partial<RecipeDoc> = {};
@@ -1499,25 +1500,27 @@ function RecipePanel({
         <Text style={pp.savingText}>{saving ? 'Saving…' : 'All changes auto-save'}</Text>
         <View style={pp.btns}>
           {(local.dietTagsOriginal || local.ingredientsOriginal) && (
-            <TouchableOpacity
-              style={pp.btnRevert}
-              onPress={() => Alert.alert(
-                'Revert All Changes',
-                'Restore diet notes and ingredients to their original state? This cannot be undone.',
-                [
-                  { text: 'Cancel', style: 'cancel' },
-                  { text: 'Revert', style: 'destructive', onPress: () => {
-                    const revertFields: Partial<RecipeDoc> = { ingredientNameOverrides: {} };
-                    if (local.dietTagsOriginal) revertFields.dietTags = local.dietTagsOriginal;
-                    if (local.ingredientsOriginal) revertFields.ingredients = local.ingredientsOriginal;
-                    update(revertFields);
-                  }},
-                ]
-              )}
-              activeOpacity={0.7}
-            >
-              <Text style={pp.btnRevertText}>↺ Revert All</Text>
-            </TouchableOpacity>
+            confirmRevert ? (
+              <View style={pp.confirmWrap}>
+                <Text style={pp.confirmText}>Revert all changes to original?</Text>
+                <TouchableOpacity style={pp.confirmYes} onPress={() => {
+                  const revertFields: Partial<RecipeDoc> = { ingredientNameOverrides: {} };
+                  if (local.dietTagsOriginal) revertFields.dietTags = local.dietTagsOriginal;
+                  if (local.ingredientsOriginal) revertFields.ingredients = local.ingredientsOriginal;
+                  update(revertFields);
+                  setConfirmRevert(false);
+                }} activeOpacity={0.7}>
+                  <Text style={pp.confirmYesText}>Yes, revert</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={pp.confirmNo} onPress={() => setConfirmRevert(false)} activeOpacity={0.7}>
+                  <Text style={pp.confirmNoText}>Cancel</Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <TouchableOpacity style={pp.btnRevert} onPress={() => setConfirmRevert(true)} activeOpacity={0.7}>
+                <Text style={pp.btnRevertText}>↺ Revert All</Text>
+              </TouchableOpacity>
+            )
           )}
           <TouchableOpacity style={pp.btnSkip} onPress={onSkip}>
             <Text style={pp.btnSkipText}>Skip</Text>
@@ -1593,6 +1596,12 @@ const pp = StyleSheet.create({
   btnApproveText:   { fontFamily: Fonts.bodyMedium, fontSize: 13, color: Colors.green },
   btnRevert:        { paddingHorizontal: 18, paddingVertical: 9, borderRadius: 100, borderWidth: 1, borderColor: Colors.textMuted, backgroundColor: 'transparent' },
   btnRevertText:    { fontFamily: Fonts.bodyMedium, fontSize: 13, color: Colors.textMuted },
+  confirmWrap:      { flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: Colors.surface, borderRadius: 10, paddingHorizontal: 12, paddingVertical: 8, borderWidth: 1, borderColor: Colors.red + '60' },
+  confirmText:      { fontFamily: Fonts.body, fontSize: 12, color: Colors.textSecondary },
+  confirmYes:       { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 100, backgroundColor: Colors.red + '22', borderWidth: 1, borderColor: Colors.red },
+  confirmYesText:   { fontFamily: Fonts.bodyMedium, fontSize: 12, color: Colors.red },
+  confirmNo:        { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 100, borderWidth: 1, borderColor: Colors.border },
+  confirmNoText:    { fontFamily: Fonts.bodyMedium, fontSize: 12, color: Colors.textMuted },
 });
 
 // ── Main screen ───────────────────────────────────────────────────────────────
