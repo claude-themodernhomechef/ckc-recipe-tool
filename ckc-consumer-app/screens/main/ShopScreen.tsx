@@ -100,6 +100,21 @@ interface RecipeMod {
 }
 
 // ─────────────────────────────────────────────
+//  Ingredient helpers
+// ─────────────────────────────────────────────
+
+function expandEachLine(raw: string): string[] {
+  const m = raw.match(/^((?:[\d\s/½¼¾⅓⅔.]+\s*(?:tbsp|tsp|tablespoons?|teaspoons?|cups?|oz|lb|g|ml)\.?\s+)?)each[:\s]+(.+)$/i);
+  if (!m) return [raw];
+  const qty = m[1].trim();
+  const rest = m[2].trim();
+  if (!/[,;&]|\band\b/i.test(rest)) return [raw];
+  const items = rest.split(/[,;]|\band\b/i).map((s: string) => s.trim()).filter(Boolean);
+  if (items.length <= 1) return [raw];
+  return items.map((item: string) => qty ? `${qty} ${item}` : item);
+}
+
+// ─────────────────────────────────────────────
 //  Ingredient aggregation
 // ─────────────────────────────────────────────
 
@@ -117,7 +132,10 @@ function aggregateIngredients(
 
     const scale = menuItem.servings;
 
-    for (const ing of recipe.ingredients) {
+    for (const ingRaw of recipe.ingredients) {
+      // Expand "each:" lines: "¼ tsp each: paprika, thyme" → ["¼ tsp paprika", "¼ tsp thyme"]
+      const ingsToProcess: (typeof ingRaw)[] = typeof ingRaw === 'string' ? expandEachLine(ingRaw) : [ingRaw];
+      for (const ing of ingsToProcess) {
       // Sample data has string[] ingredients; Firestore data will have structured objects.
       // Handle both gracefully.
       let parsed;
@@ -154,6 +172,7 @@ function aggregateIngredients(
           sources:  [menuItem.recipeName],
         });
       }
+      } // end expandEachLine loop
     }
   }
 

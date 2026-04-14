@@ -538,6 +538,25 @@ function fuzzyMatch(term: string, name: string): boolean {
   return b.includes(a) || a.includes(b) || bFlat.includes(aFlat) || aFlat.includes(bFlat);
 }
 
+// ── Shopping list helpers ──────────────────────────────────────────────────────
+
+/**
+ * Expands "each:" lines into individual ingredient strings.
+ * "¼ tsp each: paprika, onion powder, rosemary" → ["¼ tsp paprika", "¼ tsp onion powder", "¼ tsp rosemary"]
+ * If no comma/semicolon delimiters are found, returns the original string unchanged.
+ */
+function expandEachLine(raw: string): string[] {
+  const m = raw.match(/^((?:[\d\s/½¼¾⅓⅔.]+\s*(?:tbsp|tsp|tablespoons?|teaspoons?|cups?|oz|lb|g|ml)\.?\s+)?)each[:\s]+(.+)$/i);
+  if (!m) return [raw];
+  const qty = m[1].trim();
+  const rest = m[2].trim();
+  // Only split when explicit delimiters are present; otherwise can't reliably parse multi-word names
+  if (!/[,;&]|\band\b/i.test(rest)) return [raw];
+  const items = rest.split(/[,;]|\band\b/i).map(s => s.trim()).filter(Boolean);
+  if (items.length <= 1) return [raw];
+  return items.map(item => qty ? `${qty} ${item}` : item);
+}
+
 // ── Shopping list ─────────────────────────────────────────────────────────────
 
 type IngItem = {
@@ -573,20 +592,25 @@ function ShoppingList({
   const [pickerItem, setPickerItem] = useState<{ name: string; category: string } | null>(null);
   const [savingCategory, setSavingCategory] = useState(false);
 
-  // Parse all ingredients into base items (keep original index for editing)
+  // Parse all ingredients into base items (keep original index for editing).
+  // "each:" lines are expanded first: "¼ tsp each: paprika, thyme" → two rows, both pointing to the same rawIndex.
   const baseItems = useMemo((): { qty: number; unit: string; name: string; category: string; matched: boolean; rawIndex: number; raw: string; qtyOverride?: string }[] => {
-    return ingredients
-      .map((raw, rawIndex) => {
-        if (!raw.trim()) return null;
+    const result: { qty: number; unit: string; name: string; category: string; matched: boolean; rawIndex: number; raw: string; qtyOverride?: string }[] = [];
+    for (let rawIndex = 0; rawIndex < ingredients.length; rawIndex++) {
+      const original = ingredients[rawIndex];
+      if (!original.trim()) continue;
+      const expanded = expandEachLine(original);
+      for (const raw of expanded) {
         const p = parseIngredient(raw);
-        if (!p.name) return null;
+        if (!p.name) continue;
         const { category, matched } = categorizeIngredientWithMatch(p.name);
         const override = ingredientNameOverrides?.[raw];
-        const name       = override?.name ?? p.name;
+        const name      = override?.name ?? p.name;
         const qtyOverride = override?.qty;
-        return { qty: p.qty ?? 0, unit: p.unit ?? '', name, category, matched, rawIndex, raw, qtyOverride };
-      })
-      .filter(Boolean) as { qty: number; unit: string; name: string; category: string; matched: boolean; rawIndex: number; raw: string; qtyOverride?: string }[];
+        result.push({ qty: p.qty ?? 0, unit: p.unit ?? '', name, category, matched, rawIndex, raw, qtyOverride });
+      }
+    }
+    return result;
   }, [ingredients, savedIngredients, ingredientNameOverrides]);
 
   // Build swap map from active diet modification notes (notes-based swaps only)
