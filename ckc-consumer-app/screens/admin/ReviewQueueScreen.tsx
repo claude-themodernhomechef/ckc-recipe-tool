@@ -768,24 +768,27 @@ function ShoppingList({
           ref={(el: any) => {
             const node = el?._nativeTag ?? el;
             if (!node?.addEventListener) return;
-            // Remove old listeners before re-attaching to avoid duplicates
-            node._dragHandlersAttached = node._dragHandlersAttached || false;
-            if (node._dragHandlersAttached) return;
-            node._dragHandlersAttached = true;
-            node.addEventListener('dragover', (e: DragEvent) => {
+            // Always replace listeners so re-renders get fresh closures (cat.key, saveCategory)
+            if (node._dov) node.removeEventListener('dragover', node._dov);
+            if (node._dlv) node.removeEventListener('dragleave', node._dlv);
+            if (node._drp) node.removeEventListener('drop', node._drp);
+            node._dov = (e: DragEvent) => {
               e.preventDefault();
               const di = draggingItemRef.current;
               if (di && di.fromCategory !== cat.key) setDragOverCategory(cat.key);
-            });
-            node.addEventListener('dragleave', () => setDragOverCategory(null));
-            node.addEventListener('drop', (e: DragEvent) => {
+            };
+            node._dlv = () => setDragOverCategory(null);
+            node._drp = (e: DragEvent) => {
               e.preventDefault();
               setDragOverCategory(null);
               const di = draggingItemRef.current;
               if (di && di.fromCategory !== cat.key) saveCategory(di.name, cat.key);
               draggingItemRef.current = null;
               setDraggingItem(null);
-            });
+            };
+            node.addEventListener('dragover', node._dov);
+            node.addEventListener('dragleave', node._dlv);
+            node.addEventListener('drop', node._drp);
           }}
         >
           <View style={sl.catHeader}>
@@ -979,20 +982,23 @@ function ShoppingList({
                     ref={(el: any) => {
                       const node = el?._nativeTag ?? el;
                       if (!node?.addEventListener) return;
-                      if (node._dragHandlersAttached) return;
-                      node._dragHandlersAttached = true;
+                      // Always replace listeners so re-renders get fresh closures
+                      if (node._ds) node.removeEventListener('dragstart', node._ds);
+                      if (node._de) node.removeEventListener('dragend', node._de);
                       node.setAttribute('draggable', 'true');
-                      node.addEventListener('dragstart', (e: DragEvent) => {
+                      node._ds = (e: DragEvent) => {
                         e.dataTransfer?.setData('text/plain', item.name);
                         const val = { name: item.name, fromCategory: cat.key };
                         draggingItemRef.current = val;
                         setDraggingItem(val);
-                      });
-                      node.addEventListener('dragend', () => {
+                      };
+                      node._de = () => {
                         draggingItemRef.current = null;
                         setDraggingItem(null);
                         setDragOverCategory(null);
-                      });
+                      };
+                      node.addEventListener('dragstart', node._ds);
+                      node.addEventListener('dragend', node._de);
                     }}
                   >
                     <Text style={sl.dragHandleText}>⠿</Text>
