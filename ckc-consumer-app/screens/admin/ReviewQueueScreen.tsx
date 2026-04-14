@@ -110,7 +110,7 @@ interface RecipeDoc {
   rating?:           string;
   servings?:         string | number;
   ingredients?:             string[];
-  ingredientNameOverrides?: Record<string, string>; // raw ingredient string → display name override
+  ingredientNameOverrides?: Record<string, { name?: string; qty?: string }>; // raw → display overrides
   chefNotes?:               string;
   dietTags?:                Record<string, DietTagData>;
   reviewItems?:             ReviewItem[];
@@ -543,6 +543,7 @@ function fuzzyMatch(term: string, name: string): boolean {
 type IngItem = {
   qty: number; unit: string; name: string; category: string;
   _type: 'normal' | 'swap' | 'crossed';
+  _qtyOverride?: string;  // display override for qty (e.g. "¼ tsp", "1½ lb")
   _swapFor?: string;
   _swapTo?:  string;
   _protocol?: string;
@@ -557,14 +558,15 @@ function ShoppingList({
   ingredients, ingredientNameOverrides, dietTags, activeDietFilter, onSaveNameOverride, onEditSwap,
 }: {
   ingredients: string[];
-  ingredientNameOverrides?: Record<string, string>;
+  ingredientNameOverrides?: Record<string, { name?: string; qty?: string }>;
   dietTags?: Record<string, DietTagData>;
   activeDietFilter: Set<string>;
-  onSaveNameOverride?: (raw: string, displayName: string) => void;
+  onSaveNameOverride?: (raw: string, overrides: { name?: string; qty?: string }) => void;
   onEditSwap?: (protocol: string, oldSwapText: string, newSwapText: string) => void;
 }) {
   const [editingIdx, setEditingIdx]         = useState<number | null>(null);
-  const [editingVal, setEditingVal]         = useState('');
+  const [editingName, setEditingName]       = useState('');
+  const [editingQty, setEditingQty]         = useState('');
   const [editingSwapKey, setEditingSwapKey] = useState<string | null>(null); // `${protocol}-${swapFor}`
   const [editingSwapVal, setEditingSwapVal] = useState('');
   const [savedIngredients, setSavedIngredients] = useState<Set<string>>(new Set());
@@ -572,18 +574,19 @@ function ShoppingList({
   const [savingCategory, setSavingCategory] = useState(false);
 
   // Parse all ingredients into base items (keep original index for editing)
-  const baseItems = useMemo((): { qty: number; unit: string; name: string; category: string; matched: boolean; rawIndex: number; raw: string }[] => {
+  const baseItems = useMemo((): { qty: number; unit: string; name: string; category: string; matched: boolean; rawIndex: number; raw: string; qtyOverride?: string }[] => {
     return ingredients
       .map((raw, rawIndex) => {
         if (!raw.trim()) return null;
         const p = parseIngredient(raw);
         if (!p.name) return null;
         const { category, matched } = categorizeIngredientWithMatch(p.name);
-        // Use saved Firestore override if present, otherwise parser output
-        const name = ingredientNameOverrides?.[raw] ?? p.name;
-        return { qty: p.qty ?? 0, unit: p.unit ?? '', name, category, matched, rawIndex, raw };
+        const override = ingredientNameOverrides?.[raw];
+        const name       = override?.name ?? p.name;
+        const qtyOverride = override?.qty;
+        return { qty: p.qty ?? 0, unit: p.unit ?? '', name, category, matched, rawIndex, raw, qtyOverride };
       })
-      .filter(Boolean) as { qty: number; unit: string; name: string; category: string; matched: boolean; rawIndex: number; raw: string }[];
+      .filter(Boolean) as { qty: number; unit: string; name: string; category: string; matched: boolean; rawIndex: number; raw: string; qtyOverride?: string }[];
   }, [ingredients, savedIngredients, ingredientNameOverrides]);
 
   // Build swap map from active diet modification notes (notes-based swaps only)
@@ -668,7 +671,7 @@ function ShoppingList({
           map[cat].push(row);
           placed.set(key, row);
         } else {
-          const row: IngItem = { ...item, _type: 'normal', _matched: item.matched, _rawIndex: item.rawIndex, _raw: item.raw };
+          const row: IngItem = { ...item, _type: 'normal', _matched: item.matched, _rawIndex: item.rawIndex, _raw: item.raw, _qtyOverride: item.qtyOverride };
           map[cat].push(row);
           placed.set(key, row);
         }
@@ -815,25 +818,33 @@ function ShoppingList({
             if (isEditing) {
               return (
                 <View key={key} style={sl.editRow}>
-                  <View style={sl.editFields}>
-                    <TextInput
-                      style={sl.editInput}
-                      value={editingVal}
-                      onChangeText={setEditingVal}
-                      autoFocus
-                      selectTextOnFocus
-                      placeholder="Display name for shopping list…"
-                      placeholderTextColor={Colors.textMuted}
-                    />
-                    <Text style={sl.editHint}>Override how this ingredient appears on the shopping list. Recipe data is not changed.</Text>
-                  </View>
+                  <TextInput
+                    style={[sl.editInput, sl.editQtyInput]}
+                    value={editingQty}
+                    onChangeText={setEditingQty}
+                    autoFocus
+                    selectTextOnFocus
+                    placeholder="Qty"
+                    placeholderTextColor={Colors.textMuted}
+                  />
+                  <TextInput
+                    style={[sl.editInput, sl.editNameInput]}
+                    value={editingName}
+                    onChangeText={setEditingName}
+                    selectTextOnFocus
+                    placeholder="Ingredient name"
+                    placeholderTextColor={Colors.textMuted}
+                  />
                   <TouchableOpacity
                     style={sl.editSave}
                     onPress={() => {
-                      const displayName = editingVal.trim();
-                      if (item._raw !== undefined && displayName) {
-                        // Save display name override — does NOT modify the recipe ingredient
-                        onSaveNameOverride?.(item._raw, displayName);
+                      if (item._raw !== undefined) {
+                        const overrides: { name?: string; qty?: string } = {};
+                        if (editingName.trim()) overrides.name = editingName.trim();
+                        if (editingQty.trim())  overrides.qty  = editingQty.trim();
+                        if (Object.keys(overrides).length > 0) {
+                          onSaveNameOverride?.(item._raw, overrides);
+                        }
                       }
                       setEditingIdx(null);
                     }}
@@ -856,12 +867,12 @@ function ShoppingList({
                 style={[sl.row, isUnmatched && sl.rowUnmatched]}
                 onPress={() => {
                   if (isUnmatched) {
-                    // Open category picker directly for unmatched items
                     setPickerItem({ name: item.name, category: item.category ?? 'pantry-staples' });
                   } else if (item._rawIndex !== undefined) {
                     setEditingIdx(item._rawIndex);
-                    // Pre-fill with current display name (override or parser output) — not the raw
-                    setEditingVal(item.name);
+                    // Pre-fill qty and name with current display values
+                    setEditingQty(item._qtyOverride ?? (item.qty ? fmtQty(item.qty, item.unit, item.category) : item.unit || ''));
+                    setEditingName(item.name);
                   }
                 }}
                 activeOpacity={0.7}
@@ -870,7 +881,7 @@ function ShoppingList({
                   {isUnmatched && <Text style={sl.unmatchedIcon}>?</Text>}
                 </View>
                 <Text style={sl.qty}>
-                  {item.qty ? fmtQty(item.qty, item.unit, item.category) : item.unit || ''}
+                  {item._qtyOverride ?? (item.qty ? fmtQty(item.qty, item.unit, item.category) : item.unit || '')}
                 </Text>
                 <Text style={[sl.name, isUnmatched && sl.nameUnmatched]}>{item.name}</Text>
               </TouchableOpacity>
@@ -954,6 +965,8 @@ const sl = StyleSheet.create({
   editRow:          { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.04)' },
   editFields:       { flex: 1, gap: 4 },
   editInput:        { backgroundColor: Colors.surfaceElevated, borderWidth: 1, borderColor: Colors.borderActive, borderRadius: 6, paddingHorizontal: 10, paddingVertical: 7, fontFamily: Fonts.body, fontSize: 14, color: Colors.textPrimary },
+  editQtyInput:     { width: 80, flexShrink: 0 },
+  editNameInput:    { flex: 1 },
   editHint:         { fontFamily: Fonts.body, fontSize: 10, color: Colors.textMuted, paddingHorizontal: 2 },
   editSave:         { paddingHorizontal: 12, paddingVertical: 7, backgroundColor: Colors.green + '22', borderRadius: 6, borderWidth: 1, borderColor: Colors.green },
   editSaveText:     { fontFamily: Fonts.bodyMedium, fontSize: 12, color: Colors.green },
@@ -1196,8 +1209,8 @@ function RecipePanel({
                 } catch (e) { console.warn('Swap note save failed:', e); }
               }
             }}
-            onSaveNameOverride={async (raw, displayName) => {
-              const overrides = { ...(local.ingredientNameOverrides ?? {}), [raw]: displayName };
+            onSaveNameOverride={async (raw, override) => {
+              const overrides = { ...(local.ingredientNameOverrides ?? {}), [raw]: override };
               update({ ingredientNameOverrides: overrides });
               if (local._id) {
                 try {
