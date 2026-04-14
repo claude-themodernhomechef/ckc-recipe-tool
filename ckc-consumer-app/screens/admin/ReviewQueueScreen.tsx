@@ -816,6 +816,37 @@ function ShoppingList({
             const isEditing = editingIdx === item._rawIndex;
 
             if (isEditing) {
+              // Use a ref-based blur timer so tabbing between the two fields doesn't
+              // accidentally trigger a save mid-edit (cancel on focus, fire on true blur).
+              const blurTimer = { current: null as ReturnType<typeof setTimeout> | null };
+              const onFieldBlur = () => {
+                blurTimer.current = setTimeout(() => {
+                  if (item._raw !== undefined) {
+                    const overrides: { name?: string; qty?: string } = {};
+                    if (editingName.trim()) overrides.name = editingName.trim();
+                    if (editingQty.trim())  overrides.qty  = editingQty.trim();
+                    if (Object.keys(overrides).length > 0) {
+                      onSaveNameOverride?.(item._raw, overrides);
+                    }
+                  }
+                  setEditingIdx(null);
+                }, 150);
+              };
+              const onFieldFocus = () => {
+                if (blurTimer.current) clearTimeout(blurTimer.current);
+              };
+              const commitEdit = () => {
+                if (blurTimer.current) clearTimeout(blurTimer.current);
+                if (item._raw !== undefined) {
+                  const overrides: { name?: string; qty?: string } = {};
+                  if (editingName.trim()) overrides.name = editingName.trim();
+                  if (editingQty.trim())  overrides.qty  = editingQty.trim();
+                  if (Object.keys(overrides).length > 0) {
+                    onSaveNameOverride?.(item._raw, overrides);
+                  }
+                }
+                setEditingIdx(null);
+              };
               return (
                 <View key={key} style={sl.editRow}>
                   <TextInput
@@ -826,6 +857,10 @@ function ShoppingList({
                     selectTextOnFocus
                     placeholder="Qty"
                     placeholderTextColor={Colors.textMuted}
+                    returnKeyType="next"
+                    onSubmitEditing={commitEdit}
+                    onFocus={onFieldFocus}
+                    onBlur={onFieldBlur}
                   />
                   <TextInput
                     style={[sl.editInput, sl.editNameInput]}
@@ -834,20 +869,14 @@ function ShoppingList({
                     selectTextOnFocus
                     placeholder="Ingredient name"
                     placeholderTextColor={Colors.textMuted}
+                    returnKeyType="done"
+                    onSubmitEditing={commitEdit}
+                    onFocus={onFieldFocus}
+                    onBlur={onFieldBlur}
                   />
                   <TouchableOpacity
                     style={sl.editSave}
-                    onPress={() => {
-                      if (item._raw !== undefined) {
-                        const overrides: { name?: string; qty?: string } = {};
-                        if (editingName.trim()) overrides.name = editingName.trim();
-                        if (editingQty.trim())  overrides.qty  = editingQty.trim();
-                        if (Object.keys(overrides).length > 0) {
-                          onSaveNameOverride?.(item._raw, overrides);
-                        }
-                      }
-                      setEditingIdx(null);
-                    }}
+                    onPress={commitEdit}
                   >
                     <Text style={sl.editSaveText}>Save</Text>
                   </TouchableOpacity>
