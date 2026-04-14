@@ -12,7 +12,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Fonts } from '../constants/theme';
 import { fetchCatalogRecipes } from '../lib/firestore';
-import { normalizeIngredient } from '../lib/ingredientParser';
+import { normalizeIngredient, parseIngredient } from '../lib/ingredientParser';
 
 // ── Ingredient categorisation ─────────────────────────────────────────────────
 
@@ -37,7 +37,7 @@ function toShoppingRecipe(r: { id: string; name: string; blogger: string; ingred
     blogger: r.blogger,
     ingredients: r.ingredients
       .filter(i => i && i.trim())
-      .map(i => { const norm = normalizeIngredient(i); return { name: norm, category: categorise(norm) }; }),
+      .map(i => { const { name } = parseIngredient(normalizeIngredient(i)); return { name, category: categorise(name) }; }),
   };
 }
 

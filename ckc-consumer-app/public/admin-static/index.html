@@ -84,7 +84,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:var(--bg);color:var(
 <div id="app">
   <div id="loading"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><div class="loading-text" id="loading-text">Loading recipes...</div></div>
   <div id="error-screen"><div class="error-title">Something went wrong</div><div class="error-msg" id="error-msg"></div><button class="error-btn" id="error-retry">Try again</button></div>
-  <div id="header"><div class="header-stats"><div class="stat-dot green" id="stat-yes">0</div><div class="stat-dot yellow" id="stat-maybe">0</div><div class="stat-dot red" id="stat-no">0</div></div><div class="nav-toggle"><a href="/admin" class="active">Swipe</a><a href="/admin/catalog">Catalog</a><a href="/admin/shopping">Shopping List</a></div><div class="header-progress" id="progress"></div></div>
+  <div id="header"><div class="header-stats"><div class="stat-dot green" id="stat-yes">0</div><div class="stat-dot yellow" id="stat-maybe">0</div><div class="stat-dot red" id="stat-no">0</div></div><div class="nav-toggle"><a href="/admin" class="active">Swipe</a><a href="/admin/catalog">Catalog</a><a href="/admin/shopping">Shopping List</a><a href="/admin/review-queue">Review Queue</a></div><div class="header-progress" id="progress"></div></div>
   <div id="card-area"><div class="card-stack" id="card-stack"></div><div id="swipe-hint">swipe right yes &nbsp;·&nbsp; left no &nbsp;·&nbsp; up maybe</div></div>
   <div id="done-screen">
     <div class="done-title">All done.</div>
@@ -94,7 +94,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:var(--bg);color:var(
       <div class="done-stat yellow"><span class="done-num" id="final-maybe">0</span><span class="done-label">Maybe</span></div>
       <div class="done-stat red"><span class="done-num" id="final-no">0</span><span class="done-label">No</span></div>
     </div>
-    <p class="done-note">Decisions synced. Export CSV to import into your sheet.</p>
+    <p class="done-note">Decisions synced. Yes picks are waiting in <a href="/admin/review-queue" style="color:var(--yellow);text-decoration:none">Review Queue</a> — approve before they go live to consumers.</p>
     <div class="done-actions">
       <button class="export-btn" id="export-btn">Download Decisions CSV</button>
       <button class="reset-btn"  id="reset-btn">Back to start</button>
@@ -128,7 +128,7 @@ const $ = id => document.getElementById(id);
 
 // ── Firestore helpers ─────────────────────────────────
 function fsWriteDecision(recipe, action){
-  // Update status on the existing recipe doc (no new decisions collection)
+  // YES → triggers enrichment cloud function automatically; after enrichment → needs_review
   if(!recipe._docId) return;
   db.collection('recipes').doc(recipe._docId).update({
     status:    action,
