@@ -972,13 +972,20 @@ function ShoppingList({
                   }
                 }}
                 activeOpacity={0.7}
-                {...(isDraggable ? {
-                  draggable: true,
-                  onDragStart: () => setDraggingItem({ name: item.name, fromCategory: cat.key }),
-                  onDragEnd:   () => { setDraggingItem(null); setDragOverCategory(null); },
-                } : {})}
               >
-                {isDraggable && <Text style={sl.dragHandle}>⠿</Text>}
+                {/* Drag handle — only this element is draggable, keeping clicks on the row clean */}
+                {isDraggable && (
+                  <View
+                    style={sl.dragHandle}
+                    {...{
+                      draggable: true,
+                      onDragStart: (e: any) => { e.stopPropagation(); setDraggingItem({ name: item.name, fromCategory: cat.key }); },
+                      onDragEnd:   () => { setDraggingItem(null); setDragOverCategory(null); },
+                    }}
+                  >
+                    <Text style={sl.dragHandleText}>⠿</Text>
+                  </View>
+                )}
                 <View style={[sl.checkbox, isUnmatched && sl.checkboxUnmatched]}>
                   {isUnmatched && <Text style={sl.unmatchedIcon}>?</Text>}
                 </View>
@@ -1126,7 +1133,8 @@ const sl = StyleSheet.create({
   unmatchedHint:    { fontFamily: Fonts.body, fontSize: 10, color: Colors.red, opacity: 0.7 },
   deleteBtn:        { marginLeft: 'auto', paddingLeft: 8, paddingVertical: 4 },
   deleteBtnText:    { fontSize: 13, color: Colors.textMuted },
-  dragHandle:       { fontSize: 14, color: Colors.textMuted, paddingRight: 6, cursor: 'grab' } as any,
+  dragHandle:       { paddingRight: 6, justifyContent: 'center', cursor: 'grab' } as any,
+  dragHandleText:   { fontSize: 14, color: Colors.textMuted },
   rowDragging:      { opacity: 0.4 },
   categoryDropTarget: { borderWidth: 1.5, borderColor: Colors.gold, borderRadius: 8, paddingHorizontal: 8, backgroundColor: Colors.gold + '0a' },
   catAddBtn:        { marginLeft: 6, paddingHorizontal: 7, paddingVertical: 1, borderRadius: 4, borderWidth: 1, borderColor: Colors.border },
