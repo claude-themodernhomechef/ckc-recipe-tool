@@ -582,7 +582,7 @@ function ShoppingList({
   activeDietFilter: Set<string>;
   onSaveNameOverride?: (raw: string, overrides: { name?: string; qty?: string }) => void;
   onEditSwap?: (protocol: string, oldSwapText: string, newSwapText: string) => void;
-  onAddIngredient?: (raw: string) => void;
+  onAddIngredient?: (raw: string, category?: string) => void;
   onDeleteIngredient?: (rawIndex: number) => void;
   onRevertCategory?: (rawStrings: string[]) => void;
 }) {
@@ -594,9 +594,12 @@ function ShoppingList({
   const [savedIngredients, setSavedIngredients] = useState<Set<string>>(new Set());
   const [pickerItem, setPickerItem] = useState<{ name: string; category: string } | null>(null);
   const [savingCategory, setSavingCategory] = useState(false);
-  const [addingNew, setAddingNew]           = useState(false);
+  // addingNewCategory: which category section is open for inline add (null = none)
+  const [addingNewCategory, setAddingNewCategory] = useState<string | null>(null);
   const [newQty, setNewQty]                 = useState('');
   const [newName, setNewName]               = useState('');
+  const [draggingItem, setDraggingItem]     = useState<{ name: string; fromCategory: string } | null>(null);
+  const [dragOverCategory, setDragOverCategory] = useState<string | null>(null);
 
   // Parse all ingredients into base items (keep original index for editing).
   // "each:" lines are expanded first: "¼ tsp each: paprika, thyme" → two rows, both pointing to the same rawIndex.
@@ -754,7 +757,22 @@ function ShoppingList({
   return (
     <View>
       {grouped.map(cat => (
-        <View key={cat.key} style={sl.category}>
+        <View
+          key={cat.key}
+          style={[sl.category, dragOverCategory === cat.key && draggingItem?.fromCategory !== cat.key && sl.categoryDropTarget]}
+          {...{
+            onDragOver: (e: any) => { e.preventDefault(); if (draggingItem && draggingItem.fromCategory !== cat.key) setDragOverCategory(cat.key); },
+            onDragLeave: () => setDragOverCategory(null),
+            onDrop: (e: any) => {
+              e.preventDefault();
+              setDragOverCategory(null);
+              if (draggingItem && draggingItem.fromCategory !== cat.key) {
+                saveCategory(draggingItem.name, cat.key);
+              }
+              setDraggingItem(null);
+            },
+          }}
+        >
           <View style={sl.catHeader}>
             <Text style={sl.catLabel}>{cat.label.toUpperCase()}</Text>
             <View style={sl.catBadge}><Text style={sl.catCount}>{cat.items.length}</Text></View>
@@ -772,6 +790,13 @@ function ShoppingList({
                 </TouchableOpacity>
               ) : null;
             })()}
+            <TouchableOpacity
+              style={sl.catAddBtn}
+              onPress={() => { setAddingNewCategory(cat.key); setNewQty(''); setNewName(''); }}
+              activeOpacity={0.7}
+            >
+              <Text style={sl.catAddBtnText}>+</Text>
+            </TouchableOpacity>
           </View>
           {cat.items.map((item, i) => {
             const key = `${cat.key}-${i}`;
@@ -930,10 +955,12 @@ function ShoppingList({
               );
             }
 
+            const isDraggable = item._type === 'normal' && !isUnmatched;
+            const isBeingDragged = draggingItem?.name === item.name && draggingItem?.fromCategory === cat.key;
             return (
               <TouchableOpacity
                 key={key}
-                style={[sl.row, isUnmatched && sl.rowUnmatched]}
+                style={[sl.row, isUnmatched && sl.rowUnmatched, isBeingDragged && sl.rowDragging]}
                 onPress={() => {
                   if (isUnmatched) {
                     setPickerItem({ name: item.name, category: item.category ?? 'pantry-staples' });
@@ -945,7 +972,13 @@ function ShoppingList({
                   }
                 }}
                 activeOpacity={0.7}
+                {...(isDraggable ? {
+                  draggable: true,
+                  onDragStart: () => setDraggingItem({ name: item.name, fromCategory: cat.key }),
+                  onDragEnd:   () => { setDraggingItem(null); setDragOverCategory(null); },
+                } : {})}
               >
+                {isDraggable && <Text style={sl.dragHandle}>⠿</Text>}
                 <View style={[sl.checkbox, isUnmatched && sl.checkboxUnmatched]}>
                   {isUnmatched && <Text style={sl.unmatchedIcon}>?</Text>}
                 </View>
@@ -966,53 +999,57 @@ function ShoppingList({
               </TouchableOpacity>
             );
           })}
+
+          {/* ── Per-category inline add ── */}
+          {addingNewCategory === cat.key ? (
+            <View style={sl.editRow}>
+              <TextInput
+                style={[sl.editInput, sl.editQtyInput, newQty.trim() === '' && sl.editInputWarning]}
+                value={newQty}
+                onChangeText={setNewQty}
+                autoFocus
+                placeholder="Qty"
+                placeholderTextColor={Colors.textMuted}
+                returnKeyType="next"
+              />
+              <TextInput
+                style={[sl.editInput, sl.editNameInput]}
+                value={newName}
+                onChangeText={setNewName}
+                placeholder="Ingredient name"
+                placeholderTextColor={Colors.textMuted}
+                returnKeyType="done"
+                onSubmitEditing={() => {
+                  const raw = [newQty.trim(), newName.trim()].filter(Boolean).join(' ');
+                  if (raw) {
+                    onAddIngredient?.(raw, cat.key);
+                    const n = parseIngredient(raw).name;
+                    if (n) saveCategory(n, cat.key);
+                  }
+                  setAddingNewCategory(null); setNewQty(''); setNewName('');
+                }}
+              />
+              <TouchableOpacity
+                style={sl.editSave}
+                onPress={() => {
+                  const raw = [newQty.trim(), newName.trim()].filter(Boolean).join(' ');
+                  if (raw) {
+                    onAddIngredient?.(raw, cat.key);
+                    const n = parseIngredient(raw).name;
+                    if (n) saveCategory(n, cat.key);
+                  }
+                  setAddingNewCategory(null); setNewQty(''); setNewName('');
+                }}
+              >
+                <Text style={sl.editSaveText}>Add</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={sl.editCancel} onPress={() => { setAddingNewCategory(null); setNewQty(''); setNewName(''); }}>
+                <Text style={sl.editCancelText}>✕</Text>
+              </TouchableOpacity>
+            </View>
+          ) : null}
         </View>
       ))}
-
-      {/* ── Add ingredient row ── */}
-      {addingNew ? (
-        <View style={sl.editRow}>
-          <TextInput
-            style={[sl.editInput, sl.editQtyInput, newQty.trim() === '' && sl.editInputWarning]}
-            value={newQty}
-            onChangeText={setNewQty}
-            autoFocus
-            placeholder="Qty"
-            placeholderTextColor={Colors.textMuted}
-            returnKeyType="next"
-          />
-          <TextInput
-            style={[sl.editInput, sl.editNameInput]}
-            value={newName}
-            onChangeText={setNewName}
-            placeholder="Ingredient name"
-            placeholderTextColor={Colors.textMuted}
-            returnKeyType="done"
-            onSubmitEditing={() => {
-              const raw = [newQty.trim(), newName.trim()].filter(Boolean).join(' ');
-              if (raw) { onAddIngredient?.(raw); }
-              setAddingNew(false); setNewQty(''); setNewName('');
-            }}
-          />
-          <TouchableOpacity
-            style={sl.editSave}
-            onPress={() => {
-              const raw = [newQty.trim(), newName.trim()].filter(Boolean).join(' ');
-              if (raw) { onAddIngredient?.(raw); }
-              setAddingNew(false); setNewQty(''); setNewName('');
-            }}
-          >
-            <Text style={sl.editSaveText}>Add</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={sl.editCancel} onPress={() => { setAddingNew(false); setNewQty(''); setNewName(''); }}>
-            <Text style={sl.editCancelText}>✕</Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <TouchableOpacity style={sl.addRow} onPress={() => setAddingNew(true)} activeOpacity={0.7}>
-          <Text style={sl.addRowText}>+ Add ingredient</Text>
-        </TouchableOpacity>
-      )}
 
       {/* ── Unmatched ingredient category picker ── */}
       {pickerItem && (
@@ -1089,8 +1126,11 @@ const sl = StyleSheet.create({
   unmatchedHint:    { fontFamily: Fonts.body, fontSize: 10, color: Colors.red, opacity: 0.7 },
   deleteBtn:        { marginLeft: 'auto', paddingLeft: 8, paddingVertical: 4 },
   deleteBtnText:    { fontSize: 13, color: Colors.textMuted },
-  addRow:           { flexDirection: 'row', alignItems: 'center', paddingVertical: 10, marginTop: 4 },
-  addRowText:       { fontFamily: Fonts.body, fontSize: 13, color: Colors.textMuted },
+  dragHandle:       { fontSize: 14, color: Colors.textMuted, paddingRight: 6, cursor: 'grab' } as any,
+  rowDragging:      { opacity: 0.4 },
+  categoryDropTarget: { borderWidth: 1.5, borderColor: Colors.gold, borderRadius: 8, paddingHorizontal: 8, backgroundColor: Colors.gold + '0a' },
+  catAddBtn:        { marginLeft: 6, paddingHorizontal: 7, paddingVertical: 1, borderRadius: 4, borderWidth: 1, borderColor: Colors.border },
+  catAddBtnText:    { fontFamily: Fonts.body, fontSize: 14, color: Colors.textMuted, lineHeight: 18 },
   editPencil:       { fontSize: 11, color: Colors.textMuted, fontFamily: Fonts.body },
   editRow:          { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.04)' },
   editFields:       { flex: 1, gap: 4 },
@@ -1350,7 +1390,7 @@ function RecipePanel({
                 } catch (e) { console.warn('Name override save failed:', e); }
               }
             }}
-            onAddIngredient={async (raw) => {
+            onAddIngredient={async (raw, _category) => {
               const ings = [...(local.ingredients ?? []), raw];
               update({ ingredients: ings });
               if (local._id) {
