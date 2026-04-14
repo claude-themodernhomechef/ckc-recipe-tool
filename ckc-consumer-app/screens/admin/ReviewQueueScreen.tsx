@@ -967,7 +967,7 @@ function ShoppingList({
                     style={sl.dragHandle}
                     {...{
                       draggable: true,
-                      onDragStart: (e: any) => { e.preventDefault(); e.dataTransfer?.setData('text/plain', item.name); setDraggingItem({ name: item.name, fromCategory: cat.key }); },
+                      onDragStart: (e: any) => { e.dataTransfer?.setData('text/plain', item.name); setDraggingItem({ name: item.name, fromCategory: cat.key }); },
                       onDragEnd:   () => { setDraggingItem(null); setDragOverCategory(null); },
                     }}
                   >
@@ -1136,7 +1136,7 @@ const sl = StyleSheet.create({
   deleteBtn:        { marginLeft: 'auto', paddingLeft: 8, paddingVertical: 4 },
   deleteBtnText:    { fontSize: 13, color: Colors.textMuted },
   rowWrap:          { flexDirection: 'row', alignItems: 'center' },
-  dragHandle:       { paddingHorizontal: 6, paddingVertical: 10, justifyContent: 'center', cursor: 'grab' } as any,
+  dragHandle:       { paddingHorizontal: 6, paddingVertical: 10, justifyContent: 'center', cursor: 'grab', userSelect: 'none' } as any,
   dragHandleText:   { fontSize: 14, color: Colors.textMuted },
   rowDragging:      { opacity: 0.4 },
   categoryDropTarget: { borderWidth: 1.5, borderColor: Colors.gold, borderRadius: 8, paddingHorizontal: 8, backgroundColor: Colors.gold + '0a' },
