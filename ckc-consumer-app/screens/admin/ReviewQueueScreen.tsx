@@ -559,7 +559,9 @@ function parseSwapPairs(notes: string): Array<{ from: string; to: string | null 
 
 function fuzzyMatch(term: string, name: string): boolean {
   const clean = (x: string) =>
-    x.replace(/\b(cloves?|heads?|tbsp\s+of|tsp\s+of|cups?\s+of|\bof\b)\b/g, '')
+    x.toLowerCase()
+     // Strip spice/salt modifiers so "black pepper" → "pepper", "kosher salt" → "salt"
+     .replace(/\b(freshly\s+ground|cloves?|heads?|tbsp\s+of|tsp\s+of|cups?\s+of|\bof\b|black|white|ground|freshly|kosher|sea|fine|coarse|cracked)\b/g, '')
      .replace(/\s+/g, ' ').trim();
   const a = clean(term);
   const b = clean(name);
