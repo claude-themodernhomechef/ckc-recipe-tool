@@ -376,6 +376,26 @@ function DietCard({
                 placeholderTextColor={Colors.textMuted}
                 multiline
               />
+              {/* Live swap preview — shows what the parser extracts as you type */}
+              {notes.trim() ? (() => {
+                const pairs = parseSwapPairs(notes);
+                if (pairs.length === 0) return (
+                  <View style={dc.previewWarn}>
+                    <Text style={dc.previewWarnText}>⚠ No swaps detected. Use: Replace X with Y. / Use X instead of Y. / Remove X.</Text>
+                  </View>
+                );
+                return (
+                  <View style={dc.previewWrap}>
+                    {pairs.map((p, i) => (
+                      <Text key={i} style={dc.previewItem}>
+                        {p.to === null
+                          ? `✕  remove ${p.from}`
+                          : `⇄  ${p.from}  →  ${p.to}`}
+                      </Text>
+                    ))}
+                  </View>
+                );
+              })() : null}
               {originalTag && (
                 originalTag.notes !== tag?.notes ||
                 originalTag.native !== tag?.native ||
@@ -457,6 +477,12 @@ const dc = StyleSheet.create({
   noNotes:           { fontFamily: Fonts.body, fontSize: 13, color: Colors.textMuted, paddingTop: 4 },
   revertTagBtn:      { marginTop: 4, alignSelf: 'flex-end' },
   revertTagText:     { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted },
+
+  // Swap preview
+  previewWrap:       { marginTop: 6, paddingHorizontal: 8, paddingVertical: 6, backgroundColor: Colors.bg, borderRadius: 6, borderWidth: 1, borderColor: Colors.border },
+  previewItem:       { fontFamily: Fonts.body, fontSize: 11, color: Colors.green, lineHeight: 18 },
+  previewWarn:       { marginTop: 6, paddingHorizontal: 8, paddingVertical: 6, backgroundColor: Colors.bg, borderRadius: 6, borderWidth: 1, borderColor: Colors.gold + '66' },
+  previewWarnText:   { fontFamily: Fonts.body, fontSize: 11, color: Colors.gold },
 
   // Flag rows
   flagRow:           { marginLeft: 8, marginBottom: 12, padding: 12, backgroundColor: Colors.surface, borderRadius: 8, borderWidth: 1, borderColor: Colors.gold + '44', gap: 6 },
