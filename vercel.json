@@ -2,11 +2,6 @@
   "buildCommand": "cd ckc-consumer-app && rm -rf node_modules && npm install && npx expo export --platform web",
   "outputDirectory": "ckc-consumer-app/dist",
   "rewrites": [
-    { "source": "/admin",              "destination": "/admin-static/index.html" },
-    { "source": "/admin/catalog",      "destination": "/admin-static/catalog.html" },
-    { "source": "/admin/shopping",     "destination": "/admin-static/shopping.html" },
-    { "source": "/admin/review-queue", "destination": "/admin-static/review-queue.html" },
-    { "source": "/admin/roadmap",      "destination": "/admin-static/roadmap.html" },
-    { "source": "/(.*)",               "destination": "/index.html" }
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
