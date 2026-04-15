@@ -717,12 +717,13 @@ function ShoppingList({
           }
         }
       } else {
-        // Category-level fallback: when a diet is active, flag ingredients in that
-        // diet's known problem categories. No mod check — if DF is native the recipe
-        // has no dairy anyway; if it does have dairy, flagging it is correct.
+        // Category-level fallback: only fires when the active diet has NO explicit notes.
+        // If notes exist, the note is authoritative — don't second-guess it with broad flags.
         let catFlag: { protocol: string; color: string } | null = null;
         if (activeDietFilter.size > 0) {
           for (const code of activeDietFilter) {
+            const tagNotes = dietTags?.[code]?.notes?.trim() ?? '';
+            if (tagNotes) continue; // explicit notes take full control — skip category flag
             const flagCats = DIET_CATEGORY_FLAGS[code] ?? [];
             if (flagCats.includes(cat)) {
               catFlag = { protocol: code, color: (DIET_COLORS as Record<string, string>)[code] ?? Colors.gold };
