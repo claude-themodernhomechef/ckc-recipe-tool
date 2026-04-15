@@ -1666,10 +1666,10 @@ const pp = StyleSheet.create({
 // ── Nutrition panel ───────────────────────────────────────────────────────────
 
 const MACRO_CONFIG = [
-  { key: 'calories', label: 'Calories', unit: 'kcal', goal: 2000, color: '#e07878' },
-  { key: 'protein',  label: 'Protein',  unit: 'g',    goal: 50,   color: '#9b8ee0' },
-  { key: 'fat',      label: 'Fat',      unit: 'g',    goal: 78,   color: '#c8b85a' },
-  { key: 'carbs',    label: 'Carbs',    unit: 'g',    goal: 275,  color: '#d4943a' },
+  { key: 'calories', label: 'Calories', goal: 2000, color: '#e05c5c', striped: false },
+  { key: 'protein',  label: 'Protein',  goal: 50,   color: '#9b8ee0', striped: false },
+  { key: 'fat',      label: 'Fat',      goal: 78,   color: '#c8d44a', striped: true  },
+  { key: 'carbs',    label: 'Carbs',    goal: 275,  color: '#aaaaaa', striped: true  },
 ] as const;
 
 function NutritionPanel({
@@ -1683,28 +1683,26 @@ function NutritionPanel({
 
   return (
     <View style={np.wrap}>
-      <View style={np.header}>
-        <Text style={np.title}>% DAILY GOALS</Text>
-        <Text style={np.subtitle}>
-          Per serving · {srvNum} serving{srvNum !== 1 ? 's' : ''} · based on 2,000 cal diet
-        </Text>
-      </View>
+      <Text style={np.title}>% Daily Goals</Text>
+      <Text style={np.subtitle}>Monitor calories, macros, and nutrients in your meals.</Text>
       {!hasData ? (
         <Text style={np.noData}>No nutrition data yet</Text>
       ) : (
         <View style={np.barsRow}>
-          {MACRO_CONFIG.map(({ key, label, unit, goal, color }) => {
-            const total     = (nutrition as Record<string, number | undefined>)?.[key] ?? 0;
+          {MACRO_CONFIG.map(({ key, label, goal, color, striped }) => {
+            const total      = (nutrition as Record<string, number | undefined>)?.[key] ?? 0;
             const perServing = total / srvNum;
-            const pct       = Math.min(Math.round((perServing / goal) * 100), 100);
+            const pct        = Math.min(Math.round((perServing / goal) * 100), 100);
+            const fillStyle  = striped
+              ? { width: `${pct}%` as any, backgroundImage: `repeating-linear-gradient(45deg, ${color} 0px, ${color} 3px, transparent 3px, transparent 8px)` } as any
+              : { width: `${pct}%` as any, backgroundColor: color };
             return (
               <View key={key} style={np.barWrap}>
                 <Text style={np.barLabel}>{label}</Text>
                 <View style={np.track}>
-                  <View style={[np.fill, { width: `${pct}%` as any, backgroundColor: color }]} />
+                  <View style={[np.fill, fillStyle]} />
                 </View>
                 <Text style={[np.barPct, { color }]}>{pct}%</Text>
-                <Text style={np.barVal}>{Math.round(perServing)}{unit}</Text>
               </View>
             );
           })}
@@ -1715,18 +1713,16 @@ function NutritionPanel({
 }
 
 const np = StyleSheet.create({
-  wrap:     { backgroundColor: Colors.surfaceElevated, borderRadius: 12, padding: 16, gap: 12 },
-  header:   { gap: 3 },
-  title:    { fontFamily: Fonts.bodyMedium, fontSize: 10, color: Colors.textMuted, letterSpacing: 1 },
-  subtitle: { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted },
+  wrap:     { backgroundColor: Colors.surfaceElevated, borderRadius: 12, padding: 16, gap: 10 },
+  title:    { fontFamily: Fonts.bodyMedium, fontSize: 13, color: Colors.textPrimary },
+  subtitle: { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted, marginBottom: 4 },
   noData:   { fontFamily: Fonts.body, fontSize: 12, color: Colors.textMuted, fontStyle: 'italic', textAlign: 'center', paddingVertical: 6 },
-  barsRow:  { flexDirection: 'row', gap: 14 },
-  barWrap:  { flex: 1, gap: 4 },
-  barLabel: { fontFamily: Fonts.bodyMedium, fontSize: 11, color: Colors.textSecondary },
-  track:    { height: 8, borderRadius: 4, backgroundColor: 'rgba(255,255,255,0.08)', overflow: 'hidden' },
-  fill:     { height: '100%', borderRadius: 4 },
+  barsRow:  { flexDirection: 'row', gap: 16 },
+  barWrap:  { flex: 1, gap: 6 },
+  barLabel: { fontFamily: Fonts.bodyMedium, fontSize: 12, color: Colors.textPrimary },
+  track:    { height: 10, borderRadius: 5, backgroundColor: 'rgba(255,255,255,0.10)', overflow: 'hidden' },
+  fill:     { height: '100%', borderRadius: 5 },
   barPct:   { fontFamily: Fonts.bodyMedium, fontSize: 13 },
-  barVal:   { fontFamily: Fonts.body, fontSize: 10, color: Colors.textMuted },
 });
 
 // ── Main screen ───────────────────────────────────────────────────────────────
