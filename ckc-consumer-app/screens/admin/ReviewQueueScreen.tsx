@@ -662,9 +662,9 @@ function ShoppingList({
   }, [ingredients, savedIngredients, ingredientNameOverrides]);
 
   // Build swap map from active diet modification notes (notes-based swaps only)
-  const swapMap = useMemo((): Map<string, { to: string | null; protocol: string; color: string }> => {
+  const swapMap = useMemo((): Map<string, { to: string | null; from: string; protocol: string; color: string }> => {
     if (activeDietFilter.size === 0 || !dietTags) return new Map();
-    const map = new Map<string, { to: string | null; protocol: string; color: string }>();
+    const map = new Map<string, { to: string | null; from: string; protocol: string; color: string }>();
     for (const code of activeDietFilter) {
       const tagData = dietTags[code];
       if (!tagData?.mod) continue;
@@ -675,7 +675,7 @@ function ShoppingList({
       for (const pair of pairs) {
         for (const item of baseItems) {
           if (fuzzyMatch(pair.from, item.name) && !map.has(item.name)) {
-            map.set(item.name, { to: pair.to, protocol: code, color });
+            map.set(item.name, { to: pair.to, from: pair.from, protocol: code, color });
           }
         }
       }
@@ -709,7 +709,7 @@ function ShoppingList({
         } else {
           const key = `${cat}::${item.name}`;
           if (!placed.has(key)) {
-            const row: IngItem = { ...item, _type: 'crossed', _protocol: swapInfo.protocol, _color: swapInfo.color, _isCategoryFlag: false, _rawIndex: item.rawIndex, _raw: item.raw, _uid: item.uid };
+            const row: IngItem = { ...item, _type: 'crossed', _protocol: swapInfo.protocol, _color: swapInfo.color, _isCategoryFlag: false, _swapFor: swapInfo.from, _rawIndex: item.rawIndex, _raw: item.raw, _uid: item.uid };
             map[cat].push(row);
             placed.set(key, row);
           } else {
@@ -928,7 +928,7 @@ function ShoppingList({
             // Crossed-out row — ingredient removed or needs swap
             if (item._type === 'crossed') {
               const c = item._color ?? Colors.red;
-              const label = item._isCategoryFlag ? 'needs swap — update note above' : 'removed';
+              const label = item._isCategoryFlag ? 'needs swap — update note above' : item._swapFor ? `remove ${item._swapFor}` : 'removed';
               return (
                 <View key={key} style={[sl.row, sl.rowCrossed, { borderLeftColor: c }]}>
                   <View style={[sl.checkbox, sl.checkboxCrossed, { borderColor: c, backgroundColor: c + '22' }]} />
