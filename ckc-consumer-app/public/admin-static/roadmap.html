@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CKC — Build Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f0f0d;--surface:#1a1a16;--surface2:#222220;--surface3:#2a2a26;
+  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.13);
+  --text:#f5f3ee;--muted:rgba(245,243,238,0.5);--faint:rgba(245,243,238,0.22);
+  --green:#7cb87a;--green-bg:rgba(124,184,122,0.1);--green-border:rgba(124,184,122,0.3);
+  --yellow:#d4a843;--yellow-bg:rgba(212,168,67,0.1);--yellow-border:rgba(212,168,67,0.3);
+  --red:#c96b6b;--red-bg:rgba(201,107,107,0.1);
+  --blue:#6aabda;--blue-bg:rgba(106,171,218,0.1);
+  --font-display:'Cormorant Garamond',Georgia,serif;
+  --font-body:'DM Sans',system-ui,sans-serif;
+}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:14px}
+
+/* ── Top bar ── */
+.topbar{height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:50}
+.topbar-left{display:flex;align-items:center;gap:20px}
+.topbar-logo{font-family:var(--font-display);font-size:1.1rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase}
+.nav-toggle{display:flex;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:100px;overflow:hidden}
+.nav-toggle a{padding:5px 14px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:var(--muted);transition:all .15s;white-space:nowrap}
+.nav-toggle a.active{background:var(--text);color:var(--bg);font-weight:500}
+
+/* ── Page ── */
+.page{max-width:860px;margin:0 auto;padding:48px 28px 80px}
+.page-title{font-family:var(--font-display);font-size:2.4rem;font-weight:500;margin-bottom:6px}
+.page-subtitle{font-size:13px;color:var(--muted);margin-bottom:48px;line-height:1.6}
+
+/* ── Section ── */
+.section{margin-bottom:48px}
+.section-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+
+/* ── Item ── */
+.item{border:1px solid var(--border);border-radius:12px;margin-bottom:8px;overflow:hidden;transition:border-color .15s}
+.item:hover{border-color:var(--border2)}
+
+.item-header{display:flex;align-items:center;gap:14px;padding:16px 18px;cursor:pointer;user-select:none}
+.item-header:hover .item-title{color:var(--text)}
+
+.status-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.status-dot.done{background:var(--green)}
+.status-dot.partial{background:var(--yellow)}
+.status-dot.todo{background:var(--surface3);border:1.5px solid rgba(255,255,255,0.15)}
+
+.item-title{font-size:14px;font-weight:500;color:var(--text);flex:1;line-height:1.3}
+.item-title.done-text{color:var(--muted)}
+
+.item-badge{font-size:10px;font-weight:600;letter-spacing:.06em;padding:3px 10px;border-radius:100px;white-space:nowrap}
+.badge-done{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green)}
+.badge-partial{background:var(--yellow-bg);border:1px solid var(--yellow-border);color:var(--yellow)}
+.badge-todo{background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--faint)}
+
+.chevron{width:16px;height:16px;flex-shrink:0;color:var(--faint);transition:transform .2s}
+.chevron.open{transform:rotate(180deg)}
+
+/* ── Dropdown body ── */
+.item-body{display:none;padding:0 18px 18px;border-top:1px solid var(--border)}
+.item-body.open{display:block}
+
+/* ── Description block ── */
+.desc{font-size:13px;color:var(--muted);line-height:1.7;margin-top:14px;margin-bottom:0}
+
+/* ── Steps block ── */
+.steps-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-top:18px;margin-bottom:10px}
+.steps{display:flex;flex-direction:column;gap:8px}
+.step{display:flex;gap:12px;align-items:flex-start}
+.step-num{width:22px;height:22px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--faint);flex-shrink:0;margin-top:1px}
+.step-text{font-size:13px;color:var(--muted);line-height:1.6;flex:1}
+.step-text strong{color:var(--text);font-weight:500}
+
+/* ── Files block ── */
+.files-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:11px;color:var(--faint);cursor:pointer;user-select:none;padding:5px 0;border:none;background:none;font-family:var(--font-body);letter-spacing:.04em}
+.files-toggle:hover{color:var(--muted)}
+.files-toggle svg{transition:transform .2s}
+.files-toggle.open svg{transform:rotate(180deg)}
+
+.files-list{display:none;margin-top:8px;display:flex;flex-direction:column;gap:4px}
+.files-list.open{display:flex}
+
+.file-chip{display:inline-flex;align-items:center;gap:7px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:5px 10px;font-size:11px;font-family:monospace;color:var(--muted);width:fit-content;line-height:1.4}
+.file-chip .file-icon{font-size:10px;color:var(--faint);flex-shrink:0}
+
+/* ── Divider between desc and files when both present ── */
+.body-divider{height:1px;background:var(--border);margin:16px 0}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-logo">CKC</span>
+    <nav class="nav-toggle">
+      <a href="/admin">Swipe</a>
+      <a href="/admin/catalog">Catalog</a>
+      <a href="/admin/shopping">Shopping List</a>
+      <a href="/admin/review-queue">Review Queue</a>
+      <a href="/admin/roadmap" class="active">Roadmap</a>
+    </nav>
+  </div>
+</div>
+
+<div class="page">
+  <div class="page-title">Build Roadmap</div>
+  <p class="page-subtitle">Everything that needs to get built — click any item to see what's involved.<br>Green = done. Yellow = partially done. Empty circle = not started.</p>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!--  ADMIN SIDE                                         -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">Admin Side</div>
+
+    <!-- Swipe Tool -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot done"></div>
+        <div class="item-title done-text">Swipe tool — review pending recipes</div>
+        <span class="item-badge badge-done">Done</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">A mobile-style card stack where you swipe right (Yes), left (No), or up (Maybe) on each recipe. Your decision gets saved to Firebase instantly. Recipes you swipe Yes on automatically get sent through the enrichment pipeline — the AI scrapes ingredients, writes chef notes, and checks diet compliance before sending them to the Review Queue.</p>
+        <div class="body-divider"></div>
+        <button class="files-toggle" onclick="toggleFiles(event, this)">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+          Files in use
+        </button>
+        <div class="files-list">
+          <div class="file-chip"><span class="file-icon">🌐</span>ckc-consumer-app/public/admin-static/index.html</div>
+          <div class="file-chip"><span class="file-icon">🔥</span>functions/index.js</div>
+          <div class="file-chip"><span class="file-icon">📄</span>CKC_Chef_Notes_Guide.md</div>
+          <div class="file-chip"><span class="file-icon">📄</span>CKC_Diet_Compliance_Rules.md</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Catalog Editor -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot done"></div>
+        <div class="item-title done-text">Catalog editor — browse and edit all recipes</div>
+        <span class="item-badge badge-done">Done</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">A desktop-style browser for your full recipe database. You can search, filter by diet tag or decision status, and click into any recipe to edit its name, description, ingredients, diet protocol tags, and chef notes. All edits auto-save to Firebase as you type.</p>
+        <div class="body-divider"></div>
+        <button class="files-toggle" onclick="toggleFiles(event, this)">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+          Files in use
+        </button>
+        <div class="files-list">
+          <div class="file-chip"><span class="file-icon">🌐</span>ckc-consumer-app/public/admin-static/catalog.html</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Review Queue -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot done"></div>
+        <div class="item-title done-text">Review queue — approve recipes before they go live</div>
+        <span class="item-badge badge-done">Done</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">After the enrichment pipeline finishes, recipes land here for your final check. You can edit diet tags, fix chef notes, update ingredients, and then hit "Approve → Consumer" to push the recipe live. Approving sets its status to "approved" in Firebase, which is exactly what the consumer app's Discover feed queries for. Rejecting sends it back to "no" and removes it from the queue.</p>
+        <div class="body-divider"></div>
+        <button class="files-toggle" onclick="toggleFiles(event, this)">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+          Files in use
+        </button>
+        <div class="files-list">
+          <div class="file-chip"><span class="file-icon">🌐</span>ckc-consumer-app/public/admin-static/review-queue.html</div>
+          <div class="file-chip"><span class="file-icon">⚙️</span>ckc-consumer-app/lib/firestore.ts</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shopping / Meal Plan Builder -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot done"></div>
+        <div class="item-title done-text">Shopping &amp; meal plan builder</div>
+        <span class="item-badge badge-done">Done</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">An admin-side meal planner where you can pick recipes, build a weekly menu, and generate a consolidated shopping list. Useful for testing what the consumer version will produce before it goes live. Organized by ingredient category (produce, protein, pantry, etc.).</p>
+        <div class="body-divider"></div>
+        <button class="files-toggle" onclick="toggleFiles(event, this)">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+          Files in use
+        </button>
+        <div class="files-list">
+          <div class="file-chip"><span class="file-icon">🌐</span>ckc-consumer-app/public/admin-static/shopping.html</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Enrichment Pipeline -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot done"></div>
+        <div class="item-title done-text">Enrichment pipeline — AI auto-fills each recipe</div>
+        <span class="item-badge badge-done">Done</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">A cloud function that fires automatically whenever you swipe Yes on a recipe. It does four things in order: (1) scrapes the ingredients list from the recipe's source URL, (2) generates chef notes using Claude AI, (3) checks every ingredient against all 8 diet protocols, (4) looks up any uncertain ingredients against the FIG product database. If everything resolves cleanly it marks the recipe complete. If anything is uncertain it sends it to the Review Queue for you to decide manually.</p>
+        <div class="body-divider"></div>
+        <button class="files-toggle" onclick="toggleFiles(event, this)">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+          Files in use
+        </button>
+        <div class="files-list">
+          <div class="file-chip"><span class="file-icon">⚡</span>functions/index.js</div>
+          <div class="file-chip"><span class="file-icon">📄</span>CKC_Chef_Notes_Guide.md</div>
+          <div class="file-chip"><span class="file-icon">📄</span>CKC_Diet_Compliance_Rules.md</div>
+          <div class="file-chip"><span class="file-icon">📦</span>functions/package.json</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vercel Routing -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot todo"></div>
+        <div class="item-title">Vercel routing — make admin pages reachable at their URLs</div>
+        <span class="item-badge badge-todo">Not Started</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">Right now all URLs on the Vercel deployment get redirected to the consumer app. That means typing /admin in your browser shows the consumer app, not the admin swipe tool. This needs to be fixed before you can use the admin pages from the live Vercel URL. Not urgent until you're ready to go live.</p>
+        <div class="steps-label">Steps to complete</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Open <strong>vercel.json</strong> at the repo root.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Add four explicit route rules for <strong>/admin</strong>, <strong>/admin/catalog</strong>, <strong>/admin/shopping</strong>, and <strong>/admin/review-queue</strong> pointing to their respective HTML files — placed above the catch-all rule.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Deploy to Vercel and confirm each admin URL loads the correct page.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Password Protection -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot partial"></div>
+        <div class="item-title">Password protection on all 4 admin pages</div>
+        <span class="item-badge badge-partial">Partial</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">The Catalog and Shopping pages already have a login screen built in. The Swipe tool and Review Queue do not — they're open to anyone who knows the URL. Since these pages can write to your live Firebase database, all four should be locked down before the routing goes live.</p>
+        <div class="steps-label">Steps to complete</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Add the same login screen block that already exists in <strong>catalog.html</strong> to the top of <strong>index.html</strong> (Swipe) and <strong>review-queue.html</strong>.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Use the same password check logic — a simple hardcoded password stored in the HTML is fine for admin-only tools.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Also add a login gate to <strong>roadmap.html</strong> (this page) so it's consistent.</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /admin section -->
+
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!--  CONSUMER SIDE                                      -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">Consumer App — Onboarding &amp; Auth</div>
+
+    <!-- Auth & Onboarding -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot done"></div>
+        <div class="item-title done-text">Splash, welcome, sign up, log in, onboarding questions</div>
+        <span class="item-badge badge-done">Done</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">The full first-time user flow is built. When someone opens the app they see the splash screen, then a welcome screen, then they either sign up (email/password) or log in. New users go through onboarding questions — diet protocol, household size, preferred proteins, preferred cuisines. All of this saves to their Firebase profile so the app can personalize their experience. Returning users skip straight to the main app.</p>
+        <div class="body-divider"></div>
+        <button class="files-toggle" onclick="toggleFiles(event, this)">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+          Files in use
+        </button>
+        <div class="files-list">
+          <div class="file-chip"><span class="file-icon">📱</span>ckc-consumer-app/screens/SplashScreen.tsx</div>
+          <div class="file-chip"><span class="file-icon">📱</span>ckc-consumer-app/screens/WelcomeScreen.tsx</div>
+          <div class="file-chip"><span class="file-icon">📱</span>ckc-consumer-app/screens/SignUpScreen.tsx</div>
+          <div class="file-chip"><span class="file-icon">📱</span>ckc-consumer-app/screens/LoginScreen.tsx</div>
+          <div class="file-chip"><span class="file-icon">📱</span>ckc-consumer-app/screens/NameScreen.tsx</div>
+          <div class="file-chip"><span class="file-icon">📱</span>ckc-consumer-app/screens/DietProtocolScreen.tsx</div>
+          <div class="file-chip"><span class="file-icon">📱</span>ckc-consumer-app/screens/HouseholdScreen.tsx</div>
+          <div class="file-chip"><span class="file-icon">📱</span>ckc-consumer-app/screens/ProteinScreen.tsx</div>
+          <div class="file-chip"><span class="file-icon">📱</span>ckc-consumer-app/screens/CuisineScreen.tsx</div>
+          <div class="file-chip"><span class="file-icon">📱</span>ckc-consumer-app/screens/SetupCompleteScreen.tsx</div>
+          <div class="file-chip"><span class="file-icon">⚙️</span>ckc-consumer-app/lib/auth.ts</div>
+          <div class="file-chip"><span class="file-icon">⚙️</span>ckc-consumer-app/lib/firebase.ts</div>
+          <div class="file-chip"><span class="file-icon">🗺️</span>ckc-consumer-app/App.tsx</div>
+          <div class="file-chip"><span class="file-icon">🎨</span>ckc-consumer-app/screens/components/OnboardingHeader.tsx</div>
+          <div class="file-chip"><span class="file-icon">🎨</span>ckc-consumer-app/screens/components/ProgressDots.tsx</div>
+          <div class="file-chip"><span class="file-icon">🎨</span>ckc-consumer-app/screens/components/PrimaryButton.tsx</div>
+          <div class="file-chip"><span class="file-icon">🎨</span>ckc-consumer-app/screens/components/SelectableChip.tsx</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section">
+    <div class="section-label">Consumer App — Discover Tab (Tab 1)</div>
+
+    <!-- Swipe feed -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot done"></div>
+        <div class="item-title done-text">Recipe swipe feed with diet filters</div>
+        <span class="item-badge badge-done">Done</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">The main consumer discovery screen. Loads approved entree recipes from Firebase and displays them as a swipeable card stack. Users can filter by diet protocol using chips at the top. Diet compliance badges (solid circle = native, dashed = modified) show at a glance whether each recipe works for their protocol. Falls back to sample recipe data if Firebase is unreachable.</p>
+        <div class="body-divider"></div>
+        <button class="files-toggle" onclick="toggleFiles(event, this)">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+          Files in use
+        </button>
+        <div class="files-list">
+          <div class="file-chip"><span class="file-icon">📱</span>ckc-consumer-app/screens/main/DiscoverScreen.tsx</div>
+          <div class="file-chip"><span class="file-icon">⚙️</span>ckc-consumer-app/lib/firestore.ts</div>
+          <div class="file-chip"><span class="file-icon">📦</span>ckc-consumer-app/data/sampleRecipes.ts</div>
+          <div class="file-chip"><span class="file-icon">🎨</span>ckc-consumer-app/screens/components/DietTag.tsx</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Swipe limit -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot todo"></div>
+        <div class="item-title">Daily swipe limit for free users (10–15 per day)</div>
+        <span class="item-badge badge-todo">Not Started</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">Free users should hit a limit after a certain number of recipe views per day, then see an upgrade prompt. This is the core monetization gate on the discovery experience. Right now free users can swipe unlimited recipes.</p>
+        <div class="steps-label">Steps to complete</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Track how many recipes a user has viewed today — store a count + date in their Firebase profile.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">In <strong>DiscoverScreen.tsx</strong>, check that count before showing each card. When the limit is hit, show the <strong>PremiumGate</strong> upgrade prompt instead.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Reset the count at midnight each day.</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section">
+    <div class="section-label">Consumer App — Recipe Detail Screen</div>
+
+    <!-- Recipe detail -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot done"></div>
+        <div class="item-title done-text">Recipe detail — photo, diet tags, ingredients, scaling, shopping list</div>
+        <span class="item-badge badge-done">Done</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">Tapping a recipe card opens the detail view. It shows the photo, name, cuisine, prep time, diet compliance badges with notes, the full ingredients list scaled to the user's household size, a scaling interstitial when redirecting to the source recipe, a "Save" button, and a "Generate Shopping List" button.</p>
+        <div class="body-divider"></div>
+        <button class="files-toggle" onclick="toggleFiles(event, this)">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+          Files in use
+        </button>
+        <div class="files-list">
+          <div class="file-chip"><span class="file-icon">📱</span>ckc-consumer-app/screens/RecipeDetailScreen.tsx</div>
+          <div class="file-chip"><span class="file-icon">⚙️</span>ckc-consumer-app/lib/ingredientParser.ts</div>
+          <div class="file-chip"><span class="file-icon">⚙️</span>ckc-consumer-app/lib/firestore.ts</div>
+          <div class="file-chip"><span class="file-icon">🎨</span>ckc-consumer-app/screens/components/DietTag.tsx</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chef notes paywall -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot partial"></div>
+        <div class="item-title">Chef notes paywall — first note free, rest locked</div>
+        <span class="item-badge badge-partial">Partial</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">Chef notes exist and display on the recipe detail screen, but the paywall gate isn't fully enforced. The plan is: free users see the first chef note, then hit a blur/lock for the rest. The PremiumGate component already exists — it just needs to be wired into the recipe detail screen properly.</p>
+        <div class="steps-label">Steps to complete</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-text">In <strong>RecipeDetailScreen.tsx</strong>, split the chef notes display so the first note renders normally and any additional notes render behind the <strong>PremiumGate</strong> component.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Check the user's subscription tier (from their Firebase profile) to decide whether to show or hide the gate.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nutrition panel -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot todo"></div>
+        <div class="item-title">Nutrition panel — calories, macros, micros per recipe</div>
+        <span class="item-badge badge-todo">Not Started</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">Each recipe detail screen should eventually show a nutrition breakdown — calories, protein, fat, carbs, fiber, plus key micros like sodium and potassium. This requires connecting to a nutrition data API (USDA or Nutritionix) and running each ingredient through it. Nothing has been built for this yet.</p>
+        <div class="steps-label">Steps to complete</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Choose a nutrition API — USDA FoodData Central is free, Nutritionix has better coverage for branded items.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Add a nutrition lookup step to the enrichment pipeline in <strong>functions/index.js</strong> so it runs when a recipe is approved and stores nutrition data on the Firestore doc.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Add a nutrition panel component to <strong>RecipeDetailScreen.tsx</strong> that reads and displays the stored data.</div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-text">Recalculate values in real time when the user changes household size (scaling).</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section">
+    <div class="section-label">Consumer App — Meal Plan Tab (Tab 2)</div>
+
+    <!-- Meal plan UI -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot done"></div>
+        <div class="item-title done-text">Weekly calendar UI with paywall gate</div>
+        <span class="item-badge badge-done">Done</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">The Meal Plan tab shows a 7-day weekly calendar where users can assign recipes to each day. Free users hit a paywall when they try to use it. The add-recipe interface and paywall gate are both in place.</p>
+        <div class="body-divider"></div>
+        <button class="files-toggle" onclick="toggleFiles(event, this)">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+          Files in use
+        </button>
+        <div class="files-list">
+          <div class="file-chip"><span class="file-icon">📱</span>ckc-consumer-app/screens/main/MealPlanScreen.tsx</div>
+          <div class="file-chip"><span class="file-icon">🎨</span>ckc-consumer-app/screens/components/PremiumGate.tsx</div>
+          <div class="file-chip"><span class="file-icon">⚙️</span>ckc-consumer-app/lib/firestore.ts</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Side dish pairing -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot partial"></div>
+        <div class="item-title">Chef-curated side dish pairings with cycle button</div>
+        <span class="item-badge badge-partial">Partial</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">When a user adds an entree to their meal plan, the app should automatically suggest a side dish (or two) that pairs well with it. There should also be a "cycle" button to swap in a different side. The pairing logic exists in the code and approved side dishes are already in Firebase — but the two aren't fully connected yet in the meal plan screen.</p>
+        <div class="steps-label">Steps to complete</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-text">In <strong>MealPlanScreen.tsx</strong>, when a user adds an entree, call <strong>fetchSideDishes()</strong> from firestore.ts and run the existing pairing logic to select the best match.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Display the suggested side below the entree card on each day slot.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Wire the cycle button to rotate through alternative side dish options.</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section">
+    <div class="section-label">Consumer App — Shopping List (Tab 4)</div>
+
+    <!-- Single recipe list -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot done"></div>
+        <div class="item-title done-text">Single-recipe shopping list with categories and checkboxes</div>
+        <span class="item-badge badge-done">Done</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">From any recipe detail screen, tapping "Generate Shopping List" produces a categorized list (Produce, Protein, Dairy, Pantry, Spices) scaled to the user's household size. Checkboxes persist so users can check off items as they shop. Ingredient swaps from diet modifications are handled automatically.</p>
+        <div class="body-divider"></div>
+        <button class="files-toggle" onclick="toggleFiles(event, this)">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+          Files in use
+        </button>
+        <div class="files-list">
+          <div class="file-chip"><span class="file-icon">📱</span>ckc-consumer-app/screens/main/ShopScreen.tsx</div>
+          <div class="file-chip"><span class="file-icon">⚙️</span>ckc-consumer-app/lib/ingredientParser.ts</div>
+          <div class="file-chip"><span class="file-icon">📱</span>ckc-consumer-app/screens/RecipeDetailScreen.tsx</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Consolidated list -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot partial"></div>
+        <div class="item-title">Consolidated multi-recipe list from meal plan (paid)</div>
+        <span class="item-badge badge-partial">Partial</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">Paid users should be able to generate a single merged shopping list from their entire week's meal plan — all recipes combined, duplicate ingredients consolidated, organized by category. The consolidation logic is partially in place but not fully connected to the meal plan.</p>
+        <div class="steps-label">Steps to complete</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Pull the full recipe list from the user's current meal plan in <strong>MealPlanScreen.tsx</strong>.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Pass all recipes through the ingredient parser in <strong>ingredientParser.ts</strong> and merge/consolidate duplicate items.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Display the result in <strong>ShopScreen.tsx</strong> with a paywall gate for free users.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Free user cap -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot todo"></div>
+        <div class="item-title">Free user cap — 3 shopping lists per week</div>
+        <span class="item-badge badge-todo">Not Started</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">Free users should be limited to generating 3 shopping lists per week. After that they see an upgrade prompt. This limit isn't enforced yet — free users can generate unlimited lists.</p>
+        <div class="steps-label">Steps to complete</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Store a weekly list count + week start date on the user's Firebase profile.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Before generating a list in <strong>ShopScreen.tsx</strong>, check the count and show the <strong>PremiumGate</strong> component if the limit is reached.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Reset the count each Monday.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Instacart -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot todo"></div>
+        <div class="item-title">Instacart integration — send list to cart with one tap</div>
+        <span class="item-badge badge-todo">Not Started</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">The shopping list screen already has an "Add to Instacart" button but it doesn't do anything yet. The full integration would let users send their entire shopping list to an Instacart cart in one tap. This is both a major convenience feature and a revenue opportunity through affiliate commissions.</p>
+        <div class="steps-label">Steps to complete</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Apply for access to the Instacart Platform API (or their affiliate/partner program).</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Once approved, wire the button in <strong>ShopScreen.tsx</strong> to call the Instacart API with the current ingredient list.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Handle organic vs. conventional toggle (the UI for this already exists in ShopScreen).</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section">
+    <div class="section-label">Consumer App — Scan Tab (Tab 3)</div>
+
+    <!-- URL scan -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot partial"></div>
+        <div class="item-title">Paste a URL — check if the recipe is diet-compliant</div>
+        <span class="item-badge badge-partial">Partial</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">The Scan tab UI is built and the screen skeleton exists. The idea is that a user can paste any recipe URL from the web and the app will check whether it fits their diet protocols. The Gemini AI integration for parsing is partially set up, but full deployment and accuracy aren't ready yet.</p>
+        <div class="steps-label">Steps to complete</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Finalize the URL scraping logic in <strong>ScanScreen.tsx</strong> — scrape the ingredients from the pasted URL.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Run the scraped ingredients through the same diet compliance check used by the enrichment pipeline.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Display a clear pass/fail result per diet protocol the user follows.</div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-text">Add a free tier scan limit (3 per month) using the <strong>PremiumGate</strong> component.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Photo scan -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot partial"></div>
+        <div class="item-title">Upload a photo — scan a recipe from a book or screenshot</div>
+        <span class="item-badge badge-partial">Partial</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">The photo picker is wired up in ScanScreen and the Gemini Vision API is integrated for reading text from images. But extracting a clean ingredient list from a photo and running a full compliance check isn't complete yet.</p>
+        <div class="steps-label">Steps to complete</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-text">In <strong>ScanScreen.tsx</strong>, pass the selected photo to Gemini Vision and extract a structured ingredient list.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Run compliance check and display results the same way as the URL scan.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pantry scanner -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot todo"></div>
+        <div class="item-title">Pantry scanner — photograph your pantry to track what you have</div>
+        <span class="item-badge badge-todo">Not Started</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">A future feature where users can photograph their pantry or refrigerator and the app reads what's there, then factors that into shopping list generation (skipping items they already have). Nothing has been built for this yet.</p>
+        <div class="steps-label">Steps to complete</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Use Gemini Vision (already integrated) to identify food items in a photo of the user's pantry.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Store the detected items as the user's "pantry" in their Firebase profile.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">In <strong>ShopScreen.tsx</strong>, cross-reference the shopping list against pantry items and mark or remove items already on hand.</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section">
+    <div class="section-label">Consumer App — Profile Tab (Tab 5)</div>
+
+    <!-- Profile tab -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot done"></div>
+        <div class="item-title done-text">Profile — saved recipes, diet settings, household size</div>
+        <span class="item-badge badge-done">Done</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">The Profile tab shows the user's saved recipes, lets them edit their dietary protocols and household size, and displays their cuisine preferences. Sign out is also available here.</p>
+        <div class="body-divider"></div>
+        <button class="files-toggle" onclick="toggleFiles(event, this)">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+          Files in use
+        </button>
+        <div class="files-list">
+          <div class="file-chip"><span class="file-icon">📱</span>ckc-consumer-app/screens/main/ProfileScreen.tsx</div>
+          <div class="file-chip"><span class="file-icon">⚙️</span>ckc-consumer-app/lib/auth.ts</div>
+          <div class="file-chip"><span class="file-icon">⚙️</span>ckc-consumer-app/lib/firestore.ts</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subscription display -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot todo"></div>
+        <div class="item-title">Subscription tier display and upgrade flow</div>
+        <span class="item-badge badge-todo">Not Started</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">The profile should show whether the user is on the free or paid tier, and give them a clear way to upgrade. The PremiumGate component exists for blocking content, but there's no actual subscription purchase flow or tier management built yet.</p>
+        <div class="steps-label">Steps to complete</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Choose a payment provider — RevenueCat is the standard for React Native apps and handles both iOS and Android subscriptions.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Add a subscription section to <strong>ProfileScreen.tsx</strong> that shows the current tier and an upgrade button.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Wire the upgrade button to the payment provider's purchase flow.</div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-text">Store the tier on the user's Firebase profile so paywall gates across the app can read it.</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section">
+    <div class="section-label">Consumer App — Not Started Yet</div>
+
+    <!-- Recommendations -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot todo"></div>
+        <div class="item-title">Personalized recipe recommendations</div>
+        <span class="item-badge badge-todo">Not Started</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">Based on what a user has saved and cooked, the app should surface recipes they're likely to enjoy. Also includes weekly nudges like "You haven't tried Thai food in a while" or "Here's a new AIP recipe that just went live." Nothing has been built for this yet — it depends on having enough user behavior data first.</p>
+        <div class="steps-label">Steps to complete</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Start logging user saves and recipe views to Firebase so there's behavior data to work with.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Build a recommendation query — start simple (cuisine match + diet match + not already saved).</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Add a "Recommended for you" section to the Discover tab in <strong>DiscoverScreen.tsx</strong>.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Protocol education -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot todo"></div>
+        <div class="item-title">Protocol education — in-app explainers for each diet</div>
+        <span class="item-badge badge-todo">Not Started</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">New users who select a dietary protocol (say AIP or Low-FODMAP) often don't fully understand what that means. In-app educational content — what you can eat, what to avoid, why — would increase engagement and help users trust the app's compliance decisions.</p>
+        <div class="steps-label">Steps to complete</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Write the educational content for all 8 protocols — draw from <strong>CKC_Diet_Compliance_Rules.md</strong> which already has the full rules.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Build a new screen (or modal) that displays this content, accessible from the diet badge on a recipe or from the Profile tab.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Analytics -->
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot todo"></div>
+        <div class="item-title">Analytics — understand how users are using the app</div>
+        <span class="item-badge badge-todo">Not Started</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">There's currently no analytics in the app — no way to see which recipes get saved the most, where users drop off in onboarding, how often people hit the paywall, or what diets are most popular. This data is essential for making smart product decisions once real users are in the app.</p>
+        <div class="steps-label">Steps to complete</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Pick an analytics tool — Mixpanel or PostHog are good choices for mobile apps. Firebase Analytics is free and already connected to your Firebase project.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Add event tracking to key moments: recipe viewed, recipe saved, shopping list generated, paywall shown, upgrade tapped, onboarding completed.</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div><!-- /page -->
+
+<script>
+function toggle(item) {
+  const body = item.querySelector('.item-body');
+  const chevron = item.querySelector('.chevron');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  chevron.classList.toggle('open', !isOpen);
+}
+
+function toggleFiles(e, btn) {
+  e.stopPropagation();
+  const list = btn.nextElementSibling;
+  const isOpen = list.classList.contains('open');
+  list.classList.toggle('open', !isOpen);
+  btn.classList.toggle('open', !isOpen);
+}
+</script>
+</body>
+</html>
