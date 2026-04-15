@@ -518,7 +518,7 @@ function parseSwapPairs(notes: string): Array<{ from: string; to: string | null 
 
   const stopStr = `(?:[,.\\u2013\\u2014]|\\s+[—–]|$)`;
 
-  const insteadRe = new RegExp(`use\\s+(.+?)\\s+instead\\s+of\\s+(.+?)${stopStr}`, 'gi');
+  const insteadRe = new RegExp(`use\\s+([^.]+?)\\s+instead\\s+of\\s+([^.]+?)${stopStr}`, 'gi');
   while ((m = insteadRe.exec(s)) !== null) {
     const rawFrom = m[2].trim();
     const rawTo   = m[1].trim();
@@ -527,7 +527,9 @@ function parseSwapPairs(notes: string): Array<{ from: string; to: string | null 
     result.push({ from: stripLeadingQty(rawFrom), to });
   }
 
-  const replaceRe = new RegExp(`replace\\s+(.+?)\\s+with\\s+(.+?)${stopStr}`, 'gi');
+  // [^.]+ prevents the capture from spanning across sentence boundaries (periods),
+  // which would cause fuzzy matches against unrelated ingredients in other sentences.
+  const replaceRe = new RegExp(`replace\\s+([^.]+?)\\s+with\\s+([^.]+?)${stopStr}`, 'gi');
   while ((m = replaceRe.exec(s)) !== null) {
     const rawTo    = m[2].trim().replace(/\s+[—–].*$/, '').trim();
     const toHasQty = extractLeadingQty(rawTo) !== '';
