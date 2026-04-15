@@ -24,16 +24,18 @@ import { Colors, Fonts } from '../../constants/theme';
 import AdminSwipeScreen      from './AdminSwipeScreen';
 import DecisionsCatalogScreen from './DecisionsCatalogScreen';
 import ReviewQueueScreen     from './ReviewQueueScreen';
+import RoadmapScreen         from './RoadmapScreen';
 
 const ADMIN_PASSWORD =
   (typeof process !== 'undefined' && process.env.EXPO_PUBLIC_ADMIN_PASSWORD) || 'ckc-admin';
 
-type TabId = 'swipe' | 'catalog' | 'queue';
+type TabId = 'swipe' | 'catalog' | 'queue' | 'roadmap';
 
 const TABS: { id: TabId; label: string; icon: string }[] = [
   { id: 'swipe',   label: 'Swipe',        icon: '⇄' },
   { id: 'catalog', label: 'Catalog',      icon: '▤' },
   { id: 'queue',   label: 'Review Queue', icon: '✓' },
+  { id: 'roadmap', label: 'Roadmap',      icon: '◎' },
 ];
 
 // ── Password gate ─────────────────────────────────────────────────────────────
@@ -267,6 +269,7 @@ export default function AdminScreen() {
       case 'swipe':   return <AdminSwipeScreen />;
       case 'catalog': return <DecisionsCatalogScreen />;
       case 'queue':   return <ReviewQueueScreen />;
+      case 'roadmap': return <RoadmapScreen />;
     }
   })();
 
