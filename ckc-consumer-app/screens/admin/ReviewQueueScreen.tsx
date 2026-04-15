@@ -118,6 +118,15 @@ interface RecipeDoc {
   reviewItems?:             ReviewItem[];
   processingStatus?:        string;
   _approved?:               boolean;
+  nutrition?: {
+    calories?: number;
+    protein?:  number;
+    fat?:      number;
+    carbs?:    number;
+    fiber?:    number;
+    sodium?:   number;
+    sugar?:    number;
+  };
 }
 
 function getDietState(tag?: DietTagData): DietState {
@@ -619,7 +628,7 @@ function expandEachLine(raw: string): string[] {
 // ── Shopping list ─────────────────────────────────────────────────────────────
 
 type IngItem = {
-  qty: number; unit: string; name: string; category: string;
+  qty: number; unit: string; name: string; category: string; note?: string;
   _type: 'normal' | 'swap' | 'crossed';
   _qtyOverride?: string;  // display override for qty (e.g. "¼ tsp", "1½ lb")
   _uid?: string;          // unique edit key: `${rawIndex}:${raw}`
@@ -665,8 +674,8 @@ function ShoppingList({
 
   // Parse all ingredients into base items (keep original index for editing).
   // "each:" lines are expanded first: "¼ tsp each: paprika, thyme" → two rows, both pointing to the same rawIndex.
-  const baseItems = useMemo((): { qty: number; unit: string; name: string; category: string; matched: boolean; rawIndex: number; raw: string; uid: string; qtyOverride?: string }[] => {
-    const result: { qty: number; unit: string; name: string; category: string; matched: boolean; rawIndex: number; raw: string; uid: string; qtyOverride?: string }[] = [];
+  const baseItems = useMemo((): { qty: number; unit: string; name: string; category: string; note?: string; matched: boolean; rawIndex: number; raw: string; uid: string; qtyOverride?: string }[] => {
+    const result: { qty: number; unit: string; name: string; category: string; note?: string; matched: boolean; rawIndex: number; raw: string; uid: string; qtyOverride?: string }[] = [];
     for (let rawIndex = 0; rawIndex < ingredients.length; rawIndex++) {
       const original = ingredients[rawIndex];
       if (!original.trim()) continue;
@@ -681,7 +690,7 @@ function ShoppingList({
         const name      = override?.name ?? p.name;
         const qtyOverride = override?.qty;
         const uid = `${rawIndex}:${raw}`;
-        result.push({ qty: p.qty ?? 0, unit: p.unit ?? '', name, category, matched, rawIndex, raw, uid, qtyOverride });
+        result.push({ qty: p.qty ?? 0, unit: p.unit ?? '', name, category, note: p.note, matched, rawIndex, raw, uid, qtyOverride });
       }
     }
     return result;
@@ -1085,9 +1094,13 @@ function ShoppingList({
                   <View style={[sl.checkbox, isUnmatched && sl.checkboxUnmatched]}>
                     {isUnmatched && <Text style={sl.unmatchedIcon}>?</Text>}
                   </View>
-                  <Text style={[sl.qty, item._qtyOverride === '' && sl.qtyWarning]}>
-                    {item._qtyOverride === '' ? '?' : item._qtyOverride !== undefined ? item._qtyOverride : (item.qty ? fmtQty(item.qty, item.unit, item.category) : item.unit || '')}
-                  </Text>
+                  {item.note ? (
+                    <Text style={sl.servingNote}>{item.note}</Text>
+                  ) : (
+                    <Text style={[sl.qty, item._qtyOverride === '' && sl.qtyWarning]}>
+                      {item._qtyOverride === '' ? '?' : item._qtyOverride !== undefined ? item._qtyOverride : (item.qty ? fmtQty(item.qty, item.unit, item.category) : item.unit || '')}
+                    </Text>
+                  )}
                   <Text style={[sl.name, isUnmatched && sl.nameUnmatched]}>{item.name}</Text>
                   {item._rawIndex !== undefined && (
                     <TouchableOpacity
@@ -1215,6 +1228,7 @@ const sl = StyleSheet.create({
   swapIcon:       { fontSize: 12, color: Colors.gold, fontFamily: Fonts.bodyMedium },
   rowBody:        { flex: 1, gap: 3 },
   qty:            { fontFamily: Fonts.bodyMedium, fontSize: 14, color: Colors.gold, minWidth: 60 },
+  servingNote:    { fontFamily: Fonts.bodyMedium, fontSize: 13, color: Colors.gold, minWidth: 60 },
   name:           { fontFamily: Fonts.body, fontSize: 16, color: Colors.textPrimary, flex: 1 },
   swapName:       { fontFamily: Fonts.bodyMedium, fontSize: 13, color: Colors.gold },
   crossedName:    { fontFamily: Fonts.body, fontSize: 13, color: Colors.textMuted, textDecorationLine: 'line-through' },
@@ -1398,6 +1412,9 @@ function RecipePanel({
             </View>
           </View>
         </View>
+
+        {/* ── Nutrition ── */}
+        <NutritionPanel nutrition={local.nutrition} servings={local.servings} />
 
         {/* ── Diet Protocols — full edit cards with modification notes ── */}
         <View style={[pp.editSection, savedFields.has('dietTags') ? pp.sectionSaved : null]}>
@@ -1646,6 +1663,72 @@ const pp = StyleSheet.create({
   confirmNoText:    { fontFamily: Fonts.bodyMedium, fontSize: 12, color: Colors.textMuted },
 });
 
+// ── Nutrition panel ───────────────────────────────────────────────────────────
+
+const MACRO_CONFIG = [
+  { key: 'calories', label: 'Calories', unit: 'kcal', goal: 2000, color: '#e07878' },
+  { key: 'protein',  label: 'Protein',  unit: 'g',    goal: 50,   color: '#9b8ee0' },
+  { key: 'fat',      label: 'Fat',      unit: 'g',    goal: 78,   color: '#c8b85a' },
+  { key: 'carbs',    label: 'Carbs',    unit: 'g',    goal: 275,  color: '#d4943a' },
+] as const;
+
+function NutritionPanel({
+  nutrition, servings,
+}: {
+  nutrition?: RecipeDoc['nutrition'];
+  servings?:  string | number;
+}) {
+  const srvNum  = parseFloat(String(servings ?? '1')) || 1;
+  const hasData = nutrition && Object.values(nutrition).some(v => (v ?? 0) > 0);
+
+  return (
+    <View style={np.wrap}>
+      <View style={np.header}>
+        <Text style={np.title}>% DAILY GOALS</Text>
+        <Text style={np.subtitle}>
+          Per serving · {srvNum} serving{srvNum !== 1 ? 's' : ''} · based on 2,000 cal diet
+        </Text>
+      </View>
+      {!hasData ? (
+        <Text style={np.noData}>No nutrition data yet</Text>
+      ) : (
+        <View style={np.barsRow}>
+          {MACRO_CONFIG.map(({ key, label, unit, goal, color }) => {
+            const total     = (nutrition as Record<string, number | undefined>)?.[key] ?? 0;
+            const perServing = total / srvNum;
+            const pct       = Math.min(Math.round((perServing / goal) * 100), 100);
+            return (
+              <View key={key} style={np.barWrap}>
+                <Text style={np.barLabel}>{label}</Text>
+                <View style={np.track}>
+                  <View style={[np.fill, { width: `${pct}%` as any, backgroundColor: color }]} />
+                </View>
+                <Text style={[np.barPct, { color }]}>{pct}%</Text>
+                <Text style={np.barVal}>{Math.round(perServing)}{unit}</Text>
+              </View>
+            );
+          })}
+        </View>
+      )}
+    </View>
+  );
+}
+
+const np = StyleSheet.create({
+  wrap:     { backgroundColor: Colors.surfaceElevated, borderRadius: 12, padding: 16, gap: 12 },
+  header:   { gap: 3 },
+  title:    { fontFamily: Fonts.bodyMedium, fontSize: 10, color: Colors.textMuted, letterSpacing: 1 },
+  subtitle: { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted },
+  noData:   { fontFamily: Fonts.body, fontSize: 12, color: Colors.textMuted, fontStyle: 'italic', textAlign: 'center', paddingVertical: 6 },
+  barsRow:  { flexDirection: 'row', gap: 14 },
+  barWrap:  { flex: 1, gap: 4 },
+  barLabel: { fontFamily: Fonts.bodyMedium, fontSize: 11, color: Colors.textSecondary },
+  track:    { height: 8, borderRadius: 4, backgroundColor: 'rgba(255,255,255,0.08)', overflow: 'hidden' },
+  fill:     { height: '100%', borderRadius: 4 },
+  barPct:   { fontFamily: Fonts.bodyMedium, fontSize: 13 },
+  barVal:   { fontFamily: Fonts.body, fontSize: 10, color: Colors.textMuted },
+});
+
 // ── Main screen ───────────────────────────────────────────────────────────────
 
 export default function ReviewQueueScreen() {
@@ -1655,6 +1738,7 @@ export default function ReviewQueueScreen() {
   const [filterDiets, setFilterDiets]     = useState<Set<string>>(new Set());
   const [filterProtein, setFilterProtein] = useState('');
   const [filterCuisine, setFilterCuisine] = useState('');
+  const [filterStatus, setFilterStatus]   = useState<'all' | 'pending' | 'approved'>('all');
   const [loading, setLoading]             = useState(true);
   const [saving, setSaving]               = useState(false);
   const [savedFields, setSavedFields]     = useState<Set<string>>(new Set());
@@ -1699,9 +1783,11 @@ export default function ReviewQueueScreen() {
       if (filterDiets.size > 0 && ![...filterDiets].every(d =>
         r.dietTags?.[d]?.native || r.dietTags?.[d]?.mod
       )) return false;
+      if (filterStatus === 'pending'  &&  r._approved) return false;
+      if (filterStatus === 'approved' && !r._approved) return false;
       return true;
     });
-  }, [recipes, search, filterProtein, filterCuisine, filterDiets]);
+  }, [recipes, search, filterProtein, filterCuisine, filterDiets, filterStatus]);
 
   // ── Select ────────────────────────────────────────────────────────────────
   function selectRecipe(id: string) {
@@ -1796,7 +1882,7 @@ export default function ReviewQueueScreen() {
   // ── Counts ────────────────────────────────────────────────────────────────
   const pendingCount   = recipes.filter(r => !r._approved).length;
   const selectedRecipe = recipes.find(r => r._id === selectedId) ?? null;
-  const hasFilters     = filterDiets.size > 0 || filterProtein || filterCuisine || search;
+  const hasFilters     = filterDiets.size > 0 || filterProtein || filterCuisine || search || filterStatus !== 'all';
 
   if (loading) {
     return <View style={s.center}><ActivityIndicator color={Colors.textMuted} /></View>;
@@ -1842,43 +1928,41 @@ export default function ReviewQueueScreen() {
             />
           </View>
 
-          {/* Diet chip filter */}
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={s.chipRow}
-          >
-            {DIETS.map(code => (
-              <DietChip
-                key={code}
-                code={code}
-                active={filterDiets.has(code)}
-                onPress={() => setFilterDiets(prev => {
-                  const next = new Set(prev);
-                  next.has(code) ? next.delete(code) : next.add(code);
-                  return next;
-                })}
-              />
-            ))}
-          </ScrollView>
-
           {/* Dropdown row */}
           <View style={s.dropRow}>
             <Dropdown label="All proteins" value={filterProtein} options={PROTEINS} onSelect={setFilterProtein} />
             <Dropdown label="All cuisines" value={filterCuisine} options={cuisines}  onSelect={setFilterCuisine} />
             {hasFilters && (
               <TouchableOpacity onPress={() => {
-                setFilterDiets(new Set()); setFilterProtein(''); setFilterCuisine(''); setSearch('');
+                setFilterDiets(new Set()); setFilterProtein(''); setFilterCuisine(''); setSearch(''); setFilterStatus('all');
               }}>
                 <Text style={s.clearBtn}>Clear</Text>
               </TouchableOpacity>
             )}
           </View>
 
-          {/* Count */}
-          <Text style={s.listCount}>
-            {filtered.filter(r => !r._approved).length} pending · {filtered.filter(r => r._approved).length} approved
-          </Text>
+          {/* Status filter pills */}
+          <View style={s.statusFilterRow}>
+            {(['all', 'pending', 'approved'] as const).map(status => {
+              const count = status === 'all'
+                ? filtered.length
+                : status === 'pending'
+                  ? filtered.filter(r => !r._approved).length
+                  : filtered.filter(r =>  r._approved).length;
+              const active = filterStatus === status;
+              return (
+                <TouchableOpacity
+                  key={status}
+                  onPress={() => setFilterStatus(status)}
+                  style={[s.statusPill, active && s.statusPillActive]}
+                >
+                  <Text style={[s.statusPillText, active && s.statusPillTextActive]}>
+                    {count} {status}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
 
           {/* Recipe list */}
           <FlatList
@@ -1940,13 +2024,18 @@ const s = StyleSheet.create({
 
   body:           { flex: 1, flexDirection: 'row' },
 
-  sidebar:        { width: 310, borderRightWidth: 1, borderRightColor: Colors.border },
+  sidebar:        { width: 310, borderRightWidth: 1, borderRightColor: Colors.border, flex: 1 },
   searchWrap:     { padding: 12, borderBottomWidth: 1, borderBottomColor: Colors.border },
   searchInput:    { backgroundColor: Colors.surfaceElevated, borderWidth: 1, borderColor: Colors.border, borderRadius: 8, paddingHorizontal: 12, paddingVertical: 8, fontFamily: Fonts.body, fontSize: 13, color: Colors.textPrimary },
-  chipRow:        { paddingHorizontal: 12, paddingVertical: 10, gap: 6, borderBottomWidth: 1, borderBottomColor: Colors.border },
+  chipRow:        { paddingHorizontal: 12, paddingTop: 10, paddingBottom: 10, gap: 6, borderBottomWidth: 1, borderBottomColor: Colors.border, alignItems: 'center' },
   dropRow:        { flexDirection: 'row', flexWrap: 'wrap', gap: 8, padding: 10, borderBottomWidth: 1, borderBottomColor: Colors.border, alignItems: 'center' },
   clearBtn:       { fontFamily: Fonts.body, fontSize: 12, color: Colors.textMuted },
   listCount:      { fontFamily: Fonts.body, fontSize: 10, color: Colors.textMuted, letterSpacing: 0.8, paddingHorizontal: 14, paddingVertical: 7 },
+  statusFilterRow:      { flexDirection: 'row', gap: 6, paddingHorizontal: 14, paddingVertical: 8 },
+  statusPill:           { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20, borderWidth: 1, borderColor: Colors.border, backgroundColor: 'transparent' },
+  statusPillActive:     { backgroundColor: Colors.accent, borderColor: Colors.accent },
+  statusPillText:       { fontFamily: Fonts.body, fontSize: 10, color: Colors.textMuted, letterSpacing: 0.6 },
+  statusPillTextActive: { color: '#000', fontFamily: Fonts.bodyMedium ?? Fonts.body },
   emptyList:      { padding: 32, textAlign: 'center', fontFamily: Fonts.body, fontSize: 13, color: Colors.textMuted },
 
   emptyPanel:     { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 12 },
