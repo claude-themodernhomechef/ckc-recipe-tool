@@ -477,6 +477,14 @@ const dc = StyleSheet.create({
 });
 
 // ── Diet → category fallback (when notes aren't in "Replace X with Y" format) ──
+// Ingredients never shown on the shopping list — people don't buy these.
+const UNSHOPPED_INGREDIENTS = new Set([
+  'water',
+  'ice water',
+  'cold water',
+  'boiling water',
+]);
+
 // When a mod diet is active and no specific swap note matches, we automatically
 // flag items in the diet's known problem categories so they show as needing a swap.
 const DIET_CATEGORY_FLAGS: Record<string, string[]> = {
@@ -636,6 +644,8 @@ function ShoppingList({
       for (const raw of expanded) {
         const p = parseIngredient(raw);
         if (!p.name) continue;
+        // Never show non-shoppable staples on the shopping list
+        if (UNSHOPPED_INGREDIENTS.has(p.name.toLowerCase())) continue;
         const { category, matched } = categorizeIngredientWithMatch(p.name);
         const override = ingredientNameOverrides?.[raw];
         const name      = override?.name ?? p.name;
