@@ -78,11 +78,22 @@
   .stat.skipped strong { color: var(--accent-red); }
 
   /* ── Layout ──────────────────────────────────────── */
+  :root { --sidebar-w: 380px; }
   .layout {
     display: grid;
-    grid-template-columns: 380px 1fr;
+    grid-template-columns: var(--sidebar-w) 5px 1fr;
     height: calc(100vh - 65px);
   }
+
+  /* ── Resizer ─────────────────────────────────────── */
+  .resizer {
+    background: var(--border);
+    cursor: col-resize;
+    position: relative;
+    z-index: 10;
+    transition: background .15s;
+  }
+  .resizer:hover, .resizer.dragging { background: var(--accent-blue); }
 
   /* ── Sidebar (recipe list) ───────────────────────── */
   .sidebar {
@@ -549,6 +560,9 @@
     </div>
   </div>
 
+  <!-- Resizer -->
+  <div class="resizer" id="resizer"></div>
+
   <!-- Main Panel -->
   <div class="main-panel">
 
@@ -680,6 +694,37 @@ function selectDecision(btn, type) {
     editor.querySelector('textarea').value = 'Skip LH tag — garam masala is a defining ingredient of this dish.';
   }
 }
+
+// ── Resizable sidebar ──────────────────────────────────────────────────────
+(function(){
+  const resizer = document.getElementById('resizer');
+  const layout = document.querySelector('.layout');
+  let dragging = false, startX = 0, startW = 0;
+
+  resizer.addEventListener('mousedown', e => {
+    dragging = true;
+    startX = e.clientX;
+    startW = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--sidebar-w'));
+    resizer.classList.add('dragging');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const newW = Math.min(Math.max(220, startW + (e.clientX - startX)), window.innerWidth - 300);
+    document.documentElement.style.setProperty('--sidebar-w', newW + 'px');
+    layout.style.gridTemplateColumns = `${newW}px 5px 1fr`;
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (!dragging) return;
+    dragging = false;
+    resizer.classList.remove('dragging');
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+  });
+})();
 </script>
 
 </body>
