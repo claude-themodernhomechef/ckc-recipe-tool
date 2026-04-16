@@ -1742,6 +1742,33 @@ export default function ReviewQueueScreen() {
   const saveTimer     = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pendingFields = useRef<Partial<RecipeDoc>>({});
 
+  // ── Resizable sidebar ──────────────────────────────────────────────────────
+  const [sidebarWidth, setSidebarWidth] = useState(310);
+  const dragState = useRef<{ dragging: boolean; startX: number; startW: number }>({
+    dragging: false, startX: 0, startW: 310,
+  });
+
+  const onResizerMouseDown = useCallback((e: any) => {
+    dragState.current = { dragging: true, startX: e.clientX, startW: sidebarWidth };
+    document.body.style.cursor    = 'col-resize';
+    document.body.style.userSelect = 'none';
+
+    const onMove = (me: MouseEvent) => {
+      if (!dragState.current.dragging) return;
+      const newW = Math.min(Math.max(200, dragState.current.startW + (me.clientX - dragState.current.startX)), window.innerWidth - 300);
+      setSidebarWidth(newW);
+    };
+    const onUp = () => {
+      dragState.current.dragging = false;
+      document.body.style.cursor     = '';
+      document.body.style.userSelect = '';
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup',   onUp);
+    };
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup',   onUp);
+  }, [sidebarWidth]);
+
   useEffect(() => { loadQueue(); }, []);
 
   async function loadQueue() {
@@ -1911,7 +1938,7 @@ export default function ReviewQueueScreen() {
       <View style={s.body}>
 
         {/* ── Left sidebar ── */}
-        <View style={s.sidebar}>
+        <View style={[s.sidebar, { width: sidebarWidth }]}>
 
           {/* Search */}
           <View style={s.searchWrap}>
@@ -1978,6 +2005,13 @@ export default function ReviewQueueScreen() {
           />
         </View>
 
+        {/* ── Drag divider ── */}
+        <View
+          style={s.resizer}
+          onStartShouldSetResponder={() => true}
+          {...{ onMouseDown: onResizerMouseDown } as any}
+        />
+
         {/* ── Right panel ── */}
         {selectedRecipe ? (
           <RecipePanel
@@ -2020,7 +2054,8 @@ const s = StyleSheet.create({
 
   body:           { flex: 1, flexDirection: 'row' },
 
-  sidebar:        { width: 310, borderRightWidth: 1, borderRightColor: Colors.border, flex: 1 },
+  sidebar:        { borderRightWidth: 1, borderRightColor: Colors.border, flexShrink: 0 },
+  resizer:        { width: 5, cursor: 'col-resize', backgroundColor: Colors.border, flexShrink: 0, zIndex: 10 } as any,
   searchWrap:     { padding: 12, borderBottomWidth: 1, borderBottomColor: Colors.border },
   searchInput:    { backgroundColor: Colors.surfaceElevated, borderWidth: 1, borderColor: Colors.border, borderRadius: 8, paddingHorizontal: 12, paddingVertical: 8, fontFamily: Fonts.body, fontSize: 13, color: Colors.textPrimary },
   chipRow:        { paddingHorizontal: 12, paddingTop: 10, paddingBottom: 10, gap: 6, borderBottomWidth: 1, borderBottomColor: Colors.border, alignItems: 'center' },
