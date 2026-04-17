@@ -1726,49 +1726,54 @@ function NutritionPanel({
   nutrition?: RecipeDoc['nutrition'];
   servings?:  string | number;
 }) {
-  // Use the UI servings value so editing servings recalculates in real time.
-  // Divide nutrition.total by the current servings — if total isn't available
-  // fall back to the pre-stored perServing.
-  const srvNum    = parseFloat(String(servings ?? nutrition?.servings ?? '1')) || 1;
-  const total     = nutrition?.total as Record<string, number> | undefined;
-  const stored    = nutrition?.perServing as Record<string, number> | undefined;
+  const [expanded, setExpanded] = useState(false);
 
-  // Compute per-serving live from total whenever total exists
+  // Divide nutrition.total by live servings so editing the field recalculates instantly
+  const srvNum = parseFloat(String(servings ?? nutrition?.servings ?? '1')) || 1;
+  const total  = nutrition?.total as Record<string, number> | undefined;
+  const stored = nutrition?.perServing as Record<string, number> | undefined;
+
   const ps: Record<string, number> | undefined = total
     ? Object.fromEntries(
         Object.entries(total).map(([k, v]) => [k, Math.round((v / srvNum) * 100) / 100])
       )
     : stored;
 
-  const matchRate = nutrition?.matchRate;
-  const hasData   = ps && Object.values(ps).some(v => (v ?? 0) > 0);
-
+  const matchRate  = nutrition?.matchRate;
+  const hasData    = ps && Object.values(ps).some(v => (v ?? 0) > 0);
   const matchColor = matchRate == null ? Colors.textMuted
                    : matchRate >= 80   ? '#7cb87a'
                    : matchRate >= 50   ? '#d4a843'
                    :                     '#c96b6b';
 
+  // Garnish calories per serving
+  const garnishPs  = nutrition?.garnishPerServing as Record<string, number> | undefined;
+  const gCalLive   = garnishPs ? Math.round((garnishPs['calories'] ?? 0)) : 0;
+
   return (
     <View style={np.wrap}>
 
-      {/* Header */}
-      <View style={np.header}>
-        <View>
+      {/* Header row — always visible, clicking expands/collapses */}
+      <TouchableOpacity style={np.header} onPress={() => setExpanded(e => !e)} activeOpacity={0.7}>
+        <View style={{ flex: 1 }}>
           <Text style={np.title}>% Daily Goals</Text>
           <Text style={np.subtitle}>Per serving · makes {srvNum} · garnishes excluded</Text>
         </View>
-        {matchRate != null && (
-          <View style={[np.matchBadge, { borderColor: matchColor + '60', backgroundColor: matchColor + '18' }]}>
-            <Text style={[np.matchText, { color: matchColor }]}>{matchRate}% matched</Text>
-          </View>
-        )}
-      </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+          {matchRate != null && (
+            <View style={[np.matchBadge, { borderColor: matchColor + '60', backgroundColor: matchColor + '18' }]}>
+              <Text style={[np.matchText, { color: matchColor }]}>{matchRate}% matched</Text>
+            </View>
+          )}
+          <Text style={np.chevron}>{expanded ? '▲' : '▼'}</Text>
+        </View>
+      </TouchableOpacity>
 
       {!hasData ? (
         <Text style={np.noData}>No nutrition data available for this recipe yet.</Text>
       ) : (
         <>
-          {/* Macro progress bars */}
+          {/* Macro bars — always visible */}
           <View style={np.barsRow}>
             {MACRO_BARS.map(({ key, label, goal, color, striped }) => {
               const val = ps?.[key] ?? 0;
@@ -1789,44 +1794,34 @@ function NutritionPanel({
             })}
           </View>
 
-          {/* Divider */}
-          <View style={np.divider} />
-
-          {/* Full nutrition facts table */}
-          <Text style={np.tableTitle}>Full Nutrition Facts — per serving</Text>
-          <View style={np.table}>
-            {NUTRIENT_TABLE.map(({ label, key, unit, dv, indent }) => {
-              const val = ps?.[key];
-              if (val == null || val === 0) return null;
-              const dvPct = dv ? Math.round((val / dv) * 100) : null;
-              return (
-                <View key={key} style={[np.tableRow, indent ? np.tableRowIndent : null]}>
-                  <Text style={[np.tableLabel, indent ? np.tableLabelIndent : null]}>{label}</Text>
-                  <View style={np.tableRight}>
-                    <Text style={np.tableVal}>{fmt(val)}{unit}</Text>
-                    {dvPct != null && <Text style={np.tableDv}>{dvPct}%</Text>}
-                  </View>
-                </View>
-              );
-            })}
-          </View>
-
-          {/* Garnish note — also recalculated from garnish total if available */}
-          {nutrition?.garnishPerServing && (() => {
-            const gTotal = nutrition.garnishPerServing as Record<string, number>;
-            const gCal   = total?.['garnishCalories']
-                        ?? Math.round((gTotal['calories'] ?? 0));
-            // Recompute garnish per serving live using current srvNum
-            const garnishTotal = nutrition?.total as any;
-            const gCalLive = garnishTotal?.garnishCalories
-              ? Math.round(garnishTotal.garnishCalories / srvNum)
-              : Math.round(gTotal['calories'] ?? 0);
-            return gCalLive > 0 ? (
-              <Text style={np.garnishNote}>
-                + garnishes add ~{gCalLive} cal/serving (toggle coming)
-              </Text>
-            ) : null;
-          })()}
+          {/* Expanded: full nutrition table */}
+          {expanded && (
+            <>
+              <View style={np.divider} />
+              <Text style={np.tableTitle}>Full Nutrition Facts — per serving</Text>
+              <View style={np.table}>
+                {NUTRIENT_TABLE.map(({ label, key, unit, dv, indent }) => {
+                  const val = ps?.[key];
+                  if (val == null || val === 0) return null;
+                  const dvPct = dv ? Math.round((val / dv) * 100) : null;
+                  return (
+                    <View key={key} style={[np.tableRow, indent ? np.tableRowIndent : null]}>
+                      <Text style={[np.tableLabel, indent ? np.tableLabelIndent : null]}>{label}</Text>
+                      <View style={np.tableRight}>
+                        <Text style={np.tableVal}>{fmt(val)}{unit}</Text>
+                        {dvPct != null && <Text style={np.tableDv}>{dvPct}%</Text>}
+                      </View>
+                    </View>
+                  );
+                })}
+              </View>
+              {gCalLive > 0 && (
+                <Text style={np.garnishNote}>
+                  + garnishes add ~{gCalLive} cal/serving (toggle coming)
+                </Text>
+              )}
+            </>
+          )}
         </>
       )}
     </View>
@@ -1840,6 +1835,7 @@ const np = StyleSheet.create({
   subtitle:          { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted, marginTop: 2 },
   matchBadge:        { borderRadius: 100, borderWidth: 1, paddingHorizontal: 8, paddingVertical: 3 },
   matchText:         { fontFamily: Fonts.bodyMedium, fontSize: 10, letterSpacing: 0.3 },
+  chevron:           { fontSize: 10, color: Colors.textMuted },
   noData:            { fontFamily: Fonts.body, fontSize: 12, color: Colors.textMuted, fontStyle: 'italic', textAlign: 'center', paddingVertical: 6 },
   // Macro bars
   barsRow:           { flexDirection: 'row', gap: 12 },
