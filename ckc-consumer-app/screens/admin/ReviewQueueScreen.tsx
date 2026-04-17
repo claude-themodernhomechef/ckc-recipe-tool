@@ -1964,7 +1964,35 @@ function NutritionPanel({
             </TouchableOpacity>
           )}
 
-          {/* Expanded: full table + garnish note */}
+          {/* Diet swap log — always visible when a mod diet is active */}
+          {activeDiet && dietSwapLog.length > 0 && (
+            <View style={np.swapLogBox}>
+              <Text style={np.swapLogTitle}>{activeDiet} swaps applied</Text>
+              <Text style={np.swapLogText}>{dietSwapLog.join('\n')}</Text>
+            </View>
+          )}
+
+          {/* Cooking assumptions note — always visible when assumptions were made */}
+          {assumedIngredients.length > 0 && (
+            <View style={np.assumptionNoteBox}>
+              <Text style={np.assumptionNoteTitle}>Assumed quantities</Text>
+              <Text style={np.assumptionNoteText}>
+                {assumedIngredients.map(i =>
+                  `We assumed ${i.assumedDefault} of ${i.name || i.raw} to calculate the nutrition facts.`
+                ).join('\n')}
+              </Text>
+            </View>
+          )}
+
+          {/* Garnish note — always visible when garnish toggle is on */}
+          {showGarnish && hasGarnish && garnishIngredients.length > 0 && (
+            <View style={np.garnishNoteBox}>
+              <Text style={np.garnishNoteTitle}>How we calculated garnish nutrition</Text>
+              <Text style={np.garnishNoteText}>{buildGarnishNote()}</Text>
+            </View>
+          )}
+
+          {/* Expanded: full nutrient table */}
           {expanded && (
             <>
               <View style={np.divider} />
@@ -1985,36 +2013,6 @@ function NutritionPanel({
                   );
                 })}
               </View>
-
-              {/* Diet swap log — shown when a mod diet is active */}
-              {activeDiet && dietSwapLog.length > 0 && (
-                <View style={np.swapLogBox}>
-                  <Text style={np.swapLogTitle}>
-                    {(DIET_COLORS as any)[activeDiet] ? activeDiet : activeDiet} swaps applied
-                  </Text>
-                  <Text style={np.swapLogText}>{dietSwapLog.join('\n')}</Text>
-                </View>
-              )}
-
-              {/* Cooking assumptions note — always shown when assumptions were made */}
-              {assumedIngredients.length > 0 && (
-                <View style={np.assumptionNoteBox}>
-                  <Text style={np.assumptionNoteTitle}>⚠️ Assumed quantities</Text>
-                  <Text style={np.assumptionNoteText}>
-                    {assumedIngredients.map(i =>
-                      `We assumed ${i.assumedDefault} of ${i.name || i.raw} to calculate the nutrition facts.`
-                    ).join('\n')}
-                  </Text>
-                </View>
-              )}
-
-              {/* Garnish assumption note — shown when garnish toggle is on */}
-              {showGarnish && hasGarnish && garnishIngredients.length > 0 && (
-                <View style={np.garnishNoteBox}>
-                  <Text style={np.garnishNoteTitle}>ℹ️ How we calculated garnish nutrition</Text>
-                  <Text style={np.garnishNoteText}>{buildGarnishNote()}</Text>
-                </View>
-              )}
             </>
           )}
         </>
