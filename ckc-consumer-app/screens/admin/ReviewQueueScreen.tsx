@@ -1726,38 +1726,69 @@ function NutritionPanel({
   nutrition?: RecipeDoc['nutrition'];
   servings?:  string | number;
 }) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded,     setExpanded]     = useState(false);
+  const [showGarnish,  setShowGarnish]  = useState(false);
 
   // Divide nutrition.total by live servings so editing the field recalculates instantly
   const srvNum = parseFloat(String(servings ?? nutrition?.servings ?? '1')) || 1;
   const total  = nutrition?.total as Record<string, number> | undefined;
   const stored = nutrition?.perServing as Record<string, number> | undefined;
 
-  const ps: Record<string, number> | undefined = total
+  // Base per-serving (live-computed from total)
+  const basePs: Record<string, number> | undefined = total
     ? Object.fromEntries(
         Object.entries(total).map(([k, v]) => [k, Math.round((v / srvNum) * 100) / 100])
       )
     : stored;
 
+  // Garnish data
+  const garnishPs = nutrition?.garnishPerServing as Record<string, number> | undefined;
+  const hasGarnish = garnishPs && Object.values(garnishPs).some(v => (v ?? 0) > 0);
+
+  // Active display values — add garnish on top when toggle is on
+  const ps: Record<string, number> | undefined = (showGarnish && hasGarnish && basePs)
+    ? Object.fromEntries(
+        Object.keys({ ...basePs, ...garnishPs }).map(k => [
+          k,
+          Math.round(((basePs[k] ?? 0) + (garnishPs![k] ?? 0)) * 100) / 100,
+        ])
+      )
+    : basePs;
+
+  // Build garnish ingredient list for the explanation note
+  const garnishIngredients = (nutrition?.ingredients ?? [])
+    .filter((i: any) => i.garnish && !i.skip && i.raw?.trim())
+    .map((i: any) => i.raw as string);
+
+  // Auto-generate the garnish assumption note
+  function buildGarnishNote(): string {
+    if (!garnishIngredients.length) return '';
+    const listed = garnishIngredients
+      .map(r => r.replace(/,?\s*(for serving|for garnish|to serve|to garnish|to top|optional[:\s]*)/gi, '').trim())
+      .filter(Boolean)
+      .join(', ');
+    const gCal = Math.round(garnishPs?.['calories'] ?? 0);
+    return `Garnish assumptions: ${listed}.\n\nNutrition for these items was calculated from their stated recipe quantities using our USDA-sourced ingredient database${gCal > 0 ? ` and adds ~${gCal} cal per serving` : ''}. Items listed as "for serving" or "optional" are excluded from the base nutrition facts above — toggle them on to include them.`;
+  }
+
   const matchRate  = nutrition?.matchRate;
-  const hasData    = ps && Object.values(ps).some(v => (v ?? 0) > 0);
+  const hasData    = basePs && Object.values(basePs).some(v => (v ?? 0) > 0);
   const matchColor = matchRate == null ? Colors.textMuted
                    : matchRate >= 80   ? '#7cb87a'
                    : matchRate >= 50   ? '#d4a843'
                    :                     '#c96b6b';
 
-  // Garnish calories per serving
-  const garnishPs  = nutrition?.garnishPerServing as Record<string, number> | undefined;
-  const gCalLive   = garnishPs ? Math.round((garnishPs['calories'] ?? 0)) : 0;
-
   return (
     <View style={np.wrap}>
 
-      {/* Header row — always visible, clicking expands/collapses */}
+      {/* Header — tap to expand/collapse */}
       <TouchableOpacity style={np.header} onPress={() => setExpanded(e => !e)} activeOpacity={0.7}>
         <View style={{ flex: 1 }}>
           <Text style={np.title}>% Daily Goals</Text>
-          <Text style={np.subtitle}>Per serving · makes {srvNum} · garnishes excluded</Text>
+          <Text style={np.subtitle}>
+            Per serving · makes {srvNum}
+            {showGarnish ? ' · includes garnishes' : ' · garnishes excluded'}
+          </Text>
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
           {matchRate != null && (
@@ -1794,7 +1825,24 @@ function NutritionPanel({
             })}
           </View>
 
-          {/* Expanded: full nutrition table */}
+          {/* Garnish toggle — only shown when recipe has garnish data */}
+          {hasGarnish && (
+            <TouchableOpacity style={np.garnishRow} onPress={() => setShowGarnish(g => !g)} activeOpacity={0.7}>
+              <View style={np.garnishToggleTrack}>
+                <View style={[np.garnishToggleThumb, showGarnish ? np.garnishToggleOn : np.garnishToggleOff]} />
+              </View>
+              <Text style={np.garnishToggleLabel}>
+                {showGarnish ? 'Garnishes included' : 'Add garnishes'}
+              </Text>
+              {!showGarnish && (
+                <Text style={np.garnishToggleHint}>
+                  +{Math.round(garnishPs?.['calories'] ?? 0)} cal
+                </Text>
+              )}
+            </TouchableOpacity>
+          )}
+
+          {/* Expanded: full table + garnish note */}
           {expanded && (
             <>
               <View style={np.divider} />
@@ -1815,10 +1863,13 @@ function NutritionPanel({
                   );
                 })}
               </View>
-              {gCalLive > 0 && (
-                <Text style={np.garnishNote}>
-                  + garnishes add ~{gCalLive} cal/serving (toggle coming)
-                </Text>
+
+              {/* Garnish assumption note — shown when garnish toggle is on */}
+              {showGarnish && hasGarnish && garnishIngredients.length > 0 && (
+                <View style={np.garnishNoteBox}>
+                  <Text style={np.garnishNoteTitle}>ℹ️ How we calculated garnish nutrition</Text>
+                  <Text style={np.garnishNoteText}>{buildGarnishNote()}</Text>
+                </View>
               )}
             </>
           )}
@@ -1857,6 +1908,18 @@ const np = StyleSheet.create({
   tableVal:          { fontFamily: Fonts.bodyMedium, fontSize: 12, color: Colors.textPrimary, minWidth: 60, textAlign: 'right' },
   tableDv:           { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted, minWidth: 32, textAlign: 'right' },
   garnishNote:       { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted, fontStyle: 'italic' },
+  // Garnish toggle row
+  garnishRow:        { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 6, paddingHorizontal: 2 },
+  garnishToggleTrack:{ width: 36, height: 20, borderRadius: 10, backgroundColor: 'rgba(255,255,255,0.12)', justifyContent: 'center', padding: 2 },
+  garnishToggleThumb:{ width: 16, height: 16, borderRadius: 8, backgroundColor: '#fff' },
+  garnishToggleOn:   { alignSelf: 'flex-end', backgroundColor: '#7cb87a' },
+  garnishToggleOff:  { alignSelf: 'flex-start', backgroundColor: 'rgba(255,255,255,0.45)' },
+  garnishToggleLabel:{ fontFamily: Fonts.bodyMedium, fontSize: 12, color: Colors.textPrimary, flex: 1 },
+  garnishToggleHint: { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted },
+  // Garnish note box
+  garnishNoteBox:    { backgroundColor: 'rgba(124,184,122,0.10)', borderRadius: 8, borderWidth: 1, borderColor: 'rgba(124,184,122,0.25)', padding: 12, gap: 6 },
+  garnishNoteTitle:  { fontFamily: Fonts.bodyMedium, fontSize: 12, color: '#7cb87a' },
+  garnishNoteText:   { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted, lineHeight: 17 },
 });
 
 // ── Main screen ───────────────────────────────────────────────────────────────
