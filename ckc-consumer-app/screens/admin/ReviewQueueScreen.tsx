@@ -2054,7 +2054,7 @@ const s = StyleSheet.create({
 
   body:           { flex: 1, flexDirection: 'row' },
 
-  sidebar:        { borderRightWidth: 1, borderRightColor: Colors.border, flexShrink: 0 },
+  sidebar:        { borderRightWidth: 1, borderRightColor: Colors.border, flexShrink: 0, overflow: 'hidden' },
   resizer:        { width: 5, cursor: 'col-resize', backgroundColor: Colors.border, flexShrink: 0, zIndex: 10 } as any,
   searchWrap:     { padding: 12, borderBottomWidth: 1, borderBottomColor: Colors.border },
   searchInput:    { backgroundColor: Colors.surfaceElevated, borderWidth: 1, borderColor: Colors.border, borderRadius: 8, paddingHorizontal: 12, paddingVertical: 8, fontFamily: Fonts.body, fontSize: 13, color: Colors.textPrimary },
