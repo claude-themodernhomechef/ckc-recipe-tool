@@ -1814,51 +1814,76 @@ function NutritionPanel({
     const workingTotal: Record<string, number> = { ...(nutrition?.total ?? {}) };
     const log: string[] = [];
 
+    // Helper: extract per100g value regardless of {value,unit} or raw number format
+    function getPer100g(per100g: Record<string, any>, key: string): number {
+      const v = per100g[key];
+      if (v == null) return 0;
+      return typeof v === 'object' ? (v.value ?? 0) : (v as number);
+    }
+
     for (const { from, to } of pairs) {
-      // Find matched ingredient(s) that fuzzyMatch the swap's "from"
-      const origIngs = ings.filter(i => !i.skip && i.matched && fuzzyMatch(from, i.name));
+      // Find matched ingredient(s) by fuzzyMatch on name
+      const origIngs = ings.filter(i => !i.skip && i.matched && i.grams > 0 && fuzzyMatch(from, i.name));
       if (!origIngs.length) continue;
 
       for (const origIng of origIngs) {
-        if (!origIng.nutrition || !origIng.grams) continue;
+        if (!origIng.grams) continue;
 
         if (to === null) {
-          // Remove (omit) — subtract original contribution
-          for (const [k, v] of Object.entries(origIng.nutrition as Record<string, number>)) {
-            workingTotal[k] = Math.round(((workingTotal[k] ?? 0) - v) * 100) / 100;
-          }
-          log.push(`Removed ${origIng.name}`);
+          // Remove ingredient — fetch its per100g from Firestore to subtract
+          try {
+            const snap = await getDoc(doc(db, 'ingredients', origIng.name.toLowerCase()));
+            if (snap.exists()) {
+              const p = snap.data().per100g as Record<string, any>;
+              for (const k of Object.keys(p)) {
+                const val = getPer100g(p, k) * origIng.grams / 100;
+                workingTotal[k] = Math.round(((workingTotal[k] ?? 0) - val) * 100) / 100;
+              }
+              const cal = Math.round(getPer100g(p, 'calories') * origIng.grams / 100);
+              log.push(`Removed ${origIng.name} (−${cal} cal)`);
+            } else {
+              log.push(`Removed ${origIng.name} (not in DB — calories unchanged)`);
+            }
+          } catch { log.push(`Removed ${origIng.name} (lookup failed)`); }
           continue;
         }
 
-        // Fetch replacement ingredient from Firestore
+        // Swap: fetch BOTH original and replacement from Firestore
         const toName = to.replace(/^\d[\d/.\s]*(cup|tbsp|tsp|oz|lb|g|ml)s?\s*/i, '').trim();
         try {
-          const snap = await getDoc(doc(db, 'ingredients', toName.toLowerCase()));
-          if (!snap.exists()) {
-            log.push(`${origIng.name} → ${toName} (not in DB, kept original)`);
+          const [origSnap, swapSnap] = await Promise.all([
+            getDoc(doc(db, 'ingredients', origIng.name.toLowerCase())),
+            getDoc(doc(db, 'ingredients', toName.toLowerCase())),
+          ]);
+
+          if (!swapSnap.exists()) {
+            log.push(`${origIng.name} → ${toName} (swap not in DB, kept original)`);
             continue;
           }
-          const ingData = snap.data();
-          const per100g = ingData.per100g as Record<string, { value: number } | number> | undefined;
-          if (!per100g) continue;
 
-          // Subtract original, add swap (same gram weight)
-          for (const [k, v] of Object.entries(origIng.nutrition as Record<string, number>)) {
-            workingTotal[k] = Math.round(((workingTotal[k] ?? 0) - v) * 100) / 100;
+          const swapPer100g = swapSnap.data().per100g as Record<string, any>;
+
+          // Subtract original ingredient's contribution
+          if (origSnap.exists()) {
+            const origPer100g = origSnap.data().per100g as Record<string, any>;
+            for (const k of Object.keys(origPer100g)) {
+              const val = getPer100g(origPer100g, k) * origIng.grams / 100;
+              workingTotal[k] = Math.round(((workingTotal[k] ?? 0) - val) * 100) / 100;
+            }
           }
-          const nutrients = Object.keys(MACRO_BARS.reduce((a, b) => ({ ...a, [b.key]: 1 }), {}));
-          // Compute swap nutrition at the same gram weight
-          for (const [nutrientKey] of Object.entries(per100g)) {
-            const raw = per100g[nutrientKey];
-            const val100 = typeof raw === 'object' && raw !== null ? (raw as any).value : raw;
-            if (val100 == null) continue;
-            const swapVal = Math.round((val100 * origIng.grams / 100) * 100) / 100;
-            workingTotal[nutrientKey] = Math.round(((workingTotal[nutrientKey] ?? 0) + swapVal) * 100) / 100;
+
+          // Add swap ingredient's contribution at same gram weight
+          for (const k of Object.keys(swapPer100g)) {
+            const val = getPer100g(swapPer100g, k) * origIng.grams / 100;
+            workingTotal[k] = Math.round(((workingTotal[k] ?? 0) + val) * 100) / 100;
           }
-          const origCal = Math.round((origIng.nutrition as any).calories ?? 0);
-          const swapCal = Math.round(((per100g.calories as any)?.value ?? per100g.calories ?? 0) as number * origIng.grams / 100);
-          log.push(`${origIng.name} → ${toName} (${origCal > swapCal ? '−' : '+'}${Math.abs(origCal - swapCal)} cal)`);
+
+          const origCal = origSnap.exists()
+            ? Math.round(getPer100g(origSnap.data().per100g, 'calories') * origIng.grams / 100)
+            : 0;
+          const swapCal = Math.round(getPer100g(swapPer100g, 'calories') * origIng.grams / 100);
+          const delta = swapCal - origCal;
+          log.push(`${origIng.name} → ${toName} (${delta >= 0 ? '+' : '−'}${Math.abs(delta)} cal)`);
         } catch {
           log.push(`${origIng.name} → ${toName} (lookup failed)`);
         }
