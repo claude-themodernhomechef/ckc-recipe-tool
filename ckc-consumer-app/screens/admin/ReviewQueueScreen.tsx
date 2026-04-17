@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import { parseIngredient, fmtQty, SHOPPING_CATEGORIES, categorizeIngredientWithMatch, addIngredientToDb } from '../../lib/ingredientParser';
 import {
-  collection, query, where, getDocs, doc, updateDoc, writeBatch,
+  collection, query, where, getDocs, getDoc, doc, updateDoc, writeBatch,
 } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 import { resolveReviewItem, ReviewItem } from '../../lib/firestore';
@@ -134,6 +134,7 @@ interface RecipeDoc {
       raw: string; name: string; grams: number;
       matched: boolean; skip: boolean; garnish: boolean;
       assumed?: boolean; assumedDefault?: string;
+      nutrition?: Record<string, number>;
     }>;
   };
 }
@@ -1423,7 +1424,7 @@ function RecipePanel({
         </View>
 
         {/* ── Nutrition ── */}
-        <NutritionPanel nutrition={local.nutrition} servings={local.servings} />
+        <NutritionPanel nutrition={local.nutrition} servings={local.servings} dietTags={local.dietTags} />
 
         {/* ── Diet Protocols — full edit cards with modification notes ── */}
         <View style={[pp.editSection, savedFields.has('dietTags') ? pp.sectionSaved : null]}>
@@ -1722,13 +1723,18 @@ function fmt(val: number): string {
 }
 
 function NutritionPanel({
-  nutrition, servings,
+  nutrition, servings, dietTags,
 }: {
   nutrition?: RecipeDoc['nutrition'];
   servings?:  string | number;
+  dietTags?:  Record<string, DietTagData>;
 }) {
   const [expanded,     setExpanded]     = useState(false);
   const [showGarnish,  setShowGarnish]  = useState(false);
+  const [activeDiet,   setActiveDiet]   = useState<string | null>(null);
+  const [dietPs,       setDietPs]       = useState<Record<string, number> | null>(null);
+  const [dietLoading,  setDietLoading]  = useState(false);
+  const [dietSwapLog,  setDietSwapLog]  = useState<string[]>([]);
 
   // Divide nutrition.total by live servings so editing the field recalculates instantly
   const srvNum = parseFloat(String(servings ?? nutrition?.servings ?? '1')) || 1;
@@ -1746,15 +1752,16 @@ function NutritionPanel({
   const garnishPs = nutrition?.garnishPerServing as Record<string, number> | undefined;
   const hasGarnish = garnishPs && Object.values(garnishPs).some(v => (v ?? 0) > 0);
 
-  // Active display values — add garnish on top when toggle is on
-  const ps: Record<string, number> | undefined = (showGarnish && hasGarnish && basePs)
+  // Active display values — diet swap takes priority, then garnish toggle, then base
+  const activeBase = dietPs ?? basePs;
+  const ps: Record<string, number> | undefined = (showGarnish && hasGarnish && activeBase)
     ? Object.fromEntries(
-        Object.keys({ ...basePs, ...garnishPs }).map(k => [
+        Object.keys({ ...activeBase, ...garnishPs }).map(k => [
           k,
-          Math.round(((basePs[k] ?? 0) + (garnishPs![k] ?? 0)) * 100) / 100,
+          Math.round(((activeBase[k] ?? 0) + (garnishPs![k] ?? 0)) * 100) / 100,
         ])
       )
-    : basePs;
+    : activeBase;
 
   // Build garnish ingredient list for the explanation note
   const garnishIngredients = (nutrition?.ingredients ?? [])
@@ -1777,6 +1784,98 @@ function NutritionPanel({
     return `Garnish assumptions: ${listed}.\n\nNutrition for these items was calculated from their stated recipe quantities using our USDA-sourced ingredient database${gCal > 0 ? ` and adds ~${gCal} cal per serving` : ''}. Items listed as "for serving" or "optional" are excluded from the base nutrition facts above — toggle them on to include them.`;
   }
 
+  // Diet tokens — only show native + mod
+  const dietTokens = Object.entries(dietTags ?? {})
+    .filter(([, tag]) => tag.native || tag.mod)
+    .map(([code, tag]) => ({ code, state: tag.native ? 'native' : 'mod' as DietState }));
+
+  // Tap a diet token — native = highlight only, mod = live swap lookup
+  async function handleDietTap(code: string, state: DietState) {
+    // Deselect if already active
+    if (activeDiet === code) {
+      setActiveDiet(null); setDietPs(null); setDietSwapLog([]);
+      return;
+    }
+    setActiveDiet(code);
+    setDietSwapLog([]);
+
+    // Native: no swaps needed, nutrition unchanged
+    if (state === 'native') { setDietPs(null); return; }
+
+    // Mod: parse swaps and look up replacement ingredients in Firestore
+    const notes = dietTags?.[code]?.notes ?? '';
+    const pairs = parseSwapPairs(notes);
+    if (!pairs.length) { setDietPs(null); return; }
+
+    setDietLoading(true);
+    const ings = nutrition?.ingredients ?? [];
+
+    // Start from a mutable copy of the total nutrition
+    const workingTotal: Record<string, number> = { ...(nutrition?.total ?? {}) };
+    const log: string[] = [];
+
+    for (const { from, to } of pairs) {
+      // Find matched ingredient(s) that fuzzyMatch the swap's "from"
+      const origIngs = ings.filter(i => !i.skip && i.matched && fuzzyMatch(from, i.name));
+      if (!origIngs.length) continue;
+
+      for (const origIng of origIngs) {
+        if (!origIng.nutrition || !origIng.grams) continue;
+
+        if (to === null) {
+          // Remove (omit) — subtract original contribution
+          for (const [k, v] of Object.entries(origIng.nutrition as Record<string, number>)) {
+            workingTotal[k] = Math.round(((workingTotal[k] ?? 0) - v) * 100) / 100;
+          }
+          log.push(`Removed ${origIng.name}`);
+          continue;
+        }
+
+        // Fetch replacement ingredient from Firestore
+        const toName = to.replace(/^\d[\d/.\s]*(cup|tbsp|tsp|oz|lb|g|ml)s?\s*/i, '').trim();
+        try {
+          const snap = await getDoc(doc(db, 'ingredients', toName.toLowerCase()));
+          if (!snap.exists()) {
+            log.push(`${origIng.name} → ${toName} (not in DB, kept original)`);
+            continue;
+          }
+          const ingData = snap.data();
+          const per100g = ingData.per100g as Record<string, { value: number } | number> | undefined;
+          if (!per100g) continue;
+
+          // Subtract original, add swap (same gram weight)
+          for (const [k, v] of Object.entries(origIng.nutrition as Record<string, number>)) {
+            workingTotal[k] = Math.round(((workingTotal[k] ?? 0) - v) * 100) / 100;
+          }
+          const nutrients = Object.keys(MACRO_BARS.reduce((a, b) => ({ ...a, [b.key]: 1 }), {}));
+          // Compute swap nutrition at the same gram weight
+          for (const [nutrientKey] of Object.entries(per100g)) {
+            const raw = per100g[nutrientKey];
+            const val100 = typeof raw === 'object' && raw !== null ? (raw as any).value : raw;
+            if (val100 == null) continue;
+            const swapVal = Math.round((val100 * origIng.grams / 100) * 100) / 100;
+            workingTotal[nutrientKey] = Math.round(((workingTotal[nutrientKey] ?? 0) + swapVal) * 100) / 100;
+          }
+          const origCal = Math.round((origIng.nutrition as any).calories ?? 0);
+          const swapCal = Math.round(((per100g.calories as any)?.value ?? per100g.calories ?? 0) as number * origIng.grams / 100);
+          log.push(`${origIng.name} → ${toName} (${origCal > swapCal ? '−' : '+'}${Math.abs(origCal - swapCal)} cal)`);
+        } catch {
+          log.push(`${origIng.name} → ${toName} (lookup failed)`);
+        }
+      }
+    }
+
+    const srvN = parseFloat(String(servings ?? nutrition?.servings ?? '1')) || 1;
+    const newPs: Record<string, number> = {};
+    for (const [k, v] of Object.entries(workingTotal)) {
+      newPs[k] = Math.round((Math.max(0, v) / srvN) * 100) / 100;
+    }
+
+    setDietPs(newPs);
+    setDietSwapLog(log);
+    setDietLoading(false);
+  }
+
   const matchRate  = nutrition?.matchRate;
   const hasData    = basePs && Object.values(basePs).some(v => (v ?? 0) > 0);
   const matchColor = matchRate == null ? Colors.textMuted
@@ -1793,7 +1892,8 @@ function NutritionPanel({
           <Text style={np.title}>% Daily Goals</Text>
           <Text style={np.subtitle}>
             Per serving · makes {srvNum}
-            {showGarnish ? ' · includes garnishes' : ' · garnishes excluded'}
+            {activeDiet ? ` · ${activeDiet} swaps applied` : ''}
+            {showGarnish ? ' · +garnishes' : ''}
           </Text>
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
@@ -1830,6 +1930,22 @@ function NutritionPanel({
               );
             })}
           </View>
+
+          {/* Diet tag tokens — native + mod only, live swap on tap */}
+          {dietTokens.length > 0 && (
+            <View style={np.dietRow}>
+              {dietTokens.map(({ code, state }) => (
+                <DietChip
+                  key={code}
+                  code={code}
+                  tagState={state}
+                  active={activeDiet === code}
+                  onPress={() => handleDietTap(code, state)}
+                />
+              ))}
+              {dietLoading && <Text style={np.dietLoading}>calculating…</Text>}
+            </View>
+          )}
 
           {/* Garnish toggle — only shown when recipe has garnish data */}
           {hasGarnish && (
@@ -1869,6 +1985,16 @@ function NutritionPanel({
                   );
                 })}
               </View>
+
+              {/* Diet swap log — shown when a mod diet is active */}
+              {activeDiet && dietSwapLog.length > 0 && (
+                <View style={np.swapLogBox}>
+                  <Text style={np.swapLogTitle}>
+                    {(DIET_COLORS as any)[activeDiet] ? activeDiet : activeDiet} swaps applied
+                  </Text>
+                  <Text style={np.swapLogText}>{dietSwapLog.join('\n')}</Text>
+                </View>
+              )}
 
               {/* Cooking assumptions note — always shown when assumptions were made */}
               {assumedIngredients.length > 0 && (
@@ -1942,6 +2068,13 @@ const np = StyleSheet.create({
   assumptionNoteBox:   { backgroundColor: 'rgba(212,168,67,0.10)', borderRadius: 8, borderWidth: 1, borderColor: 'rgba(212,168,67,0.25)', padding: 12, gap: 6 },
   assumptionNoteTitle: { fontFamily: Fonts.bodyMedium, fontSize: 12, color: '#d4a843' },
   assumptionNoteText:  { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted, lineHeight: 17 },
+  // Diet token row
+  dietRow:     { flexDirection: 'row', flexWrap: 'wrap', gap: 8, alignItems: 'center' },
+  dietLoading: { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted, fontStyle: 'italic' },
+  // Diet swap log note box
+  swapLogBox:   { backgroundColor: 'rgba(155,142,224,0.10)', borderRadius: 8, borderWidth: 1, borderColor: 'rgba(155,142,224,0.25)', padding: 12, gap: 6 },
+  swapLogTitle: { fontFamily: Fonts.bodyMedium, fontSize: 12, color: '#9b8ee0' },
+  swapLogText:  { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted, lineHeight: 17 },
 });
 
 // ── Main screen ───────────────────────────────────────────────────────────────
