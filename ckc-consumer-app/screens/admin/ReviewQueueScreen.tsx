@@ -1755,7 +1755,7 @@ export default function ReviewQueueScreen() {
 
     const onMove = (me: MouseEvent) => {
       if (!dragState.current.dragging) return;
-      const newW = Math.min(Math.max(390, dragState.current.startW + (me.clientX - dragState.current.startX)), window.innerWidth - 300);
+      const newW = Math.min(Math.max(280, dragState.current.startW + (me.clientX - dragState.current.startX)), window.innerWidth - 300);
       setSidebarWidth(newW);
     };
     const onUp = () => {
