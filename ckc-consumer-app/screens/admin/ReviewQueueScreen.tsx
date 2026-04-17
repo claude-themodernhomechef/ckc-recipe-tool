@@ -8,7 +8,7 @@
  * Replaces both Shopping List and Needs Review admin tabs (those can be removed after).
  */
 
-import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity, ScrollView, FlatList,
   Image, ActivityIndicator, Alert, StyleSheet, Modal, Pressable, Linking,
@@ -1744,30 +1744,37 @@ export default function ReviewQueueScreen() {
 
   // ── Resizable sidebar ──────────────────────────────────────────────────────
   const [sidebarWidth, setSidebarWidth] = useState(310);
-  const dragState = useRef<{ dragging: boolean; startX: number; startW: number }>({
-    dragging: false, startX: 0, startW: 310,
-  });
+  const sidebarWidthRef = useRef(310);
+  const resizerRef      = useRef<View>(null);
 
-  const onResizerMouseDown = useCallback((e: any) => {
-    dragState.current = { dragging: true, startX: e.clientX, startW: sidebarWidth };
-    document.body.style.cursor    = 'col-resize';
-    document.body.style.userSelect = 'none';
+  useEffect(() => {
+    const el = resizerRef.current as unknown as HTMLElement | null;
+    if (!el) return;
 
-    const onMove = (me: MouseEvent) => {
-      if (!dragState.current.dragging) return;
-      const newW = Math.min(Math.max(280, dragState.current.startW + (me.clientX - dragState.current.startX)), window.innerWidth - 300);
-      setSidebarWidth(newW);
+    const onMouseDown = (e: MouseEvent) => {
+      const startX = e.clientX;
+      const startW = sidebarWidthRef.current;
+      document.body.style.cursor     = 'col-resize';
+      document.body.style.userSelect = 'none';
+
+      const onMove = (me: MouseEvent) => {
+        const newW = Math.min(Math.max(280, startW + (me.clientX - startX)), window.innerWidth - 300);
+        sidebarWidthRef.current = newW;
+        setSidebarWidth(newW);
+      };
+      const onUp = () => {
+        document.body.style.cursor     = '';
+        document.body.style.userSelect = '';
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup',   onUp);
+      };
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup',   onUp);
     };
-    const onUp = () => {
-      dragState.current.dragging = false;
-      document.body.style.cursor     = '';
-      document.body.style.userSelect = '';
-      document.removeEventListener('mousemove', onMove);
-      document.removeEventListener('mouseup',   onUp);
-    };
-    document.addEventListener('mousemove', onMove);
-    document.addEventListener('mouseup',   onUp);
-  }, [sidebarWidth]);
+
+    el.addEventListener('mousedown', onMouseDown);
+    return () => el.removeEventListener('mousedown', onMouseDown);
+  }, []);
 
   useEffect(() => { loadQueue(); }, []);
 
@@ -2006,11 +2013,7 @@ export default function ReviewQueueScreen() {
         </View>
 
         {/* ── Drag divider ── */}
-        <View
-          style={s.resizer}
-          onStartShouldSetResponder={() => true}
-          {...{ onMouseDown: onResizerMouseDown } as any}
-        />
+        <View ref={resizerRef} style={s.resizer} />
 
         {/* ── Right panel ── */}
         {selectedRecipe ? (
