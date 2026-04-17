@@ -119,13 +119,21 @@ interface RecipeDoc {
   processingStatus?:        string;
   _approved?:               boolean;
   nutrition?: {
-    calories?: number;
-    protein?:  number;
-    fat?:      number;
-    carbs?:    number;
-    fiber?:    number;
-    sodium?:   number;
-    sugar?:    number;
+    // Pre-computed per-serving totals (total ÷ servings, garnishes excluded)
+    perServing?:        Record<string, number>;
+    // Whole-recipe totals
+    total?:             Record<string, number>;
+    // Garnish nutrition stored separately for the toggle feature
+    garnishPerServing?: Record<string, number> | null;
+    servings?:          number;
+    matchRate?:         number;
+    source?:            string;
+    calculatedAt?:      string;
+    edamamDelta?:       number | null;
+    ingredients?:       Array<{
+      raw: string; name: string; grams: number;
+      matched: boolean; skip: boolean; garnish: boolean;
+    }>;
   };
 }
 
@@ -1665,12 +1673,52 @@ const pp = StyleSheet.create({
 
 // ── Nutrition panel ───────────────────────────────────────────────────────────
 
-const MACRO_CONFIG = [
+// Macro progress bars — % of FDA daily values
+const MACRO_BARS = [
   { key: 'calories', label: 'Calories', goal: 2000, color: '#e05c5c', striped: false },
   { key: 'protein',  label: 'Protein',  goal: 50,   color: '#9b8ee0', striped: false },
   { key: 'fat',      label: 'Fat',      goal: 78,   color: '#c8d44a', striped: true  },
   { key: 'carbs',    label: 'Carbs',    goal: 275,  color: '#aaaaaa', striped: true  },
-] as const;
+];
+
+// Full nutrition facts table — label, firestore key, unit, FDA daily value (null = no DV)
+const NUTRIENT_TABLE: { label: string; key: string; unit: string; dv: number | null; indent?: boolean }[] = [
+  { label: 'Calories',           key: 'calories',          unit: ' kcal', dv: 2000 },
+  { label: 'Total Fat',          key: 'fat',               unit: 'g',     dv: 78   },
+  { label: 'Saturated Fat',      key: 'saturatedFat',      unit: 'g',     dv: 20,  indent: true },
+  { label: 'Trans Fat',          key: 'transFat',          unit: 'g',     dv: null, indent: true },
+  { label: 'Polyunsaturated Fat',key: 'polyunsaturatedFat',unit: 'g',     dv: null, indent: true },
+  { label: 'Monounsaturated Fat',key: 'monounsaturatedFat',unit: 'g',     dv: null, indent: true },
+  { label: 'Cholesterol',        key: 'cholesterol',       unit: 'mg',    dv: 300  },
+  { label: 'Sodium',             key: 'sodium',            unit: 'mg',    dv: 2300 },
+  { label: 'Total Carbohydrate', key: 'carbs',             unit: 'g',     dv: 275  },
+  { label: 'Dietary Fiber',      key: 'fiber',             unit: 'g',     dv: 28,  indent: true },
+  { label: 'Total Sugars',       key: 'sugar',             unit: 'g',     dv: null, indent: true },
+  { label: 'Protein',            key: 'protein',           unit: 'g',     dv: 50   },
+  { label: 'Vitamin A',          key: 'vitaminA',          unit: 'µg',    dv: 900  },
+  { label: 'Vitamin C',          key: 'vitaminC',          unit: 'mg',    dv: 90   },
+  { label: 'Vitamin D',          key: 'vitaminD',          unit: 'µg',    dv: 20   },
+  { label: 'Vitamin E',          key: 'vitaminE',          unit: 'mg',    dv: 15   },
+  { label: 'Vitamin K',          key: 'vitaminK',          unit: 'µg',    dv: 120  },
+  { label: 'Thiamin (B1)',       key: 'vitaminB1',         unit: 'mg',    dv: 1.2  },
+  { label: 'Riboflavin (B2)',    key: 'vitaminB2',         unit: 'mg',    dv: 1.3  },
+  { label: 'Niacin (B3)',        key: 'vitaminB3',         unit: 'mg',    dv: 16   },
+  { label: 'Vitamin B6',         key: 'vitaminB6',         unit: 'mg',    dv: 1.7  },
+  { label: 'Folate',             key: 'folate',            unit: 'µg',    dv: 400  },
+  { label: 'Vitamin B12',        key: 'vitaminB12',        unit: 'µg',    dv: 2.4  },
+  { label: 'Calcium',            key: 'calcium',           unit: 'mg',    dv: 1300 },
+  { label: 'Iron',               key: 'iron',              unit: 'mg',    dv: 18   },
+  { label: 'Magnesium',          key: 'magnesium',         unit: 'mg',    dv: 420  },
+  { label: 'Phosphorus',         key: 'phosphorus',        unit: 'mg',    dv: 1250 },
+  { label: 'Potassium',          key: 'potassium',         unit: 'mg',    dv: 4700 },
+  { label: 'Zinc',               key: 'zinc',              unit: 'mg',    dv: 11   },
+];
+
+function fmt(val: number): string {
+  if (val >= 100) return String(Math.round(val));
+  if (val >= 10)  return val.toFixed(1);
+  return val.toFixed(2).replace(/\.?0+$/, '');
+}
 
 function NutritionPanel({
   nutrition, servings,
@@ -1678,51 +1726,120 @@ function NutritionPanel({
   nutrition?: RecipeDoc['nutrition'];
   servings?:  string | number;
 }) {
-  const srvNum  = parseFloat(String(servings ?? '1')) || 1;
-  const hasData = nutrition && Object.values(nutrition).some(v => (v ?? 0) > 0);
+  // perServing is already (total ÷ servings) — do NOT divide again
+  const ps         = nutrition?.perServing as Record<string, number> | undefined;
+  const srvNum     = (nutrition?.servings) ?? (parseFloat(String(servings ?? '1')) || 1);
+  const matchRate  = nutrition?.matchRate;
+  const hasData    = ps && Object.values(ps).some(v => (v ?? 0) > 0);
+
+  const matchColor = matchRate == null ? Colors.textMuted
+                   : matchRate >= 80   ? '#7cb87a'
+                   : matchRate >= 50   ? '#d4a843'
+                   :                     '#c96b6b';
 
   return (
     <View style={np.wrap}>
-      <Text style={np.title}>% Daily Goals</Text>
-      <Text style={np.subtitle}>Monitor calories, macros, and nutrients in your meals.</Text>
-      {!hasData ? (
-        <Text style={np.noData}>No nutrition data yet</Text>
-      ) : (
-        <View style={np.barsRow}>
-          {MACRO_CONFIG.map(({ key, label, goal, color, striped }) => {
-            const total      = (nutrition as Record<string, number | undefined>)?.[key] ?? 0;
-            const perServing = total / srvNum;
-            const pct        = Math.min(Math.round((perServing / goal) * 100), 100);
-            const fillStyle  = striped
-              ? { width: `${pct}%` as any, backgroundImage: `repeating-linear-gradient(45deg, ${color} 0px, ${color} 3px, transparent 3px, transparent 8px)` } as any
-              : { width: `${pct}%` as any, backgroundColor: color };
-            return (
-              <View key={key} style={np.barWrap}>
-                <Text style={np.barLabel}>{label}</Text>
-                <View style={np.track}>
-                  <View style={[np.fill, fillStyle]} />
-                </View>
-                <Text style={[np.barPct, { color }]}>{pct}%</Text>
-              </View>
-            );
-          })}
+
+      {/* Header */}
+      <View style={np.header}>
+        <View>
+          <Text style={np.title}>% Daily Goals</Text>
+          <Text style={np.subtitle}>Per serving · makes {srvNum} · garnishes excluded</Text>
         </View>
+        {matchRate != null && (
+          <View style={[np.matchBadge, { borderColor: matchColor + '60', backgroundColor: matchColor + '18' }]}>
+            <Text style={[np.matchText, { color: matchColor }]}>{matchRate}% matched</Text>
+          </View>
+        )}
+      </View>
+
+      {!hasData ? (
+        <Text style={np.noData}>No nutrition data available for this recipe yet.</Text>
+      ) : (
+        <>
+          {/* Macro progress bars */}
+          <View style={np.barsRow}>
+            {MACRO_BARS.map(({ key, label, goal, color, striped }) => {
+              const val = ps?.[key] ?? 0;
+              const pct = Math.min(Math.round((val / goal) * 100), 100);
+              const fillStyle = striped
+                ? { width: `${pct}%` as any, backgroundImage: `repeating-linear-gradient(45deg,${color} 0,${color} 3px,transparent 3px,transparent 8px)` } as any
+                : { width: `${pct}%` as any, backgroundColor: color };
+              return (
+                <View key={key} style={np.barWrap}>
+                  <Text style={np.barLabel}>{label}</Text>
+                  <View style={np.track}>
+                    <View style={[np.fill, fillStyle]} />
+                  </View>
+                  <Text style={[np.barPct, { color }]}>{pct}%</Text>
+                  <Text style={np.barAbs}>{fmt(val)}{key === 'calories' ? ' cal' : 'g'}</Text>
+                </View>
+              );
+            })}
+          </View>
+
+          {/* Divider */}
+          <View style={np.divider} />
+
+          {/* Full nutrition facts table */}
+          <Text style={np.tableTitle}>Full Nutrition Facts — per serving</Text>
+          <View style={np.table}>
+            {NUTRIENT_TABLE.map(({ label, key, unit, dv, indent }) => {
+              const val = ps?.[key];
+              if (val == null || val === 0) return null;
+              const dvPct = dv ? Math.round((val / dv) * 100) : null;
+              return (
+                <View key={key} style={[np.tableRow, indent ? np.tableRowIndent : null]}>
+                  <Text style={[np.tableLabel, indent ? np.tableLabelIndent : null]}>{label}</Text>
+                  <View style={np.tableRight}>
+                    <Text style={np.tableVal}>{fmt(val)}{unit}</Text>
+                    {dvPct != null && <Text style={np.tableDv}>{dvPct}%</Text>}
+                  </View>
+                </View>
+              );
+            })}
+          </View>
+
+          {/* Garnish note */}
+          {nutrition?.garnishPerServing && (
+            <Text style={np.garnishNote}>
+              + garnishes add ~{Math.round(nutrition.garnishPerServing['calories'] ?? 0)} cal/serving (toggle coming)
+            </Text>
+          )}
+        </>
       )}
     </View>
   );
 }
 
 const np = StyleSheet.create({
-  wrap:     { backgroundColor: Colors.surfaceElevated, borderRadius: 12, padding: 16, gap: 10 },
-  title:    { fontFamily: Fonts.bodyMedium, fontSize: 13, color: Colors.textPrimary },
-  subtitle: { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted, marginBottom: 4 },
-  noData:   { fontFamily: Fonts.body, fontSize: 12, color: Colors.textMuted, fontStyle: 'italic', textAlign: 'center', paddingVertical: 6 },
-  barsRow:  { flexDirection: 'row', gap: 16 },
-  barWrap:  { flex: 1, gap: 6 },
-  barLabel: { fontFamily: Fonts.bodyMedium, fontSize: 12, color: Colors.textPrimary },
-  track:    { height: 10, borderRadius: 5, backgroundColor: 'rgba(255,255,255,0.10)', overflow: 'hidden' },
-  fill:     { height: '100%', borderRadius: 5 },
-  barPct:   { fontFamily: Fonts.bodyMedium, fontSize: 13 },
+  wrap:              { backgroundColor: Colors.surfaceElevated, borderRadius: 12, padding: 16, gap: 12 },
+  header:            { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 },
+  title:             { fontFamily: Fonts.bodyMedium, fontSize: 13, color: Colors.textPrimary },
+  subtitle:          { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted, marginTop: 2 },
+  matchBadge:        { borderRadius: 100, borderWidth: 1, paddingHorizontal: 8, paddingVertical: 3 },
+  matchText:         { fontFamily: Fonts.bodyMedium, fontSize: 10, letterSpacing: 0.3 },
+  noData:            { fontFamily: Fonts.body, fontSize: 12, color: Colors.textMuted, fontStyle: 'italic', textAlign: 'center', paddingVertical: 6 },
+  // Macro bars
+  barsRow:           { flexDirection: 'row', gap: 12 },
+  barWrap:           { flex: 1, gap: 5 },
+  barLabel:          { fontFamily: Fonts.bodyMedium, fontSize: 11, color: Colors.textPrimary },
+  track:             { height: 8, borderRadius: 4, backgroundColor: 'rgba(255,255,255,0.10)', overflow: 'hidden' },
+  fill:              { height: '100%', borderRadius: 4 },
+  barPct:            { fontFamily: Fonts.bodyMedium, fontSize: 12 },
+  barAbs:            { fontFamily: Fonts.body, fontSize: 10, color: Colors.textMuted },
+  // Full table
+  divider:           { height: 1, backgroundColor: Colors.border },
+  tableTitle:        { fontFamily: Fonts.bodyMedium, fontSize: 11, color: Colors.textMuted, letterSpacing: 0.5, textTransform: 'uppercase' },
+  table:             { gap: 0 },
+  tableRow:          { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 5, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.05)' },
+  tableRowIndent:    { paddingLeft: 14, borderBottomColor: 'transparent' },
+  tableLabel:        { fontFamily: Fonts.body, fontSize: 12, color: Colors.textPrimary, flex: 1 },
+  tableLabelIndent:  { color: Colors.textMuted, fontSize: 11 },
+  tableRight:        { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  tableVal:          { fontFamily: Fonts.bodyMedium, fontSize: 12, color: Colors.textPrimary, minWidth: 60, textAlign: 'right' },
+  tableDv:           { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted, minWidth: 32, textAlign: 'right' },
+  garnishNote:       { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted, fontStyle: 'italic' },
 });
 
 // ── Main screen ───────────────────────────────────────────────────────────────
