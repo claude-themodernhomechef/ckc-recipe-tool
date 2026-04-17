@@ -1744,37 +1744,7 @@ export default function ReviewQueueScreen() {
 
   // ── Resizable sidebar ──────────────────────────────────────────────────────
   const [sidebarWidth, setSidebarWidth] = useState(310);
-  const sidebarWidthRef = useRef(310);
-  const resizerRef      = useRef<View>(null);
-
-  useEffect(() => {
-    const el = resizerRef.current as unknown as HTMLElement | null;
-    if (!el) return;
-
-    const onMouseDown = (e: MouseEvent) => {
-      const startX = e.clientX;
-      const startW = sidebarWidthRef.current;
-      document.body.style.cursor     = 'col-resize';
-      document.body.style.userSelect = 'none';
-
-      const onMove = (me: MouseEvent) => {
-        const newW = Math.min(Math.max(280, startW + (me.clientX - startX)), window.innerWidth - 300);
-        sidebarWidthRef.current = newW;
-        setSidebarWidth(newW);
-      };
-      const onUp = () => {
-        document.body.style.cursor     = '';
-        document.body.style.userSelect = '';
-        document.removeEventListener('mousemove', onMove);
-        document.removeEventListener('mouseup',   onUp);
-      };
-      document.addEventListener('mousemove', onMove);
-      document.addEventListener('mouseup',   onUp);
-    };
-
-    el.addEventListener('mousedown', onMouseDown);
-    return () => el.removeEventListener('mousedown', onMouseDown);
-  }, []);
+  const dragRef = useRef<{ startX: number; startW: number } | null>(null);
 
   useEffect(() => { loadQueue(); }, []);
 
@@ -2013,7 +1983,29 @@ export default function ReviewQueueScreen() {
         </View>
 
         {/* ── Drag divider ── */}
-        <View ref={resizerRef} style={s.resizer} />
+        <View
+          style={s.resizer}
+          onStartShouldSetResponder={() => true}
+          onMoveShouldSetResponder={() => true}
+          onResponderGrant={e => {
+            dragRef.current = { startX: e.nativeEvent.pageX, startW: sidebarWidth };
+            (document.body.style as any).cursor     = 'col-resize';
+            (document.body.style as any).userSelect = 'none';
+          }}
+          onResponderMove={e => {
+            if (!dragRef.current) return;
+            const newW = Math.min(
+              Math.max(280, dragRef.current.startW + (e.nativeEvent.pageX - dragRef.current.startX)),
+              window.innerWidth - 300,
+            );
+            setSidebarWidth(newW);
+          }}
+          onResponderRelease={() => {
+            dragRef.current = null;
+            (document.body.style as any).cursor     = '';
+            (document.body.style as any).userSelect = '';
+          }}
+        />
 
         {/* ── Right panel ── */}
         {selectedRecipe ? (
