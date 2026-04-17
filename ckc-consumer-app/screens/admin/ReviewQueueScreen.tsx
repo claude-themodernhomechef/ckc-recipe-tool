@@ -1726,11 +1726,22 @@ function NutritionPanel({
   nutrition?: RecipeDoc['nutrition'];
   servings?:  string | number;
 }) {
-  // perServing is already (total ÷ servings) — do NOT divide again
-  const ps         = nutrition?.perServing as Record<string, number> | undefined;
-  const srvNum     = (nutrition?.servings) ?? (parseFloat(String(servings ?? '1')) || 1);
-  const matchRate  = nutrition?.matchRate;
-  const hasData    = ps && Object.values(ps).some(v => (v ?? 0) > 0);
+  // Use the UI servings value so editing servings recalculates in real time.
+  // Divide nutrition.total by the current servings — if total isn't available
+  // fall back to the pre-stored perServing.
+  const srvNum    = parseFloat(String(servings ?? nutrition?.servings ?? '1')) || 1;
+  const total     = nutrition?.total as Record<string, number> | undefined;
+  const stored    = nutrition?.perServing as Record<string, number> | undefined;
+
+  // Compute per-serving live from total whenever total exists
+  const ps: Record<string, number> | undefined = total
+    ? Object.fromEntries(
+        Object.entries(total).map(([k, v]) => [k, Math.round((v / srvNum) * 100) / 100])
+      )
+    : stored;
+
+  const matchRate = nutrition?.matchRate;
+  const hasData   = ps && Object.values(ps).some(v => (v ?? 0) > 0);
 
   const matchColor = matchRate == null ? Colors.textMuted
                    : matchRate >= 80   ? '#7cb87a'
@@ -1800,12 +1811,22 @@ function NutritionPanel({
             })}
           </View>
 
-          {/* Garnish note */}
-          {nutrition?.garnishPerServing && (
-            <Text style={np.garnishNote}>
-              + garnishes add ~{Math.round(nutrition.garnishPerServing['calories'] ?? 0)} cal/serving (toggle coming)
-            </Text>
-          )}
+          {/* Garnish note — also recalculated from garnish total if available */}
+          {nutrition?.garnishPerServing && (() => {
+            const gTotal = nutrition.garnishPerServing as Record<string, number>;
+            const gCal   = total?.['garnishCalories']
+                        ?? Math.round((gTotal['calories'] ?? 0));
+            // Recompute garnish per serving live using current srvNum
+            const garnishTotal = nutrition?.total as any;
+            const gCalLive = garnishTotal?.garnishCalories
+              ? Math.round(garnishTotal.garnishCalories / srvNum)
+              : Math.round(gTotal['calories'] ?? 0);
+            return gCalLive > 0 ? (
+              <Text style={np.garnishNote}>
+                + garnishes add ~{gCalLive} cal/serving (toggle coming)
+              </Text>
+            ) : null;
+          })()}
         </>
       )}
     </View>
