@@ -133,6 +133,7 @@ interface RecipeDoc {
     ingredients?:       Array<{
       raw: string; name: string; grams: number;
       matched: boolean; skip: boolean; garnish: boolean;
+      assumed?: boolean; assumedDefault?: string;
     }>;
   };
 }
@@ -1760,6 +1761,11 @@ function NutritionPanel({
     .filter((i: any) => i.garnish && !i.skip && i.raw?.trim())
     .map((i: any) => i.raw as string);
 
+  // Build list of assumed-quantity ingredients for the assumptions note
+  const assumedIngredients = (nutrition?.ingredients ?? [])
+    .filter((i: any) => i.assumed && !i.skip && i.raw?.trim())
+    .map((i: any) => ({ raw: i.raw as string, name: i.name as string, assumedDefault: i.assumedDefault as string }));
+
   // Auto-generate the garnish assumption note
   function buildGarnishNote(): string {
     if (!garnishIngredients.length) return '';
@@ -1864,6 +1870,18 @@ function NutritionPanel({
                 })}
               </View>
 
+              {/* Cooking assumptions note — always shown when assumptions were made */}
+              {assumedIngredients.length > 0 && (
+                <View style={np.assumptionNoteBox}>
+                  <Text style={np.assumptionNoteTitle}>⚠️ Assumed quantities</Text>
+                  <Text style={np.assumptionNoteText}>
+                    {assumedIngredients.map(i =>
+                      `We assumed ${i.assumedDefault} of ${i.name || i.raw} to calculate the nutrition facts.`
+                    ).join('\n')}
+                  </Text>
+                </View>
+              )}
+
               {/* Garnish assumption note — shown when garnish toggle is on */}
               {showGarnish && hasGarnish && garnishIngredients.length > 0 && (
                 <View style={np.garnishNoteBox}>
@@ -1920,6 +1938,10 @@ const np = StyleSheet.create({
   garnishNoteBox:    { backgroundColor: 'rgba(124,184,122,0.10)', borderRadius: 8, borderWidth: 1, borderColor: 'rgba(124,184,122,0.25)', padding: 12, gap: 6 },
   garnishNoteTitle:  { fontFamily: Fonts.bodyMedium, fontSize: 12, color: '#7cb87a' },
   garnishNoteText:   { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted, lineHeight: 17 },
+  // Assumed-quantity note box
+  assumptionNoteBox:   { backgroundColor: 'rgba(212,168,67,0.10)', borderRadius: 8, borderWidth: 1, borderColor: 'rgba(212,168,67,0.25)', padding: 12, gap: 6 },
+  assumptionNoteTitle: { fontFamily: Fonts.bodyMedium, fontSize: 12, color: '#d4a843' },
+  assumptionNoteText:  { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted, lineHeight: 17 },
 });
 
 // ── Main screen ───────────────────────────────────────────────────────────────
