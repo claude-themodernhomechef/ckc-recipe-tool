@@ -123,6 +123,8 @@ interface RecipeDoc {
     perServing?:        Record<string, number>;
     // Whole-recipe totals
     total?:             Record<string, number>;
+    // Pre-computed per-diet nutrition (byDiet[code].perServing + swapLog)
+    byDiet?:            Record<string, { perServing: Record<string, number>; swapLog: string[] }>;
     // Garnish nutrition stored separately for the toggle feature
     garnishPerServing?: Record<string, number> | null;
     servings?:          number;
@@ -1733,7 +1735,6 @@ function NutritionPanel({
   const [showGarnish,  setShowGarnish]  = useState(false);
   const [activeDiet,   setActiveDiet]   = useState<string | null>(null);
   const [dietPs,       setDietPs]       = useState<Record<string, number> | null>(null);
-  const [dietLoading,  setDietLoading]  = useState(false);
   const [dietSwapLog,  setDietSwapLog]  = useState<string[]>([]);
 
   // Divide nutrition.total by live servings so editing the field recalculates instantly
@@ -1789,116 +1790,22 @@ function NutritionPanel({
     .filter(([, tag]) => tag.native || tag.mod)
     .map(([code, tag]) => ({ code, state: tag.native ? 'native' : 'mod' as DietState }));
 
-  // Tap a diet token — native = highlight only, mod = live swap lookup
-  async function handleDietTap(code: string, state: DietState) {
-    // Deselect if already active
+  // Tap a diet token — reads pre-computed byDiet data, no API calls
+  function handleDietTap(code: string, state: DietState) {
     if (activeDiet === code) {
       setActiveDiet(null); setDietPs(null); setDietSwapLog([]);
       return;
     }
     setActiveDiet(code);
-    setDietSwapLog([]);
-
-    // Native: no swaps needed, nutrition unchanged
-    if (state === 'native') { setDietPs(null); return; }
-
-    // Mod: parse swaps and look up replacement ingredients in Firestore
-    const notes = dietTags?.[code]?.notes ?? '';
-    const pairs = parseSwapPairs(notes);
-    if (!pairs.length) { setDietPs(null); return; }
-
-    setDietLoading(true);
-    const ings = nutrition?.ingredients ?? [];
-
-    // Start from a mutable copy of the total nutrition
-    const workingTotal: Record<string, number> = { ...(nutrition?.total ?? {}) };
-    const log: string[] = [];
-
-    // Helper: extract per100g value regardless of {value,unit} or raw number format
-    function getPer100g(per100g: Record<string, any>, key: string): number {
-      const v = per100g[key];
-      if (v == null) return 0;
-      return typeof v === 'object' ? (v.value ?? 0) : (v as number);
+    const byDietEntry = nutrition?.byDiet?.[code];
+    if (byDietEntry?.perServing) {
+      setDietPs(byDietEntry.perServing);
+      setDietSwapLog(byDietEntry.swapLog ?? []);
+    } else {
+      // Native diet or no byDiet data yet — show base nutrition
+      setDietPs(null);
+      setDietSwapLog([]);
     }
-
-    for (const { from, to } of pairs) {
-      // Find matched ingredient(s) by fuzzyMatch on name
-      const origIngs = ings.filter(i => !i.skip && i.matched && i.grams > 0 && fuzzyMatch(from, i.name));
-      if (!origIngs.length) continue;
-
-      for (const origIng of origIngs) {
-        if (!origIng.grams) continue;
-
-        if (to === null) {
-          // Remove ingredient — fetch its per100g from Firestore to subtract
-          try {
-            const snap = await getDoc(doc(db, 'ingredients', origIng.name.toLowerCase()));
-            if (snap.exists()) {
-              const p = snap.data().per100g as Record<string, any>;
-              for (const k of Object.keys(p)) {
-                const val = getPer100g(p, k) * origIng.grams / 100;
-                workingTotal[k] = Math.round(((workingTotal[k] ?? 0) - val) * 100) / 100;
-              }
-              const cal = Math.round(getPer100g(p, 'calories') * origIng.grams / 100);
-              log.push(`Removed ${origIng.name} (−${cal} cal)`);
-            } else {
-              log.push(`Removed ${origIng.name} (not in DB — calories unchanged)`);
-            }
-          } catch { log.push(`Removed ${origIng.name} (lookup failed)`); }
-          continue;
-        }
-
-        // Swap: fetch BOTH original and replacement from Firestore
-        const toName = to.replace(/^\d[\d/.\s]*(cup|tbsp|tsp|oz|lb|g|ml)s?\s*/i, '').trim();
-        try {
-          const [origSnap, swapSnap] = await Promise.all([
-            getDoc(doc(db, 'ingredients', origIng.name.toLowerCase())),
-            getDoc(doc(db, 'ingredients', toName.toLowerCase())),
-          ]);
-
-          if (!swapSnap.exists()) {
-            log.push(`${origIng.name} → ${toName} (swap not in DB, kept original)`);
-            continue;
-          }
-
-          const swapPer100g = swapSnap.data().per100g as Record<string, any>;
-
-          // Subtract original ingredient's contribution
-          if (origSnap.exists()) {
-            const origPer100g = origSnap.data().per100g as Record<string, any>;
-            for (const k of Object.keys(origPer100g)) {
-              const val = getPer100g(origPer100g, k) * origIng.grams / 100;
-              workingTotal[k] = Math.round(((workingTotal[k] ?? 0) - val) * 100) / 100;
-            }
-          }
-
-          // Add swap ingredient's contribution at same gram weight
-          for (const k of Object.keys(swapPer100g)) {
-            const val = getPer100g(swapPer100g, k) * origIng.grams / 100;
-            workingTotal[k] = Math.round(((workingTotal[k] ?? 0) + val) * 100) / 100;
-          }
-
-          const origCal = origSnap.exists()
-            ? Math.round(getPer100g(origSnap.data().per100g, 'calories') * origIng.grams / 100)
-            : 0;
-          const swapCal = Math.round(getPer100g(swapPer100g, 'calories') * origIng.grams / 100);
-          const delta = swapCal - origCal;
-          log.push(`${origIng.name} → ${toName} (${delta >= 0 ? '+' : '−'}${Math.abs(delta)} cal)`);
-        } catch {
-          log.push(`${origIng.name} → ${toName} (lookup failed)`);
-        }
-      }
-    }
-
-    const srvN = parseFloat(String(servings ?? nutrition?.servings ?? '1')) || 1;
-    const newPs: Record<string, number> = {};
-    for (const [k, v] of Object.entries(workingTotal)) {
-      newPs[k] = Math.round((Math.max(0, v) / srvN) * 100) / 100;
-    }
-
-    setDietPs(newPs);
-    setDietSwapLog(log);
-    setDietLoading(false);
   }
 
   const matchRate  = nutrition?.matchRate;
@@ -1968,7 +1875,6 @@ function NutritionPanel({
                   onPress={() => handleDietTap(code, state)}
                 />
               ))}
-              {dietLoading && <Text style={np.dietLoading}>calculating…</Text>}
             </View>
           )}
 
