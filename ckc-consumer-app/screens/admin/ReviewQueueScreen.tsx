@@ -548,6 +548,8 @@ const DIET_CATEGORY_FLAGS: Record<string, string[]> = {
 function stripLeadingQty(s: string): string {
   return s
     .replace(/^[\d\s/½¼¾⅓⅔.]+\s*(tbsp|tsp|tablespoons?|teaspoons?|cups?|oz|lb|g\b|ml|pounds?|ounces?)\.?\s*/i, '')
+    .replace(/^\d[\d/.\s]*\s+/, '')      // strip bare leading numbers: "4 garlic" → "garlic"
+    .replace(/^(the|a|an)\s+/i, '')      // strip leading articles: "the shallot" → "shallot"
     .replace(/\s+entirely\s*$/i, '')
     .trim();
 }
