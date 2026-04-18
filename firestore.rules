@@ -14,13 +14,20 @@ service cloud.firestore {
 
     // Unified recipes collection:
     // - Anyone can read (internal admin tool, protected by HTML password gate)
-    // - Web UI can update status + decidedAt only (swipe decision)
+    // - Full write access for admin review queue (no auth yet — protected by obscurity)
     match /recipes/{recipeId} {
       allow read: if true;
+      allow write: if true;
+    }
 
-      // Allow swipe decision updates + diet tag edits from admin UI
-      allow update: if request.resource.data.diff(resource.data).affectedKeys()
-           .hasOnly(['status', 'decidedAt', 'dietTags']);
+    // Ingredient category DB — admin tool reads + writes to assign categories
+    match /ingredientCategories/{docId} {
+      allow read, write: if true;
+    }
+
+    // Ingredient nutrition DB — read-only, used for live diet swap lookups
+    match /ingredients/{docId} {
+      allow read: if true;
     }
 
     // Deny everything else by default
