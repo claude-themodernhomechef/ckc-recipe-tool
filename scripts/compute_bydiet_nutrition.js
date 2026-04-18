@@ -91,6 +91,14 @@ function fuzzyMatch(term, name) {
   return false;
 }
 
+// ── Clean ingredient name for display ────────────────────────────────────────
+function cleanIngName(name) {
+  return name
+    .replace(/\b(extra\s+firm|firm|silken|soft|hard|large|small|medium|big|fat|thick|thin|fresh|dried|frozen|raw|cooked|whole|boneless|skinless|bone-?in|skin-?on|lean|ripe|young|baby)\b/gi, '')
+    .replace(/\b(diced|sliced|chopped|minced|grated|crushed|halved|quartered|peeled|seeded|cubed|shredded)\b/gi, '')
+    .replace(/\s+/g, ' ').trim();
+}
+
 // ── Ingredient DB lookup ──────────────────────────────────────────────────────
 
 function lookupIngredient(name, ingDB) {
@@ -100,7 +108,7 @@ function lookupIngredient(name, ingDB) {
   // Strip prep instructions, size/texture descriptors, and filler words
   const cleaned = lower
     .replace(/\bcut\s+into\b.*$/i, '')           // "cut into 1-inch cubes" and everything after
-    .replace(/\b(extra\s+firm|firm|silken|soft|hard|large|small|medium|fresh|dried|frozen|raw|cooked|whole|boneless|skinless|bone-?in|skin-?on|lean)\b/g, '')
+    .replace(/\b(extra\s+firm|firm|silken|soft|hard|large|small|medium|big|fat|thick|thin|fresh|dried|frozen|raw|cooked|whole|boneless|skinless|bone-?in|skin-?on|lean|ripe|young|baby)\b/g, '')
     .replace(/\b(diced|sliced|chopped|minced|grated|crushed|halved|quartered|peeled|seeded|cubed|shredded|crumbled|julienned|torn)\b/g, '')
     .replace(/\b(for|the|and|with|from|into|about|approx)\b/g, '')
     .replace(/\s+/g, ' ').trim();
@@ -204,10 +212,10 @@ async function main() {
               if (origNutr) {
                 for (const [k, v] of Object.entries(origNutr))
                   workingTotal[k] = Math.round(((workingTotal[k] ?? 0) - v) * 100) / 100;
-                swapLog.push(`Removed ${origIng.name} (−${Math.round(origNutr.calories ?? 0)} cal)`);
+                swapLog.push(`Removed ${cleanIngName(origIng.name)} (−${Math.round(origNutr.calories ?? 0)} cal)`);
               }
             } else {
-              swapLog.push(`Removed ${origIng.name} (not in DB)`);
+              swapLog.push(`Removed ${cleanIngName(origIng.name)} (not in DB)`);
             }
             continue;
           }
@@ -217,7 +225,7 @@ async function main() {
           const swapEntry = lookupIngredient(toName, ingDB);
 
           if (!swapEntry) {
-            swapLog.push(`${origIng.name} → ${toName} (not in DB, kept original)`);
+            swapLog.push(`${cleanIngName(origIng.name)} → ${toName} (not in DB, kept original)`);
             continue;
           }
 
@@ -237,7 +245,7 @@ async function main() {
             const origCal = origEntry ? Math.round(calcNutrition(origIng.grams, origEntry)?.calories ?? 0) : 0;
             const swapCal = Math.round(swapNutr.calories ?? 0);
             const delta   = swapCal - origCal;
-            swapLog.push(`${origIng.name} → ${toName} (${delta >= 0 ? '+' : ''}${delta} cal)`);
+            swapLog.push(`${cleanIngName(origIng.name)} → ${toName} (${delta >= 0 ? '+' : ''}${delta} cal)`);
           }
         }
       }
