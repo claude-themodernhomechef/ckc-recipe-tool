@@ -30,7 +30,7 @@ function extractLeadingQty(s) {
   const m = s.match(/^(\d[\d/.\s]*(?:cup|tbsp|tsp|oz|lb|g|ml)s?\s+)/i);
   return m ? m[1] : '';
 }
-function stripLeadingQty(s) { return s.replace(/^[\d/.\s]+(?:cup|tbsp|tsp|oz|lb|g|ml)s?\s*/i, '').trim(); }
+function stripLeadingQty(s) { return s.replace(/^[\d/.\s]+(?:cup|tbsp|tsp|oz|lb|g\b|ml)s?\s*/i, '').trim(); }
 
 function parseSwapPairs(notes) {
   const result = [];

@@ -547,14 +547,14 @@ const DIET_CATEGORY_FLAGS: Record<string, string[]> = {
 // Strip leading quantities like "6 Tbsp", "1 1/2 tsp", "2" from ingredient references in swap notes
 function stripLeadingQty(s: string): string {
   return s
-    .replace(/^[\d\s/½¼¾⅓⅔.]+\s*(tbsp|tsp|tablespoons?|teaspoons?|cups?|oz|lb|g|ml|pounds?|ounces?)\.?\s*/i, '')
+    .replace(/^[\d\s/½¼¾⅓⅔.]+\s*(tbsp|tsp|tablespoons?|teaspoons?|cups?|oz|lb|g\b|ml|pounds?|ounces?)\.?\s*/i, '')
     .replace(/\s+entirely\s*$/i, '')
     .trim();
 }
 
 // Extract the leading quantity string (e.g. "6 Tbsp") without stripping it
 function extractLeadingQty(s: string): string {
-  const m = s.match(/^([\d\s/½¼¾⅓⅔.]+\s*(?:tbsp|tsp|tablespoons?|teaspoons?|cups?|oz|lb|g|ml|pounds?|ounces?)\.?)\s*/i);
+  const m = s.match(/^([\d\s/½¼¾⅓⅔.]+\s*(?:tbsp|tsp|tablespoons?|teaspoons?|cups?|oz|lb|g\b|ml|pounds?|ounces?)\.?)\s*/i);
   return m ? m[1].trim() : '';
 }
 
