@@ -50,7 +50,12 @@ function parseSwapPairs(notes) {
     const rawTo = m[2].trim().replace(/\s+[—–].*$/, '').trim();
     const toHasQty = extractLeadingQty(rawTo) !== '';
     m[1].split(/\s+and\s+/i).forEach(f => {
-      const rawFrom = f.trim();
+      // Strip editorial commentary after the ingredient name
+      const cleaned = f.trim()
+        .replace(/\s*\([^)]*\)/g, '')                                      // strip (parentheticals)
+        .replace(/\s+(do\s+not|but\s+not|except|however|–|—|\bdo\b).*/i, '') // strip "do not sub..." etc
+        .trim();
+      const rawFrom = cleaned;
       const qty = extractLeadingQty(rawFrom);
       result.push({ from: stripLeadingQty(rawFrom), to: (qty && !toHasQty) ? `${qty} ${rawTo}` : rawTo });
     });
@@ -73,11 +78,17 @@ function fuzzyMatch(term, name) {
   const clean = x => x.toLowerCase()
     .replace(/\b(freshly\s+ground|cloves?|heads?|tbsp\s+of|tsp\s+of|cups?\s+of|\bof\b|black|white|ground|freshly|kosher|sea|fine|coarse|cracked)\b/g, '')
     .replace(/\s+/g, ' ').trim();
-  const a = clean(term), b = clean(name);
+  const b = clean(name);
   const nosp = x => x.replace(/\s+/g, '');
-  if (a === b || nosp(a) === nosp(b)) return true;
-  const aWords = a.split(' ').filter(w => w.length > 2);
-  return aWords.length > 0 && aWords.every(w => b.includes(w));
+
+  // Handle "X/Y" alternatives in swap notes — try each variant separately
+  const variants = term.split('/').map(v => clean(v.trim())).filter(Boolean);
+  for (const a of variants) {
+    if (a === b || nosp(a) === nosp(b)) return true;
+    const aWords = a.split(' ').filter(w => w.length > 2);
+    if (aWords.length > 0 && aWords.every(w => b.includes(w))) return true;
+  }
+  return false;
 }
 
 // ── Ingredient DB lookup ──────────────────────────────────────────────────────
