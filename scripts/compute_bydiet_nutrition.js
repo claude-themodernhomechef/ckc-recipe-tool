@@ -96,11 +96,31 @@ function fuzzyMatch(term, name) {
 function lookupIngredient(name, ingDB) {
   const lower = name.toLowerCase().trim();
   if (ingDB[lower]) return ingDB[lower];
-  const words = lower.split(' ').filter(w => w.length > 2);
+
+  // Strip prep instructions, size/texture descriptors, and filler words
+  const cleaned = lower
+    .replace(/\bcut\s+into\b.*$/i, '')           // "cut into 1-inch cubes" and everything after
+    .replace(/\b(extra\s+firm|firm|silken|soft|hard|large|small|medium|fresh|dried|frozen|raw|cooked|whole|boneless|skinless|bone-?in|skin-?on|lean)\b/g, '')
+    .replace(/\b(diced|sliced|chopped|minced|grated|crushed|halved|quartered|peeled|seeded|cubed|shredded|crumbled|julienned|torn)\b/g, '')
+    .replace(/\b(for|the|and|with|from|into|about|approx)\b/g, '')
+    .replace(/\s+/g, ' ').trim();
+
+  if (ingDB[cleaned]) return ingDB[cleaned];
+
+  // Word match on cleaned name (words > 3 chars)
+  const words = cleaned.split(' ').filter(w => w.length > 3);
   if (words.length > 0) {
     const match = Object.keys(ingDB).find(k => words.every(w => k.includes(w)));
     if (match) return ingDB[match];
   }
+
+  // Last resort: try matching on just the first 1-2 meaningful words
+  const shortWords = cleaned.split(' ').filter(w => w.length > 3).slice(0, 2);
+  if (shortWords.length > 0) {
+    const match = Object.keys(ingDB).find(k => shortWords.every(w => k.includes(w)));
+    if (match) return ingDB[match];
+  }
+
   return null;
 }
 
