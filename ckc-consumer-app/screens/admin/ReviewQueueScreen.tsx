@@ -93,9 +93,11 @@ const PROTEINS = [
 type DietState = 'native' | 'mod' | 'none';
 
 interface DietTagData {
-  native?: boolean;
-  mod?:    boolean;
-  notes?:  string;
+  native?:    boolean;
+  mod?:       boolean;
+  // Supports both new structured format (array) and legacy string format for old Firestore records
+  notes?:     Array<{ type: 'replace' | 'remove'; from: string; to?: string }> | string;
+  notesText?: string; // human-readable string auto-generated from the notes array (new records only)
 }
 
 interface RecipeDoc {
@@ -320,22 +322,34 @@ function DietCard({
   reviewFlags?:    ReviewItem[];
   onFlagResolved?: (ingredient: string, decision: 'compliant' | 'replace' | 'remove' | 'skip', note?: string) => void;
 }) {
-  const state     = getDietState(tag);
-  const notes     = tag?.notes ?? '';
-  const color     = (DIET_COLORS as Record<string, string>)[code] ?? Colors.textMuted;
-  const showNotes = state === 'mod' || notes.trim().length > 0;
+  const state = getDietState(tag);
+  const color = (DIET_COLORS as Record<string, string>)[code] ?? Colors.textMuted;
+
+  // Derive a plain-text string for the TextInput display.
+  // New records: prefer notesText (generated from the structured array).
+  // Legacy records: notes is a plain string — use it directly.
+  const notesDisplay: string = (() => {
+    if (tag?.notesText) return tag.notesText;
+    if (typeof tag?.notes === 'string') return tag.notes;
+    return '';
+  })();
+
+  const showNotes = state === 'mod' || notesDisplay.trim().length > 0;
 
   const [generatingFor, setGeneratingFor] = useState<string | null>(null);
 
   function setDietState(next: DietState) {
-    onChange(code, { native: next === 'native', mod: next === 'mod', notes: next === 'none' ? '' : notes });
+    // When toggling state, preserve the existing tag structure but update native/mod flags
+    onChange(code, { ...tag, native: next === 'native', mod: next === 'mod' });
   }
 
   async function handleFlag(flag: ReviewItem, decision: 'compliant' | 'replace' | 'remove' | 'skip') {
     if (decision === 'replace') {
       setGeneratingFor(flag.ingredient);
       try {
-        const note = await generateSwapNote(recipeName ?? '', code, flag.ingredient, flag.reason, tag?.notes);
+        // generateSwapNote returns a plain string; pass current display text as context
+        const note = await generateSwapNote(recipeName ?? '', code, flag.ingredient, flag.reason, notesDisplay);
+        // Store as legacy string — admin-generated notes aren't structured until re-enriched
         onChange(code, { native: false, mod: true, notes: note });
         onFlagResolved?.(flag.ingredient, 'replace', note);
       } catch (e) {
@@ -344,7 +358,7 @@ function DietCard({
       }
       setGeneratingFor(null);
     } else {
-      if (decision === 'compliant') onChange(code, { ...tag, native: true, mod: false, notes: notes });
+      if (decision === 'compliant') onChange(code, { ...tag, native: true, mod: false });
       if (decision === 'remove')    onChange(code, { native: false, mod: false, notes: '' });
       onFlagResolved?.(flag.ingredient, decision);
     }
@@ -391,20 +405,25 @@ function DietCard({
             <View style={dc.notesWrap}>
               <TextInput
                 style={dc.notes}
-                value={notes}
+                value={notesDisplay}
                 onChangeText={v => onChange(code, { native: tag?.native ?? false, mod: tag?.mod ?? false, notes: v })}
                 placeholder="Modification note…"
                 placeholderTextColor={Colors.textMuted}
                 multiline
               />
-              {/* Live swap preview — shows what the parser extracts as you type */}
-              {notes.trim() ? (() => {
-                const pairs = parseSwapPairs(notes);
-                if (pairs.length === 0) return (
-                  <View style={dc.previewWarn}>
-                    <Text style={dc.previewWarnText}>⚠ No swaps detected. Use: Replace X with Y. / Use X instead of Y. / Remove X.</Text>
-                  </View>
-                );
+              {/* Live swap preview — reads structured notes array (new records) or hides for legacy strings */}
+              {notesDisplay.trim() ? (() => {
+                const pairs = tag ? buildSwapPairs(tag) : [];
+                if (pairs.length === 0) {
+                  // Legacy string format: no structured pairs — show neutral info instead of a warning
+                  const isLegacy = typeof tag?.notes === 'string' && (tag.notes as string).trim().length > 0;
+                  if (isLegacy) return null; // legacy text is visible in the TextInput above
+                  return (
+                    <View style={dc.previewWarn}>
+                      <Text style={dc.previewWarnText}>No swaps detected in structured data.</Text>
+                    </View>
+                  );
+                }
                 return (
                   <View style={dc.previewWrap}>
                     {pairs.map((p, i) => (
@@ -560,50 +579,29 @@ function extractLeadingQty(s: string): string {
   return m ? m[1].trim() : '';
 }
 
-function parseSwapPairs(notes: string): Array<{ from: string; to: string | null }> {
-  const result: Array<{ from: string; to: string | null }> = [];
-  const s = notes.toLowerCase();
-  let m: RegExpExecArray | null;
-
-  const stopStr = `(?:[,.\\u2013\\u2014]|\\s+[—–]|$)`;
-
-  const insteadRe = new RegExp(`use\\s+([^.]+?)\\s+instead\\s+of\\s+([^.]+?)${stopStr}`, 'gi');
-  while ((m = insteadRe.exec(s)) !== null) {
-    const rawFrom = m[2].trim();
-    const rawTo   = m[1].trim();
-    const qty     = extractLeadingQty(rawFrom);
-    const to      = (qty && !extractLeadingQty(rawTo)) ? `${qty} ${rawTo}` : rawTo;
-    result.push({ from: stripLeadingQty(rawFrom), to });
+/**
+ * buildSwapPairs — reads structured swap data from a DietTagData object.
+ *
+ * New records (enriched after the structured-notes migration) store swaps as
+ *   tag.notes = [{ type: 'replace' | 'remove' | 'note', from: string, to?: string, note?: string }]
+ *
+ * Legacy records (enriched before the migration) stored a free-text string in
+ *   tag.notes or tag.notesText
+ * For those we return an empty array — the legacy TextInput still shows the raw
+ * string so the admin can read it, but we no longer try to regex-parse it.
+ */
+function buildSwapPairs(tag: DietTagData): Array<{ from: string; to: string | null }> {
+  // New structured format — notes is an array of swap objects
+  if (Array.isArray((tag as any).notes)) {
+    return (tag as any).notes.map((s: any) => ({
+      from: s.from ?? '',
+      to:   s.type === 'replace' ? (s.to ?? null)
+          : s.type === 'note'    ? `[reduce] ${s.note ?? ''}`
+          : null,
+    }));
   }
-
-  // [^.]+ prevents the capture from spanning across sentence boundaries (periods),
-  // which would cause fuzzy matches against unrelated ingredients in other sentences.
-  const replaceRe = new RegExp(`replace\\s+([^.]+?)\\s+with\\s+([^.]+?)${stopStr}`, 'gi');
-  while ((m = replaceRe.exec(s)) !== null) {
-    const rawTo    = m[2].trim().replace(/\s+[—–].*$/, '').trim();
-    const toHasQty = extractLeadingQty(rawTo) !== '';
-    m[1].split(/\s+and\s+/i).forEach(f => {
-      const rawFrom = f.trim();
-      const qty     = extractLeadingQty(rawFrom);
-      const to      = (qty && !toHasQty) ? `${qty} ${rawTo}` : rawTo;
-      result.push({ from: stripLeadingQty(rawFrom), to });
-    });
-  }
-
-  const removeRe = /remove\s+([^,.\n—–\u2013\u2014]+)/gi;
-  while ((m = removeRe.exec(s)) !== null) {
-    m[1].split(/\s+and\s+/i).forEach(f => {
-      const clean = stripLeadingQty(f.trim());
-      if (clean) result.push({ from: clean, to: null });
-    });
-  }
-
-  const skipRe = /(?:skip|omit)\s+([^,.\n—–\u2013\u2014]+)/gi;
-  while ((m = skipRe.exec(s)) !== null) {
-    result.push({ from: stripLeadingQty(m[1].split(',')[0].trim()), to: null });
-  }
-
-  return result;
+  // Legacy string format — return empty; raw text is still visible in the notes TextInput
+  return [];
 }
 
 function fuzzyMatch(term: string, name: string): boolean {
@@ -718,9 +716,12 @@ function ShoppingList({
       const tagData = dietTags[code];
       if (!tagData?.mod) continue;
       const color = (DIET_COLORS as Record<string, string>)[code] ?? Colors.gold;
-      const notes = tagData.notes ?? '';
-      if (!notes.trim()) continue;
-      const pairs = parseSwapPairs(notes);
+
+      // Use buildSwapPairs — reads structured notes array (new records) or
+      // returns [] for legacy string records (no regex parsing).
+      const pairs = buildSwapPairs(tagData);
+      if (pairs.length === 0) continue;
+
       for (const pair of pairs) {
         for (const item of baseItems) {
           if (fuzzyMatch(pair.from, item.name) && !map.has(item.name)) {
@@ -773,8 +774,12 @@ function ShoppingList({
         let catFlag: { protocol: string; color: string } | null = null;
         if (activeDietFilter.size > 0) {
           for (const code of activeDietFilter) {
-            const tagNotes = dietTags?.[code]?.notes?.trim() ?? '';
-            if (tagNotes) continue; // explicit notes take full control — skip category flag
+            // Check whether this tag has any explicit swap notes (structured array or legacy string)
+            const rawNotes = dietTags?.[code]?.notes;
+            const tagHasNotes = Array.isArray(rawNotes)
+              ? rawNotes.length > 0
+              : typeof rawNotes === 'string' && rawNotes.trim().length > 0;
+            if (tagHasNotes) continue; // explicit notes take full control — skip category flag
             const flagCats = DIET_CATEGORY_FLAGS[code] ?? [];
             if (flagCats.includes(cat)) {
               catFlag = { protocol: code, color: (DIET_COLORS as Record<string, string>)[code] ?? Colors.gold };
