@@ -497,11 +497,36 @@ function parseQty(str: string): number {
 
 // ── Main parser ────────────────────────────────────────────────────────────────
 
+// ── Serving note detector ─────────────────────────────────────────────────────
+// Extracts "to garnish" / "to serve" / "to top" from raw ingredient strings
+// BEFORE stop-word stripping so the note isn't lost.
+const NOTE_PATTERNS: Array<{ re: RegExp; note: string }> = [
+  { re: /\bfor\s+garnish(?:ing)?\b/i,                     note: 'to garnish' },
+  { re: /\bfor\s+topping\b/i,                             note: 'to garnish' },
+  { re: /\bfor\s+serv(?:ing|e)\b/i,                       note: 'to serve'   },
+  { re: /\bto\s+serve\b/i,                                note: 'to serve'   },
+  { re: /\bto\s+garnish\b/i,                              note: 'to garnish' },
+  { re: /\bto\s+top\b/i,                                  note: 'to garnish' },
+  // "avocado, diced, for" / "lime wedges for" — trailing "for" = for garnish
+  { re: /\b(?:diced|sliced|wedges?|strips?|julienned)\s+for\s*$/i, note: 'to garnish' },
+  { re: /\bfor\s*$/i,                                     note: 'to garnish' },
+];
+
+export function extractServingNote(raw: string): string | undefined {
+  for (const { re, note } of NOTE_PATTERNS) {
+    if (re.test(raw)) return note;
+  }
+  return undefined;
+}
+
 export function parseIngredient(raw: string): {
-  qty: number; unit: string; name: string; category: string; raw: string;
+  qty: number; unit: string; name: string; category: string; raw: string; note?: string;
 } {
   if (!raw) return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw };
   let str = raw.trim();
+
+  // Extract serving note BEFORE stop-word stripping so it isn't lost
+  const note = extractServingNote(str);
 
   // 0a. Normalize salt+pepper compound variations to canonical "salt + pepper"
   // Handles: "salt and pepper", "salt & pepper", "salt/pepper", "kosher salt and pepper",
@@ -533,6 +558,9 @@ export function parseIngredient(raw: string): {
     .trim();
 
   // 1. Normalize unicode fractions
+  // First: add a space between a digit and a unicode fraction so "1½" → "1 ½" before
+  // replacing ½ → "1/2", which would otherwise turn "1½" into "11/2" (= 5.5 not 1.5).
+  str = str.replace(/(\d)([\u00BC-\u00BE\u2150-\u215E])/g, '$1 $2');
   for (const [k, v] of Object.entries(FRACTION_MAP)) str = str.split(k).join(v);
   str = str.trim();
 
@@ -543,13 +571,21 @@ export function parseIngredient(raw: string): {
   // Only strip long parens that contain letters suggesting a recipe note (e.g. "see", "page", "about")
   str = str.replace(/\((?:see|about|note|if|for|use|make|recipe)[^)]*\)/gi, '').trim();
 
+  // 2b. Strip instruction suffixes that bleed into ingredient names.
+  // "use to your taste", "to your taste", "use to taste" — variants not caught by comma logic
+  str = str.replace(/,?\s*use\s+to\s+(?:your\s+)?taste\b.*/i, '').trim();
+  str = str.replace(/,?\s*to\s+your\s+taste\b.*/i, '').trim();
+  // "for serving", "for garnish(ing)", "for topping" — stop-word filter catches "serving"
+  // but leaves the orphaned "for" behind; strip the whole phrase here instead
+  str = str.replace(/,?\s*for\s+(?:serving|garnish(?:ing)?|topping)\b.*/i, '').trim();
+
   // 3. Vague quantities — return early with no scalable number
   const strLower = str.toLowerCase();
   for (const vague of VAGUE_WORDS) {
     if (strLower.startsWith(vague)) {
       const vagueNameStr = str.slice(vague.length).replace(/^[,\s:]+/, '').trim();
       const vagueName = vagueNameStr.replace(/\(.*?\)/g, '').replace(/,.*$/, '').trim().toLowerCase();
-      return { qty: 0, unit: '', name: vagueName || strLower, category: categorizeIngredient(vagueName || strLower), raw };
+      return { qty: 0, unit: '', name: vagueName || strLower, category: categorizeIngredient(vagueName || strLower), raw, note };
     }
   }
 
@@ -676,6 +712,7 @@ export function parseIngredient(raw: string): {
     .toLowerCase();
 
   name = name.replace(/^(of|a|an|the)\s+/, '');
+  name = name.replace(/\s+for$/, '').trim();
 
   if (name.includes(' or ')) {
     const parts = name.split(' or ');
@@ -689,7 +726,7 @@ export function parseIngredient(raw: string): {
       const perPiece = (qty && unit) ? `${fmtNum(qty)} ${unit} ` : '';
       const cat = forcedCategory || categorizeIngredient(name || raw);
       name = (perPiece + name).trim();
-      return { qty: pieceCount, unit: '', name: INGREDIENT_ALIASES[name] || name, category: cat, raw };
+      return { qty: pieceCount, unit: '', name: INGREDIENT_ALIASES[name] || name, category: cat, raw, note };
     }
   }
 
@@ -709,7 +746,7 @@ export function parseIngredient(raw: string): {
   name = INGREDIENT_ALIASES[name] || name;
 
   const category = forcedCategory || categorizeIngredient(name || raw);
-  return { qty, unit, name: name || raw.toLowerCase(), category, raw };
+  return { qty, unit, name: name || raw.toLowerCase(), category, raw, note };
 }
 
 // ── Format helpers ─────────────────────────────────────────────────────────────
@@ -758,7 +795,8 @@ export function normalizeIngredient(raw: string): string {
   s = s.replace(/,?\s*\(plus more[^)]*\)/i, '').trim();
   s = s.replace(/,?\s*if (?:necessary|needed)\b.*/i, '').trim();
   s = s.replace(/,?\s*or more\b.*/i, '').trim();
-  s = s.replace(/,?\s*to taste\b.*/i, '').trim();
+  s = s.replace(/,?\s*(?:use\s+)?to\s+(?:your\s+)?taste\b.*/i, '').trim();
+  s = s.replace(/,?\s*for\s+(?:serving|garnish(?:ing)?|topping)\b.*/i, '').trim();
   s = s.replace(/\bextra[- ]?virgin olive oil\b/gi, 'olive oil');
   s = s.replace(/\bevoo\b/gi, 'olive oil');
   s = s.replace(/\b(?:light|pure) olive oil\b/gi, 'olive oil');
