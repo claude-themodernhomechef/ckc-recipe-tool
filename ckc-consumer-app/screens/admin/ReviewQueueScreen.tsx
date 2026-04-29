@@ -17,7 +17,17 @@ import { parseIngredient, fmtQty, SHOPPING_CATEGORIES, categorizeIngredientWithM
 import {
   collection, query, where, getDocs, getDoc, doc, updateDoc, writeBatch,
 } from 'firebase/firestore';
-import { db } from '../../lib/firebase';
+import { db, app } from '../../lib/firebase';
+import { getFunctions, httpsCallable } from 'firebase/functions';
+
+async function triggerByDietRecompute(recipeId: string) {
+  try {
+    const fn = httpsCallable(getFunctions(app), 'recomputeByDiet');
+    await fn({ recipeId });
+  } catch (e) {
+    console.warn('[recomputeByDiet] failed (non-critical):', e);
+  }
+}
 import { resolveReviewItem, ReviewItem } from '../../lib/firestore';
 import { Colors, Fonts } from '../../constants/theme';
 import DietTag, { DIET_COLORS } from '../components/DietTag';
@@ -1530,6 +1540,7 @@ function RecipePanel({
               if (local._id) {
                 try {
                   await updateDoc(doc(db, 'recipes', local._id), { dietTags: updatedTags });
+                  triggerByDietRecompute(local._id);
                 } catch (e) { console.warn('Swap note save failed:', e); }
               }
             }}
@@ -2100,7 +2111,11 @@ export default function ReviewQueueScreen() {
     setSaving(true);
     const savedKeys = Object.keys(fields);
     updateDoc(doc(db, 'recipes', targetId), fields as Record<string, unknown>)
-      .then(() => { setSaving(false); setSavedFields(prev => new Set([...prev, ...savedKeys])); })
+      .then(() => {
+        setSaving(false);
+        setSavedFields(prev => new Set([...prev, ...savedKeys]));
+        if (savedKeys.includes('dietTags')) triggerByDietRecompute(targetId);
+      })
       .catch(() => setSaving(false));
   }
 

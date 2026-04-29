@@ -27,6 +27,7 @@
  */
 
 const { onDocumentUpdated } = require('firebase-functions/v2/firestore');
+const { onCall }            = require('firebase-functions/v2/https');
 const { setGlobalOptions }  = require('firebase-functions/v2');
 const admin    = require('firebase-admin');
 const axios    = require('axios');
@@ -47,6 +48,14 @@ setGlobalOptions({ timeoutSeconds: 540, memory: '1GiB' });
 //   cp CKC_Chef_Notes_Guide.md functions/
 const DIET_RULES = fs.readFileSync(path.join(__dirname, 'CKC_Diet_Compliance_Rules.md'), 'utf8');
 const CHEF_GUIDE = fs.readFileSync(path.join(__dirname, 'CKC_Chef_Notes_Guide.md'),      'utf8');
+
+// ── Master Swap Table ─────────────────────────────────────────────────────────
+// Structured lookup of known ingredient → protocol swaps derived from Part 11 of
+// CKC_Diet_Compliance_Rules.md. Used to auto-populate swap arrays when Claude
+// marks a protocol as mod:true, before falling back to the FIG product search.
+const MASTER_SWAP_TABLE = JSON.parse(
+  fs.readFileSync(path.join(__dirname, 'masterSwapTable.json'), 'utf8')
+);
 
 // ── Protocol → Supabase column ────────────────────────────────────────────────
 const PROTO_FIELD = {
@@ -77,19 +86,25 @@ ${DIET_RULES}
 Analyze all 8 protocols (GF, DF, V, Vg, K, AIP, LF, LH) and return:
 - native: true if recipe is compliant AS-IS
 - mod: true if recipe can be made compliant with simple targeted swaps (only if native=false)
-- notes: specific swap instructions in this style — full explanatory sentences with specific quantities, what stays compliant. E.g. "Replace 2 garlic cloves with 1 tbsp garlic-infused oil. All other ingredients are LF-compliant." (only if mod=true)
+- notes: structured array of swap/removal objects (only if mod=true). Each object must be:
+    { "type": "replace", "from": "<ingredient as it appears in recipe>", "to": "<replacement>" }
+    { "type": "remove",  "from": "<ingredient as it appears in recipe>" }
+    { "type": "note",    "from": "<ingredient>", "note": "<quantity or usage instruction>" }
+  Use "note" only when the ingredient is compliant but needs a quantity limit (e.g. LF balsamic vinegar — reduce to 1 tbsp).
+  Use specific quantities where known (e.g. "from": "2 garlic cloves", "to": "1 tbsp garlic-infused oil").
+  Only list the swaps/removals/notes — do NOT include ingredients that are already compliant.
 - uncertain: true if less than 100% confident due to ambiguous ingredients or missing context
 - reason: explain the uncertainty and name the specific uncertain ingredient (only if uncertain=true)
 
 Rules:
-- If native=true, then mod=false and notes=""
+- If native=true, then mod=false and notes=[]
 - Only tag mod=true when there's a clear swap path that doesn't destroy the dish
 - Be conservative: when in doubt, mark uncertain=true
 - For AIP: if 4+ core ingredients need removal, set mod=false
 - For LF: garlic-infused oil IS compliant; plain garlic is NOT
 
 Reply ONLY with valid JSON:
-{"GF":{"native":false,"mod":false,"notes":"","uncertain":false,"reason":""},"DF":{"native":false,"mod":false,"notes":"","uncertain":false,"reason":""},"V":{"native":false,"mod":false,"notes":"","uncertain":false,"reason":""},"Vg":{"native":false,"mod":false,"notes":"","uncertain":false,"reason":""},"K":{"native":false,"mod":false,"notes":"","uncertain":false,"reason":""},"AIP":{"native":false,"mod":false,"notes":"","uncertain":false,"reason":""},"LF":{"native":false,"mod":false,"notes":"","uncertain":false,"reason":""},"LH":{"native":false,"mod":false,"notes":"","uncertain":false,"reason":""}}`;
+{"GF":{"native":false,"mod":false,"notes":[],"uncertain":false,"reason":""},"DF":{"native":false,"mod":false,"notes":[],"uncertain":false,"reason":""},"V":{"native":false,"mod":false,"notes":[],"uncertain":false,"reason":""},"Vg":{"native":false,"mod":false,"notes":[],"uncertain":false,"reason":""},"K":{"native":false,"mod":false,"notes":[],"uncertain":false,"reason":""},"AIP":{"native":false,"mod":false,"notes":[],"uncertain":false,"reason":""},"LF":{"native":false,"mod":false,"notes":[],"uncertain":false,"reason":""},"LH":{"native":false,"mod":false,"notes":[],"uncertain":false,"reason":""}}`;
 
 // ── Trigger ───────────────────────────────────────────────────────────────────
 exports.enrichOnYes = onDocumentUpdated('recipes/{recipeId}', async (event) => {
@@ -152,9 +167,12 @@ exports.enrichOnYes = onDocumentUpdated('recipes/{recipeId}', async (event) => {
       if (!result.native && !result.mod) continue;
 
       if (!result.uncertain) {
-        // Confident — keep tag as-is
+        // Confident — keep tag as-is, store structured notes array + human-readable notesText
         const tag = { native: result.native, mod: result.mod };
-        if (result.notes) tag.notes = result.notes;
+        if (Array.isArray(result.notes) && result.notes.length > 0) {
+          tag.notes     = result.notes;      // structured array (new format)
+          tag.notesText = result.notesText;  // human-readable string (generated above)
+        }
         confirmedTags[proto] = tag;
         continue;
       }
@@ -349,12 +367,128 @@ async function verifyDietTags(anthropic, name, cuisine, course, ingredients) {
 
       let text = resp.content[0].text.trim();
       text = text.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-      return JSON.parse(text);
+      const parsed = JSON.parse(text);
+
+      // Post-process: for each protocol where mod=true, ensure notes is an array
+      // and generate a human-readable notesText string from it.
+      for (const [proto, result] of Object.entries(parsed)) {
+        if (!result.mod) continue;
+
+        // Normalise notes to array (guard against Claude returning a string)
+        if (!Array.isArray(result.notes)) {
+          result.notes = result.notes ? [] : [];
+        }
+
+        // Merge any Master Swap Table matches not already covered by Claude's output
+        const masterSwaps = applyMasterSwaps(ingredients, proto);
+        if (masterSwaps.length > 0) {
+          // Avoid duplicating swaps Claude already identified (match by 'from' key)
+          const existingFroms = new Set(result.notes.map(s => s.from?.toLowerCase() ?? ''));
+          for (const swap of masterSwaps) {
+            if (!existingFroms.has(swap.from.toLowerCase())) {
+              result.notes.push(swap);
+            }
+          }
+        }
+
+        // Build human-readable notesText from the structured array
+        result.notesText = buildNotesText(result.notes);
+      }
+
+      return parsed;
     } catch (err) {
       if (attempt === 3) throw err;
       await sleep(attempt * 2000);
     }
   }
+}
+
+// ── Master Swap Table lookup ──────────────────────────────────────────────────
+/**
+ * Prep-word normalization: strips quantities, units, and common culinary
+ * preparation descriptors so ingredient strings can be matched against the
+ * masterSwapTable keys (which are bare lowercase base names).
+ */
+const PREP_WORDS = new Set([
+  'diced', 'minced', 'chopped', 'sliced', 'grated', 'shredded', 'julienned',
+  'crushed', 'peeled', 'deveined', 'trimmed', 'halved', 'quartered', 'cubed',
+  'fresh', 'dried', 'frozen', 'canned', 'cooked', 'raw', 'roasted', 'toasted',
+  'large', 'small', 'medium', 'extra', 'firm', 'soft', 'whole', 'ground',
+  'finely', 'roughly', 'thinly', 'lightly', 'packed', 'heaping', 'leveled',
+]);
+
+const UNIT_RE = /^[\d\s/½¼¾⅓⅔.]+\s*(tbsp|tsp|tablespoons?|teaspoons?|cups?|oz|lb|g\b|ml|pounds?|ounces?|cloves?|stalks?|heads?|bunches?|cans?|jars?|packages?|inch|cm|sprigs?)\.?\s*/i;
+
+function normalizeIngredient(raw) {
+  return raw
+    .toLowerCase()
+    .replace(UNIT_RE, '')              // strip leading quantity + unit
+    .replace(/^\d[\d/.\s]*\s+/, '')    // strip bare leading numbers
+    .split(/\s+/)
+    .filter(w => !PREP_WORDS.has(w))   // remove prep words
+    .join(' ')
+    .trim();
+}
+
+/**
+ * applyMasterSwaps(ingredients, protocol)
+ * ----------------------------------------
+ * Takes an array of raw recipe ingredient strings and a protocol code.
+ * Returns an array of swap objects (same shape as Claude's notes array)
+ * for every ingredient that has a known entry in masterSwapTable for that protocol.
+ *
+ * Uses substring matching: if the normalized ingredient string contains
+ * a masterSwapTable key (or vice-versa), it's a match.
+ */
+function applyMasterSwaps(ingredients, protocol) {
+  const swaps = [];
+  const tableKeys = Object.keys(MASTER_SWAP_TABLE);
+
+  for (const raw of ingredients) {
+    const normalized = normalizeIngredient(raw);
+    if (!normalized) continue;
+
+    for (const key of tableKeys) {
+      const entry = MASTER_SWAP_TABLE[key]?.[protocol];
+      if (!entry) continue;
+
+      // Substring match in either direction
+      if (normalized.includes(key) || key.includes(normalized)) {
+        const swap = { from: raw };
+        if (entry.type === 'replace') {
+          swap.type = 'replace';
+          swap.to   = entry.to;
+          if (entry.note) swap.note = entry.note;
+        } else if (entry.type === 'note') {
+          swap.type = 'note';
+          swap.note = entry.note;
+        } else {
+          swap.type = 'remove';
+        }
+        swaps.push(swap);
+        break; // one match per ingredient string is enough
+      }
+    }
+  }
+
+  return swaps;
+}
+
+/**
+ * buildNotesText(notesArray)
+ * ---------------------------
+ * Converts a structured swaps array into a human-readable paragraph string.
+ * - replace: "Replace [from] with [to]."
+ * - remove:  "Remove [from] entirely."
+ * Sentences are joined with a space.
+ */
+function buildNotesText(notesArray) {
+  if (!Array.isArray(notesArray) || notesArray.length === 0) return '';
+  return notesArray.map(s => {
+    if (s.type === 'replace') return `Replace ${s.from} with ${s.to}.`;
+    if (s.type === 'note')    return s.note;
+    return `Remove ${s.from} entirely.`;
+  }).join(' ');
 }
 
 // ── Step 4a: Extract uncertain ingredient via Claude Haiku ────────────────────
@@ -433,3 +567,188 @@ function getCompliance(product, protocol) {
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+// ── recomputeByDiet ───────────────────────────────────────────────────────────
+// Callable from the review queue app after swap notes are saved.
+// Re-derives nutrition.byDiet for every mod diet tag on the recipe.
+
+const ING_DB_PATH = path.join(__dirname, 'ingredientNutrition_v2.json');
+let _ingDB = null;
+function getIngDB() {
+  if (!_ingDB) _ingDB = JSON.parse(fs.readFileSync(ING_DB_PATH, 'utf8'));
+  return _ingDB;
+}
+
+function _fuzzyMatch(term, name) {
+  const clean = x => x.toLowerCase()
+    .replace(/\b(freshly\s+ground|cloves?|heads?|tbsp\s+of|tsp\s+of|cups?\s+of|\bof\b|black|white|ground|freshly|kosher|sea|fine|coarse|cracked)\b/g, '')
+    .replace(/\s+/g, ' ').trim();
+  const b = clean(name);
+  const nosp = x => x.replace(/\s+/g, '');
+  const variants = term.split('/').map(v => clean(v.trim())).filter(Boolean);
+  for (const a of variants) {
+    if (a === b || nosp(a) === nosp(b)) return true;
+    const aWords = a.split(' ').filter(w => w.length > 2);
+    if (aWords.length > 0 && aWords.every(w => b.includes(w))) return true;
+  }
+  return false;
+}
+
+function _lookupIngredient(name, ingDB) {
+  const lower = name.toLowerCase().trim();
+  if (ingDB[lower]) return ingDB[lower];
+  const cleaned = lower
+    .replace(/\bcut\s+into\b.*$/i, '')
+    .replace(/\b(extra\s+firm|firm|silken|soft|hard|large|small|medium|big|fat|thick|thin|fresh|dried|frozen|raw|cooked|whole|boneless|skinless|bone-?in|skin-?on|lean|ripe|young|baby)\b/g, '')
+    .replace(/\b(diced|sliced|chopped|minced|grated|crushed|halved|quartered|peeled|seeded|cubed|shredded|crumbled|julienned|torn)\b/g, '')
+    .replace(/\b(for|the|and|with|from|into|about|approx)\b/g, '')
+    .replace(/\s+/g, ' ').trim();
+  if (ingDB[cleaned]) return ingDB[cleaned];
+  const words = cleaned.split(' ').filter(w => w.length > 3);
+  if (words.length > 0) {
+    const match = Object.keys(ingDB).find(k => words.every(w => k.includes(w)));
+    if (match) return ingDB[match];
+  }
+  const shortWords = cleaned.split(' ').filter(w => w.length > 3).slice(0, 2);
+  if (shortWords.length > 0) {
+    const match = Object.keys(ingDB).find(k => shortWords.every(w => k.includes(w)));
+    if (match) return ingDB[match];
+  }
+  return null;
+}
+
+function _calcNutrition(grams, ingEntry) {
+  if (!grams || !ingEntry?.per100g) return null;
+  const result = {};
+  for (const [k, raw] of Object.entries(ingEntry.per100g)) {
+    const val = typeof raw === 'object' ? (raw.value ?? 0) : raw;
+    result[k] = Math.round((val * grams / 100) * 100) / 100;
+  }
+  return result;
+}
+
+function _divideByServings(total, servings) {
+  const srv = parseFloat(String(servings)) || 1;
+  return Object.fromEntries(
+    Object.entries(total).map(([k, v]) => [k, Math.round((Math.max(0, v) / srv) * 100) / 100])
+  );
+}
+
+// Parse swap pairs from either new structured array or legacy notesText string
+function _getSwapPairs(tagData) {
+  // New format: notes is an array of { type, from, to } objects
+  if (Array.isArray(tagData.notes)) {
+    return tagData.notes
+      .filter(n => n.type === 'replace' || n.type === 'remove')
+      .map(n => ({
+        from: (n.from || '').replace(/^\d[\d/.\s]*\s*(tablespoons?|teaspoons?|cups?|tbsp|tsp|oz|lb|g\b|ml)\s*(of\s+)?/i, '').trim(),
+        to:   n.type === 'remove' ? null : (n.to || '').replace(/^\d[\d/.\s]*\s*(tablespoons?|teaspoons?|cups?|tbsp|tsp|oz|lb|g\b|ml)\s*(of\s+)?/i, '').trim(),
+      }));
+  }
+  // Legacy format: notesText or notes is a plain string — parse it
+  const text = (typeof tagData.notes === 'string' ? tagData.notes : '') || (tagData.notesText || '');
+  if (!text.trim()) return [];
+
+  const result = [];
+  const s = text.toLowerCase();
+  const stopStr = `(?:[,.–—]|\\s+[—–]|$)`;
+  let m;
+
+  const replaceRe = new RegExp(`replace\\s+([^.]+?)\\s+with\\s+([^.]+?)${stopStr}`, 'gi');
+  while ((m = replaceRe.exec(s)) !== null) {
+    const rawTo = m[2].trim();
+    m[1].split(/\s+and\s+/i).forEach(f => {
+      const from = f.trim().replace(/^\d[\d/.\s]*\s*(tablespoons?|teaspoons?|cups?|tbsp|tsp|oz|lb|g\b|ml)\s*(of\s+)?/i, '').replace(/^(the|a|an)\s+/i, '').trim();
+      const to   = rawTo.replace(/^\d[\d/.\s]*\s*(tablespoons?|teaspoons?|cups?|tbsp|tsp|oz|lb|g\b|ml)\s*(of\s+)?/i, '').trim();
+      if (from) result.push({ from, to });
+    });
+  }
+  const removeRe = /remove\s+([^,.\n—––—]+)/gi;
+  while ((m = removeRe.exec(s)) !== null)
+    result.push({ from: m[1].trim().replace(/^(the|a|an)\s+/i, '').trim(), to: null });
+
+  return result;
+}
+
+function _computeByDietForRecipe(recipeData, ingDB) {
+  const byDiet  = {};
+  const servings = recipeData.nutrition?.servings ?? 1;
+  const baseTotal = recipeData.nutrition?.total;
+  const ings      = recipeData.nutrition?.ingredients ?? [];
+
+  if (!baseTotal || !ings.length) return byDiet;
+
+  for (const [dietCode, tagData] of Object.entries(recipeData.dietTags || {})) {
+    if (!tagData.mod) continue;
+    const pairs = _getSwapPairs(tagData);
+    if (!pairs.length) continue;
+
+    const workingTotal = { ...baseTotal };
+    const swapLog = [];
+
+    for (const { from, to } of pairs) {
+      const origIngs = ings.filter(i => !i.skip && i.matched && i.grams > 0 && _fuzzyMatch(from, i.name));
+      if (!origIngs.length) continue;
+
+      for (const origIng of origIngs) {
+        const origEntry = _lookupIngredient(origIng.name, ingDB);
+
+        if (to === null) {
+          if (origEntry) {
+            const origNutr = _calcNutrition(origIng.grams, origEntry);
+            if (origNutr) {
+              for (const [k, v] of Object.entries(origNutr))
+                workingTotal[k] = Math.round(((workingTotal[k] ?? 0) - v) * 100) / 100;
+              swapLog.push(`Removed ${origIng.name} (−${Math.round(origNutr.calories ?? 0)} cal)`);
+            }
+          } else {
+            swapLog.push(`Removed ${origIng.name} (not in DB)`);
+          }
+          continue;
+        }
+
+        const swapEntry = _lookupIngredient(to, ingDB);
+        if (!swapEntry) {
+          swapLog.push(`${origIng.name} → ${to} (not in DB, kept original)`);
+          continue;
+        }
+        if (origEntry) {
+          const origNutr = _calcNutrition(origIng.grams, origEntry);
+          if (origNutr)
+            for (const [k, v] of Object.entries(origNutr))
+              workingTotal[k] = Math.round(((workingTotal[k] ?? 0) - v) * 100) / 100;
+        }
+        const swapNutr = _calcNutrition(origIng.grams, swapEntry);
+        if (swapNutr) {
+          for (const [k, v] of Object.entries(swapNutr))
+            workingTotal[k] = Math.round(((workingTotal[k] ?? 0) + v) * 100) / 100;
+          const origCal = origEntry ? Math.round(_calcNutrition(origIng.grams, origEntry)?.calories ?? 0) : 0;
+          const delta   = Math.round(swapNutr.calories ?? 0) - origCal;
+          swapLog.push(`${origIng.name} → ${to} (${delta >= 0 ? '+' : ''}${delta} cal)`);
+        }
+      }
+    }
+
+    byDiet[dietCode] = { perServing: _divideByServings(workingTotal, servings), swapLog };
+  }
+
+  return byDiet;
+}
+
+exports.recomputeByDiet = onCall({ timeoutSeconds: 60 }, async (request) => {
+  const recipeId = request.data?.recipeId;
+  if (!recipeId) throw new Error('recipeId is required');
+
+  const ingDB   = getIngDB();
+  const docRef  = admin.firestore().collection('recipes').doc(recipeId);
+  const snap    = await docRef.get();
+  if (!snap.exists) throw new Error(`Recipe ${recipeId} not found`);
+
+  const byDiet = _computeByDietForRecipe(snap.data(), ingDB);
+
+  if (Object.keys(byDiet).length > 0) {
+    await docRef.update({ 'nutrition.byDiet': byDiet });
+  }
+
+  return { recipeId, updated: Object.keys(byDiet).length, diets: Object.keys(byDiet) };
+});

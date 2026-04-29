@@ -179,7 +179,11 @@ async function main() {
   const recipes = [];
   snap.forEach(doc => {
     const d = doc.data();
-    const hasMod = d.dietTags && Object.values(d.dietTags).some(t => t.mod && t.notes?.trim());
+    const hasMod = d.dietTags && Object.values(d.dietTags).some(t => {
+      if (!t.mod) return false;
+      const text = Array.isArray(t.notes) ? (t.notesText ?? '') : (typeof t.notes === 'string' ? t.notes : '');
+      return text.trim().length > 0;
+    });
     if (hasMod && d.nutrition?.total && d.nutrition?.ingredients) {
       recipes.push({ id: doc.id, name: d.name, dietTags: d.dietTags, nutrition: d.nutrition });
     }
@@ -196,9 +200,14 @@ async function main() {
     const ings = recipe.nutrition.ingredients ?? [];
 
     for (const [dietCode, tagData] of Object.entries(recipe.dietTags)) {
-      if (!tagData.mod || !tagData.notes?.trim()) continue;
+      if (!tagData.mod) continue;
+      // New format stores the string in notesText; legacy format stores it in notes
+      const notesText = Array.isArray(tagData.notes)
+        ? (tagData.notesText ?? '')
+        : (typeof tagData.notes === 'string' ? tagData.notes : '');
+      if (!notesText.trim()) continue;
 
-      const pairs = parseSwapPairs(tagData.notes);
+      const pairs = parseSwapPairs(notesText);
       if (!pairs.length) continue;
 
       const workingTotal = { ...baseTotal };
@@ -226,8 +235,10 @@ async function main() {
             continue;
           }
 
-          // Swap — look up replacement
-          const toName    = to.replace(/^\d[\d/.\s]*(cup|tbsp|tsp|oz|lb|g|ml)s?\s*/i, '').trim();
+          // Swap — look up replacement (strip leading qty + spelled-out units + "of")
+          const toName    = to
+            .replace(/^\d[\d/.\s]*\s*(tablespoons?|teaspoons?|cups?|tbsp|tsp|oz|lb|g\b|ml)\s*(of\s+)?/i, '')
+            .trim();
           const swapEntry = lookupIngredient(toName, ingDB);
 
           if (!swapEntry) {
