@@ -27,12 +27,12 @@ const db = admin.firestore();
 // ── Swap note parser (mirrors ReviewQueueScreen parseSwapPairs) ───────────────
 
 function extractLeadingQty(s) {
-  const m = s.match(/^(\d[\d/.\s]*(?:cup|tbsp|tsp|oz|lb|g|ml)s?\s+)/i);
+  const m = s.match(/^(\d[\d/.\s]*(?:tablespoons?|teaspoons?|cups?|tbsp|tsp|oz|lb|g|ml)\s+)/i);
   return m ? m[1] : '';
 }
 function stripLeadingQty(s) {
   return s
-    .replace(/^[\d/.\s]+(?:cup|tbsp|tsp|oz|lb|g\b|ml)s?\s*/i, '')
+    .replace(/^[\d/.\s]+(?:tablespoons?|teaspoons?|cups?|tbsp|tsp|oz|lb|g\b|ml)\s*(of\s+)?/i, '')
     .replace(/^\d[\d/.\s]*\s+/, '')    // strip bare numbers: "4 garlic" → "garlic"
     .replace(/^(the|a|an)\s+/i, '')   // strip articles: "the shallot" → "shallot"
     .trim();

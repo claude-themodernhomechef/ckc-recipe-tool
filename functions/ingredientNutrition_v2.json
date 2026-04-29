@@ -2929,7 +2929,7 @@
       },
       "vitaminA": {
         "value": 411,
-        "unit": "\u00b5g"
+        "unit": "µg"
       },
       "vitaminC": {
         "value": 0.6,
@@ -2937,7 +2937,7 @@
       },
       "vitaminD": {
         "value": 1.6,
-        "unit": "\u00b5g"
+        "unit": "µg"
       },
       "vitaminE": {
         "value": 0.92,
@@ -2945,7 +2945,7 @@
       },
       "vitaminK": {
         "value": 3.2,
-        "unit": "\u00b5g"
+        "unit": "µg"
       },
       "vitaminB1": {
         "value": 0.02,
@@ -2965,11 +2965,11 @@
       },
       "folate": {
         "value": 4,
-        "unit": "\u00b5g"
+        "unit": "µg"
       },
       "vitaminB12": {
         "value": 0.16,
-        "unit": "\u00b5g"
+        "unit": "µg"
       },
       "water": {
         "value": 57.71,
@@ -24506,10 +24506,10 @@
       }
     ]
   },
-  "pickled jalape\u00f1os": {
+  "pickled jalapeños": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalape\u00f1o Chilie",
+    "label": "Jalapeño Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -27636,10 +27636,10 @@
       }
     ]
   },
-  "jalape\u00f1o": {
+  "jalapeño": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalape\u00f1o Chilie",
+    "label": "Jalapeño Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -27792,10 +27792,10 @@
       }
     ]
   },
-  "jalape\u00f1os": {
+  "jalapeños": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalape\u00f1o Chilie",
+    "label": "Jalapeño Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -29575,10 +29575,10 @@
       }
     ]
   },
-  "cr\u00e8me fra\u00eeche": {
+  "crème fraîche": {
     "source": "edamam",
     "foodId": "food_bjgvk4sayn3fc3b9arribb0rryfm",
-    "label": "Cr\u00e8me de Framboise",
+    "label": "Crème de Framboise",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -48926,36 +48926,40 @@
     ]
   },
   "coconut yogurt": {
-    "source": "edamam",
-    "foodId": "food_aza6inuacbqjdqa8ipg1eaazc6qj",
+    "source": "usda",
+    "foodId": "2664530",
     "label": "Coconut Yogurt",
-    "category": "Generic foods",
+    "category": "Dairy-free products",
     "per100g": {
       "calories": {
-        "value": 60,
+        "value": 147,
         "unit": "kcal"
       },
       "protein": {
-        "value": 1,
+        "value": 1.54,
         "unit": "g"
       },
       "fat": {
-        "value": 3.5,
+        "value": 13.86,
         "unit": "g"
       },
       "carbs": {
-        "value": 6,
+        "value": 4.61,
         "unit": "g"
       },
       "fiber": {
-        "value": 0.5,
+        "value": 1.58,
         "unit": "g"
       }
     },
     "measures": [
       {
-        "label": "Serving",
-        "gramWeight": 144
+        "label": "Cup",
+        "gramWeight": 245
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
       },
       {
         "label": "Gram",
@@ -48963,23 +48967,7 @@
       },
       {
         "label": "Ounce",
-        "gramWeight": 28.349523125
-      },
-      {
-        "label": "Pound",
-        "gramWeight": 453.59237
-      },
-      {
-        "label": "Kilogram",
-        "gramWeight": 1000
-      },
-      {
-        "label": "Tablespoon",
-        "gramWeight": 18
-      },
-      {
-        "label": "Cup",
-        "gramWeight": 288
+        "gramWeight": 28.35
       }
     ]
   },
@@ -49275,10 +49263,10 @@
       }
     ]
   },
-  "gruy\u00e8re": {
+  "gruyère": {
     "source": "edamam",
     "foodId": "food_auncbujb52rsfrbby2cvmbwc8y6b",
-    "label": "Gruy\u00e8re Souffl\u00e9",
+    "label": "Gruyère Soufflé",
     "category": "Generic meals",
     "per100g": {
       "calories": {
@@ -49529,7 +49517,7 @@
       }
     ]
   },
-  "gruy\u00e8re cheese": {
+  "gruyère cheese": {
     "source": "edamam",
     "foodId": "food_al44s0sajaffq4afc73dlayimtt9",
     "label": "Gruyere Cheese",
@@ -53068,10 +53056,10 @@
       }
     ]
   },
-  "jalape\u00f1o pepper": {
+  "jalapeño pepper": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalape\u00f1o Chilie",
+    "label": "Jalapeño Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -77962,7 +77950,7 @@
       }
     ]
   },
-  "chiles de \u00e1rbol": {
+  "chiles de árbol": {
     "source": "edamam",
     "foodId": "food_a6g98mqatzj7vca6ms3bnbzqxf3s",
     "label": "Chile",
@@ -78170,7 +78158,7 @@
       }
     ]
   },
-  "monterey jack with jalape\u00f1o peppers cheese": {
+  "monterey jack with jalapeño peppers cheese": {
     "source": "edamam",
     "foodId": "food_atp17pta7d5it2a80ct13ard6aj3",
     "label": "Monterey Pepper Jack",
@@ -78740,7 +78728,7 @@
       }
     ]
   },
-  "aj\u00ed amarillo paste": {
+  "ají amarillo paste": {
     "source": "edamam",
     "foodId": "food_buc6u4gbtc39gkbjc5hxdbc2a2pm",
     "label": "Aji Amarillo Ketchup, Aji Amarillo",
@@ -82143,7 +82131,7 @@
       }
     ]
   },
-  "canned pumpkin pur\u00e9e": {
+  "canned pumpkin purée": {
     "source": "edamam",
     "foodId": "food_afk6bzsbbbg1j8ai1hi17bptbfq5",
     "label": "Pumpkin",
@@ -82353,10 +82341,10 @@
       }
     ]
   },
-  "fresh jalape\u00f1o": {
+  "fresh jalapeño": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalape\u00f1o Chilie",
+    "label": "Jalapeño Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -83422,7 +83410,7 @@
       }
     ]
   },
-  "butternut squash pur\u00e9e": {
+  "butternut squash purée": {
     "source": "edamam",
     "foodId": "food_baga212bywb6n2as0ylgkaf8fcok",
     "label": "Butternut Squash",
@@ -89461,7 +89449,7 @@
       },
       "vitaminB12": {
         "value": 0.59,
-        "unit": "\u00b5g"
+        "unit": "µg"
       }
     },
     "measures": [
@@ -89831,7 +89819,7 @@
       }
     ]
   },
-  "ni\u00e7oise olives": {
+  "niçoise olives": {
     "source": "edamam",
     "foodId": "food_bt7u5w5a064gusa46msxfb38ag06",
     "label": "Olive",
@@ -98641,7 +98629,7 @@
       }
     ]
   },
-  "preserved lemon pur\u00e9e": {
+  "preserved lemon purée": {
     "source": "edamam",
     "foodId": "food_a6uzc62astrxcgbtzyq59b6fncrr",
     "label": "Lemon",
@@ -140842,7 +140830,7 @@
       }
     ]
   },
-  "ros\u00e9 wine": {
+  "rosé wine": {
     "source": "edamam",
     "foodId": "food_a656mk2a5dmqb2adiamu6beihduu",
     "label": "Sparkling Wine",
@@ -143929,10 +143917,10 @@
       }
     ]
   },
-  "pickled jalape\u00f1o brine": {
+  "pickled jalapeño brine": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalape\u00f1o Chilie",
+    "label": "Jalapeño Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -150030,10 +150018,10 @@
       }
     ]
   },
-  "pickled jalape\u00f1o juice": {
+  "pickled jalapeño juice": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalape\u00f1o Chilie",
+    "label": "Jalapeño Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -150611,7 +150599,7 @@
       }
     ]
   },
-  "saut\u00e9ed mushrooms": {
+  "sautéed mushrooms": {
     "source": "edamam",
     "foodId": "food_bvlose6arfl26ra396sjrb7hetqh",
     "label": "Mushroom",
@@ -153604,7 +153592,7 @@
       }
     ]
   },
-  "aj\u00ed amarillo chiles": {
+  "ají amarillo chiles": {
     "source": "edamam",
     "foodId": "food_a6g98mqatzj7vca6ms3bnbzqxf3s",
     "label": "Chile",
@@ -159504,7 +159492,7 @@
   "fresh jalapeno": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalape\u00f1o Chilie",
+    "label": "Jalapeño Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -159574,7 +159562,7 @@
         "gramWeight": 90
       }
     ],
-    "_proxy_for": "jalape\u00f1o"
+    "_proxy_for": "jalapeño"
   },
   "pepperoncinis": {
     "source": "edamam",
@@ -163661,7 +163649,7 @@
     ],
     "_proxy_for": "garlic herb spreadable cheese"
   },
-  "pumpkin pur\u00e9e": {
+  "pumpkin purée": {
     "source": "edamam",
     "foodId": "food_afk6bzsbbbg1j8ai1hi17bptbfq5",
     "label": "Pumpkin",
@@ -163734,7 +163722,7 @@
         "gramWeight": 116
       }
     ],
-    "_proxy_for": "canned pumpkin pur\u00e9e"
+    "_proxy_for": "canned pumpkin purée"
   },
   "petite potato": {
     "source": "edamam",
@@ -175968,10 +175956,10 @@
     ],
     "_proxy_for": "chicken fillets"
   },
-  "brine from pickled jalape\u00f1os": {
+  "brine from pickled jalapeños": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalape\u00f1o Chilie",
+    "label": "Jalapeño Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -176041,7 +176029,7 @@
         "gramWeight": 90
       }
     ],
-    "_proxy_for": "pickled jalape\u00f1o brine"
+    "_proxy_for": "pickled jalapeño brine"
   },
   "raw veggies": {
     "source": "edamam",
@@ -179655,5 +179643,368 @@
       }
     ],
     "_proxy_for": "tortilla chips"
+  },
+  "df butter": {
+    "source": "manual",
+    "label": "Miyoko's Organic Vegan Butter",
+    "category": "Dairy-free products",
+    "per100g": {
+      "calories": {
+        "value": 642.86,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 71.43,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Tablespoon",
+        "gramWeight": 14
+      },
+      {
+        "label": "Teaspoon",
+        "gramWeight": 4.67
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      }
+    ]
+  },
+  "dairy-free butter": {
+    "source": "manual",
+    "label": "Miyoko's Organic Vegan Butter",
+    "category": "Dairy-free products",
+    "per100g": {
+      "calories": {
+        "value": 642.86,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 71.43,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Tablespoon",
+        "gramWeight": 14
+      },
+      {
+        "label": "Teaspoon",
+        "gramWeight": 4.67
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      }
+    ]
+  },
+  "miyoko's butter": {
+    "source": "manual",
+    "label": "Miyoko's Organic Vegan Butter",
+    "category": "Dairy-free products",
+    "per100g": {
+      "calories": {
+        "value": 642.86,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 71.43,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Tablespoon",
+        "gramWeight": 14
+      },
+      {
+        "label": "Teaspoon",
+        "gramWeight": 4.67
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      }
+    ]
+  },
+  "miyoko's": {
+    "source": "manual",
+    "label": "Miyoko's Organic Vegan Butter",
+    "category": "Dairy-free products",
+    "per100g": {
+      "calories": {
+        "value": 642.86,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 71.43,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Tablespoon",
+        "gramWeight": 14
+      },
+      {
+        "label": "Teaspoon",
+        "gramWeight": 4.67
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      }
+    ]
+  },
+  "miyokos butter": {
+    "source": "manual",
+    "label": "Miyoko's Organic Vegan Butter",
+    "category": "Dairy-free products",
+    "per100g": {
+      "calories": {
+        "value": 642.86,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 71.43,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Tablespoon",
+        "gramWeight": 14
+      },
+      {
+        "label": "Teaspoon",
+        "gramWeight": 4.67
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      }
+    ]
+  },
+  "plain unsweetened coconut yogurt": {
+    "source": "usda",
+    "foodId": "2664530",
+    "label": "Coconut Yogurt",
+    "category": "Dairy-free products",
+    "per100g": {
+      "calories": {
+        "value": 147,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 1.54,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 13.86,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 4.61,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 1.58,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 245
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      }
+    ]
+  },
+  "unsweetened coconut yogurt": {
+    "source": "usda",
+    "foodId": "2664530",
+    "label": "Coconut Yogurt",
+    "category": "Dairy-free products",
+    "per100g": {
+      "calories": {
+        "value": 147,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 1.54,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 13.86,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 4.61,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 1.58,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 245
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      }
+    ]
+  },
+  "coconut milk yogurt": {
+    "source": "usda",
+    "foodId": "2664530",
+    "label": "Coconut Yogurt",
+    "category": "Dairy-free products",
+    "per100g": {
+      "calories": {
+        "value": 147,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 1.54,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 13.86,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 4.61,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 1.58,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 245
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      }
+    ]
   }
 }
