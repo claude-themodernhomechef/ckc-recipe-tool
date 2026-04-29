@@ -279,6 +279,34 @@ export function addIngredientToDb(name: string, category: string): void {
   rebuildDbIndex();
 }
 
+// Splits "steamed rice, naan for serving" → ["steamed rice", "naan for serving"]
+// but keeps "boneless, skinless chicken thighs" as one item.
+// Rule: only split at a comma if the segment after it is an exact DB key match
+// (not just a substring match) AND its first word isn't a prep/modifier descriptor.
+export function splitIngredientLine(raw: string): string[] {
+  const parts = raw.split(/,\s*/);
+  if (parts.length <= 1) return [raw];
+
+  const result: string[] = [parts[0]];
+  for (let i = 1; i < parts.length; i++) {
+    const part = parts[i].trim();
+    // Strip trailing serving/garnish phrases before doing the lookup
+    const cleaned = part
+      .replace(/\s+for\s+(?:serving|garnish(?:ing)?|topping)\b.*/i, '')
+      .trim()
+      .toLowerCase();
+    const firstWord = cleaned.split(/\s+/)[0] ?? '';
+    const isModifier = PREP_WORDS.has(firstWord) || STOP_WORDS.includes(firstWord);
+    const isKnownIngredient = !!INGREDIENT_DB[cleaned];
+    if (!isModifier && isKnownIngredient) {
+      result.push(part);
+    } else {
+      result[result.length - 1] += ', ' + part;
+    }
+  }
+  return result;
+}
+
 // ── Parser tables ──────────────────────────────────────────────────────────────
 
 const FRACTION_MAP: Record<string, string> = {

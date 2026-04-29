@@ -26,7 +26,7 @@ import { SAMPLE_RECIPES, Recipe } from '../../data/sampleRecipes';
 import { fetchRecipesByIds } from '../../lib/firestore';
 import {
   parseIngredient, fmtQty, fmtNum, getDairyGroup,
-  SHOPPING_CATEGORIES, normalizeProtein,
+  SHOPPING_CATEGORIES, normalizeProtein, splitIngredientLine,
 } from '../../lib/ingredientParser';
 
 // ─────────────────────────────────────────────
@@ -133,8 +133,12 @@ function aggregateIngredients(
     const scale = menuItem.servings;
 
     for (const ingRaw of recipe.ingredients) {
-      // Expand "each:" lines: "¼ tsp each: paprika, thyme" → ["¼ tsp paprika", "¼ tsp thyme"]
-      const ingsToProcess: (typeof ingRaw)[] = typeof ingRaw === 'string' ? expandEachLine(ingRaw) : [ingRaw];
+      // Expand "each:" lines and comma-joined ingredient lines
+      // e.g. "¼ tsp each: paprika, thyme" → ["¼ tsp paprika", "¼ tsp thyme"]
+      // e.g. "steamed rice, naan for serving" → ["steamed rice", "naan for serving"]
+      const ingsToProcess: (typeof ingRaw)[] = typeof ingRaw === 'string'
+        ? expandEachLine(ingRaw).flatMap(splitIngredientLine)
+        : [ingRaw];
       for (const ing of ingsToProcess) {
       // Sample data has string[] ingredients; Firestore data will have structured objects.
       // Handle both gracefully.
