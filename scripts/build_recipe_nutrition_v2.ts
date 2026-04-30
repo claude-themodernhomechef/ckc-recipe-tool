@@ -196,6 +196,66 @@ const NUTRIENTS = ['calories','protein','fat','saturatedFat','monounsaturatedFat
   'vitaminA','vitaminC','vitaminD','vitaminE','vitaminK',
   'vitaminB1','vitaminB2','vitaminB3','vitaminB6','folate','vitaminB12','water'];
 
+// ── Prep-word stripping ──────────────────────────────────────────────────────
+// Words that describe HOW an ingredient is processed/sized but don't change
+// what the ingredient IS. Stripping these from the parsed name before lookup
+// turns "chopped parsley" → "parsley", "yellow onion diced" → "yellow onion",
+// "low sodium chicken broth" → "chicken broth".
+//
+// NOT stripped: "can"/"canned" (meaningfully different nutrition vs dry),
+// "fresh" (kept — db distinguishes fresh vs dried for some items).
+
+const PREP_WORDS_SINGLE = [
+  // processing verbs (past participles)
+  'chopped', 'minced', 'grated', 'shredded', 'diced', 'sliced', 'crushed',
+  'mashed', 'peeled', 'halved', 'quartered', 'cubed', 'julienned',
+  'beaten', 'whisked', 'melted', 'softened',
+  // adverbs
+  'finely', 'coarsely', 'freshly', 'roughly', 'thinly', 'thickly',
+  // size descriptors
+  'small', 'medium', 'large', 'big', 'jumbo',
+  // single-word dietary modifiers
+  'unsalted',
+];
+
+const PREP_WORDS_MULTI = [
+  /\blow[\s-]?sodium\b/g,
+  /\breduced[\s-]?sodium\b/g,
+  /\blow[\s-]?fat\b/g,
+  /\breduced[\s-]?fat\b/g,
+  /\bfat[\s-]?free\b/g,
+  /\bextra[\s-]?large\b/g,
+];
+
+function stripPrepWords(name: string): string {
+  let s = name.toLowerCase();
+  for (const re of PREP_WORDS_MULTI) s = s.replace(re, '');
+  for (const w of PREP_WORDS_SINGLE) {
+    s = s.replace(new RegExp(`\\b${w}\\b`, 'g'), '');
+  }
+  // Collapse whitespace, trim commas/spaces
+  s = s.replace(/\s+/g, ' ').replace(/^[\s,]+|[\s,]+$/g, '').trim();
+  return s;
+}
+
+// Form modifiers — kept by the parser (consumer needs them at the store) but
+// stripped here so the nutrition matcher can still find a DB entry.
+// "canned black beans" → "black beans", "skinless salmon" → "salmon".
+const FORM_MODIFIERS_NUTRITION = [
+  /\bcanned\b/g, /\bjarred\b/g,
+  /\bbone[\s-]?in\b/g, /\bboneless\b/g,
+  /\bskin[\s-]?on\b/g, /\bskinless\b/g,
+  /\bfull[\s-]?fat\b/g, /\blow[\s-]?fat\b/g, /\bfat[\s-]?free\b/g, /\bnonfat\b/g,
+  /\blow[\s-]?sodium\b/g, /\breduced[\s-]?sodium\b/g,
+  /\bcrumbled\b/g, /\bshelled\b/g,
+];
+
+function stripFormModifiers(name: string): string {
+  let s = name.toLowerCase();
+  for (const re of FORM_MODIFIERS_NUTRITION) s = s.replace(re, '');
+  return s.replace(/\s+/g, ' ').replace(/^[\s,]+|[\s,]+$/g, '').trim();
+}
+
 // ── Learned aliases from Review Queue corrections ────────────────────────────
 // Populated at runtime from Firestore `ingredientAliases` collection.
 // Keys are lowercased raw strings; values are the canonical name the user typed.
@@ -218,7 +278,7 @@ async function loadLearnedAliases(): Promise<number> {
 
 // ── Ingredient DB lookup ──────────────────────────────────────────────────────
 
-function lookupIngredient(name: string, ingDB: any): any {
+function lookupIngredient(name: string, ingDB: any, _retry = false): any {
   if (!name) return null;
   const lower = name.toLowerCase().trim();
 
@@ -283,6 +343,15 @@ function lookupIngredient(name: string, ingDB: any): any {
   if (words.length > 0) {
     const match = Object.keys(ingDB).find(k => words.every(w => k.includes(w)));
     if (match) return ingDB[match];
+  }
+
+  // 6. Final fallback: strip prep words + form modifiers ("chopped", "canned",
+  //    "skinless", "low sodium", etc.) and retry the whole chain once.
+  if (!_retry) {
+    const stripped = stripFormModifiers(stripPrepWords(lower));
+    if (stripped && stripped !== lower) {
+      return lookupIngredient(stripped, ingDB, true);
+    }
   }
 
   return null;

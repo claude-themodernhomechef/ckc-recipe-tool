@@ -145,8 +145,8 @@ const BASELINE_DB: Record<string, string> = {
   'tomato paste':'pantry-staples','tomato sauce':'pantry-staples',
   'diced tomatoes':'pantry-staples','crushed tomatoes':'pantry-staples',
   'fire roasted tomatoes':'pantry-staples','whole peeled tomatoes':'pantry-staples',
-  'chicken broth/stock':'pantry-staples','vegetable broth/stock':'pantry-staples',
-  'beef broth/stock':'pantry-staples','fish stock':'pantry-staples',
+  'chicken broth':'pantry-staples','vegetable broth':'pantry-staples',
+  'beef broth':'pantry-staples','fish stock':'pantry-staples',
   'bouillon cube':'pantry-staples','bouillon cubes':'pantry-staples',
   'chicken bouillon cube':'pantry-staples','chicken bouillon cubes':'pantry-staples',
   'beef bouillon cube':'pantry-staples','beef bouillon cubes':'pantry-staples',
@@ -446,11 +446,11 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   // Salt — all variants → "salt" (interchangeable at the store)
   'kosher salt':'salt', 'sea salt':'salt', 'fine salt':'salt',
   'flaky salt':'salt', 'table salt':'salt', 'coarse salt':'salt', 'iodized salt':'salt',
-  // Broth / stock
-  'chicken broth':'chicken broth/stock', 'chicken stock':'chicken broth/stock',
-  'vegetable broth':'vegetable broth/stock', 'vegetable stock':'vegetable broth/stock',
-  'beef broth':'beef broth/stock', 'beef stock':'beef broth/stock',
-  'fish stock':'fish stock', 'seafood stock':'fish stock',
+  // Broth / stock — canonical is "<X> broth" (consumer-facing label)
+  'chicken stock':'chicken broth', 'chicken broth/stock':'chicken broth',
+  'vegetable stock':'vegetable broth', 'vegetable broth/stock':'vegetable broth',
+  'beef stock':'beef broth', 'beef broth/stock':'beef broth',
+  'seafood stock':'fish stock',
   // Oils — all olive oil variants → "olive oil"; avocado oil stays specific
   'extra virgin olive oil':'olive oil', 'extra-virgin olive oil':'olive oil',
   'virgin olive oil':'olive oil', 'evoo':'olive oil', 'e.v.o.o':'olive oil',
@@ -580,15 +580,26 @@ export function parseIngredient(raw: string): {
   // Extract serving note BEFORE stop-word stripping so it isn't lost
   const note = extractServingNote(str);
 
+  // 0-pre. Section headers ("For the dressing:", "For the sauce:", "Sauce:") are
+  // not ingredients — return early with empty name so callers can skip them.
+  {
+    const headerMatch = /^(?:for\s+the\s+)?[a-z\s]+:\s*$/i.test(str.trim());
+    if (headerMatch) {
+      return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
+    }
+  }
+
   // 0a. Normalize salt+pepper compound variations to canonical "salt + pepper"
   // Handles: "salt and pepper", "salt & pepper", "salt/pepper", "kosher salt and pepper",
-  //          "sea salt and pepper", "salt and black pepper", "pepper and salt", etc.
+  //          "sea salt and pepper", "salt and black pepper", "pepper and salt",
+  //          "kosher salt freshly ground black pepper" (no explicit "and"), etc.
   //          Preserves "to taste" if present.
   {
     const lower = str.toLowerCase();
     const hasSalt   = /\bsalt\b/.test(lower);
     const hasPepper = /\bpepper\b/.test(lower);
-    const isCompound = hasSalt && hasPepper && /\bsalt\b.{0,15}\bpepper\b|\bpepper\b.{0,15}\bsalt\b/.test(lower);
+    // Widened gap from 15 → 30 chars to catch "salt and freshly ground black pepper"
+    const isCompound = hasSalt && hasPepper && /\bsalt\b[\s\w&+/,]{0,30}\bpepper\b|\bpepper\b[\s\w&+/,]{0,30}\bsalt\b/.test(lower);
     if (isCompound) {
       const toTaste = /to\s+taste|as\s+needed/i.test(str);
       str = toTaste ? 'salt + pepper, to taste' : 'salt + pepper';
@@ -630,6 +641,52 @@ export function parseIngredient(raw: string): {
   // "for serving", "for garnish(ing)", "for topping" — stop-word filter catches "serving"
   // but leaves the orphaned "for" behind; strip the whole phrase here instead
   str = str.replace(/,?\s*for\s+(?:serving|garnish(?:ing)?|topping)\b.*/i, '').trim();
+
+  // 2c. Strip bare recipe-note suffixes (no parens around them):
+  //     "chicken legs see notes above"  →  "chicken legs"
+  //     "kosher salt preferably diamond crystal"  →  "kosher salt"
+  //     "olive oil such as California Olive Ranch"  →  "olive oil"
+  str = str.replace(/,?\s*see\s+notes?\s*(?:above|below|for\s+\w+)?\s*\.?$/i, '').trim();
+  str = str.replace(/,?\s*preferably\b.*$/i, '').trim();
+  str = str.replace(/,?\s*such\s+as\b.*$/i, '').trim();
+  str = str.replace(/,?\s*ideally\b.*$/i, '').trim();
+  str = str.replace(/,?\s*or\s+any\s+(?:other|similar)\b.*$/i, '').trim();
+  str = str.replace(/,?\s*depending\s+on\b.*$/i, '').trim();
+  str = str.replace(/,?\s*plus\s+more\s+(?:for|to|as\s+needed)\b.*$/i, '').trim();
+
+  // 2c2. Slash handling for known synonym pairs in ingredient names:
+  //      "vegetable broth/stock" → "vegetable broth"
+  //      "chicken broth/stock"   → "chicken broth"
+  //      "broth/bouillon"        → "broth"
+  //      Keep first word of the slash pair when both halves are interchangeable.
+  str = str.replace(/\b(broth)\s*\/\s*(stock|bouillon)\b/gi, '$1');
+  str = str.replace(/\b(stock)\s*\/\s*(broth|bouillon)\b/gi, '$1');
+
+  // 2c3. "can <ingredient>" leading prefix → "canned <ingredient>"
+  //      So the consumer at the store knows to buy CANNED, not dry.
+  //      Only fires when "can" is the first token of the residual name (not when
+  //      "can" is being extracted as the unit, which the parser handles separately).
+  str = str.replace(/^can\s+(?=[a-z])/i, 'canned ');
+
+  // 2d. Strip prep words and size descriptors anywhere in the string.
+  //     These describe HOW the ingredient is processed/sized but never affect
+  //     what to buy at the store ("chopped parsley" → buy parsley, chop at home).
+  //     Form modifiers (bone-in, skinless, canned, fresh) are NOT stripped here.
+  const PREP_WORDS_SINGLE = [
+    'chopped', 'minced', 'grated', 'shredded', 'diced', 'sliced', 'crushed',
+    'mashed', 'peeled', 'halved', 'quartered', 'cubed', 'julienned',
+    'beaten', 'whisked', 'melted', 'softened',
+    'squeezed', 'torn', 'pitted',
+    // NOT stripped: 'crumbled' (cotija/feta/bacon are sold pre-crumbled),
+    //               'shredded' for cheese — debatable, keeping stripped for now
+    'finely', 'coarsely', 'freshly', 'roughly', 'thinly', 'thickly',
+    'small', 'medium', 'large', 'big', 'jumbo',
+  ];
+  for (const w of PREP_WORDS_SINGLE) {
+    str = str.replace(new RegExp(`\\b${w}\\b`, 'gi'), '');
+  }
+  // Collapse double-spaces and stray commas left behind
+  str = str.replace(/\s{2,}/g, ' ').replace(/\s*,\s*,\s*/g, ', ').replace(/^[,\s]+|[,\s]+$/g, '').trim();
 
   // 3. Vague quantities — return early with no scalable number
   const strLower = str.toLowerCase();
@@ -796,6 +853,20 @@ export function parseIngredient(raw: string): {
   if (unit === 'inch' && (name === 'ginger' || name === 'fresh ginger')) { unit = 'tbsp'; name = 'ginger'; }
 
   name = INGREDIENT_ALIASES[name] || name;
+
+  // "can <ingredient>" handling. Fires here (after qty/unit extraction + aliasing)
+  // because earlier passes still had the qty prefix in the string.
+  //   - default:        "can black beans"  →  "canned black beans"
+  //                     (consumer at store needs to know it's CANNED, not dry)
+  //   - coconut milk:   "can full fat coconut milk"  →  "full fat coconut milk"
+  //                     (coconut milk is always canned — "canned" prefix is redundant)
+  if (/^can\s+[a-z]/i.test(name)) {
+    if (/coconut\s+milk\b/i.test(name)) {
+      name = name.slice(4).trim();
+    } else {
+      name = 'canned ' + name.slice(4);
+    }
+  }
 
   const category = forcedCategory || categorizeIngredient(name || raw);
   return { qty, unit, name: name || raw.toLowerCase(), category, raw, note };

@@ -36,6 +36,44 @@ const sa = require(SA_PATH);
 if (!admin.apps.length) admin.initializeApp({ credential: admin.credential.cert(sa) });
 const db = admin.firestore();
 
+// ── Prep-word stripping (mirrors build_recipe_nutrition_v2.ts) ───────────────
+const PREP_WORDS_SINGLE = [
+  'chopped', 'minced', 'grated', 'shredded', 'diced', 'sliced', 'crushed',
+  'mashed', 'peeled', 'halved', 'quartered', 'cubed', 'julienned',
+  'beaten', 'whisked', 'melted', 'softened',
+  'finely', 'coarsely', 'freshly', 'roughly', 'thinly', 'thickly',
+  'small', 'medium', 'large', 'big', 'jumbo',
+  'unsalted',
+];
+const PREP_WORDS_MULTI: RegExp[] = [
+  /\blow[\s-]?sodium\b/g,
+  /\breduced[\s-]?sodium\b/g,
+  /\blow[\s-]?fat\b/g,
+  /\breduced[\s-]?fat\b/g,
+  /\bfat[\s-]?free\b/g,
+  /\bextra[\s-]?large\b/g,
+];
+function stripPrepWords(name: string): string {
+  let s = name.toLowerCase();
+  for (const re of PREP_WORDS_MULTI) s = s.replace(re, '');
+  for (const w of PREP_WORDS_SINGLE) s = s.replace(new RegExp(`\\b${w}\\b`, 'g'), '');
+  return s.replace(/\s+/g, ' ').replace(/^[\s,]+|[\s,]+$/g, '').trim();
+}
+
+const FORM_MODIFIERS_NUTRITION: RegExp[] = [
+  /\bcanned\b/g, /\bjarred\b/g,
+  /\bbone[\s-]?in\b/g, /\bboneless\b/g,
+  /\bskin[\s-]?on\b/g, /\bskinless\b/g,
+  /\bfull[\s-]?fat\b/g, /\blow[\s-]?fat\b/g, /\bfat[\s-]?free\b/g, /\bnonfat\b/g,
+  /\blow[\s-]?sodium\b/g, /\breduced[\s-]?sodium\b/g,
+  /\bcrumbled\b/g, /\bshelled\b/g,
+];
+function stripFormModifiers(name: string): string {
+  let s = name.toLowerCase();
+  for (const re of FORM_MODIFIERS_NUTRITION) s = s.replace(re, '');
+  return s.replace(/\s+/g, ' ').replace(/^[\s,]+|[\s,]+$/g, '').trim();
+}
+
 // ── Same lookup logic as build_recipe_nutrition_v2.ts ────────────────────────
 // Copy of lookupIngredient so the audit reflects production behavior exactly.
 
@@ -64,7 +102,7 @@ const HARDCODED_ALIASES: Record<string, string> = {
   'bbq sauce': 'barbecue sauce',
 };
 
-function lookupIngredient(name: string, ingDB: any, learnedAliases: Record<string, string>): { entry: any; via: string } {
+function lookupIngredient(name: string, ingDB: any, learnedAliases: Record<string, string>, _retry = false): { entry: any; via: string } {
   if (!name) return { entry: null, via: 'no-name' };
   const lower = name.toLowerCase().trim();
 
@@ -89,6 +127,15 @@ function lookupIngredient(name: string, ingDB: any, learnedAliases: Record<strin
   if (words.length > 0) {
     const match = Object.keys(ingDB).find(k => words.every(w => k.includes(w)));
     if (match) return { entry: ingDB[match], via: 'partial' };
+  }
+
+  // Final fallback: strip prep words + form modifiers, retry once
+  if (!_retry) {
+    const stripped = stripFormModifiers(stripPrepWords(lower));
+    if (stripped && stripped !== lower) {
+      const result = lookupIngredient(stripped, ingDB, learnedAliases, true);
+      if (result.entry) return { entry: result.entry, via: `prep-stripped:${result.via}` };
+    }
   }
 
   return { entry: null, via: 'none' };
