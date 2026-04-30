@@ -196,11 +196,37 @@ const NUTRIENTS = ['calories','protein','fat','saturatedFat','monounsaturatedFat
   'vitaminA','vitaminC','vitaminD','vitaminE','vitaminK',
   'vitaminB1','vitaminB2','vitaminB3','vitaminB6','folate','vitaminB12','water'];
 
+// ── Learned aliases from Review Queue corrections ────────────────────────────
+// Populated at runtime from Firestore `ingredientAliases` collection.
+// Keys are lowercased raw strings; values are the canonical name the user typed.
+const LEARNED_ALIASES: Record<string, string> = {};
+
+async function loadLearnedAliases(): Promise<number> {
+  try {
+    const snap = await db.collection('ingredientAliases').get();
+    snap.forEach(doc => {
+      const d = doc.data();
+      if (d.rawKey && d.canonicalName) {
+        LEARNED_ALIASES[String(d.rawKey).toLowerCase().trim()] = String(d.canonicalName).toLowerCase().trim();
+      }
+    });
+    return snap.size;
+  } catch {
+    return 0;
+  }
+}
+
 // ── Ingredient DB lookup ──────────────────────────────────────────────────────
 
 function lookupIngredient(name: string, ingDB: any): any {
   if (!name) return null;
   const lower = name.toLowerCase().trim();
+
+  // 0. Learned alias from Review Queue corrections (highest priority)
+  if (LEARNED_ALIASES[lower]) {
+    const target = LEARNED_ALIASES[lower];
+    if (ingDB[target]) return ingDB[target];
+  }
 
   // 1. Exact match
   if (ingDB[lower]) return ingDB[lower];
@@ -411,6 +437,10 @@ async function main() {
   const edamamProg  = fs.existsSync(EDAMAM_PROG) ? JSON.parse(fs.readFileSync(EDAMAM_PROG, 'utf8')) : {};
   const servingsProg = fs.existsSync(SERVINGS_PROG) ? JSON.parse(fs.readFileSync(SERVINGS_PROG, 'utf8')) : {};
 
+  console.log('Loading learned aliases from ingredientAliases collection...');
+  const aliasCount = await loadLearnedAliases();
+  console.log(`  ${aliasCount} learned aliases loaded`);
+
   let progress: any = {};
   if (fs.existsSync(PROGRESS_FILE)) {
     progress = JSON.parse(fs.readFileSync(PROGRESS_FILE, 'utf8'));
@@ -426,7 +456,7 @@ async function main() {
   snap.forEach(doc => {
     const d = doc.data();
     if (d.ingredients && d.ingredients.length >= 2) {
-      recipes.push({ id: doc.id, name: d.name, ingredients: d.ingredients });
+      recipes.push({ id: doc.id, name: d.name, ingredients: d.ingredients, dietTags: d.dietTags ?? {} });
     }
   });
 
@@ -464,6 +494,13 @@ async function main() {
       // Pre-process then parse
       const normalised = preprocessIngredient(raw);
       let parsed = parseIngredient(normalised);
+
+      // Learned alias on the RAW string: if the user previously corrected this
+      // exact raw, use their canonical name instead of the parser's guess.
+      const rawKey = raw.toLowerCase().trim();
+      if (parsed && LEARNED_ALIASES[rawKey]) {
+        parsed = { ...parsed, name: LEARNED_ALIASES[rawKey] };
+      }
 
       // Recovery for qty=0: if the ingredient name matches a STANDARD_GRAMS entry,
       // treat it as qty=1 (e.g. "skin-on salmon fillet", "leg of lamb").

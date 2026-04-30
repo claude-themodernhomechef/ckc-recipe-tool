@@ -1551,6 +1551,35 @@ function RecipePanel({
                 try {
                   await updateDoc(doc(db, 'recipes', local._id), { ingredientNameOverrides: overrides });
                 } catch (e) { console.warn('Name override save failed:', e); }
+
+                // ── Feedback loop: teach the global matcher ──
+                // If the user typed a new canonical name, save it to the
+                // ingredientAliases collection so the matcher learns from this
+                // correction across every recipe — not just this one.
+                if (override?.name && raw) {
+                  try {
+                    const { setDoc, increment, serverTimestamp } = await import('firebase/firestore');
+                    const rawKey = raw.toLowerCase().trim();
+                    const docId  = rawKey.replace(/\//g, '-').replace(/[^a-z0-9\-_ ']/g, '').trim().slice(0, 200);
+                    if (docId) {
+                      await setDoc(
+                        doc(db, 'ingredientAliases', docId),
+                        {
+                          rawKey,
+                          rawString: raw,
+                          canonicalName: override.name.toLowerCase().trim(),
+                          canonicalDisplay: override.name,
+                          learnedFromRecipe: local._id,
+                          updatedAt: serverTimestamp(),
+                          frequency: increment(1),
+                        },
+                        { merge: true }
+                      );
+                    }
+                  } catch (e) {
+                    console.warn('[ingredientAliases] write failed (UI already updated):', e);
+                  }
+                }
               }
             }}
             onAddIngredient={async (raw, _category) => {
