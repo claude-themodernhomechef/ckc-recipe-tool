@@ -206,24 +206,34 @@ html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var
     │  Shopping planner                   │
     └─────────────────────────────────────┘</pre></div>
 
-        <div class="steps-label">Where it tends to break</div>
-        <p class="desc" style="margin-top:6px">Step 3 (fuzzy match) is one piece of code that three downstream systems depend on — but each system has different tolerance for a bad match.</p>
-
+        <div class="steps-label">Pipeline health (1074 recipes audited)</div>
         <table class="pipe-table">
           <thead>
-            <tr><th>Branch</th><th>What a bad match does</th></tr>
+            <tr><th>Metric</th><th>Before</th><th>Now</th></tr>
           </thead>
           <tbody>
-            <tr><td>Diet tags</td><td>Wrong native/mod flag → recipe shown to wrong diet users</td></tr>
-            <tr><td>Nutrition</td><td>Ingredient skipped → recipe macros silently undercount</td></tr>
-            <tr><td>Shopping list</td><td>Wrong category → ingredient lands in the wrong aisle</td></tr>
+            <tr><td>Overall ingredient match rate</td><td>87%</td><td class="yes">92%</td></tr>
+            <tr><td>Recipes with &lt;50% matched (silent nutrition failure)</td><td>12</td><td class="yes">5</td></tr>
+            <tr><td>Recipes with &lt;80% matched</td><td>254</td><td class="yes">112</td></tr>
+            <tr><td>Unique unmatched ingredient names</td><td>1394</td><td class="yes">1058</td></tr>
           </tbody>
         </table>
 
-        <ul class="break-list" style="margin-top:18px">
-          <li>Only the <strong>diet-tag branch</strong> reliably writes to needs-review when it's unsure. Nutrition silently drops recipes with a low match rate (&lt;50%); shopping-list categorization falls back to "uncategorized" with no flag.</li>
-          <li>There are <strong>two separate fuzzy matchers</strong> — <code>ingredientParser.ts</code> (TS, runs in app) and <code>extract_ingredient_list.py</code> (Python, runs offline). Drift between them compounds bugs.</li>
+        <div class="steps-label">Parser improvements (live)</div>
+        <ul class="break-list" style="margin-top:6px">
+          <li><strong>Strips prep words anywhere in the name</strong> — chopped, minced, grated, diced, sliced, finely, freshly, squeezed, warmed, toasted, trimmed, etc. "1/4 cup chopped parsley" → "0.25 cup parsley".</li>
+          <li><strong>Strips size descriptor "medium"</strong> (default — uninformative). Keeps "small", "large", "big", "jumbo" — they matter at the store ("8 small tortillas" ≠ large).</li>
+          <li><strong>Strips bare recipe-note suffixes</strong> — "see notes above", "preferably &lt;X&gt;", "such as &lt;X&gt;", "ideally &lt;X&gt;", "depending on &lt;X&gt;", "plus more for &lt;X&gt;".</li>
+          <li><strong>Skips section headers</strong> — "For the dressing:", "Sauce:", etc. don't show up as ingredients.</li>
+          <li><strong>Surfaces serving markers in the qty column</strong> — "lime wedges, to squeeze over fajitas" displays as <code>to serve | lime wedges</code>. Markers: <em>to serve</em>, <em>to garnish</em>, <em>to taste</em>.</li>
+          <li><strong>Canonicalizes broth</strong> — "vegetable broth/stock" → "vegetable broth"; "chicken stock" / "beef stock" all alias to "broth".</li>
+          <li><strong>"can &lt;X&gt;" → "canned &lt;X&gt;"</strong> so the shopper knows it's canned, not dry. Exception: "can ... coconut milk" strips "can" entirely (canned is implicit for coconut milk).</li>
+          <li><strong>Salt+pepper compound widened</strong> — "kosher salt and freshly ground black pepper" now collapses to "salt + pepper".</li>
+          <li><strong>Form modifiers kept for shopping</strong> — "bone-in skin-on chicken" stays as-is on the shopping list (consumer needs it). The nutrition matcher additionally strips them for DB lookup.</li>
         </ul>
+
+        <div class="steps-label">Feedback loop — every text edit teaches the matcher</div>
+        <p class="desc" style="margin-top:6px">When you edit an ingredient name in the Review Queue, the correction now also writes to a global <code>ingredientAliases</code> collection. The matcher consults this collection on its next run, so every correction improves all future recipes — not just the one being edited.</p>
 
         <div class="steps-label">Review Queue → Firestore (auto-save)</div>
         <table class="pipe-table">
@@ -232,13 +242,34 @@ html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var
           </thead>
           <tbody>
             <tr><td>Drag ingredient to new section</td><td class="yes">Yes</td><td>Global — all recipes</td></tr>
-            <tr><td>Edit ingredient name (text box)</td><td class="yes">Yes</td><td>This recipe only</td></tr>
+            <tr><td>Edit ingredient name (text box)</td><td class="yes">Yes</td><td>This recipe + global aliases</td></tr>
             <tr><td>Edit qty (text box)</td><td class="yes">Yes</td><td>This recipe only</td></tr>
             <tr><td>Add / delete ingredient</td><td class="yes">Yes</td><td>This recipe only</td></tr>
             <tr><td>Diet tag toggle</td><td class="yes">Yes</td><td>This recipe only</td></tr>
           </tbody>
         </table>
         <p class="desc" style="margin-top:10px">Writes are fire-and-forget — UI updates instantly, Firestore write happens in the background. If it fails, only a console warning appears (no visible error).</p>
+
+        <div class="steps-label">New tooling (CLI scripts in <code>scripts/</code>)</div>
+        <table class="pipe-table">
+          <thead>
+            <tr><th>Script</th><th>What it does</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>audit_pipeline_health.ts</code></td><td>Scans every recipe, ranks top unmatched ingredients, category misses, low-matchrate recipes, and diet uncertainties. Run anytime for a fresh health check.</td></tr>
+            <tr><td><code>test_parser_on_recipes.ts</code></td><td>Runs the parser on a hand-picked recipe set and prints raw → parsed for sanity-checking before reprocessing all 1074.</td></tr>
+            <tr><td><code>bootstrap_ingredient_aliases.js</code></td><td>One-shot. Mines every existing per-recipe name override and seeds the global <code>ingredientAliases</code> collection so prior corrections aren't lost.</td></tr>
+            <tr><td><code>reprocess_low_matchrate.js</code></td><td>Clears stale nutrition progress for recipes below a chosen match-rate threshold so the next nutrition build picks them up with the improved aliases.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="steps-label">Still on the list</div>
+        <ul class="break-list" style="margin-top:6px">
+          <li>Preserve parenthetical sizes in names — "(7-inch)", "(15-oz.)" are getting eaten by an over-aggressive cleanup pass.</li>
+          <li>Compound splitting in production — "X and Y" recipes split correctly in the test script, but the splitter isn't yet applied in <code>ShoppingPlannerScreen</code> / <code>ReviewQueueScreen</code> / nutrition build.</li>
+          <li>Two parsers still exist — <code>ingredientParser.ts</code> (TS, runs in app) and <code>extract_ingredient_list.py</code> (Python, run offline). Drift compounds bugs.</li>
+          <li>Nutrition matcher silently drops recipes with &lt;50% matchRate. Should write a needs-review item like the diet-tag branch does.</li>
+        </ul>
       </div>
     </div>
   </div>
