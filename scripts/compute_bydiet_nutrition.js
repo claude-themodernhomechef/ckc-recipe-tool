@@ -214,17 +214,31 @@ async function main() {
         : (typeof tagData.notes === 'string' ? tagData.notes : '');
       if (!notesText.trim()) continue;
 
-      const pairs = parseSwapPairs(notesText);
-      if (!pairs.length) continue;
+      const rawPairs = parseSwapPairs(notesText);
+      if (!rawPairs.length) continue;
+      // De-duplicate: multiple swap notes for the same ingredient (e.g. "3 tbsp butter" and
+      // "1 tbsp butter" both reduce to from="butter" after stripping quantities). Keep only one.
+      const seen = new Set();
+      const pairs = rawPairs.filter(p => {
+        const key = `${p.from}|||${p.to ?? '__remove__'}`;
+        if (seen.has(key)) return false;
+        seen.add(key); return true;
+      });
 
       const workingTotal = { ...baseTotal };
       const swapLog = [];
+      const swappedIngIndices = new Set(); // track which recipe ingredients have been swapped
 
       for (const { from, to } of pairs) {
-        const origIngs = ings.filter(i => !i.skip && i.matched && i.grams > 0 && fuzzyMatch(from, i.name));
+        const origIngs = ings.filter((i, idx) =>
+          !i.skip && i.matched && i.grams > 0 &&
+          !swappedIngIndices.has(idx) &&
+          fuzzyMatch(from, i.name)
+        );
         if (!origIngs.length) continue;
 
         for (const origIng of origIngs) {
+          swappedIngIndices.add(ings.indexOf(origIng));
           const origEntry = lookupIngredient(origIng.name, ingDB);
 
           if (to === null) {

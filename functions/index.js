@@ -692,17 +692,29 @@ function _computeByDietForRecipe(recipeData, ingDB) {
 
   for (const [dietCode, tagData] of Object.entries(recipeData.dietTags || {})) {
     if (!tagData.mod) continue;
-    const pairs = _getSwapPairs(tagData);
-    if (!pairs.length) continue;
+    const rawPairs = _getSwapPairs(tagData);
+    if (!rawPairs.length) continue;
+    const seenPairs = new Set();
+    const pairs = rawPairs.filter(p => {
+      const key = `${p.from}|||${p.to ?? '__remove__'}`;
+      if (seenPairs.has(key)) return false;
+      seenPairs.add(key); return true;
+    });
 
     const workingTotal = { ...baseTotal };
     const swapLog = [];
+    const swappedIngIndices = new Set();
 
     for (const { from, to } of pairs) {
-      const origIngs = ings.filter(i => !i.skip && i.matched && i.grams > 0 && _fuzzyMatch(from, i.name));
+      const origIngs = ings.filter((i, idx) =>
+        !i.skip && i.matched && i.grams > 0 &&
+        !swappedIngIndices.has(idx) &&
+        _fuzzyMatch(from, i.name)
+      );
       if (!origIngs.length) continue;
 
       for (const origIng of origIngs) {
+        swappedIngIndices.add(ings.indexOf(origIng));
         const origEntry = _lookupIngredient(origIng.name, ingDB);
 
         if (to === null) {
