@@ -82,6 +82,27 @@ html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var
 
 /* ── Divider between desc and files when both present ── */
 .body-divider{height:1px;background:var(--border);margin:16px 0}
+
+/* ── Reference badge (blue) ── */
+.badge-info{background:var(--blue-bg);border:1px solid var(--blue);color:var(--blue)}
+.status-dot.info{background:var(--blue)}
+
+/* ── Pipeline diagram block ── */
+.pipeline-diagram{margin-top:16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:18px 16px;overflow-x:auto}
+.pipeline-diagram pre{font-family:'SF Mono','Monaco','Menlo',monospace;font-size:10.5px;line-height:1.5;color:var(--text);white-space:pre;margin:0}
+
+/* ── Pipeline table ── */
+.pipe-table{width:100%;margin-top:18px;border-collapse:collapse;font-size:12.5px}
+.pipe-table th,.pipe-table td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--muted);line-height:1.5}
+.pipe-table th{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:500;border-bottom:1px solid var(--border2)}
+.pipe-table td:first-child{color:var(--text);font-weight:500;white-space:nowrap}
+.pipe-table .yes{color:var(--green)}
+
+/* ── Break-points list ── */
+.break-list{list-style:none;margin-top:10px;display:flex;flex-direction:column;gap:10px}
+.break-list li{font-size:13px;color:var(--muted);line-height:1.65;padding-left:16px;position:relative}
+.break-list li::before{content:"•";position:absolute;left:2px;color:var(--faint)}
+.break-list li strong{color:var(--text);font-weight:500}
 </style>
 </head>
 <body>
@@ -90,6 +111,137 @@ html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var
 <div class="page">
   <div class="page-title">Build Roadmap</div>
   <p class="page-subtitle">Everything that needs to get built — click any item to see what's involved.<br>Green = done. Yellow = partially done. Empty circle = not started.</p>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!--  REFERENCE                                          -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">Reference</div>
+
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot info"></div>
+        <div class="item-title">Pipeline at a glance — how the tools fit together</div>
+        <span class="item-badge badge-info">Reference</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">Recipe URL → scrape → parse + fuzzy-match each ingredient. That single fuzzy match is the hub — it feeds three branches (diet tags, nutrition, shopping list). Anything the matcher can't resolve confidently gets sent to the Needs-Review queue.</p>
+
+        <div class="pipeline-diagram"><pre>                ┌───────────────────────────┐
+                │   1.  RECIPE URL          │
+                │   (you paste a link)      │
+                └────────────┬──────────────┘
+                             │
+                             ▼
+    ┌────────────────────────────────────────────────┐
+    │  2.  SCRAPE                                    │
+    │  scrape_new_recipe.py → scrape_pending_meta…   │
+    │  Pulls: title, ingredients (raw text),         │
+    │         photo, rating, prep time               │
+    │  Writes: Firestore recipe doc (status=pending) │
+    └────────────────────────┬───────────────────────┘
+                             │ raw ingredient lines
+                             ▼
+    ┌────────────────────────────────────────────────┐
+    │  3.  PARSE + FUZZY-MATCH each ingredient       │
+    │  ingredientParser.ts  +  ingredient_master_…   │
+    │  "1 lb boneless chicken thighs, diced"         │
+    │     → name: "chicken thighs"                   │
+    │     → qty: 1, unit: lb                         │
+    │     → match against ingredient_master_list     │
+    │                                                │
+    │  ⚠  This is the hub. Everything below depends  │
+    │     on this match being right.                 │
+    └─────┬─────────────┬──────────────┬─────────────┘
+          │             │              │
+          │             │              │
+┌─────────▼──┐   ┌──────▼─────┐   ┌────▼──────────┐
+│ 4a. DIET   │   │ 4b. NUTRI- │   │ 4c. SHOPPING  │
+│     TAGS   │   │     TION   │   │     LIST      │
+│   + MODS   │   │ (per ing.) │   │  (per ing.)   │
+├────────────┤   ├────────────┤   ├───────────────┤
+│classify    │   │build_      │   │ShoppingPlan-  │
+│DietTags.ts │   │nutrition_  │   │nerScreen.tsx │
+│            │   │db.py +     │   │               │
+│Looks at    │   │Edamam/USDA │   │Groups parsed  │
+│each match- │   │            │   │ingredients    │
+│ed ingred.  │   │Each ingr.  │   │into 6 aisle   │
+│vs the 8    │   │gets per-   │   │categories     │
+│diet rules  │   │100g macros │   │(produce, etc.)│
+│            │   │            │   │               │
+│Writes:     │   │Writes:     │   │Writes:        │
+│dietTags{}  │   │ingredient  │   │— (live in app)│
+│+ mod notes │   │Nutrition_v2│   │uses Firestore │
+│+ chefNotes │   │+ recipe.   │   │`ingredients`  │
+│            │   │nutrition   │   │collection     │
+└─────┬──────┘   └─────┬──────┘   └────┬──────────┘
+      │                │               │
+      │  any uncer-    │  any ingr.    │  any ingr.
+      │  tain match?   │  not in DB?   │  no category?
+      │                │               │
+      └────────────────┴───────────────┘
+                      │
+                      ▼
+    ┌─────────────────────────────────────┐
+    │  5.  NEEDS-REVIEW QUEUE             │
+    │  Firestore `review_queue` coll.     │
+    │  + reviewItems[] on the recipe      │
+    │                                     │
+    │  Categories:                        │
+    │   • grey_area (diet judgment call)  │
+    │   • no_product_found (fuzzy fail)   │
+    │   • needs_clarification             │
+    │                                     │
+    │  Surfaced in: admin/review-queue    │
+    │  Exported by: export_review_queue.js│
+    │  Decisions reapplied by:            │
+    │     apply_review_decisions.py       │
+    └─────────────────────────────────────┘
+                      │
+                      ▼
+    ┌─────────────────────────────────────┐
+    │  6.  CONSUMER APP reads Firestore   │
+    │  Recipe detail • Diet filter •      │
+    │  Shopping planner                   │
+    └─────────────────────────────────────┘</pre></div>
+
+        <div class="steps-label">Where it tends to break</div>
+        <p class="desc" style="margin-top:6px">Step 3 (fuzzy match) is one piece of code that three downstream systems depend on — but each system has different tolerance for a bad match.</p>
+
+        <table class="pipe-table">
+          <thead>
+            <tr><th>Branch</th><th>What a bad match does</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Diet tags</td><td>Wrong native/mod flag → recipe shown to wrong diet users</td></tr>
+            <tr><td>Nutrition</td><td>Ingredient skipped → recipe macros silently undercount</td></tr>
+            <tr><td>Shopping list</td><td>Wrong category → ingredient lands in the wrong aisle</td></tr>
+          </tbody>
+        </table>
+
+        <ul class="break-list" style="margin-top:18px">
+          <li>Only the <strong>diet-tag branch</strong> reliably writes to needs-review when it's unsure. Nutrition silently drops recipes with a low match rate (&lt;50%); shopping-list categorization falls back to "uncategorized" with no flag.</li>
+          <li>There are <strong>two separate fuzzy matchers</strong> — <code>ingredientParser.ts</code> (TS, runs in app) and <code>extract_ingredient_list.py</code> (Python, runs offline). Drift between them compounds bugs.</li>
+        </ul>
+
+        <div class="steps-label">Review Queue → Firestore (auto-save)</div>
+        <table class="pipe-table">
+          <thead>
+            <tr><th>Action</th><th>Saves?</th><th>Scope</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Drag ingredient to new section</td><td class="yes">Yes</td><td>Global — all recipes</td></tr>
+            <tr><td>Edit ingredient name (text box)</td><td class="yes">Yes</td><td>This recipe only</td></tr>
+            <tr><td>Edit qty (text box)</td><td class="yes">Yes</td><td>This recipe only</td></tr>
+            <tr><td>Add / delete ingredient</td><td class="yes">Yes</td><td>This recipe only</td></tr>
+            <tr><td>Diet tag toggle</td><td class="yes">Yes</td><td>This recipe only</td></tr>
+          </tbody>
+        </table>
+        <p class="desc" style="margin-top:10px">Writes are fire-and-forget — UI updates instantly, Firestore write happens in the background. If it fails, only a console warning appears (no visible error).</p>
+      </div>
+    </div>
+  </div>
 
   <!-- ═══════════════════════════════════════════════════ -->
   <!--  ADMIN SIDE                                         -->
