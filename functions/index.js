@@ -713,49 +713,60 @@ function _computeByDietForRecipe(recipeData, ingDB) {
       );
       if (!origIngs.length) continue;
 
-      for (const origIng of origIngs) {
-        swappedIngIndices.add(ings.indexOf(origIng));
-        const origEntry = _lookupIngredient(origIng.name, ingDB);
+      origIngs.forEach(i => swappedIngIndices.add(ings.indexOf(i)));
+      const displayName = origIngs[0].name;
 
-        if (to === null) {
+      if (to === null) {
+        let totalRemoveCal = 0, anyInDB = false;
+        for (const origIng of origIngs) {
+          const origEntry = _lookupIngredient(origIng.name, ingDB);
           if (origEntry) {
             const origNutr = _calcNutrition(origIng.grams, origEntry);
             if (origNutr) {
               for (const [k, v] of Object.entries(origNutr))
                 workingTotal[k] = Math.round(((workingTotal[k] ?? 0) - v) * 100) / 100;
-              swapLog.push(`Removed ${origIng.name} (−${Math.round(origNutr.calories ?? 0)} cal)`);
+              totalRemoveCal += origNutr.calories ?? 0;
+              anyInDB = true;
             }
-          } else {
-            swapLog.push(`Removed ${origIng.name} (not in DB)`);
           }
-          continue;
         }
+        swapLog.push(anyInDB
+          ? `Removed ${displayName} (−${Math.round(totalRemoveCal)} cal)`
+          : `Removed ${displayName} (not in DB)`);
+        continue;
+      }
 
-        const toVariants = to.split(/\s+or\s+|\s*\/\s*/);
-        let swapEntry = null;
-        for (const variant of toVariants) {
-          swapEntry = _lookupIngredient(variant.trim(), ingDB);
-          if (swapEntry) break;
-        }
-        if (!swapEntry) {
-          swapLog.push(`${origIng.name} → ${to} (not in DB, kept original)`);
-          continue;
-        }
+      const toVariants = to.split(/\s+or\s+|\s*\/\s*/);
+      let swapEntry = null;
+      for (const variant of toVariants) {
+        swapEntry = _lookupIngredient(variant.trim(), ingDB);
+        if (swapEntry) break;
+      }
+      if (!swapEntry) {
+        swapLog.push(`${displayName} → ${to} (not in DB, kept original)`);
+        continue;
+      }
+
+      let totalDelta = 0;
+      for (const origIng of origIngs) {
+        const origEntry = _lookupIngredient(origIng.name, ingDB);
         if (origEntry) {
           const origNutr = _calcNutrition(origIng.grams, origEntry);
-          if (origNutr)
+          if (origNutr) {
             for (const [k, v] of Object.entries(origNutr))
               workingTotal[k] = Math.round(((workingTotal[k] ?? 0) - v) * 100) / 100;
+            totalDelta -= origNutr.calories ?? 0;
+          }
         }
         const swapNutr = _calcNutrition(origIng.grams, swapEntry);
         if (swapNutr) {
           for (const [k, v] of Object.entries(swapNutr))
             workingTotal[k] = Math.round(((workingTotal[k] ?? 0) + v) * 100) / 100;
-          const origCal = origEntry ? Math.round(_calcNutrition(origIng.grams, origEntry)?.calories ?? 0) : 0;
-          const delta   = Math.round(swapNutr.calories ?? 0) - origCal;
-          swapLog.push(`${origIng.name} → ${to} (${delta >= 0 ? '+' : ''}${delta} cal)`);
+          totalDelta += swapNutr.calories ?? 0;
         }
       }
+      const delta = Math.round(totalDelta);
+      swapLog.push(`${displayName} → ${to} (${delta >= 0 ? '+' : ''}${delta} cal)`);
     }
 
     byDiet[dietCode] = { perServing: _divideByServings(workingTotal, servings), swapLog };

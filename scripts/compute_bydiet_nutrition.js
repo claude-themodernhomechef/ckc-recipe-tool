@@ -237,61 +237,68 @@ async function main() {
         );
         if (!origIngs.length) continue;
 
-        for (const origIng of origIngs) {
-          swappedIngIndices.add(ings.indexOf(origIng));
-          const origEntry = lookupIngredient(origIng.name, ingDB);
+        // Mark all matched ingredients as processed
+        origIngs.forEach(i => swappedIngIndices.add(ings.indexOf(i)));
+        const displayName = cleanIngName(origIngs[0].name);
 
-          if (to === null) {
-            // Remove ingredient
+        if (to === null) {
+          // Remove all matches — one combined log entry
+          let totalRemoveCal = 0, anyInDB = false;
+          for (const origIng of origIngs) {
+            const origEntry = lookupIngredient(origIng.name, ingDB);
             if (origEntry) {
               const origNutr = calcNutrition(origIng.grams, origEntry);
               if (origNutr) {
                 for (const [k, v] of Object.entries(origNutr))
                   workingTotal[k] = Math.round(((workingTotal[k] ?? 0) - v) * 100) / 100;
-                swapLog.push(`Removed ${cleanIngName(origIng.name)} (−${Math.round(origNutr.calories ?? 0)} cal)`);
+                totalRemoveCal += origNutr.calories ?? 0;
+                anyInDB = true;
               }
-            } else {
-              swapLog.push(`Removed ${cleanIngName(origIng.name)} (not in DB)`);
             }
-            continue;
           }
+          swapLog.push(anyInDB
+            ? `Removed ${displayName} (−${Math.round(totalRemoveCal)} cal)`
+            : `Removed ${displayName} (not in DB)`);
+          continue;
+        }
 
-          // Swap — look up replacement (strip leading qty + spelled-out units + "of")
-          // Also try each "or"/"/" variant in case the note says "ingredient A or ingredient B"
-          const toName = to
-            .replace(/^\d[\d/.\s]*\s*(tablespoons?|teaspoons?|cups?|tbsp|tsp|oz|lb|g\b|ml)\s*(of\s+)?/i, '')
-            .trim();
-          const toVariants = toName.split(/\s+or\s+|\s*\/\s*/);
-          let swapEntry = null;
-          for (const variant of toVariants) {
-            swapEntry = lookupIngredient(variant.trim(), ingDB);
-            if (swapEntry) break;
-          }
+        // Swap — look up replacement; try each "or"/"/" variant
+        const toName = to
+          .replace(/^\d[\d/.\s]*\s*(tablespoons?|teaspoons?|cups?|tbsp|tsp|oz|lb|g\b|ml)\s*(of\s+)?/i, '')
+          .trim();
+        const toVariants = toName.split(/\s+or\s+|\s*\/\s*/);
+        let swapEntry = null;
+        for (const variant of toVariants) {
+          swapEntry = lookupIngredient(variant.trim(), ingDB);
+          if (swapEntry) break;
+        }
 
-          if (!swapEntry) {
-            swapLog.push(`${cleanIngName(origIng.name)} → ${toName} (not in DB, kept original)`);
-            continue;
-          }
+        if (!swapEntry) {
+          swapLog.push(`${displayName} → ${toName} (not in DB, kept original)`);
+          continue;
+        }
 
-          // Subtract original
+        // Apply all matches together — one combined log entry
+        let totalDelta = 0;
+        for (const origIng of origIngs) {
+          const origEntry = lookupIngredient(origIng.name, ingDB);
           if (origEntry) {
             const origNutr = calcNutrition(origIng.grams, origEntry);
-            if (origNutr)
+            if (origNutr) {
               for (const [k, v] of Object.entries(origNutr))
                 workingTotal[k] = Math.round(((workingTotal[k] ?? 0) - v) * 100) / 100;
+              totalDelta -= origNutr.calories ?? 0;
+            }
           }
-
-          // Add swap at same gram weight
           const swapNutr = calcNutrition(origIng.grams, swapEntry);
           if (swapNutr) {
             for (const [k, v] of Object.entries(swapNutr))
               workingTotal[k] = Math.round(((workingTotal[k] ?? 0) + v) * 100) / 100;
-            const origCal = origEntry ? Math.round(calcNutrition(origIng.grams, origEntry)?.calories ?? 0) : 0;
-            const swapCal = Math.round(swapNutr.calories ?? 0);
-            const delta   = swapCal - origCal;
-            swapLog.push(`${cleanIngName(origIng.name)} → ${toName} (${delta >= 0 ? '+' : ''}${delta} cal)`);
+            totalDelta += swapNutr.calories ?? 0;
           }
         }
+        const delta = Math.round(totalDelta);
+        swapLog.push(`${displayName} → ${toName} (${delta >= 0 ? '+' : ''}${delta} cal)`);
       }
 
       byDiet[dietCode] = {
