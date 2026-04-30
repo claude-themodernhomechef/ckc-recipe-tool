@@ -157169,9 +157169,9 @@
     ]
   },
   "garlic-infused oil": {
-    "source": "manual",
-    "label": "Garlic-Infused Oil",
-    "category": "Generic foods",
+    "source": "usda",
+    "label": "Garlic-Infused Olive Oil",
+    "category": "Oils",
     "per100g": {
       "calories": {
         "value": 884,
@@ -157196,35 +157196,23 @@
     },
     "measures": [
       {
-        "label": "Gram",
-        "gramWeight": 1
+        "label": "Tablespoon",
+        "gramWeight": 13.5
       },
       {
         "label": "Teaspoon",
         "gramWeight": 4.5
       },
       {
-        "label": "Tablespoon",
-        "gramWeight": 13.5
-      },
-      {
         "label": "Cup",
         "gramWeight": 216
-      },
-      {
-        "label": "Ounce",
-        "gramWeight": 28.349523125
-      },
-      {
-        "label": "Pound",
-        "gramWeight": 453.59237
       }
     ]
   },
   "garlic infused oil": {
-    "source": "manual",
-    "label": "Garlic Infused Oil",
-    "category": "Generic foods",
+    "source": "usda",
+    "label": "Garlic-Infused Olive Oil",
+    "category": "Oils",
     "per100g": {
       "calories": {
         "value": 884,
@@ -157249,28 +157237,16 @@
     },
     "measures": [
       {
-        "label": "Gram",
-        "gramWeight": 1
+        "label": "Tablespoon",
+        "gramWeight": 13.5
       },
       {
         "label": "Teaspoon",
         "gramWeight": 4.5
       },
       {
-        "label": "Tablespoon",
-        "gramWeight": 13.5
-      },
-      {
         "label": "Cup",
         "gramWeight": 216
-      },
-      {
-        "label": "Ounce",
-        "gramWeight": 28.349523125
-      },
-      {
-        "label": "Pound",
-        "gramWeight": 453.59237
       }
     ]
   },
@@ -180004,6 +179980,609 @@
       {
         "label": "Ounce",
         "gramWeight": 28.35
+      }
+    ]
+  },
+  "garlic-infused olive oil": {
+    "source": "usda",
+    "label": "Garlic-Infused Olive Oil",
+    "category": "Oils",
+    "per100g": {
+      "calories": {
+        "value": 884,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 100,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Tablespoon",
+        "gramWeight": 13.5
+      },
+      {
+        "label": "Teaspoon",
+        "gramWeight": 4.5
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 216
+      }
+    ]
+  },
+  "garlic infused olive oil": {
+    "source": "usda",
+    "label": "Garlic-Infused Olive Oil",
+    "category": "Oils",
+    "per100g": {
+      "calories": {
+        "value": 884,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 100,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Tablespoon",
+        "gramWeight": 13.5
+      },
+      {
+        "label": "Teaspoon",
+        "gramWeight": 4.5
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 216
+      }
+    ]
+  },
+  "scallion tops": {
+    "source": "usda",
+    "foodId": "170006",
+    "label": "Onions, young green, tops only",
+    "category": "Vegetables",
+    "per100g": {
+      "calories": {
+        "value": 27,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 0.97,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.47,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 5.74,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 1.8,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup, chopped",
+        "gramWeight": 100
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 6
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      }
+    ]
+  },
+  "scallion top": {
+    "source": "usda",
+    "foodId": "170006",
+    "label": "Onions, young green, tops only",
+    "category": "Vegetables",
+    "per100g": {
+      "calories": {
+        "value": 27,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 0.97,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.47,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 5.74,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 1.8,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup, chopped",
+        "gramWeight": 100
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 6
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      }
+    ]
+  },
+  "green tops of scallions": {
+    "source": "usda",
+    "foodId": "170006",
+    "label": "Onions, young green, tops only",
+    "category": "Vegetables",
+    "per100g": {
+      "calories": {
+        "value": 27,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 0.97,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.47,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 5.74,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 1.8,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup, chopped",
+        "gramWeight": 100
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 6
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      }
+    ]
+  },
+  "green tops of scallion": {
+    "source": "usda",
+    "foodId": "170006",
+    "label": "Onions, young green, tops only",
+    "category": "Vegetables",
+    "per100g": {
+      "calories": {
+        "value": 27,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 0.97,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.47,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 5.74,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 1.8,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup, chopped",
+        "gramWeight": 100
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 6
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      }
+    ]
+  },
+  "green tops": {
+    "source": "usda",
+    "foodId": "170006",
+    "label": "Onions, young green, tops only",
+    "category": "Vegetables",
+    "per100g": {
+      "calories": {
+        "value": 27,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 0.97,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.47,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 5.74,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 1.8,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup, chopped",
+        "gramWeight": 100
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 6
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      }
+    ]
+  },
+  "green onion tops": {
+    "source": "usda",
+    "foodId": "170006",
+    "label": "Onions, young green, tops only",
+    "category": "Vegetables",
+    "per100g": {
+      "calories": {
+        "value": 27,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 0.97,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.47,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 5.74,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 1.8,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup, chopped",
+        "gramWeight": 100
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 6
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      }
+    ]
+  },
+  "green parts of scallions": {
+    "source": "usda",
+    "foodId": "170006",
+    "label": "Onions, young green, tops only",
+    "category": "Vegetables",
+    "per100g": {
+      "calories": {
+        "value": 27,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 0.97,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.47,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 5.74,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 1.8,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup, chopped",
+        "gramWeight": 100
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 6
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      }
+    ]
+  },
+  "tops of scallions": {
+    "source": "usda",
+    "foodId": "170006",
+    "label": "Onions, young green, tops only",
+    "category": "Vegetables",
+    "per100g": {
+      "calories": {
+        "value": 27,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 0.97,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.47,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 5.74,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 1.8,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup, chopped",
+        "gramWeight": 100
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 6
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      }
+    ]
+  },
+  "lactose-free greek yogurt": {
+    "source": "manual",
+    "label": "Lactose-Free Greek Yogurt",
+    "category": "Dairy",
+    "per100g": {
+      "calories": {
+        "value": 87,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 7.3,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 5.3,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 3.3,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 245
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ]
+  },
+  "lactose free greek yogurt": {
+    "source": "manual",
+    "label": "Lactose-Free Greek Yogurt",
+    "category": "Dairy",
+    "per100g": {
+      "calories": {
+        "value": 87,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 7.3,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 5.3,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 3.3,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 245
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ]
+  },
+  "lactose-free yogurt": {
+    "source": "manual",
+    "label": "Lactose-Free Greek Yogurt",
+    "category": "Dairy",
+    "per100g": {
+      "calories": {
+        "value": 87,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 7.3,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 5.3,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 3.3,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 245
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ]
+  },
+  "lactose free yogurt": {
+    "source": "manual",
+    "label": "Lactose-Free Greek Yogurt",
+    "category": "Dairy",
+    "per100g": {
+      "calories": {
+        "value": 87,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 7.3,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 5.3,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 3.3,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 245
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ]
+  },
+  "lactose-free plain greek yogurt": {
+    "source": "manual",
+    "label": "Lactose-Free Greek Yogurt",
+    "category": "Dairy",
+    "per100g": {
+      "calories": {
+        "value": 87,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 7.3,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 5.3,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 3.3,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 245
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
       }
     ]
   }

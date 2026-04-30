@@ -113,12 +113,14 @@ function cleanIngName(name) {
 // ── Ingredient DB lookup ──────────────────────────────────────────────────────
 
 function lookupIngredient(name, ingDB) {
-  const lower = name.toLowerCase().trim();
+  const lower = name.toLowerCase().trim()
+    .replace(/\s*\([^)]*\)/g, '')  // strip parentheticals: "garlic-infused oil (reduce...)" → "garlic-infused oil"
+    .replace(/\s+/g, ' ').trim();
   if (ingDB[lower]) return ingDB[lower];
 
   // Strip prep instructions, size/texture descriptors, and filler words
   const cleaned = lower
-    .replace(/\bcut\s+into\b.*$/i, '')           // "cut into 1-inch cubes" and everything after
+    .replace(/\bcut\s+into\b.*$/i, '')
     .replace(/\b(extra\s+firm|firm|silken|soft|hard|large|small|medium|big|fat|thick|thin|fresh|dried|frozen|raw|cooked|whole|boneless|skinless|bone-?in|skin-?on|lean|ripe|young|baby)\b/g, '')
     .replace(/\b(diced|sliced|chopped|minced|grated|crushed|halved|quartered|peeled|seeded|cubed|shredded|crumbled|julienned|torn)\b/g, '')
     .replace(/\b(for|the|and|with|from|into|about|approx)\b/g, '')
@@ -241,10 +243,16 @@ async function main() {
           }
 
           // Swap — look up replacement (strip leading qty + spelled-out units + "of")
-          const toName    = to
+          // Also try each "or"/"/" variant in case the note says "ingredient A or ingredient B"
+          const toName = to
             .replace(/^\d[\d/.\s]*\s*(tablespoons?|teaspoons?|cups?|tbsp|tsp|oz|lb|g\b|ml)\s*(of\s+)?/i, '')
             .trim();
-          const swapEntry = lookupIngredient(toName, ingDB);
+          const toVariants = toName.split(/\s+or\s+|\s*\/\s*/);
+          let swapEntry = null;
+          for (const variant of toVariants) {
+            swapEntry = lookupIngredient(variant.trim(), ingDB);
+            if (swapEntry) break;
+          }
 
           if (!swapEntry) {
             swapLog.push(`${cleanIngName(origIng.name)} → ${toName} (not in DB, kept original)`);

@@ -600,7 +600,9 @@ function _fuzzyMatch(term, name) {
 }
 
 function _lookupIngredient(name, ingDB) {
-  const lower = name.toLowerCase().trim();
+  const lower = name.toLowerCase().trim()
+    .replace(/\s*\([^)]*\)/g, '')  // strip parentheticals
+    .replace(/\s+/g, ' ').trim();
   if (ingDB[lower]) return ingDB[lower];
   const cleaned = lower
     .replace(/\bcut\s+into\b.*$/i, '')
@@ -717,7 +719,12 @@ function _computeByDietForRecipe(recipeData, ingDB) {
           continue;
         }
 
-        const swapEntry = _lookupIngredient(to, ingDB);
+        const toVariants = to.split(/\s+or\s+|\s*\/\s*/);
+        let swapEntry = null;
+        for (const variant of toVariants) {
+          swapEntry = _lookupIngredient(variant.trim(), ingDB);
+          if (swapEntry) break;
+        }
         if (!swapEntry) {
           swapLog.push(`${origIng.name} → ${to} (not in DB, kept original)`);
           continue;
