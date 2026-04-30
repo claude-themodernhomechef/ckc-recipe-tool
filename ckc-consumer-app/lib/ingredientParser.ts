@@ -164,7 +164,8 @@ const BASELINE_DB: Record<string, string> = {
   'roasted red peppers':'pantry-staples',
   'white rice':'pantry-staples','jasmine rice':'pantry-staples',
   'basmati rice':'pantry-staples','brown rice':'pantry-staples',
-  'cauliflower rice':'pantry-staples',
+  'cauliflower rice':'pantry-staples','steamed rice':'pantry-staples',
+  'rice':'pantry-staples',
   'pasta':'pantry-staples','spaghetti':'pantry-staples','penne':'pantry-staples',
   'fettuccine':'pantry-staples','rigatoni':'pantry-staples','orzo':'pantry-staples',
   'quinoa':'pantry-staples','couscous':'pantry-staples','farro':'pantry-staples',
@@ -279,32 +280,55 @@ export function addIngredientToDb(name: string, category: string): void {
   rebuildDbIndex();
 }
 
-// Splits "steamed rice, naan for serving" → ["steamed rice", "naan for serving"]
-// but keeps "boneless, skinless chicken thighs" as one item.
-// Rule: only split at a comma if the segment after it is an exact DB key match
-// (not just a substring match) AND its first word isn't a prep/modifier descriptor.
-export function splitIngredientLine(raw: string): string[] {
-  const parts = raw.split(/,\s*/);
-  if (parts.length <= 1) return [raw];
+function cleanForDbLookup(s: string): string {
+  return s.replace(/\s+for\s+(?:serving|garnish(?:ing)?|topping)\b.*/i, '').trim().toLowerCase();
+}
 
-  const result: string[] = [parts[0]];
-  for (let i = 1; i < parts.length; i++) {
-    const part = parts[i].trim();
-    // Strip trailing serving/garnish phrases before doing the lookup
-    const cleaned = part
-      .replace(/\s+for\s+(?:serving|garnish(?:ing)?|topping)\b.*/i, '')
-      .trim()
-      .toLowerCase();
-    const firstWord = cleaned.split(/\s+/)[0] ?? '';
-    const isModifier = PREP_WORDS.has(firstWord) || STOP_WORDS.includes(firstWord);
-    const isKnownIngredient = !!INGREDIENT_DB[cleaned];
-    if (!isModifier && isKnownIngredient) {
-      result.push(part);
-    } else {
-      result[result.length - 1] += ', ' + part;
+// Splits "steamed rice, naan for serving" → ["steamed rice", "naan for serving"]
+// and "steamed rice and naan for serving" → ["steamed rice", "naan for serving"]
+// but keeps "boneless, skinless chicken thighs" as one item.
+export function splitIngredientLine(raw: string): string[] {
+  // Pass 1: comma-based split — only split when the right segment is a known DB ingredient
+  const commaParts = raw.split(/,\s*/);
+  let working: string[];
+  if (commaParts.length > 1) {
+    const result: string[] = [commaParts[0]];
+    for (let i = 1; i < commaParts.length; i++) {
+      const part = commaParts[i].trim();
+      const cleaned = cleanForDbLookup(part);
+      const firstWord = cleaned.split(/\s+/)[0] ?? '';
+      const isModifier = PREP_WORDS.has(firstWord) || STOP_WORDS.includes(firstWord);
+      if (!isModifier && !!INGREDIENT_DB[cleaned]) {
+        result.push(part);
+      } else {
+        result[result.length - 1] += ', ' + part;
+      }
     }
+    working = result;
+  } else {
+    working = [raw];
   }
-  return result;
+
+  // Pass 2: "and" / "or" / "/" split — only split when BOTH sides are known DB ingredients
+  const final: string[] = [];
+  for (const segment of working) {
+    let didSplit = false;
+    for (const sep of [' and ', ' or ', '/']) {
+      const idx = segment.toLowerCase().indexOf(sep);
+      if (idx < 0) continue;
+      const before = segment.slice(0, idx).trim();
+      const after  = segment.slice(idx + sep.length).trim();
+      const bCleaned = cleanForDbLookup(before);
+      const aCleaned = cleanForDbLookup(after);
+      if (INGREDIENT_DB[bCleaned] && INGREDIENT_DB[aCleaned]) {
+        final.push(before, after);
+        didSplit = true;
+        break;
+      }
+    }
+    if (!didSplit) final.push(segment);
+  }
+  return final;
 }
 
 // ── Parser tables ──────────────────────────────────────────────────────────────

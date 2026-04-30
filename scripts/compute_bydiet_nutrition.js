@@ -82,7 +82,10 @@ function parseSwapPairs(notes) {
 
 function fuzzyMatch(term, name) {
   const clean = x => x.toLowerCase()
+    .replace(/[,;]/g, ' ')
     .replace(/\b(freshly\s+ground|cloves?|heads?|tbsp\s+of|tsp\s+of|cups?\s+of|\bof\b|black|white|ground|freshly|kosher|sea|fine|coarse|cracked)\b/g, '')
+    .replace(/\b(extra\s+firm|firm|silken|soft|hard|large|small|medium|big|fat|thick|thin|fresh|dried|frozen|raw|cooked|whole|boneless|skinless|lean|ripe|young|baby)\b/g, '')
+    .replace(/\b(diced|sliced|chopped|minced|grated|crushed|halved|quartered|peeled|seeded|cubed|shredded|julienned|torn)\b/g, '')
     .replace(/\s+/g, ' ').trim();
   const b = clean(name);
   const nosp = x => x.replace(/\s+/g, '');
@@ -93,6 +96,8 @@ function fuzzyMatch(term, name) {
     if (a === b || nosp(a) === nosp(b)) return true;
     const aWords = a.split(' ').filter(w => w.length > 2);
     if (aWords.length > 0 && aWords.every(w => b.includes(w))) return true;
+    const bWords = b.split(' ').filter(w => w.length > 2);
+    if (bWords.length > 0 && bWords.every(w => a.includes(w))) return true;
   }
   return false;
 }
@@ -275,7 +280,17 @@ async function main() {
 
     if (Object.keys(byDiet).length === 0) { skipped++; continue; }
 
-    await db.collection('recipes').doc(recipe.id).update({ 'nutrition.byDiet': byDiet });
+    let writeOk = false;
+    for (let attempt = 1; attempt <= 4; attempt++) {
+      try {
+        await db.collection('recipes').doc(recipe.id).update({ 'nutrition.byDiet': byDiet });
+        writeOk = true; break;
+      } catch (e) {
+        if (attempt < 4) { await new Promise(r => setTimeout(r, attempt * 2000)); }
+        else { console.error(`  ✗ write failed after 4 attempts for ${recipe.id}: ${e.message}`); }
+      }
+    }
+    if (!writeOk) { skipped++; continue; }
     updated++;
 
     const dietList = Object.entries(byDiet)

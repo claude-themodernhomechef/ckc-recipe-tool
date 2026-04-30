@@ -581,7 +581,10 @@ function getIngDB() {
 
 function _fuzzyMatch(term, name) {
   const clean = x => x.toLowerCase()
+    .replace(/[,;]/g, ' ')
     .replace(/\b(freshly\s+ground|cloves?|heads?|tbsp\s+of|tsp\s+of|cups?\s+of|\bof\b|black|white|ground|freshly|kosher|sea|fine|coarse|cracked)\b/g, '')
+    .replace(/\b(extra\s+firm|firm|silken|soft|hard|large|small|medium|big|fat|thick|thin|fresh|dried|frozen|raw|cooked|whole|boneless|skinless|lean|ripe|young|baby)\b/g, '')
+    .replace(/\b(diced|sliced|chopped|minced|grated|crushed|halved|quartered|peeled|seeded|cubed|shredded|julienned|torn)\b/g, '')
     .replace(/\s+/g, ' ').trim();
   const b = clean(name);
   const nosp = x => x.replace(/\s+/g, '');
@@ -590,6 +593,8 @@ function _fuzzyMatch(term, name) {
     if (a === b || nosp(a) === nosp(b)) return true;
     const aWords = a.split(' ').filter(w => w.length > 2);
     if (aWords.length > 0 && aWords.every(w => b.includes(w))) return true;
+    const bWords = b.split(' ').filter(w => w.length > 2);
+    if (bWords.length > 0 && bWords.every(w => a.includes(w))) return true;
   }
   return false;
 }
@@ -641,8 +646,13 @@ function _getSwapPairs(tagData) {
     return tagData.notes
       .filter(n => n.type === 'replace' || n.type === 'remove')
       .map(n => ({
-        from: (n.from || '').replace(/^\d[\d/.\s]*\s*(tablespoons?|teaspoons?|cups?|tbsp|tsp|oz|lb|g\b|ml)\s*(of\s+)?/i, '').trim(),
-        to:   n.type === 'remove' ? null : (n.to || '').replace(/^\d[\d/.\s]*\s*(tablespoons?|teaspoons?|cups?|tbsp|tsp|oz|lb|g\b|ml)\s*(of\s+)?/i, '').trim(),
+        from: (n.from || '')
+          .replace(/^\d[\d/.\s]*\s*(tablespoons?|teaspoons?|cups?|tbsp|tsp|oz|lb|g\b|ml)\s*(of\s+)?/i, '')
+          .replace(/^\d+\s+/, '')
+          .trim(),
+        to:   n.type === 'remove' ? null : (n.to || '')
+          .replace(/^\d[\d/.\s]*\s*(tablespoons?|teaspoons?|cups?|tbsp|tsp|oz|lb|g\b|ml)\s*(of\s+)?/i, '')
+          .trim(),
       }));
   }
   // Legacy format: notesText or notes is a plain string — parse it
