@@ -242,7 +242,7 @@ function stripPrepWords(name: string): string {
 // stripped here so the nutrition matcher can still find a DB entry.
 // "canned black beans" → "black beans", "skinless salmon" → "salmon".
 const FORM_MODIFIERS_NUTRITION = [
-  /\bcanned\b/g, /\bjarred\b/g,
+  /\bcanned\b/g, /\bjarred\b/g, /\bcan\b/g, /\bjar\b/g,
   /\bbone[\s-]?in\b/g, /\bboneless\b/g,
   /\bskin[\s-]?on\b/g, /\bskinless\b/g,
   /\bfull[\s-]?fat\b/g, /\blow[\s-]?fat\b/g, /\bfat[\s-]?free\b/g, /\bnonfat\b/g,
@@ -252,6 +252,9 @@ const FORM_MODIFIERS_NUTRITION = [
 
 function stripFormModifiers(name: string): string {
   let s = name.toLowerCase();
+  // Strip any parenthetical content (size specs, brand notes, etc.) — these are
+  // kept by the parser for shopping display but never useful for DB lookup.
+  s = s.replace(/\([^)]*\)/g, '');
   for (const re of FORM_MODIFIERS_NUTRITION) s = s.replace(re, '');
   return s.replace(/\s+/g, ' ').replace(/^[\s,]+|[\s,]+$/g, '').trim();
 }

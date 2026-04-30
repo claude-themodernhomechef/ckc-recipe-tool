@@ -61,7 +61,7 @@ function stripPrepWords(name: string): string {
 }
 
 const FORM_MODIFIERS_NUTRITION: RegExp[] = [
-  /\bcanned\b/g, /\bjarred\b/g,
+  /\bcanned\b/g, /\bjarred\b/g, /\bcan\b/g, /\bjar\b/g,
   /\bbone[\s-]?in\b/g, /\bboneless\b/g,
   /\bskin[\s-]?on\b/g, /\bskinless\b/g,
   /\bfull[\s-]?fat\b/g, /\blow[\s-]?fat\b/g, /\bfat[\s-]?free\b/g, /\bnonfat\b/g,
@@ -70,6 +70,8 @@ const FORM_MODIFIERS_NUTRITION: RegExp[] = [
 ];
 function stripFormModifiers(name: string): string {
   let s = name.toLowerCase();
+  // Strip any parenthetical content — kept by parser for shopping display, not useful for lookup
+  s = s.replace(/\([^)]*\)/g, '');
   for (const re of FORM_MODIFIERS_NUTRITION) s = s.replace(re, '');
   return s.replace(/\s+/g, ' ').replace(/^[\s,]+|[\s,]+$/g, '').trim();
 }

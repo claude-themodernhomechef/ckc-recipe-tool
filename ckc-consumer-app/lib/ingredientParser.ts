@@ -288,6 +288,17 @@ function cleanForDbLookup(s: string): string {
 // and "steamed rice and naan for serving" → ["steamed rice", "naan for serving"]
 // but keeps "boneless, skinless chicken thighs" as one item.
 export function splitIngredientLine(raw: string): string[] {
+  // Salt+pepper compound: don't split — let parseIngredient collapse it to "salt + pepper".
+  // Without this guard, "kosher salt and black pepper" would split into 2 items.
+  {
+    const lower = raw.toLowerCase();
+    const hasSalt   = /\bsalt\b/.test(lower);
+    const hasPepper = /\bpepper\b/.test(lower);
+    if (hasSalt && hasPepper && /\bsalt\b[\s\w&+/,]{0,30}\bpepper\b|\bpepper\b[\s\w&+/,]{0,30}\bsalt\b/.test(lower)) {
+      return [raw];
+    }
+  }
+
   // Pass 1: comma-based split — only split when the right segment is a known DB ingredient
   const commaParts = raw.split(/,\s*/);
   let working: string[];
@@ -309,7 +320,32 @@ export function splitIngredientLine(raw: string): string[] {
     working = [raw];
   }
 
-  // Pass 2: "and" / "or" / "/" split — only split when BOTH sides are known DB ingredients
+  // Helper — does this phrase end with a word that's a known DB ingredient
+  // OR a recognized piece-word (thighs/drumsticks/breasts/fillets/etc.)?
+  // Strips trailing prep/modifier words first so "corn tortillas, warmed" still
+  // resolves on "tortillas".
+  function endsWithKnownIngredient(phrase: string): boolean {
+    const cleaned = cleanForDbLookup(phrase);
+    if (INGREDIENT_DB[cleaned]) return true;
+    let tokens = cleaned.split(/[\s,]+/).filter(Boolean);
+    // Strip trailing prep/stop words so we can find the actual noun
+    while (tokens.length > 0) {
+      const last = tokens[tokens.length - 1];
+      if (PREP_WORDS.has(last) || STOP_WORDS.includes(last)) tokens.pop();
+      else break;
+    }
+    if (tokens.length === 0) return false;
+    // Last token a piece-word (cut of meat, etc.)
+    if (PIECE_WORDS.has(tokens[tokens.length - 1])) return true;
+    // Try last 1-3 tokens as a multi-word DB phrase
+    for (let take = 1; take <= Math.min(3, tokens.length); take++) {
+      const tail = tokens.slice(-take).join(' ');
+      if (INGREDIENT_DB[tail]) return true;
+    }
+    return false;
+  }
+
+  // Pass 2: "and" / "or" / "/" split — split when BOTH sides END with a known DB ingredient
   const final: string[] = [];
   for (const segment of working) {
     let didSplit = false;
@@ -318,9 +354,7 @@ export function splitIngredientLine(raw: string): string[] {
       if (idx < 0) continue;
       const before = segment.slice(0, idx).trim();
       const after  = segment.slice(idx + sep.length).trim();
-      const bCleaned = cleanForDbLookup(before);
-      const aCleaned = cleanForDbLookup(after);
-      if (INGREDIENT_DB[bCleaned] && INGREDIENT_DB[aCleaned]) {
+      if (endsWithKnownIngredient(before) && endsWithKnownIngredient(after)) {
         final.push(before, after);
         didSplit = true;
         break;
@@ -371,6 +405,10 @@ const PREP_WORDS = new Set([
   'julienned','cubed','torn','trimmed','zested','deveined','pitted','cored','seeded',
   'divided','optional','drained','rinsed','softened','melted','cooled','roughly',
   'finely','coarsely','thinly','tightly','blanched','chopped','cut','trimmed',
+  // Temperature/state — same role as prep words for splitting purposes
+  'cold','warm','hot','chilled',
+  // Adjectives that modify another comma-part's noun — keep merged
+  'salted','unsalted',
 ]);
 
 const STOP_WORDS = [
@@ -634,13 +672,29 @@ export function parseIngredient(raw: string): {
   // Only strip long parens that contain letters suggesting a recipe note (e.g. "see", "page", "about")
   str = str.replace(/\((?:see|about|note|if|for|use|make|recipe)[^)]*\)/gi, '').trim();
 
-  // 2b. Strip instruction suffixes that bleed into ingredient names.
-  // "use to your taste", "to your taste", "use to taste" — variants not caught by comma logic
-  str = str.replace(/,?\s*use\s+to\s+(?:your\s+)?taste\b.*/i, '').trim();
-  str = str.replace(/,?\s*to\s+your\s+taste\b.*/i, '').trim();
-  // "for serving", "for garnish(ing)", "for topping" — stop-word filter catches "serving"
-  // but leaves the orphaned "for" behind; strip the whole phrase here instead
-  str = str.replace(/,?\s*for\s+(?:serving|garnish(?:ing)?|topping)\b.*/i, '').trim();
+  // 2b. Detect serving / garnish / taste markers BEFORE stripping them.
+  // The marker is surfaced as the "unit" so it shows in the qty column
+  // instead of being lost ("lime wedges, to squeeze over the fajitas" →
+  // qty="" unit="to serve" name="lime wedges").
+  let servingMarker = '';
+  // "to taste" / "use to taste" / "to your taste" / "as needed"
+  if (/,?\s*(?:use\s+)?to\s+(?:your\s+)?taste\b|,?\s*as\s+needed\b/i.test(str)) {
+    servingMarker = 'to taste';
+    str = str.replace(/,?\s*(?:use\s+)?to\s+(?:your\s+)?taste\b.*/i, '').trim();
+    str = str.replace(/,?\s*as\s+needed\b.*/i, '').trim();
+  }
+  // Garnish: "for garnish", "to garnish", "for garnishing", "for topping",
+  //          "to top", "to top with"
+  else if (/,?\s*(?:for|to)\s+(?:garnish(?:ing)?|topping|top(?:ping)?)\b/i.test(str)) {
+    servingMarker = 'to garnish';
+    str = str.replace(/,?\s*(?:for|to)\s+(?:garnish(?:ing)?|topping|top(?:ping)?\s*(?:with)?)\b.*/i, '').trim();
+  }
+  // Serving: "for serving", "to serve", "to squeeze over X", "to drizzle over X",
+  //          "to spoon over X", "to pour over X"
+  else if (/,?\s*(?:for\s+serving|to\s+serve|to\s+(?:squeeze|drizzle|spoon|pour)\s+(?:over|on))\b/i.test(str)) {
+    servingMarker = 'to serve';
+    str = str.replace(/,?\s*(?:for\s+serving|to\s+serve|to\s+(?:squeeze|drizzle|spoon|pour)\s+(?:over|on))\b.*/i, '').trim();
+  }
 
   // 2c. Strip bare recipe-note suffixes (no parens around them):
   //     "chicken legs see notes above"  →  "chicken legs"
@@ -652,7 +706,11 @@ export function parseIngredient(raw: string): {
   str = str.replace(/,?\s*ideally\b.*$/i, '').trim();
   str = str.replace(/,?\s*or\s+any\s+(?:other|similar)\b.*$/i, '').trim();
   str = str.replace(/,?\s*depending\s+on\b.*$/i, '').trim();
-  str = str.replace(/,?\s*plus\s+more\s+(?:for|to|as\s+needed)\b.*$/i, '').trim();
+  str = str.replace(/,?\s*plus\s+(?:more|extra)\b.*$/i, '').trim();
+  // Orphan parens left behind after "to taste" suffix stripping:
+  //   "salt, (more to taste)"  →  "to taste" stripped at step 2b leaves "salt, (more"
+  //   strip the orphan opening paren + word here.
+  str = str.replace(/\s*\(\s*\w+\s*$/i, '').trim();
 
   // 2c2. Slash handling for known synonym pairs in ingredient names:
   //      "vegetable broth/stock" → "vegetable broth"
@@ -677,16 +735,36 @@ export function parseIngredient(raw: string): {
     'mashed', 'peeled', 'halved', 'quartered', 'cubed', 'julienned',
     'beaten', 'whisked', 'melted', 'softened',
     'squeezed', 'torn', 'pitted',
-    // NOT stripped: 'crumbled' (cotija/feta/bacon are sold pre-crumbled),
-    //               'shredded' for cheese — debatable, keeping stripped for now
+    'warmed', 'toasted', 'browned', 'trimmed',
+    // Temperature states — kitchen treatment, not what you buy
+    'cold', 'warm', 'hot', 'chilled',
+    // NOT stripped: 'crumbled' (cotija/feta/bacon sold pre-crumbled),
+    //               'small', 'large', 'big', 'jumbo' (informative for shopping —
+    //                "8 small tortillas" is meaningfully different from large),
+    //               'salted', 'frozen' (matter at the store)
+    //               'unsalted' (handled separately — stripped because default butter is salted)
     'finely', 'coarsely', 'freshly', 'roughly', 'thinly', 'thickly',
-    'small', 'medium', 'large', 'big', 'jumbo',
+    'medium', // "medium" is the default size — strip; keep small/large
+    'unsalted', // butter default is salted — strip "unsalted" so name → "butter"
   ];
   for (const w of PREP_WORDS_SINGLE) {
     str = str.replace(new RegExp(`\\b${w}\\b`, 'gi'), '');
   }
-  // Collapse double-spaces and stray commas left behind
-  str = str.replace(/\s{2,}/g, ' ').replace(/\s*,\s*,\s*/g, ', ').replace(/^[,\s]+|[,\s]+$/g, '').trim();
+  // Aggressively normalize the comma/space mess left after stripping prep words.
+  // "2 tbsp cold, salted butter, sliced" → strip "cold"+"sliced" → "2 tbsp , salted butter,"
+  // → normalize → "2 tbsp salted butter".
+  str = str
+    .replace(/\s+/g, ' ')              // single spaces
+    .replace(/(\s*,\s*)+/g, ', ')      // collapse runs of commas/spaces into a single ", "
+    .replace(/\s+,/g, ',')             // no space BEFORE a comma
+    .replace(/,\s*$/g, '')             // strip trailing comma
+    .replace(/^[,\s]+/, '')            // strip leading commas/spaces
+    .replace(/\s+/g, ' ')              // re-collapse any new doubles
+    .trim();
+  // After cleanup, an orphan comma sitting between qty and the noun (e.g.
+  // "2 tablespoons , salted butter") would still confuse unit extraction.
+  // Drop a comma that immediately follows a unit token.
+  str = str.replace(/^(\d+(?:[.\/]\d+)?)\s+([a-z]+)\s*,\s*/i, '$1 $2 ');
 
   // 3. Vague quantities — return early with no scalable number
   const strLower = str.toLowerCase();
@@ -807,10 +885,22 @@ export function parseIngredient(raw: string): {
     str = firstIsPrep ? str.slice(0, commaIdx).trim() : str.replace(/,\s*/g, ' ').trim();
   }
 
-  // 15. Clean name: strip remaining parens, filter stop words
+  // 15. Clean name: strip remaining parens (but PRESERVE size/weight specs the
+  //     shopper needs — "(7-inch)", "(15-oz.)", "(14 ounce)"), filter stop words.
   let name = str
-    .replace(/\(.*?\)/g, '')
-    .replace(/\).*$/, '')
+    .replace(/\(([^)]*)\)/g, (_, content: string) => {
+      // Keep parens whose content is a size/weight spec (number + measurement unit)
+      const c = content.trim();
+      if (/\d/.test(c) && /(?:oz|ounce|inch|"|lb|pound|gram|kg|ml|cm|mm)\b/i.test(c)) {
+        return `(${c})`;
+      }
+      return '';
+    })
+    // Strip orphan closing paren (no matching open paren earlier in string).
+    // Kept as belt-and-suspenders — the balanced regex above handles 99% of cases.
+    .replace(/^([^()]*)\).*$/, '$1')
+    // Strip trailing conditional clauses: "halved if large", "split if needed"
+    .replace(/\s+if\s+[a-z]+\s*$/i, '')
     .replace(/^juice (?:of|from)\s+(?:(?:\d+\s+)?\d+(?:\/\d+)?|\d+\.?\d*)?\s*/i, '')
     .replace(/^zest (?:of|from)\s+(?:(?:\d+\s+)?\d+(?:\/\d+)?|\d+\.?\d*)?\s*/i, '')
     .split(/\s+/)
@@ -854,6 +944,12 @@ export function parseIngredient(raw: string): {
 
   name = INGREDIENT_ALIASES[name] || name;
 
+  // If a serving marker was detected upstream and no real unit/qty was extracted,
+  // surface the marker in the unit field so it shows in the qty column.
+  if (servingMarker && !unit && !qty) {
+    unit = servingMarker;
+  }
+
   // "can <ingredient>" handling. Fires here (after qty/unit extraction + aliasing)
   // because earlier passes still had the qty prefix in the string.
   //   - default:        "can black beans"  →  "canned black beans"
@@ -865,6 +961,50 @@ export function parseIngredient(raw: string): {
       name = name.slice(4).trim();
     } else {
       name = 'canned ' + name.slice(4);
+    }
+  }
+
+  // Can/jar with parenthetical size — pull oz out as actual qty.
+  // Cases handled:
+  //   "1 can (14 ounce) full-fat coconut milk"  →  qty=14, unit=oz, name="full-fat coconut milk"
+  //   "1 (15-oz.) can black beans"              →  qty=15, unit=oz, name="canned black beans"
+  //   "1 (15 oz) can chickpeas"                 →  qty=15, unit=oz, name="canned chickpeas"
+  // The shopping list then shows "14 oz canned coconut milk" — the actual size
+  // and form the consumer needs at the store.
+  {
+    const isCanContext = unit === 'can' || unit === 'jar' ||
+      /\bcan\b/i.test(name) || /\bjar\b/i.test(name);
+    if (isCanContext) {
+      // Allow hyphen or period between number and unit: "(15-oz.)", "(15.oz)"
+      const sizeM = name.match(/\(\s*(\d+(?:\.\d+)?)[\s.\-]*(oz|ounce|fl\s*oz|fluid\s+ounce)s?\.?[^)]*\)/i);
+      if (sizeM) {
+        qty = parseFloat(sizeM[1]);
+        unit = 'oz';
+        // Strip the paren spec from name
+        name = name.replace(sizeM[0], '').replace(/\s+/g, ' ').trim();
+        // Strip leading "can " / "jar " — we'll prepend canonical prefix below
+        const isJar = unit === 'jar' || /\bjar\b/i.test(sizeM[0]) || /^jar\s/i.test(name);
+        name = name.replace(/^(?:can|jar)\s+/i, '').trim();
+        // Add canned/jarred prefix unless coconut milk (always canned in recipes)
+        if (!/coconut\s+milk\b/i.test(name)) {
+          const prefix = isJar ? 'jarred ' : 'canned ';
+          if (!name.startsWith('canned') && !name.startsWith('jarred')) name = prefix + name;
+        }
+      }
+    }
+  }
+
+  // Generic salt collapse: "kosher salt" / "sea salt" / "fine sea salt" /
+  // "coarse himalayan salt" / etc. → just "salt".
+  // Flavored salts (seasoning, herb, truffle, smoked, garlic, etc.) keep modifier.
+  {
+    const FLAVORED_SALT_HINTS = ['seasoning','seasoned','herb','herbed','truffle','smoked','garlic','onion','celery','chili','lemon','citrus','rosemary','vanilla'];
+    const PLAIN_SALT_MODIFIERS = ['kosher','sea','fine','coarse','table','iodized','flaky','flake','himalayan','pink','maldon','fleur','de'];
+    if (/\bsalt\b/.test(name) && !FLAVORED_SALT_HINTS.some(f => name.includes(f))) {
+      // Strip leading plain modifiers, see if what's left is just "salt"
+      const tokens = name.split(/\s+/);
+      const remainingNonModifier = tokens.filter(t => t !== 'salt' && !PLAIN_SALT_MODIFIERS.includes(t));
+      if (remainingNonModifier.length === 0) name = 'salt';
     }
   }
 
