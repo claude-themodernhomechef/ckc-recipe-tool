@@ -767,6 +767,8 @@ export function parseIngredient(raw: string): {
   // 1. Normalize unicode fractions
   // First: add a space between a digit and a unicode fraction so "1½" → "1 ½" before
   // replacing ½ → "1/2", which would otherwise turn "1½" into "11/2" (= 5.5 not 1.5).
+  // Also normalize unicode fraction-slash U+2044 (⁄) to ASCII "/" so "1⁄2" parses.
+  str = str.replace(/⁄/g, '/');
   str = str.replace(/(\d)([\u00BC-\u00BE\u2150-\u215E])/g, '$1 $2');
   for (const [k, v] of Object.entries(FRACTION_MAP)) str = str.split(k).join(v);
   str = str.trim();
@@ -825,6 +827,59 @@ export function parseIngredient(raw: string): {
   str = str.replace(/\s*\(\s*or\s+(?:any\s+)?[^)]+\)/gi, '').trim();
   // "from stem" prep instruction leftover
   str = str.replace(/,?\s*from\s+stem\b.*$/i, '').trim();
+  // Strip "trimmed of <X>" / "trimmed of big hunks of fat" / etc.
+  str = str.replace(/,?\s*trimmed\s+of\b.*$/i, '').trim();
+  // "N servings <X>" — drop the "N servings" prefix; set servingMarker if not yet set
+  // ("2 servings steamed white rice" → "white rice" with "to serve" marker)
+  {
+    const servM = str.match(/^(\d+)\s+servings?\s+/i);
+    if (servM) {
+      str = str.slice(servM[0].length).trim();
+      if (!servingMarker) servingMarker = 'to serve';
+    }
+  }
+  // Strip "(N–M oz each)" / "(N oz each)" — recipe author's per-piece weight
+  // note. Lose the parens (we keep the count from the qty extraction).
+  str = str.replace(/\s*\(\s*\d+(?:\.\d+)?(?:\s*[-–]\s*\d+(?:\.\d+)?)?\s*(?:oz|ounce|g|gram)s?\s+each\s*\)/gi, '').trim();
+  // Strip "-or-so" colloquial qualifier ("3-or-so cups broccoli")
+  str = str.replace(/[\s-]or[\s-]so\b/gi, ' ').trim();
+  // Strip "juiced" / "zested" trailing prep word
+  str = str.replace(/,?\s*(?:juiced|zested)(?:\s+and\s+(?:juiced|zested))?\s*$/i, '').trim();
+  // "(from N-inch piece)" / "(from one N-inch piece)" — the parenthetical specifies
+  // the source size; for ginger this is the actual purchase size.
+  // "3 tablespoons minced fresh ginger (from one 3-inch piece)" → use "3-inch ginger"
+  // (overrides the 3 tbsp qty).
+  {
+    const fromPieceM = str.match(/\(\s*from\s+(?:one|a|an|\d+)?\s*(\d+(?:\/\d+)?)\s*-?\s*inch\s+piece\s*\)/i);
+    if (fromPieceM && /\bginger\b/i.test(str)) {
+      // Replace the whole prefix with "<N> inch ginger"
+      str = `${fromPieceM[1]} inch fresh ginger`;
+    } else if (fromPieceM) {
+      // Other ingredients — just strip the paren note
+      str = str.replace(fromPieceM[0], '').trim();
+    }
+  }
+  // Strip "(from N <citrus>)" — when paired with separate zest+juice mentions,
+  // collapse to just "N <citrus>" (you buy the citrus, use both parts)
+  {
+    const fromCitrusM = str.match(/\(\s*from\s+(\d+|one|a|an)\s+(lemons?|limes?|oranges?)s?\s*\)/i);
+    if (fromCitrusM) {
+      const numWord: Record<string, number> = { one: 1, a: 1, an: 1 };
+      const n = numWord[fromCitrusM[1].toLowerCase()] ?? parseInt(fromCitrusM[1], 10);
+      const citrus = fromCitrusM[2].replace(/s$/i, '');
+      str = `${n} ${citrus}`;
+    }
+  }
+  // Strip generic recipe-note parens that don't contain measurement units:
+  //   "(peeled and cut into 2-inch cubes)" / "(shelf-stable, fresh or frozen)" /
+  //   "(Note 1)" / "(approx. 1/3 cup of lemon juice)" / "(divided)"
+  // Keep parens with measurement specs like "(7-inch)" / "(15-oz.)".
+  str = str.replace(/\s*\(\s*(?:peeled|cut|chopped|sliced|diced|minced|grated|halved|quartered|shelf[\s-]stable|fresh\s+or\s+frozen|divided|approx|approximately|see\s+notes?|note\s*\d*|cubed|crushed|drained|rinsed)[^)]*\)/gi, '').trim();
+  // Strip nested "(... (Note N))" double-paren
+  str = str.replace(/\s*\(\(?Note\s*\d*\)?\)/gi, '').trim();
+  // Re-run "juiced"/"zested" trailing strip AFTER parens are removed — the prior
+  // strip ran before paren removal, so "lemons, juiced (approx ...)" wouldn't match.
+  str = str.replace(/,?\s*(?:juiced|zested)(?:\s+and\s+(?:juiced|zested))?\s*$/i, '').trim();
   // Trailing "on a diagonal" / "1\" thick" / "1/2-inch thick" prep specs
   str = str.replace(/,?\s*on\s+a\s+diagonal\b.*$/i, '').trim();
   str = str.replace(/,?\s*\d+(?:\/\d+)?["\s\-]*(?:inch|cm|in)\s+thick\b.*$/i, '').trim();
@@ -985,7 +1040,14 @@ export function parseIngredient(raw: string): {
   for (const w of PREP_WORDS_SINGLE) {
     // Use hyphen-aware boundaries so "full-fat" isn't broken by the "fat" strip,
     // "low-sodium" isn't broken by something inside it, etc.
-    str = str.replace(new RegExp(`(?<!-)\\b${w}\\b(?!-)`, 'gi'), '');
+    // Special case: "crushed" / "diced" are FORMS for canned tomatoes (consumer
+    // needs to buy crushed tomatoes vs whole). Preserve anywhere when "tomato"
+    // appears in the string.
+    if ((w === 'crushed' || w === 'diced') && /\btomato(?:es)?\b/i.test(str)) {
+      // Skip — keep the prep word in name as a form modifier
+    } else {
+      str = str.replace(new RegExp(`(?<!-)\\b${w}\\b(?!-)`, 'gi'), '');
+    }
   }
   // Trailing "about <fraction>" volume notes the recipe author added in parens
   // ("..., rough chopped, about 1/4-1/3 cup") — strip
@@ -1201,6 +1263,13 @@ export function parseIngredient(raw: string): {
         const HERBS = ['ginger','cilantro','parsley','basil','mint','dill','chives','tarragon','thyme','rosemary','sage','oregano'];
         if (HERBS.includes(next)) return true;
       }
+      // Preserve "crushed" / "diced" when paired with tomato (canned form modifier).
+      // Look at any token after this one, not just the immediate next, so
+      // "canned crushed fire-roasted tomatoes" still preserves "crushed".
+      if (lower === 'crushed' || lower === 'diced') {
+        const restJoined = all.slice(i + 1).join(' ').toLowerCase();
+        if (/\btomato(?:es)?\b/.test(restJoined)) return true;
+      }
       return false;
     })
     .join(' ')
@@ -1211,9 +1280,12 @@ export function parseIngredient(raw: string): {
   name = name.replace(/^(of|a|an|the)\s+/, '');
   name = name.replace(/\s+for$/, '').trim();
   // Strip orphan parens left when "(to taste)" / "(divided)" got partially eaten
-  // by suffix strippers — e.g. "black pepper (" → "black pepper"
-  name = name.replace(/\s*[()]+\s*$/g, '').trim();
-  name = name.replace(/^\s*[()]+\s*/g, '').trim();
+  // by suffix strippers — e.g. "black pepper (" → "black pepper".
+  // Only strip clearly-orphan parens (trailing "(" with no matching ")" after,
+  // or leading ")" with no matching "(" before) — preserves legitimate balanced
+  // parens like "(7-inch)" or "(16- to 17-ounce)".
+  name = name.replace(/\s*\(\s*$/, '').trim();   // trailing orphan opening "("
+  name = name.replace(/^\s*\)\s*/, '').trim();   // leading orphan closing ")"
 
   if (name.includes(' or ')) {
     const parts = name.split(' or ');
@@ -1296,8 +1368,8 @@ export function parseIngredient(raw: string): {
       // Track the original count before we replace qty (e.g. "2 jars" of 28oz each → ×2)
       const originalCount = qty || 1;
 
-      // Try paren-oz first: "(15-oz.)", "(28-ounce)", "(7 ounce)"
-      const ozM = name.match(/\(\s*(\d+(?:\.\d+)?)[\s.\-]*(oz|ounce|fl\s*oz|fluid\s+ounce)s?\.?[^)]*\)/i);
+      // Try paren-oz first: "(15-oz.)", "(28-ounce)", "(7 ounce)", "(16- to 17-ounce)" (use lower)
+      const ozM = name.match(/\(\s*(\d+(?:\.\d+)?)(?:\s*[-–]\s*(?:to\s+)?\d+(?:\.\d+)?)?[\s.\-]*(oz|ounce|fl\s*oz|fluid\s+ounce)s?\.?[^)]*\)/i);
       // Try paren-ml: "(160ml)", "(160 ml)" — convert to oz (1ml ≈ 0.0338 oz)
       const mlM = !ozM && name.match(/\(?\s*(\d+(?:\.\d+)?)\s*ml\b/i);
       // Try inline-oz: "19 oz tin", "15 ounce can"
@@ -1320,8 +1392,9 @@ export function parseIngredient(raw: string): {
 
       if (ozM || mlM || inlineOzM) {
         // Strip leading container words and connector "or"/"of"
-        const isJar  = unit === 'jar' || /\bjars?\b/i.test(name);
-        const isBlock = /\bblocks?\b/i.test(name);
+        const isJar     = unit === 'jar' || /\bjars?\b/i.test(name);
+        const isBlock   = /\bblocks?\b/i.test(name);
+        const isPackage = /\b(?:package|pkg|box|bag|pack)\b/i.test(name);
         name = name.replace(/^(?:can|jar|tin|block|box|package|pkg)s?\s+/i, '').trim();
         name = name.replace(/\b(?:can|jar|tin|block|box|package|pkg)s?\s+(?:or\s+)?(?:of\s+)?/gi, '').trim();
         name = name.replace(/^or\s+/i, '').trim();
@@ -1330,10 +1403,11 @@ export function parseIngredient(raw: string): {
         // Strip "in brine"/"in oil"/"in water" trailing — preserved by recipe but
         // not a buying-relevant detail (most cheeses/olives in brine are sold in brine)
         name = name.replace(/\s+in\s+(?:brine|oil|water|syrup)\s*$/i, '').trim();
-        // Add canned/jarred prefix unless coconut milk (always canned)
-        if (!/coconut\s+milk\b/i.test(name)) {
-          const prefix = isJar ? 'jarred ' : isBlock ? '' : 'canned ';
-          if (prefix && !/^(?:canned|jarred)\b/i.test(name)) name = prefix + name;
+        // Add canned/jarred prefix unless coconut milk (always canned), block,
+        // or package/box (the form is implied by being shelf-stable in pantry).
+        if (!/coconut\s+milk\b/i.test(name) && !isBlock && !isPackage) {
+          const prefix = isJar ? 'jarred ' : 'canned ';
+          if (!/^(?:canned|jarred)\b/i.test(name)) name = prefix + name;
         }
         // Canned/jarred items go in the pantry aisle. Setting forcedCategory here
         // also prevents fmtQty from normalizing 19 oz → 1.2 lb (the conversion only
