@@ -712,6 +712,15 @@ export function parseIngredient(raw: string): {
     if (/^\d+\s+batch(?:es)?\s+/i.test(trimmed)) {
       return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
     }
+    // "<X> marinade" / "<X> dressing" / "<X> sauce" / "<X> dry rub" with no qty/unit
+    // — sub-recipe reference, not a real ingredient.
+    if (/^[A-Z][a-z]+(?:\s+[a-z]+)?\s+(?:marinade|dressing|dry\s+rub|spice\s+blend|seasoning\s+mix)\s*\.?\s*$/i.test(trimmed)) {
+      return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
+    }
+    // "Optional: any of your other favorite X" / "any of your favorite X" — vague placeholder, skip
+    if (/^(?:optional\s*[:.\-—]\s*)?any\s+of\s+your\s+(?:other\s+)?favorite\b/i.test(trimmed)) {
+      return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
+    }
     // Stray "I use X" sentences (not preceded by a real ingredient)
     if (/^I\s+(?:use|have|recommend|like|love)\s+/i.test(trimmed) && trimmed.length < 50) {
       return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
@@ -726,6 +735,9 @@ export function parseIngredient(raw: string): {
     .replace(/\bred[\s-]+pepper(\s+flakes?)\b/gi, 'red pepper$1')  // "red-pepper" → "red pepper"
     .replace(/\bblack[\s-]+pepper\b/gi, 'black pepper')
     .replace(/\bwhite[\s-]+pepper\b/gi, 'white pepper')
+    // Fix "1/ 4" → "1/4" (stray space inside fraction)
+    .replace(/(\d)\/\s+(\d)/g, '$1/$2')
+    .replace(/(\d)\s+\/(\d)/g, '$1/$2')
     // Multiple consecutive spaces → single space
     .replace(/\s{2,}/g, ' ');
   // Strip leading "About " (recipe author hedge)
@@ -900,16 +912,31 @@ export function parseIngredient(raw: string): {
   //   "(peeled and cut into 2-inch cubes)" / "(shelf-stable, fresh or frozen)" /
   //   "(Note 1)" / "(approx. 1/3 cup of lemon juice)" / "(divided)"
   // Keep parens with measurement specs like "(7-inch)" / "(15-oz.)".
-  str = str.replace(/\s*\(\s*(?:peeled|cut|chopped|sliced|diced|minced|grated|halved|quartered|shelf[\s-]stable|fresh\s+or\s+frozen|divided|approx|approximately|see\s+notes?|note\s*\d*|cubed|crushed|drained|rinsed)[^)]*\)/gi, '').trim();
+  str = str.replace(/\s*\(\s*(?:partially\s+)?(?:peeled|cut|chopped|sliced|diced|minced|grated|halved|quartered|shelf[\s-]stable|fresh\s+or\s+frozen|divided|approx|approximately|see\s+notes?|note\s*\d*|cubed|crushed|drained|rinsed|give\s+or\s+take|yields?|sub\s|or\s+use)[^)]*\)/gi, '').trim();
   // Strip nested "(... (Note N))" double-paren
   str = str.replace(/\s*\(\(?Note\s*\d*\)?\)/gi, '').trim();
   // Re-run "juiced"/"zested" trailing strip AFTER parens are removed — the prior
   // strip ran before paren removal, so "lemons, juiced (approx ...)" wouldn't match.
   str = str.replace(/,?\s*(?:juiced|zested)(?:\s+and\s+(?:juiced|zested))?\s*$/i, '').trim();
+  // When the leading qty has a volume/weight unit (cups, tbsp, tsp, lbs), strip
+  // any subsequent paren-oz/g — those are recipe-author yield notes, not the
+  // actual purchase quantity.
+  //   "2 cups Shredded Chicken (10-12 ounces)" → strip "(10-12 ounces)" as note,
+  //   keep "2 cups" as the actual qty.
+  if (/^\d[\d\s.\/-]*\s*(?:cups?|tbsp|tablespoons?|tsp|teaspoons?|lbs?|pounds?)\b/i.test(str)) {
+    str = str.replace(/\s*\(\s*\d+(?:\.\d+)?(?:\s*[-–]\s*(?:to\s+)?\d+(?:\.\d+)?)?\s*(?:oz|ounce|g|gram|lb|pound)s?\.?\s*\)/gi, '').trim();
+  }
   // Strip "Use leftover X" / "Use X" / similar trailing recipe-author notes
   // that appear AFTER a parenthetical without their own punctuation:
   //   "2 cups Shredded Chicken (10-12 ounces) Use leftover chicken or rotisserie"
-  str = str.replace(/\)?\s+use\s+(?:leftover\s+|cooked\s+)?[a-z][^,]*$/i, '').trim();
+  str = str.replace(/\s+use\s+(?:leftover\s+|cooked\s+)?[a-z][^,]*$/i, '').trim();
+  // Strip "zest & juice" / "zest and juice" / "zest, juice" prefix on citrus
+  // ("2-3 zest & juice lemons" → "2-3 lemons")
+  str = str.replace(/^(\d+(?:\s*[-–]\s*\d+)?)\s+zest\s*(?:&|and|,)?\s*juice\s+(?=lemons?|limes?|oranges?)/i, '$1 ');
+  // Strip orphan trailing "or" / ", or" left after splitting alternatives
+  // ("3-4 handfuls of baby spinach, torn or roughly chopped" → after prep word
+  //  strip leaves trailing "or")
+  str = str.replace(/,?\s+(?:or|and)\s*$/i, '').trim();
   // Strip count-breakdown notes after a primary count + noun:
   //   "6 garlic cloves, 5 smashed and peeled, 1 finely grated or minced"
   //   → "6 garlic cloves" (the breakdown isn't useful at the store)
@@ -936,14 +963,42 @@ export function parseIngredient(raw: string): {
     (_, n) => `${n} oz `);
   // "Extra X" / "extra X" prefix when "extra" implies "more for serving" — drop
   str = str.replace(/^extra\s+(?=\w)/i, '').trim();
-  // "N handful(s) of X" → "N oz X" (1 handful ≈ 1 oz, per Rafi's rule)
-  // Also handles bare "handful of X" (qty=1).
-  str = str.replace(/^(\d+|two|three|four|five|a)\s+handfuls?\s+of\s+/i, (_, num) => {
+  // Handful → measured form. Per Rafi:
+  //   - olives:     1 handful = 1/3 cup
+  //   - everything: 1 handful = 1 oz
+  // Also handles "<count> handful (<ingredient>)" — extract paren content as
+  // the actual ingredient, e.g. "1 handful (pitted Kalamata olives)" → "1/3 cup kalamata olives".
+  {
+    // Form: "<count> handful (<X>)" — the X in parens is the actual ingredient
+    const handfulParenM = str.match(/^(\d+|two|three|four|five|a|an)?\s*handfuls?\s*\(\s*([^)]+)\s*\)/i);
+    if (handfulParenM) {
+      const numWord: Record<string, number> = { a: 1, an: 1, two: 2, three: 3, four: 4, five: 5 };
+      const n = handfulParenM[1] ? (numWord[handfulParenM[1].toLowerCase()] ?? parseInt(handfulParenM[1], 10)) : 1;
+      const ing = handfulParenM[2].trim();
+      if (/\bolives?\b/i.test(ing)) {
+        // 1 handful olives = 1/3 cup
+        const cups = n / 3;
+        str = `${cups} cup ${ing}`;
+      } else {
+        str = `${n} oz ${ing}`;
+      }
+    }
+  }
+  // "N handfuls of X" — count + ingredient (no parens). Range form too.
+  str = str.replace(/^(\d+(?:\s*[-–]\s*\d+)?|two|three|four|five|a)\s+handfuls?\s+of\s+/i, (_, num) => {
     const numWord: Record<string, number> = { a: 1, two: 2, three: 3, four: 4, five: 5 };
-    const n = numWord[num.toLowerCase()] ?? parseInt(num, 10);
+    let n: number;
+    if (numWord[num.toLowerCase()] != null) n = numWord[num.toLowerCase()];
+    else {
+      // Range like "3-4" — use lower
+      const rangeM = num.match(/^(\d+)/);
+      n = rangeM ? parseInt(rangeM[1], 10) : 1;
+    }
+    // For olives specifically, convert handful → 1/3 cup
+    if (/\bolives?\b/i.test(str)) return `${n / 3} cup `;
     return `${n} oz `;
   });
-  str = str.replace(/^handfuls?\s+of\s+/i, '1 oz ').trim();
+  str = str.replace(/^handfuls?\s+of\s+/i, () => /\bolives?\b/i.test(str) ? '1/3 cup ' : '1 oz ').trim();
   // "N lemons/limes/oranges, sliced into rounds/slices/wedges" → "1 <citrus>"
   // (3-4 lemon rounds come from cutting one lemon, not buying 3-4 lemons).
   // MUST fire BEFORE the "into rounds" trailing strip below or "rounds" gets eaten.
@@ -961,6 +1016,10 @@ export function parseIngredient(raw: string): {
   // Unicode-fraction-based: "into ½ inch thick rounds" — fractions get normalized
   // to digits later but at this point they're still ½/¼/etc.
   str = str.replace(/,?\s*(?:in|into)\s+[¼-¾⅐-⅞][^,]*$/i, '').trim();
+  // Trailing orphan ", sliced into" / "sliced into" left after thickness strip
+  // ate "1/2 inch thick rounds" but left "into" / "sliced into" behind
+  str = str.replace(/,?\s*(?:sliced|cut)\s+(?:in|into)\s*$/i, '').trim();
+  str = str.replace(/,?\s*(?:in|into)\s*$/i, '').trim();
   // Trailing ", cut" / ", cut into X" — only when preceded by a comma (so we
   // don't accidentally eat "cut" inside compound nouns like "center cut bacon")
   str = str.replace(/,\s*cut\s+(?:into|in|to)\b.*$/i, '').trim();
@@ -1318,6 +1377,9 @@ export function parseIngredient(raw: string): {
 
   name = name.replace(/^(of|a|an|the)\s+/, '');
   name = name.replace(/\s+for$/, '').trim();
+  // Strip orphan trailing "or" / "and" / comma left after splits:
+  name = name.replace(/[\s,]+(?:or|and)\s*$/i, '').trim();
+  name = name.replace(/[\s,]+$/, '').trim();
   // Strip orphan parens left when "(to taste)" / "(divided)" got partially eaten
   // by suffix strippers — e.g. "black pepper (" → "black pepper".
   // Only strip clearly-orphan parens (trailing "(" with no matching ")" after,
@@ -1443,9 +1505,9 @@ export function parseIngredient(raw: string): {
         name = name.replace(/^or\s+/i, '').trim();
         name = name.replace(/^of\s+/i, '').trim();
         name = name.replace(/^,\s*/, '').trim();
-        // Strip "in brine"/"in oil"/"in water" trailing — preserved by recipe but
-        // not a buying-relevant detail (most cheeses/olives in brine are sold in brine)
-        name = name.replace(/\s+in\s+(?:brine|oil|water|syrup)\s*$/i, '').trim();
+        // Note: "in brine"/"in oil"/"in water" trailing PRESERVED — per Rafi these
+        // are meaningful product forms (sun-dried tomatoes in oil vs dry-pack,
+        // olives in brine, capers in brine, etc.).
         // Add canned/jarred prefix unless coconut milk (always canned), block,
         // or package/box (the form is implied by being shelf-stable in pantry).
         if (!/coconut\s+milk\b/i.test(name) && !isBlock && !isPackage) {
@@ -1478,10 +1540,11 @@ export function parseIngredient(raw: string): {
     const PLAIN_SALT_MODIFIERS = ['kosher','sea','fine','coarse','table','iodized','flaky','flake','himalayan','pink','maldon','fleur','de'];
     if (/\bsalt\b/.test(name) && !FLAVORED_SALT_HINTS.some(f => name.includes(f))) {
       // If "salt" is the dominant word and the rest is modifiers/qty noise,
-      // collapse to just "salt". Allows the qty extraction to leave "+ 1/8
-      // teaspoon salt" → "salt" by ignoring the noise tokens.
-      const NOISE_TOKENS = new Set(['+', '-', '/', ',', 'teaspoon','teaspoons','tsp','tablespoon','tablespoons','tbsp','of','to','taste']);
-      const tokens = name.split(/\s+/);
+      // collapse to just "salt". Allows things like "+ 1/8 teaspoon salt" or
+      // "cooking / kosher salt" to all become just "salt".
+      const NOISE_TOKENS = new Set(['+', '-', '/', ',', 'teaspoon','teaspoons','tsp','tablespoon','tablespoons','tbsp','of','to','taste','cooking','baking']);
+      // Pre-tokenize: split on whitespace AND on slash so "cooking/kosher" → ["cooking","kosher"]
+      const tokens = name.split(/[\s/]+/).filter(Boolean);
       const remainingNonModifier = tokens.filter(t =>
         t !== 'salt' &&
         !PLAIN_SALT_MODIFIERS.includes(t) &&
@@ -1492,10 +1555,41 @@ export function parseIngredient(raw: string): {
     }
   }
 
+  // Unconditional leading-container cleanup: when the qty was already extracted
+  // (e.g. "1 6.7 oz jar of sun-dried tomatoes" → qty=6.7, unit=oz, name="jar of
+  // sun-dried tomatoes in oil"), strip the leading "jar of "/"can of "/etc.
+  name = name.replace(/^(?:can|jar|tin|block|box|package|pkg)s?\s+(?:of\s+)?/i, '').trim();
+
   // Reorder "skinless boneless" / "skin-on bone-in" to canonical form:
   // boneless before skinless (mirrors how grocery stores label chicken).
   name = name.replace(/\bskinless\s+boneless\b/gi, 'boneless skinless');
   name = name.replace(/\bskin-on\s+bone-in\b/gi, 'bone-in skin-on');
+
+  // Shredded chicken/turkey/pork/beef are by definition COOKED — prefix so
+  // consumer knows it's a pre-cooked item (rotisserie, leftover, etc.)
+  if (/^shredded\s+(?:chicken|turkey|pork|beef)\b/i.test(name) && !/^cooked\b/i.test(name)) {
+    name = 'cooked ' + name;
+  }
+
+  // Singularize plural produce/protein nouns when qty === 1.
+  // "1 leeks" → "1 leek", "1 shallots" → "1 shallot", etc. Only applies to
+  // a known list to avoid breaking plural-only nouns like "greens", "beans", "peas".
+  if (qty === 1) {
+    const SINGULARIZE_AT_ONE = [
+      'leek','onion','shallot','carrot','tomato','potato','sweet potato','cucumber',
+      'lemon','lime','orange','apple','pear','peach','plum','avocado','pepper',
+      'bell pepper','jalapeno','jalapeño','poblano','serrano','egg','beet',
+    ];
+    for (const sing of SINGULARIZE_AT_ONE) {
+      // Match ending with the plural form (sing + 's' or sing.replace('o','oes'))
+      const plural = sing.endsWith('o') ? sing + 'es' : sing + 's';
+      const re = new RegExp(`\\b${plural}\\b\\s*$`, 'i');
+      if (re.test(name)) {
+        name = name.replace(re, sing).trim();
+        break;
+      }
+    }
+  }
 
   // Salt always displays as just "salt" — drop qty/unit (it's to-taste at the store).
   if (name === 'salt') {
