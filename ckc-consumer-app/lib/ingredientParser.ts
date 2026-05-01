@@ -297,6 +297,20 @@ export function splitIngredientLine(raw: string): string[] {
   // properly and we don't lose the ingredient name.
   raw = raw.replace(/^optional\s+for\s+serving\s*[:.\-—]\s*(.+)$/i, '$1, for serving');
 
+  // "<qty> <unit> each: <A>, <B>, <C>" — split into individual ingredients
+  // each carrying the same qty/unit:
+  //   "1/2 teaspoon each: crushed red pepper flakes, dried oregano, salt"
+  //     → ["1/2 tsp crushed red pepper flakes", "1/2 tsp dried oregano", "1/2 tsp salt"]
+  {
+    const eachM = raw.match(/^(\d+(?:\s+\d+)?\/\d+|\d+\.?\d*)\s+(\w+)\s+each\s*[:.\-—]\s*(.+)$/i);
+    if (eachM) {
+      const qtyStr = eachM[1];
+      const unitStr = eachM[2];
+      const items = eachM[3].split(/,\s*|\s+and\s+/).map(s => s.trim()).filter(Boolean);
+      return items.map(item => `${qtyStr} ${unitStr} ${item}`);
+    }
+  }
+
   // Garnish/topping/filling-addition list: split each into its own ingredient
   // with a "for garnish" marker so each gets unit="to garnish".
   // "optional garnishes: sour cream, avocado, cilantro, scallions"
@@ -559,7 +573,8 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'whole milk mozzarella':'mozzarella',
   // NOTE: 'shredded mozzarella' / 'grated parmesan' aliases removed — consumer
   // needs to know it's pre-grated/shredded vs block at the store
-  'parmesan cheese':'parmesan',
+  // Per Rafi: bare "parmesan" should always display as "parmesan cheese"
+  'parmesan':'parmesan cheese',
   'parmigiano reggiano':'parmesan', 'pecorino romano':'parmesan',
   'heavy whipping cream':'heavy cream', 'whipping cream':'heavy cream',
   'mexican cheese blend':'mexican cheese', 'colby jack':'mexican cheese',
@@ -728,9 +743,14 @@ export function parseIngredient(raw: string): {
     if (/^(?:optional\s*[:.\-—]\s*)?any\s+of\s+your\s+(?:other\s+)?favorite\b/i.test(trimmed)) {
       return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
     }
-    // "Any other X you'd like to add" / "Any other X you'd like" — vague placeholder, skip
-    if (/^any\s+(?:other\s+)?\w+\s+you(?:'?d|'?ll)?\s+like\s+to\b/i.test(trimmed)) {
-      return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
+    // "Any other X you'd like to add" / "Any other X you'd like" — vague placeholder, skip.
+    // Pre-decode HTML entity for apostrophe (&#39; = ') so the regex catches the
+    // common recipe-author "you'd" form.
+    {
+      const decoded = trimmed.replace(/&#(?:39|x27);|&apos;/gi, "'");
+      if (/^any\s+(?:other\s+)?\w+\s+you(?:'?d|'?ll)?\s+like\s+to\b/i.test(decoded)) {
+        return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
+      }
     }
     // Stray "I use X" sentences (not preceded by a real ingredient)
     if (/^I\s+(?:use|have|recommend|like|love)\s+/i.test(trimmed) && trimmed.length < 50) {
@@ -892,20 +912,28 @@ export function parseIngredient(raw: string): {
   str = str.replace(/,?\s*or\s+any\s+(?:other|similar)\b.*$/i, '').trim();
   str = str.replace(/,?\s*depending\s+on\b.*$/i, '').trim();
   str = str.replace(/,?\s*plus\s+(?:more|extra)\b.*$/i, '').trim();
+  // "<X> paste/marinade" — take first option of slash alternatives in name
+  str = str.replace(/\b(paste|sauce|powder|spread)\/(?:marinade|sauce|spread|seasoning)\b/gi, '$1');
+  // Strip trailing modifiers like ", premium" / ", organic" / ", store-bought" /
+  // ", homemade" / ", natural" — recipe-author labels not relevant to shopping
+  str = str.replace(/,\s*(?:premium|organic|store-bought|homemade|natural|pure|raw|cold-pressed|extra\s+virgin)\s*\.?\s*$/i, '').trim();
   str = str.replace(/,?\s*at\s+room\s+temperature\b.*$/i, '').trim();
   str = str.replace(/,?\s*to\s+room\s+temperature\b.*$/i, '').trim();
   // Abbreviated "room temp." form
   str = str.replace(/,?\s*(?:at|to)\s+room\s+temp\.?\s*$/i, '').trim();
   // "Organic" prefix on whole proteins (recipe-author marketing label)
   str = str.replace(/^organic\s+/i, '').trim();
-  // Em-dash + prep instruction trailing: "garlic- grated, pressed or minced"
-  str = str.replace(/\s*[-–—]\s*(?:grated|pressed|minced|chopped|sliced|diced|crushed|peeled|halved|quartered|cubed)(?:[\s,]|\b).*$/i, '').trim();
+  // Em-dash + prep instruction trailing: "5 cloves garlic- grated, pressed or minced"
+  // REQUIRES space or comma before the dash so it doesn't match hyphenated words
+  // like "freshly-grated" / "fire-roasted" mid-name.
+  str = str.replace(/(?:[\s,])[-–—]\s*(?:grated|pressed|minced|chopped|sliced|diced|crushed|peeled|halved|quartered|cubed)(?:[\s,]|$).*$/i, '').trim();
   // (Em-dash + serving marker rewrite moved to step 2b — before serving-marker
   //  detection — so the rewritten ", for garnish" actually gets picked up.)
   // Strip ", NOT just X" recipe-author hedge ("wild rice blend, NOT just wild rice")
   str = str.replace(/,?\s*NOT\s+just\b.*$/i, '').trim();
   // Strip trailing "for brushing" / "for cooking" / "for searing" / "for sautéing" instructions
-  str = str.replace(/,?\s+for\s+(?:brushing|cooking|searing|saut[ée]ing|frying|sprinkling|coating|dredging)\b.*$/i, '').trim();
+  // Limit to NOT cross close-paren so we don't eat ")" of an enclosing paren.
+  str = str.replace(/,?\s+for\s+(?:brushing|cooking|searing|saut[ée]ing|frying|sprinkling|coating|dredging)\b[^)]*$/i, '').trim();
   // Strip ", pips discarded" / ", seeds removed" / ", core removed" / "flesh and skin chopped"
   str = str.replace(/,\s*pips?\s+discarded\b.*$/i, '').trim();
   str = str.replace(/,\s*seeds?\s+(?:removed|discarded)\b.*$/i, '').trim();
@@ -964,6 +992,24 @@ export function parseIngredient(raw: string): {
       str = `${count} ${oz} oz ${rest} ${noun}`;
     }
   }
+  // "N (X-Y oz) <rest>" — generic protein/seafood form (no required noun at start
+  // of parens). Examples: "4 (6 oz.) wild lobster tails", "2 (4-6 ounces) wild-caught
+  // Sockeye salmon". Produces "N (oz upper) oz <rest>" preserving count separately.
+  // Strip common protein qualifier prefixes ("wild", "wild-caught", "organic").
+  {
+    const sizedProteinM = str.match(/^(\d+)\s+\(\s*(\d+(?:\.\d+)?)(?:\s*[-–]\s*(?:to\s+)?(\d+(?:\.\d+)?))?\s*(?:oz|ounce)s?\.?\s*\)\s+(.+)$/i);
+    if (sizedProteinM) {
+      const count = sizedProteinM[1];
+      const oz = sizedProteinM[3] || sizedProteinM[2]; // upper or single
+      let rest = sizedProteinM[4].trim()
+        .replace(/^(?:wild-caught|wild\s+caught|wild|organic|fresh|frozen)\s+/i, '');
+      // Only fire when rest looks like a real ingredient (has a noun-like word).
+      // This guards against accidentally matching unrelated parens.
+      if (rest && /[a-z]/i.test(rest)) {
+        str = `${count} ${oz} oz ${rest}`;
+      }
+    }
+  }
   // Strip "-or-so" colloquial qualifier ("3-or-so cups broccoli")
   str = str.replace(/[\s-]or[\s-]so\b/gi, ' ').trim();
   // Strip "juiced" / "zested" trailing prep word
@@ -1014,8 +1060,9 @@ export function parseIngredient(raw: string): {
   // Strip "Use leftover X" / "Use X" / similar trailing recipe-author notes
   // that appear AFTER a parenthetical without their own punctuation:
   //   "2 cups Shredded Chicken (10-12 ounces) Use leftover chicken, or use rotisserie chicken"
-  // Allow commas — these notes can span multiple clauses.
-  str = str.replace(/\s+use\s+(?:leftover\s+|cooked\s+)?[a-z].*$/i, '').trim();
+  // Allow commas (notes span clauses), but NOT cross close-paren (don't eat ")"
+  // of an enclosing paren we want to preserve/strip wholesale).
+  str = str.replace(/\s+use\s+(?:leftover\s+|cooked\s+)?[a-z][^)]*$/i, '').trim();
   // "shredded cheese – cotija, mozzarella, jack..." or "cheese – cotija, X, Y"
   // Take the FIRST specific cheese as the canonical, prefix with "shredded".
   // Runs HERE (after yield-note paren strip) so "(8 ounces)" between "cheese"
@@ -1235,7 +1282,7 @@ export function parseIngredient(raw: string): {
     'beaten', 'whisked', 'melted', 'softened',
     'squeezed', 'torn', 'pitted', 'shaved',
     'warmed', 'toasted', 'browned', 'trimmed',
-    'cleaned', 'rinsed', 'dried', 'patted', 'packed', 'scrubbed',
+    'cleaned', 'rinsed', 'dried', 'patted', 'packed', 'scrubbed', 'slit',
     'scant', 'lightly', 'heaping',
     'fat', // "fat garlic cloves" → strip; thickness is irrelevant for shopping
     // NOT stripped: 'grated' / 'shredded' — meaningful for cheese
@@ -1267,10 +1314,10 @@ export function parseIngredient(raw: string): {
   // Trailing "about <fraction>" volume notes the recipe author added in parens
   // ("..., rough chopped, about 1/4-1/3 cup") — strip
   str = str.replace(/,?\s*about\s+\d[^,]*$/i, '').trim();
-  // Strip orphan "&" / "and" left between stripped prep words
-  str = str.replace(/(?:^|,)\s*&\s+/g, ' ').trim();
-  str = str.replace(/\s*&\s*$/, '').trim();
-  str = str.replace(/\s+&\s+(?=$|,)/g, ' ').trim();
+  // Strip orphan "&" / "+" / "and" left between stripped prep words
+  str = str.replace(/(?:^|,)\s*[&+]\s+/g, ' ').trim();
+  str = str.replace(/\s*[&+]\s*$/, '').trim();
+  str = str.replace(/\s+[&+]\s+(?=$|,)/g, ' ').trim();
 
   // Aggressively normalize the comma/space mess left after stripping prep words.
   // "2 tbsp cold, salted butter, sliced" → strip "cold"+"sliced" → "2 tbsp , salted butter,"
@@ -1478,12 +1525,13 @@ export function parseIngredient(raw: string): {
         const HERBS = ['ginger','cilantro','parsley','basil','mint','dill','chives','tarragon','thyme','rosemary','sage','oregano'];
         if (HERBS.includes(next)) return true;
       }
-      // Preserve "whole" when followed by a count-noun protein (whole chicken,
-      // whole turkey, whole fish, etc.). Important for shopping clarity.
+      // Preserve "whole" when followed by a count-noun protein OR "milk".
+      //   "whole chicken" / "whole turkey" / "whole fish" — meaningful at the store
+      //   "whole milk mozzarella" / "whole milk ricotta" — fat content matters
       if (lower === 'whole' && i + 1 < all.length) {
         const next = all[i + 1].toLowerCase().replace(/[.,]+$/, '');
         const PROTEINS = ['chicken','turkey','duck','fish','salmon','trout','goose','rabbit','lamb'];
-        if (PROTEINS.includes(next)) return true;
+        if (PROTEINS.includes(next) || next === 'milk') return true;
       }
       // Preserve "crushed" / "diced" when paired with tomato (canned form modifier).
       // Look at any token after this one, not just the immediate next, so
@@ -1709,6 +1757,20 @@ export function parseIngredient(raw: string): {
   // boneless before skinless (mirrors how grocery stores label chicken).
   name = name.replace(/\bskinless\s+boneless\b/gi, 'boneless skinless');
   name = name.replace(/\bskin-on\s+bone-in\b/gi, 'bone-in skin-on');
+
+  // Always append " cheese" to bare cheese names — consumer searches for "X cheese"
+  // at the store. "parmesan" → "parmesan cheese", "grated parmesan" → "grated
+  // parmesan cheese", "feta" → "feta cheese", etc.
+  {
+    const BARE_CHEESES = ['parmesan','feta','cheddar','mozzarella','cotija','gruyere','brie','goat','provolone'];
+    for (const ch of BARE_CHEESES) {
+      const re = new RegExp(`\\b${ch}\\b(?!\\s+cheese)`, 'i');
+      if (re.test(name)) {
+        name = name.replace(re, `${ch} cheese`);
+        break;
+      }
+    }
+  }
 
   // Shredded chicken/turkey/pork/beef are by definition COOKED — prefix so
   // consumer knows it's a pre-cooked item (rotisserie, leftover, etc.)
