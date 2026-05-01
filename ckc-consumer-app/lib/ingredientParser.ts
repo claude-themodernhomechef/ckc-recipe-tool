@@ -292,6 +292,11 @@ export function splitIngredientLine(raw: string): string[] {
   // Otherwise the splitter sees the "or"/commas inside parens and splits incorrectly.
   raw = raw.replace(/\s*\(\s*or\s+(?:any\s+)?[^)]+\)/gi, '').trim();
 
+  // "Optional for serving: <X>" — the part after the colon is the actual
+  // ingredient. Rewrite to "<X>, for serving" so the parser picks it up
+  // properly and we don't lose the ingredient name.
+  raw = raw.replace(/^optional\s+for\s+serving\s*[:.\-—]\s*(.+)$/i, '$1, for serving');
+
   // Garnish/topping/filling-addition list: split each into its own ingredient
   // with a "for garnish" marker so each gets unit="to garnish".
   // "optional garnishes: sour cream, avocado, cilantro, scallions"
@@ -512,7 +517,7 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   // NOTE: "fresh <herb>" aliases removed — consumer needs to know to buy fresh
   // (vs dried) herbs at the store. "fresh dill" stays as "fresh dill", etc.
   'coriander leaves':'cilantro',
-  // NOTE: bare 'coriander' NOT aliased — could be seeds (spice) or leaves depending on region
+  'coriander':'cilantro', // bare "coriander" — usually means leaves in US recipes
   'dill weed':'dill',
   'spearmint':'mint',
   'thyme leaves':'thyme', 'thyme sprig':'thyme',
@@ -717,8 +722,12 @@ export function parseIngredient(raw: string): {
     if (/^[A-Z][a-z]+(?:\s+[a-z]+)?\s+(?:marinade|dressing|dry\s+rub|spice\s+blend|seasoning\s+mix)\s*\.?\s*$/i.test(trimmed)) {
       return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
     }
-    // "Optional: any of your other favorite X" / "any of your favorite X" — vague placeholder, skip
+    // "Optional: any of your other favorite X" / "any of your favorite X" — vague, skip
     if (/^(?:optional\s*[:.\-—]\s*)?any\s+of\s+your\s+(?:other\s+)?favorite\b/i.test(trimmed)) {
+      return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
+    }
+    // "Any other X you'd like to add" / "Any other X you'd like" — vague placeholder, skip
+    if (/^any\s+(?:other\s+)?\w+\s+you(?:'?d|'?ll)?\s+like\s+to\b/i.test(trimmed)) {
       return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
     }
     // Stray "I use X" sentences (not preceded by a real ingredient)
@@ -810,6 +819,15 @@ export function parseIngredient(raw: string): {
   // instead of being lost ("lime wedges, to squeeze over the fajitas" →
   // qty="" unit="to serve" name="lime wedges").
   let servingMarker = '';
+  // "Optional for serving: <X>" — explicit prefix, set marker + strip prefix
+  // ("Optional for serving: crusty bread" → name="crusty bread", marker="to serve")
+  {
+    const optServM = str.match(/^optional\s+for\s+serving\s*[:.\-—]\s*(.+)$/i);
+    if (optServM) {
+      str = optServM[1].trim();
+      servingMarker = 'to serve';
+    }
+  }
   // "to taste" / "use to taste" / "to your taste" / "as needed"
   if (/,?\s*(?:use\s+)?to\s+(?:your\s+)?taste\b|,?\s*as\s+needed\b/i.test(str)) {
     servingMarker = 'to taste';
@@ -835,12 +853,30 @@ export function parseIngredient(raw: string): {
   //     "olive oil such as California Olive Ranch"  →  "olive oil"
   str = str.replace(/,?\s*see\s+notes?\s*(?:above|below|for\s+\w+)?\s*\.?$/i, '').trim();
   str = str.replace(/,?\s*preferably\b.*$/i, '').trim();
-  str = str.replace(/,?\s*such\s+as\b.*$/i, '').trim();
+  // "such as <X>" — strip the suffix, but don't cross a closing paren (so we
+  // don't eat the closing ")" of a "(any X, such as Y, Z)" parenthetical that's
+  // about to be stripped wholesale by the (any X) regex below).
+  str = str.replace(/,?\s*such\s+as\b[^)]*(?:$|(?=\)))/i, '').trim();
   str = str.replace(/,?\s*ideally\b.*$/i, '').trim();
   str = str.replace(/,?\s*or\s+any\s+(?:other|similar)\b.*$/i, '').trim();
   str = str.replace(/,?\s*depending\s+on\b.*$/i, '').trim();
   str = str.replace(/,?\s*plus\s+(?:more|extra)\b.*$/i, '').trim();
   str = str.replace(/,?\s*at\s+room\s+temperature\b.*$/i, '').trim();
+  str = str.replace(/,?\s*to\s+room\s+temperature\b.*$/i, '').trim();
+  // Strip ", NOT just X" recipe-author hedge ("wild rice blend, NOT just wild rice")
+  str = str.replace(/,?\s*NOT\s+just\b.*$/i, '').trim();
+  // Strip trailing "for brushing" / "for cooking" / "for searing" / "for sautéing" instructions
+  str = str.replace(/,?\s+for\s+(?:brushing|cooking|searing|saut[ée]ing|frying|sprinkling|coating|dredging)\b.*$/i, '').trim();
+  // Strip ", pips discarded" / ", seeds removed" / ", core removed" / "flesh and skin chopped"
+  str = str.replace(/,\s*pips?\s+discarded\b.*$/i, '').trim();
+  str = str.replace(/,\s*seeds?\s+(?:removed|discarded)\b.*$/i, '').trim();
+  str = str.replace(/,\s*(?:core|stem|skin|peel|flesh\s+and\s+skin)\s+(?:removed|discarded|chopped|sliced|peeled)\b.*$/i, '').trim();
+  // Strip trailing "then <prep>" — "zested then halved" → strip from "then"
+  str = str.replace(/\s+then\s+\w+(?:\s+\w+)?\s*$/i, '').trim();
+  // "<count> <citrus>: <stuff>" — colon after citrus name kills everything after
+  str = str.replace(/^(\d+\s+(?:lemons?|limes?|oranges?))\s*:\s*.+$/i, '$1');
+  // (Cheese-list strip moved later — needs to run after yield-note paren strip
+  //  so "(8 ounces)" is gone before we try to match "cheese – cotija" pattern)
   // "Optional:" prefix on individual ingredient lines (not garnish list — that's
   // pre-stripped in the splitter)
   str = str.replace(/^optional\s*[:.\-—]\s*/i, '').trim();
@@ -850,6 +886,9 @@ export function parseIngredient(raw: string): {
   // "(or any X like A, B, C)" / "(or X)" parenthetical alternatives — strip
   // ("1/2 lb linguini (or any long noodles like fettuccini, spaghetti, etc.)" → "1/2 lb linguini")
   str = str.replace(/\s*\(\s*or\s+(?:any\s+)?[^)]+\)/gi, '').trim();
+  // "(any X, such as A, B, C)" — alternatives without "or" prefix
+  //   ("2 tablespoons oil (any neutral oil, such as canola, vegetable, peanut, etc.)" → "2 tablespoons oil")
+  str = str.replace(/\s*\(\s*any\s+\w+[^)]*\)/gi, '').trim();
   // "from stem" prep instruction leftover
   str = str.replace(/,?\s*from\s+stem\b.*$/i, '').trim();
   // Strip "trimmed of <X>" / "trimmed of big hunks of fat" / etc.
@@ -928,8 +967,23 @@ export function parseIngredient(raw: string): {
   }
   // Strip "Use leftover X" / "Use X" / similar trailing recipe-author notes
   // that appear AFTER a parenthetical without their own punctuation:
-  //   "2 cups Shredded Chicken (10-12 ounces) Use leftover chicken or rotisserie"
-  str = str.replace(/\s+use\s+(?:leftover\s+|cooked\s+)?[a-z][^,]*$/i, '').trim();
+  //   "2 cups Shredded Chicken (10-12 ounces) Use leftover chicken, or use rotisserie chicken"
+  // Allow commas — these notes can span multiple clauses.
+  str = str.replace(/\s+use\s+(?:leftover\s+|cooked\s+)?[a-z].*$/i, '').trim();
+  // "shredded cheese – cotija, mozzarella, jack..." or "cheese – cotija, X, Y"
+  // Take the FIRST specific cheese as the canonical, prefix with "shredded".
+  // Runs HERE (after yield-note paren strip) so "(8 ounces)" between "cheese"
+  // and the dash is already removed.
+  {
+    const cheeseListM = str.match(/^(.*?(?:shredded|grated)?\s*cheese)\s*[-–—]+\s*([a-z][a-z\s]*?)(?:,|$)/i);
+    if (cheeseListM && /\bcheese\b/i.test(cheeseListM[1])) {
+      const prefix = /shredded/i.test(cheeseListM[1]) ? 'shredded ' :
+                     /grated/i.test(cheeseListM[1]) ? 'grated ' : '';
+      const firstCheese = cheeseListM[2].trim();
+      const beforeCheese = cheeseListM[1].replace(/\s*(?:shredded|grated)?\s*cheese\s*$/i, '').trim();
+      str = `${beforeCheese} ${prefix}${firstCheese} cheese`.replace(/\s+/g, ' ').trim();
+    }
+  }
   // Strip "zest & juice" / "zest and juice" / "zest, juice" prefix on citrus
   // ("2-3 zest & juice lemons" → "2-3 lemons")
   str = str.replace(/^(\d+(?:\s*[-–]\s*\d+)?)\s+zest\s*(?:&|and|,)?\s*juice\s+(?=lemons?|limes?|oranges?)/i, '$1 ');
@@ -984,6 +1038,16 @@ export function parseIngredient(raw: string): {
       }
     }
   }
+  // Strip "small"/"big"/"large" before handful — meaningless qualifier:
+  //   "small handful of coriander" → "handful of coriander" → "1 oz coriander"
+  str = str.replace(/\b(?:small|big|large)\s+(?=handfuls?\b)/gi, '').trim();
+  // If a serving marker is set ("to garnish" / "to serve"), skip the handful →
+  // qty conversion. Just strip the "<count> handful of " prefix so the name
+  // is the bare ingredient. The nutrition pipeline will apply its own default
+  // (1 tbsp herbs per serving) at recipe-build time.
+  if (servingMarker) {
+    str = str.replace(/^(?:\d+(?:\s*[-–]\s*\d+)?\s+|two\s+|three\s+|four\s+|five\s+|a\s+|an\s+)?handfuls?\s+of\s+/i, '').trim();
+  }
   // "N handfuls of X" — count + ingredient (no parens). Range form too.
   str = str.replace(/^(\d+(?:\s*[-–]\s*\d+)?|two|three|four|five|a)\s+handfuls?\s+of\s+/i, (_, num) => {
     const numWord: Record<string, number> = { a: 1, two: 2, three: 3, four: 4, five: 5 };
@@ -1029,9 +1093,9 @@ export function parseIngredient(raw: string): {
   str = str.replace(/\s*[-–—]\s*(?:finely|coarsely|roughly|thinly)?\s*(?:chopped|minced|sliced|diced|grated|peeled|crushed|halved|quartered|cubed|julienned|grated|shredded)\.?\s*$/i, '').trim();
   // Trailing standalone period
   str = str.replace(/\.\s*$/, '').trim();
-  // "1/3 cup plus 1 tablespoon X" → combine to total tbsp
-  // 1/3 cup = 5.33 tbsp + 1 tbsp ≈ 6 tbsp
-  str = str.replace(/^(\d+(?:\s+\d+)?\/\d+|\d+\.?\d*)\s+cups?\s+plus\s+(\d+(?:\.\d+)?)\s+(?:tablespoons?|tbsp)\b/i,
+  // "1/3 cup plus 1 tablespoon X" / "1 cup + 6 tablespoons X" — combine the two
+  // measures. Keep result in cups when over a cup, else tbsp.
+  str = str.replace(/^(\d+(?:\s+\d+)?\/\d+|\d+\.?\d*)\s+cups?\s+(?:plus|\+)\s+(\d+(?:\.\d+)?)\s+(?:tablespoons?|tbsp)\b/i,
     (_, cupStr, tbspStr) => {
       let cupVal = 0;
       const fracM = cupStr.match(/^(?:(\d+)\s+)?(\d+)\/(\d+)$/);
@@ -1041,8 +1105,14 @@ export function parseIngredient(raw: string): {
       } else {
         cupVal = parseFloat(cupStr);
       }
-      const totalTbsp = Math.round(cupVal * 16 + parseFloat(tbspStr));
-      return `${totalTbsp} tbsp`;
+      const totalTbsp = cupVal * 16 + parseFloat(tbspStr);
+      // If total ≥ 1 cup, express as cups (round to nearest 1/8 cup so we land
+      // on standard fractions: 1 cup + 6 tbsp = 22 tbsp = 1.375 cup = 1 3/8 cup)
+      if (totalTbsp >= 16) {
+        const cups = Math.round((totalTbsp / 16) * 8) / 8;
+        return `${cups} cup`;
+      }
+      return `${Math.round(totalTbsp)} tbsp`;
     });
   // Brand-name strips (anywhere in string, not just suffix):
   //   "diamond crystal kosher salt"  →  "kosher salt"  →  "salt" (via salt collapse)
@@ -1552,6 +1622,27 @@ export function parseIngredient(raw: string): {
         !/^[\d/.]+$/.test(t)  // pure number/fraction tokens
       );
       if (remainingNonModifier.length === 0) name = 'salt';
+    }
+  }
+
+  // Paren-kg / paren-g conversion to lb. Common for whole proteins ("1 whole
+  // chicken (1.5kg)" → "3.3 lb whole chicken"). Fires regardless of container word.
+  {
+    const kgM = name.match(/\(\s*(\d+(?:\.\d+)?)\s*kg\s*\)/i);
+    const gM  = !kgM && name.match(/\(\s*(\d+)\s*g\s*\)/i);
+    if (kgM) {
+      const kg = parseFloat(kgM[1]);
+      const lbs = Math.round(kg * 2.20462 * 10) / 10;
+      qty = lbs;
+      unit = 'lb';
+      name = name.replace(kgM[0], '').replace(/\s+/g, ' ').trim();
+    } else if (gM) {
+      const g = parseInt(gM[1], 10);
+      // For tiny gram counts (<100), keep as oz; otherwise convert similar to step 12
+      const oz = Math.round(g * 0.03527 * 10) / 10;
+      qty = oz;
+      unit = 'oz';
+      name = name.replace(gM[0], '').replace(/\s+/g, ' ').trim();
     }
   }
 
