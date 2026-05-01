@@ -299,6 +299,30 @@ export function splitIngredientLine(raw: string): string[] {
     }
   }
 
+  // Detect a trailing serving/garnish suffix on the WHOLE input. If we end up
+  // splitting, each split should carry the same suffix so both halves get the
+  // "to serve" / "to garnish" marker:
+  //   "steamed rice and naan, for serving" →
+  //     ["steamed rice, for serving", "naan, for serving"]
+  let trailingSuffix = '';
+  const suffixPatterns: RegExp[] = [
+    /,?\s*for\s+serving\b.*$/i,
+    /,?\s*to\s+serve\b.*$/i,
+    /,?\s*for\s+garnish(?:ing)?\b.*$/i,
+    /,?\s*to\s+garnish\b.*$/i,
+    /,?\s*to\s+(?:squeeze|drizzle|spoon|pour)\s+(?:over|on)\b.*$/i,
+    /,?\s*to\s+taste\b.*$/i,
+    /,?\s*as\s+needed\b.*$/i,
+  ];
+  for (const pat of suffixPatterns) {
+    const m = raw.match(pat);
+    if (m) {
+      trailingSuffix = m[0].replace(/^,?\s*/, ', ');
+      raw = raw.slice(0, m.index!).trim();
+      break;
+    }
+  }
+
   // Pass 1: comma-based split — only split when the right segment is a known DB ingredient
   const commaParts = raw.split(/,\s*/);
   let working: string[];
@@ -362,7 +386,8 @@ export function splitIngredientLine(raw: string): string[] {
     }
     if (!didSplit) final.push(segment);
   }
-  return final;
+  // Re-attach the trailing suffix to every split so each item carries the marker
+  return trailingSuffix ? final.map(s => s + trailingSuffix) : final;
 }
 
 // ── Parser tables ──────────────────────────────────────────────────────────────
@@ -396,6 +421,7 @@ const UNITS: Record<string, string> = {
   inches:'inch', inch:'inch', '"':'inch',
   quarts:'qt', quart:'qt', qt:'qt',
   pints:'pt', pint:'pt', pt:'pt',
+  drops:'drop', drop:'drop',
 };
 
 // Words that come after a comma and are always prep instructions, not product descriptors.
@@ -627,6 +653,21 @@ export function parseIngredient(raw: string): {
     }
   }
 
+  // 0. Decode HTML entities FIRST so downstream regexes (salt+pepper, etc.)
+  // see decoded characters like "&" instead of "&amp;".
+  str = str
+    .replace(/\xa0/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&#(?:39|8217|8216|x27);|&apos;/gi, "'")
+    .replace(/&#(?:8220|8221|8243);|&quot;/gi, '"')
+    .replace(/&#8211;/g, '-').replace(/&#8212;/g, ' - ')
+    .replace(/&frac14;/g, '¼').replace(/&frac12;/g, '½').replace(/&frac34;/g, '¾')
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&#\d+;/g, '').replace(/&[a-z]+;/gi, '')
+    .replace(/\*/g, '')
+    .replace(/\s*\(\*[^)]*\)/g, '')
+    .trim();
+
   // 0a. Normalize salt+pepper compound variations to canonical "salt + pepper"
   // Handles: "salt and pepper", "salt & pepper", "salt/pepper", "kosher salt and pepper",
   //          "sea salt and pepper", "salt and black pepper", "pepper and salt",
@@ -639,12 +680,12 @@ export function parseIngredient(raw: string): {
     // Widened gap from 15 → 30 chars to catch "salt and freshly ground black pepper"
     const isCompound = hasSalt && hasPepper && /\bsalt\b[\s\w&+/,]{0,30}\bpepper\b|\bpepper\b[\s\w&+/,]{0,30}\bsalt\b/.test(lower);
     if (isCompound) {
-      const toTaste = /to\s+taste|as\s+needed/i.test(str);
+      const toTaste = /to\s+taste|as\s+needed|to\s+season/i.test(str);
       str = toTaste ? 'salt + pepper, to taste' : 'salt + pepper';
     }
   }
 
-  // 0. Decode HTML entities and strip footnote markers
+  // (HTML decode moved up to step 0)
   str = str
     .replace(/\xa0/g, ' ')
     .replace(/&amp;/g, '&')
@@ -707,6 +748,7 @@ export function parseIngredient(raw: string): {
   str = str.replace(/,?\s*or\s+any\s+(?:other|similar)\b.*$/i, '').trim();
   str = str.replace(/,?\s*depending\s+on\b.*$/i, '').trim();
   str = str.replace(/,?\s*plus\s+(?:more|extra)\b.*$/i, '').trim();
+  str = str.replace(/,?\s*at\s+room\s+temperature\b.*$/i, '').trim();
   // Brand-name strips (anywhere in string, not just suffix):
   //   "diamond crystal kosher salt"  →  "kosher salt"  →  "salt" (via salt collapse)
   //   "morton kosher salt"           →  "kosher salt"  →  "salt"
@@ -717,6 +759,35 @@ export function parseIngredient(raw: string): {
   // Also handles bare "-inch piece of ginger" leftovers
   str = str.replace(/\b\d*\.?\d*-?\s*inch\s+piece\s+(?:of\s+)?/gi, '').trim();
   str = str.replace(/^-inch\s+piece\s+(?:of\s+)?/i, '').trim();
+  // "knob of ginger" / "thumb of ginger" / "2 inch knob of ginger" / "small knob of fresh ginger"
+  //                                              →  "<N> inch fresh ginger"
+  // Consumer needs to know to buy fresh (not ground/dried) ginger.
+  {
+    const knobM = str.match(/^(?:a\s+|an\s+)?(?:small\s+|large\s+)?(?:(\d+)(?:\s|-)*inch\s+)?(?:knob|thumb)\s+of\s+(?:fresh\s+)?ginger\b/i);
+    if (knobM) {
+      const inches = knobM[1] || '1';
+      str = str.replace(knobM[0], `${inches} inch fresh ginger`).trim();
+    }
+  }
+  // "arils from N pomegranate(s)"  →  "N cup pomegranate arils"
+  // (1 pomegranate yields roughly 1 cup of arils)
+  {
+    const arilM = str.match(/^arils?\s+from\s+(\d+(?:\.\d+)?|one|two|three|four)\s+pomegranates?\b/i);
+    if (arilM) {
+      const num = TEXT_NUMBERS[arilM[1].toLowerCase()] != null ? TEXT_NUMBERS[arilM[1].toLowerCase()] : arilM[1];
+      str = str.replace(arilM[0], `${num} cup pomegranate arils`).trim();
+    }
+  }
+  // "handful of <herb>" / "small handful of <herb>" / "large handful of <herb>"
+  //                                                              →  "1/2 bunch <herb>"
+  // Handful is colloquial for "about half a bunch" of fresh herbs
+  {
+    const handfulM = str.match(/^(?:a\s+|an\s+)?(?:small\s+|large\s+|big\s+)?handful\s+of\s+(.+)$/i);
+    if (handfulM) {
+      let herb = handfulM[1].replace(/\bleaves\b/i, '').trim();
+      str = `1/2 bunch ${herb}`;
+    }
+  }
   // Leading "or " left over from prior or-clause stripping ("or shaved red cabbage")
   str = str.replace(/^or\s+/i, '').trim();
   // Orphan parens left behind after "to taste" suffix stripping:
@@ -748,6 +819,7 @@ export function parseIngredient(raw: string): {
     'beaten', 'whisked', 'melted', 'softened',
     'squeezed', 'torn', 'pitted', 'shaved',
     'warmed', 'toasted', 'browned', 'trimmed',
+    'fat', // "fat garlic cloves" → strip; thickness is irrelevant for shopping
     // Temperature states — kitchen treatment, not what you buy
     'cold', 'warm', 'hot', 'chilled',
     // NOT stripped: 'crumbled' (cotija/feta/bacon sold pre-crumbled),
@@ -760,7 +832,9 @@ export function parseIngredient(raw: string): {
     'unsalted', // butter default is salted — strip "unsalted" so name → "butter"
   ];
   for (const w of PREP_WORDS_SINGLE) {
-    str = str.replace(new RegExp(`\\b${w}\\b`, 'gi'), '');
+    // Use hyphen-aware boundaries so "full-fat" isn't broken by the "fat" strip,
+    // "low-sodium" isn't broken by something inside it, etc.
+    str = str.replace(new RegExp(`(?<!-)\\b${w}\\b(?!-)`, 'gi'), '');
   }
   // Aggressively normalize the comma/space mess left after stripping prep words.
   // "2 tbsp cold, salted butter, sliced" → strip "cold"+"sliced" → "2 tbsp , salted butter,"
@@ -809,11 +883,14 @@ export function parseIngredient(raw: string): {
   // 6. Strip dual metric/imperial — keep only the imperial part
   str = str.replace(/\d+\.?\d*\s*(?:g|kg|ml|l)\s*[/|]\s*/gi, '');
 
-  // 7. Pre-normalize "zest/juice/peel of N ingredient" → "N ingredient zest/juice/peel"
-  str = str.replace(/^(zest|juice|peel|rind)\s+(?:of|from)\s+((?:\d+\s+)?\d+\/\d+|\d+\.?\d*|one|two|three|four|five|six|seven|eight|nine|ten|half|a|an)\s+(.+)$/i,
-    (_, prep, num, ing) => {
+  // 7. Pre-normalize "zest/juice/peel of N ingredient" → "N ingredient" (drop the
+  //    zest/juice marker — the consumer just buys the citrus; zest is calorie-
+  //    negligible and juice is implied by qty). Also handles compound forms like
+  //    "zest juice of 1 lemon" / "zest and juice of 1 lemon".
+  str = str.replace(/^(?:zest|juice|peel|rind)(?:\s+(?:and|&|\+|,)?\s*(?:zest|juice|peel|rind))?\s+(?:of|from)\s+((?:\d+\s+)?\d+\/\d+|\d+\.?\d*|one|two|three|four|five|six|seven|eight|nine|ten|half|a|an)\s+(.+)$/i,
+    (_, num, ing) => {
       const n = TEXT_NUMBERS[num.toLowerCase()] != null ? TEXT_NUMBERS[num.toLowerCase()] : num;
-      return `${n} ${ing.trim()} ${prep.toLowerCase()}`;
+      return `${n} ${ing.trim()}`;
     });
 
   // 8. Extract leading quantity
@@ -913,6 +990,9 @@ export function parseIngredient(raw: string): {
     .replace(/^([^()]*)\).*$/, '$1')
     // Strip trailing conditional clauses: "halved if large", "split if needed"
     .replace(/\s+if\s+[a-z]+\s*$/i, '')
+    // Strip trailing " pieces" / " piece" — "cod fillet pieces" → "cod fillet"
+    // (the consumer doesn't shop for pieces specifically; the qty already covers count)
+    .replace(/\s+pieces?$/i, '')
     .replace(/^juice (?:of|from)\s+(?:(?:\d+\s+)?\d+(?:\/\d+)?|\d+\.?\d*)?\s*/i, '')
     .replace(/^zest (?:of|from)\s+(?:(?:\d+\s+)?\d+(?:\/\d+)?|\d+\.?\d*)?\s*/i, '')
     .split(/\s+/)
@@ -951,8 +1031,10 @@ export function parseIngredient(raw: string): {
     unit = '';
     name = 'garlic cloves';
   }
-  // Fresh ginger in inches → tbsp (1 inch ≈ 1 tsp microplaned; use tbsp as rough equivalent)
-  if (unit === 'inch' && (name === 'ginger' || name === 'fresh ginger')) { unit = 'tbsp'; name = 'ginger'; }
+  // Note: previously converted "inch" → "tbsp" for ginger (microplaned equivalent),
+  // but that produced confusing display ("1 tbsp ginger" when consumer needs to
+  // buy a piece of fresh ginger). Keep the unit as "inch" for shopping clarity;
+  // the nutrition matcher handles inch-to-grams via a separate conversion.
 
   name = INGREDIENT_ALIASES[name] || name;
 
