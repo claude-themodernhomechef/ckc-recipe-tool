@@ -485,13 +485,15 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   // Herbs
   'flat-leaf parsley':'parsley', 'italian parsley':'parsley', 'curly parsley':'parsley',
   'thai basil':'basil', 'sweet basil':'basil', 'holy basil':'basil',
-  'fresh cilantro':'cilantro', 'coriander leaves':'cilantro',
+  // NOTE: "fresh <herb>" aliases removed — consumer needs to know to buy fresh
+  // (vs dried) herbs at the store. "fresh dill" stays as "fresh dill", etc.
+  'coriander leaves':'cilantro',
   // NOTE: bare 'coriander' NOT aliased — could be seeds (spice) or leaves depending on region
-  'fresh dill':'dill', 'dill weed':'dill',
-  'fresh mint':'mint', 'spearmint':'mint',
-  'fresh thyme':'thyme', 'thyme leaves':'thyme', 'thyme sprig':'thyme',
-  'rosemary sprig':'rosemary', 'fresh rosemary':'rosemary',
-  'sage leaf':'sage', 'fresh sage':'sage',
+  'dill weed':'dill',
+  'spearmint':'mint',
+  'thyme leaves':'thyme', 'thyme sprig':'thyme',
+  'rosemary sprig':'rosemary',
+  'sage leaf':'sage',
   // Onion family
   'green onion':'scallion', 'spring onion':'scallion', 'scallions':'scallion', 'green onions':'scallion',
   // Garlic — normalize word order; bare "garlic" = cloves
@@ -749,6 +751,36 @@ export function parseIngredient(raw: string): {
   str = str.replace(/,?\s*depending\s+on\b.*$/i, '').trim();
   str = str.replace(/,?\s*plus\s+(?:more|extra)\b.*$/i, '').trim();
   str = str.replace(/,?\s*at\s+room\s+temperature\b.*$/i, '').trim();
+  // "N lemons/limes/oranges, sliced into rounds/slices/wedges" → "1 <citrus>"
+  // (3-4 lemon rounds come from cutting one lemon, not buying 3-4 lemons).
+  // MUST fire BEFORE the "into rounds" trailing strip below or "rounds" gets eaten.
+  str = str.replace(/^\d+(?:\s*[-–]\s*\d+)?\s+(lemons?|limes?|oranges?),?\s+sliced\s+(?:into\s+)?(?:rounds|slices|wedges)\b.*$/i,
+    (_, citrus) => `1 ${citrus.replace(/s$/i, '')}`);
+  // Trailing prep instructions about how the ingredient is cut/shaped:
+  //   "potatoes, scrubbed and chopped into 1/2-inch chunks" → strip from "into" on
+  //   "lemons, sliced into rounds" → strip "into rounds"
+  //   "tomatoes, sliced in half" / "in halves" → strip
+  //   "ears of corn, shucked raw" → strip "raw"
+  // Word-based forms first
+  str = str.replace(/,?\s*(?:in|into)\s+(?:half|halves|rounds|slices|wedges|chunks|cubes|pieces|florets|bite[\s-]size\s+\w+)\b.*$/i, '').trim();
+  // Digit-based: "into 1/2-inch chunks", "into 3-inch pieces", "into 1 inch cubes"
+  str = str.replace(/,?\s*(?:in|into)\s+\d[^,]*$/i, '').trim();
+  str = str.replace(/,?\s*raw\s*$/i, '').trim();
+  // "1/3 cup plus 1 tablespoon X" → combine to total tbsp
+  // 1/3 cup = 5.33 tbsp + 1 tbsp ≈ 6 tbsp
+  str = str.replace(/^(\d+(?:\s+\d+)?\/\d+|\d+\.?\d*)\s+cups?\s+plus\s+(\d+(?:\.\d+)?)\s+(?:tablespoons?|tbsp)\b/i,
+    (_, cupStr, tbspStr) => {
+      let cupVal = 0;
+      const fracM = cupStr.match(/^(?:(\d+)\s+)?(\d+)\/(\d+)$/);
+      if (fracM) {
+        const whole = fracM[1] ? parseInt(fracM[1]) : 0;
+        cupVal = whole + parseInt(fracM[2]) / parseInt(fracM[3]);
+      } else {
+        cupVal = parseFloat(cupStr);
+      }
+      const totalTbsp = Math.round(cupVal * 16 + parseFloat(tbspStr));
+      return `${totalTbsp} tbsp`;
+    });
   // Brand-name strips (anywhere in string, not just suffix):
   //   "diamond crystal kosher salt"  →  "kosher salt"  →  "salt" (via salt collapse)
   //   "morton kosher salt"           →  "kosher salt"  →  "salt"
@@ -819,6 +851,8 @@ export function parseIngredient(raw: string): {
     'beaten', 'whisked', 'melted', 'softened',
     'squeezed', 'torn', 'pitted', 'shaved',
     'warmed', 'toasted', 'browned', 'trimmed',
+    'cleaned', 'rinsed', 'dried', 'patted', 'packed', 'scrubbed',
+    'scant', 'lightly', 'heaping',
     'fat', // "fat garlic cloves" → strip; thickness is irrelevant for shopping
     // Temperature states — kitchen treatment, not what you buy
     'cold', 'warm', 'hot', 'chilled',
@@ -936,11 +970,30 @@ export function parseIngredient(raw: string): {
     str = str.replace(/^\d+\.?\d*\s*(?:oz\.?|lbs?\.?|lb\.?|g|kg|ml|l|cups?|tbsps?|tsps?)\s*/i, '').trim();
   }
 
-  // 12. Convert metric to imperial
-  if (unit === 'g')  { qty = Math.round(qty * 0.03527 * 100) / 100; unit = 'oz'; }
-  if (unit === 'kg') { qty = Math.round(qty * 2.20462 * 100) / 100; unit = 'lb'; }
-  if (unit === 'ml') { qty = Math.round(qty * 0.033814 * 100) / 100; unit = 'oz'; }
-  if (unit === 'l')  { qty = Math.round(qty * 33.814 * 100) / 100; unit = 'oz'; }
+  // 12. Convert metric to imperial — smart unit choice based on ingredient.
+  //   - Butter:           grams → tbsp (1 tbsp ≈ 14g), nearest 0.5 tbsp
+  //   - Grains/flour/sugar: grams → cups (rice ~200g/c, flour ~120g/c), nearest 0.25 cup
+  //   - Otherwise:        grams → oz, rounded to 1 decimal (whole when ≥ 4)
+  if (unit === 'g') {
+    const lowerName = str.toLowerCase();
+    if (/\bbutter\b/.test(lowerName)) {
+      qty = Math.round((qty / 14) * 2) / 2;
+      unit = 'tbsp';
+    } else if (/\b(?:rice|quinoa|couscous|farro|barley|bulgur|sugar|brown\s+sugar)\b/.test(lowerName)) {
+      qty = Math.round((qty / 200) * 4) / 4;
+      unit = 'cup';
+    } else if (/\bflour\b/.test(lowerName)) {
+      qty = Math.round((qty / 120) * 4) / 4;
+      unit = 'cup';
+    } else {
+      const oz = qty * 0.03527;
+      qty = oz >= 4 ? Math.round(oz) : Math.round(oz * 10) / 10;
+      unit = 'oz';
+    }
+  }
+  if (unit === 'kg') { qty = Math.round(qty * 2.20462 * 10) / 10; unit = 'lb'; }
+  if (unit === 'ml') { qty = Math.round(qty * 0.033814 * 10) / 10; unit = 'oz'; }
+  if (unit === 'l')  { qty = Math.round(qty * 33.814);              unit = 'oz'; }
 
   // 13. Category lookup from pre-cleaned name
   const preCleanLower = str.toLowerCase()
@@ -996,7 +1049,18 @@ export function parseIngredient(raw: string): {
     .replace(/^juice (?:of|from)\s+(?:(?:\d+\s+)?\d+(?:\/\d+)?|\d+\.?\d*)?\s*/i, '')
     .replace(/^zest (?:of|from)\s+(?:(?:\d+\s+)?\d+(?:\/\d+)?|\d+\.?\d*)?\s*/i, '')
     .split(/\s+/)
-    .filter(w => !STOP_WORDS.includes(w.toLowerCase()))
+    .filter((w, i, all) => {
+      const lower = w.toLowerCase();
+      if (!STOP_WORDS.includes(lower)) return true;
+      // Preserve "fresh" / "freshly" when paired with a herb or ginger —
+      // matters at the store ("fresh dill" ≠ "dried dill").
+      if ((lower === 'fresh' || lower === 'freshly') && i + 1 < all.length) {
+        const next = all[i + 1].toLowerCase().replace(/[.,]+$/, '');
+        const HERBS = ['ginger','cilantro','parsley','basil','mint','dill','chives','tarragon','thyme','rosemary','sage','oregano'];
+        if (HERBS.includes(next)) return true;
+      }
+      return false;
+    })
     .join(' ')
     .trim()
     .replace(/\s+/g, ' ')
