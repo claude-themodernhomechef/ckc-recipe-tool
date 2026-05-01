@@ -718,6 +718,19 @@ export function parseIngredient(raw: string): {
     }
   }
 
+  // 0-fix-typos. Common spelling/punctuation fixes that break downstream parsing.
+  // Always normalize these even if the recipe author left them broken.
+  str = str
+    .replace(/\bhandfull\b/gi, 'handful')        // common typo
+    .replace(/\bhandfulls\b/gi, 'handfuls')
+    .replace(/\bred[\s-]+pepper(\s+flakes?)\b/gi, 'red pepper$1')  // "red-pepper" → "red pepper"
+    .replace(/\bblack[\s-]+pepper\b/gi, 'black pepper')
+    .replace(/\bwhite[\s-]+pepper\b/gi, 'white pepper')
+    // Multiple consecutive spaces → single space
+    .replace(/\s{2,}/g, ' ');
+  // Strip leading "About " (recipe author hedge)
+  str = str.replace(/^about\s+/i, '').trim();
+
   // 0. Decode HTML entities FIRST so downstream regexes (salt+pepper, etc.)
   // see decoded characters like "&" instead of "&amp;".
   str = str
@@ -841,6 +854,19 @@ export function parseIngredient(raw: string): {
   // Strip "(N–M oz each)" / "(N oz each)" — recipe author's per-piece weight
   // note. Lose the parens (we keep the count from the qty extraction).
   str = str.replace(/\s*\(\s*\d+(?:\.\d+)?(?:\s*[-–]\s*\d+(?:\.\d+)?)?\s*(?:oz|ounce|g|gram)s?\s+each\s*\)/gi, '').trim();
+  // "N (X-Y oz) filets/breasts/thighs Z" — "2 (6-8oz) filets center-cut salmon"
+  // Pull the upper oz out as size annotation, reorder so the noun lands at the end:
+  //   "2 (6-8oz) filets center-cut salmon" → "2 8 oz center-cut salmon filets"
+  {
+    const sizedFiletM = str.match(/^(\d+)\s+\(\s*(\d+(?:\.\d+)?)(?:\s*[-–]\s*(\d+(?:\.\d+)?))?\s*(?:oz|ounce)s?\.?\s*\)\s+(filets?|fillets?|breasts?|thighs?|cutlets?)\s+(.+)$/i);
+    if (sizedFiletM) {
+      const count = sizedFiletM[1];
+      const oz = sizedFiletM[3] || sizedFiletM[2]; // upper or single
+      const noun = sizedFiletM[4];
+      const rest = sizedFiletM[5].trim();
+      str = `${count} ${oz} oz ${rest} ${noun}`;
+    }
+  }
   // Strip "-or-so" colloquial qualifier ("3-or-so cups broccoli")
   str = str.replace(/[\s-]or[\s-]so\b/gi, ' ').trim();
   // Strip "juiced" / "zested" trailing prep word
@@ -880,6 +906,19 @@ export function parseIngredient(raw: string): {
   // Re-run "juiced"/"zested" trailing strip AFTER parens are removed — the prior
   // strip ran before paren removal, so "lemons, juiced (approx ...)" wouldn't match.
   str = str.replace(/,?\s*(?:juiced|zested)(?:\s+and\s+(?:juiced|zested))?\s*$/i, '').trim();
+  // Strip "Use leftover X" / "Use X" / similar trailing recipe-author notes
+  // that appear AFTER a parenthetical without their own punctuation:
+  //   "2 cups Shredded Chicken (10-12 ounces) Use leftover chicken or rotisserie"
+  str = str.replace(/\)?\s+use\s+(?:leftover\s+|cooked\s+)?[a-z][^,]*$/i, '').trim();
+  // Strip count-breakdown notes after a primary count + noun:
+  //   "6 garlic cloves, 5 smashed and peeled, 1 finely grated or minced"
+  //   → "6 garlic cloves" (the breakdown isn't useful at the store)
+  str = str.replace(/(\d+\s+\w+\s*(?:cloves?|breasts?|thighs?|fillets?|filets?)),\s*\d+[^,]*(?:,\s*\d+[^,]*)*$/i, '$1').trim();
+  // Strip "white part separated from greens" / "X part separated from Y"
+  str = str.replace(/,?\s*\w+\s+parts?\s+separated\s+from\s+\w+\b.*$/i, '').trim();
+  // "Large/small/big pinch" — drop the size word before pinch (size is meaningless
+  // for a pinch quantity — a pinch is a pinch)
+  str = str.replace(/^(?:large|small|big)\s+(?=pinch\b)/i, '').trim();
   // Trailing "on a diagonal" / "1\" thick" / "1/2-inch thick" prep specs
   str = str.replace(/,?\s*on\s+a\s+diagonal\b.*$/i, '').trim();
   str = str.replace(/,?\s*\d+(?:\/\d+)?["\s\-]*(?:inch|cm|in)\s+thick\b.*$/i, '').trim();
@@ -1368,15 +1407,19 @@ export function parseIngredient(raw: string): {
       // Track the original count before we replace qty (e.g. "2 jars" of 28oz each → ×2)
       const originalCount = qty || 1;
 
-      // Try paren-oz first: "(15-oz.)", "(28-ounce)", "(7 ounce)", "(16- to 17-ounce)" (use lower)
-      const ozM = name.match(/\(\s*(\d+(?:\.\d+)?)(?:\s*[-–]\s*(?:to\s+)?\d+(?:\.\d+)?)?[\s.\-]*(oz|ounce|fl\s*oz|fluid\s+ounce)s?\.?[^)]*\)/i);
+      // Try paren-oz first: "(15-oz.)", "(28-ounce)", "(7 ounce)", "(10-12 oz)" / "(16- to 17-ounce)" (use UPPER bound)
+      const ozM = name.match(/\(\s*(\d+(?:\.\d+)?)(?:\s*[-–]\s*(?:to\s+)?(\d+(?:\.\d+)?))?[\s.\-]*(oz|ounce|fl\s*oz|fluid\s+ounce)s?\.?[^)]*\)/i);
       // Try paren-ml: "(160ml)", "(160 ml)" — convert to oz (1ml ≈ 0.0338 oz)
       const mlM = !ozM && name.match(/\(?\s*(\d+(?:\.\d+)?)\s*ml\b/i);
       // Try inline-oz: "19 oz tin", "15 ounce can"
       const inlineOzM = !ozM && !mlM && name.match(/\b(\d+(?:\.\d+)?)\s*(?:oz|ounce)s?\b/i);
 
       if (ozM) {
-        qty = Math.round(parseFloat(ozM[1]) * originalCount * 10) / 10;
+        // Use UPPER bound when range present (group 2), else single value (group 1).
+        // Per Rafi: paren-oz ranges represent the larger packaging size more often
+        // than the smaller, so 12 oz from "(10-12 ounces)" is more accurate.
+        const ozValue = ozM[2] ? parseFloat(ozM[2]) : parseFloat(ozM[1]);
+        qty = Math.round(ozValue * originalCount * 10) / 10;
         unit = 'oz';
         name = name.replace(ozM[0], '').replace(/\s+/g, ' ').trim();
       } else if (mlM) {
@@ -1448,6 +1491,11 @@ export function parseIngredient(raw: string): {
       if (remainingNonModifier.length === 0) name = 'salt';
     }
   }
+
+  // Reorder "skinless boneless" / "skin-on bone-in" to canonical form:
+  // boneless before skinless (mirrors how grocery stores label chicken).
+  name = name.replace(/\bskinless\s+boneless\b/gi, 'boneless skinless');
+  name = name.replace(/\bskin-on\s+bone-in\b/gi, 'bone-in skin-on');
 
   // Salt always displays as just "salt" — drop qty/unit (it's to-taste at the store).
   if (name === 'salt') {
