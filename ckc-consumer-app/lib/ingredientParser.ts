@@ -537,8 +537,9 @@ const INGREDIENT_ALIASES: Record<string, string> = {
 // ── Number helpers ─────────────────────────────────────────────────────────────
 
 const STD_FRACS = [
-  { val:0.25, sym:'¼' }, { val:1/3, sym:'⅓' }, { val:0.5, sym:'½' },
-  { val:2/3, sym:'⅔' }, { val:0.75, sym:'¾' },
+  { val:1/8,  sym:'⅛' }, { val:1/4,  sym:'¼' }, { val:1/3, sym:'⅓' },
+  { val:3/8,  sym:'⅜' }, { val:1/2,  sym:'½' }, { val:5/8, sym:'⅝' },
+  { val:2/3,  sym:'⅔' }, { val:3/4,  sym:'¾' }, { val:7/8, sym:'⅞' },
 ];
 
 function nearestFrac(frac: number): { val: number; sym: string } | null {

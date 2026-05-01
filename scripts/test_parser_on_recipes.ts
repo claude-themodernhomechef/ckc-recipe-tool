@@ -12,7 +12,7 @@
 import * as admin from 'firebase-admin';
 import * as path from 'path';
 
-import { parseIngredient, splitIngredientLine } from '../ckc-consumer-app/lib/ingredientParser';
+import { parseIngredient, splitIngredientLine, fmtQty } from '../ckc-consumer-app/lib/ingredientParser';
 
 const sa = require(path.join(__dirname, '../service-account.json'));
 if (!admin.apps.length) admin.initializeApp({ credential: admin.credential.cert(sa) });
@@ -69,7 +69,7 @@ async function main() {
       const rawShort = raw.length > maxRawLen ? raw.slice(0, maxRawLen - 1) + '…' : raw;
       splits.forEach((segment, idx) => {
         const p = parseIngredient(segment);
-        const qtyDisplay = p.qty ? `${p.qty}${p.unit ? ' ' + p.unit : ''}` : (p.unit || '');
+        const qtyDisplay = (p.qty || p.unit) ? fmtQty(p.qty, p.unit, p.category) : '';
         const display = qtyDisplay ? `${qtyDisplay} | ${fmtName(p.name)}` : fmtName(p.name);
         const left = idx === 0 ? rawShort.padEnd(maxRawLen) : ''.padEnd(maxRawLen);
         const arrow = idx === 0 ? '  →  ' : '   ↳  ';
