@@ -442,7 +442,8 @@ const STOP_WORDS = [
   'freshly','fresh','large','medium','small','whole','ripe','packed',
   'heaping','leveled','rounded','about','approximately',
   // Prep instructions — how to cut or treat, never what to buy
-  'roughly','minced','sliced','grated','shredded','peeled','crushed',
+  // (NOTE: 'grated' / 'shredded' removed — meaningful for cheese)
+  'roughly','minced','sliced','peeled','crushed',
   'halved','quartered','julienned','cubed','zested','deveined','deboned',
   'pitted','cored','seeded','deseeded','blanched','seared','caramelized',
   'toasted','grilled','charred','brined',
@@ -471,7 +472,11 @@ const PIECE_WORDS = new Set([
 
 // Vague quantities — not scalable, returned as-is with no numeric qty
 const VAGUE_WORDS = [
-  'few','handful','pinch','dash','splash','sprinkle','drizzle',
+  // NOTE: 'pinch' and 'dash' removed — they're real units in UNITS table.
+  // Routing them through unit extraction lets downstream steps (salt
+  // collapse, name cleanup) run properly: "pinch of coarse kosher salt"
+  // now becomes unit="pinch", name="salt".
+  'few','handful','splash','sprinkle','drizzle',
   'to taste','as needed','some','squeeze','touch','knob',
 ];
 
@@ -527,8 +532,10 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'sour cream or creme fraiche':'sour cream', 'sour cream or crème fraîche':'sour cream',
   'creme fraiche':'sour cream', 'crème fraîche':'sour cream',
   'greek yogurt':'plain greek yogurt', 'plain yogurt':'plain greek yogurt',
-  'whole milk mozzarella':'mozzarella', 'shredded mozzarella':'mozzarella',
-  'parmesan cheese':'parmesan', 'grated parmesan':'parmesan',
+  'whole milk mozzarella':'mozzarella',
+  // NOTE: 'shredded mozzarella' / 'grated parmesan' aliases removed — consumer
+  // needs to know it's pre-grated/shredded vs block at the store
+  'parmesan cheese':'parmesan',
   'parmigiano reggiano':'parmesan', 'pecorino romano':'parmesan',
   'heavy whipping cream':'heavy cream', 'whipping cream':'heavy cream',
   'mexican cheese blend':'mexican cheese', 'colby jack':'mexican cheese',
@@ -788,6 +795,18 @@ export function parseIngredient(raw: string): {
   str = str.replace(/\bdiamond\s+crystal\b/gi, '').trim();
   str = str.replace(/\bmorton'?s?\b/gi, '').trim();
   str = str.replace(/\bmaldon\b/gi, '').trim();
+  // "I use <brand> brand" / "<brand> brand" suffix — brand info shouldn't show
+  // on shopping list (will be stored separately for Instacart matching later)
+  str = str.replace(/,?\s*i\s+use\s+\S+(?:\s+\S+)?\s+brand\b.*$/i, '').trim();
+  str = str.replace(/,?\s*\S+\s+brand\b.*$/i, '').trim();
+  // "approx" / "approximately" prefix — strip but keep the qty after
+  str = str.replace(/^approx(?:imately)?\s+/i, '').trim();
+  // Hyphenated freshly-cracked / freshly-ground / freshly-grated — strip "freshly-"
+  str = str.replace(/\bfreshly-(?=cracked|ground|grated|squeezed|chopped)/gi, '').trim();
+  // Then the resulting "cracked"/"ground" before pepper is fine; for "black pepper"
+  // we want "cracked black pepper" → "black pepper". Strip "cracked" / "ground"
+  // when paired with pepper.
+  str = str.replace(/\b(?:cracked|ground)\s+(?=black\s+pepper|white\s+pepper|pepper)/gi, '').trim();
   // "X-inch piece of <ingredient>" / "X-inch piece <ingredient>"  →  "<ingredient>"
   // Also handles bare "-inch piece of ginger" leftovers
   str = str.replace(/\b\d*\.?\d*-?\s*inch\s+piece\s+(?:of\s+)?/gi, '').trim();
@@ -847,7 +866,7 @@ export function parseIngredient(raw: string): {
   //     what to buy at the store ("chopped parsley" → buy parsley, chop at home).
   //     Form modifiers (bone-in, skinless, canned, fresh) are NOT stripped here.
   const PREP_WORDS_SINGLE = [
-    'chopped', 'minced', 'grated', 'shredded', 'diced', 'sliced', 'crushed',
+    'chopped', 'minced', 'diced', 'sliced', 'crushed',
     'mashed', 'peeled', 'halved', 'quartered', 'cubed', 'julienned',
     'beaten', 'whisked', 'melted', 'softened',
     'squeezed', 'torn', 'pitted', 'shaved',
@@ -855,6 +874,8 @@ export function parseIngredient(raw: string): {
     'cleaned', 'rinsed', 'dried', 'patted', 'packed', 'scrubbed',
     'scant', 'lightly', 'heaping',
     'fat', // "fat garlic cloves" → strip; thickness is irrelevant for shopping
+    // NOT stripped: 'grated' / 'shredded' — meaningful for cheese
+    //               ("grated parmesan" / "shredded mozzarella" stay)
     // Temperature states — kitchen treatment, not what you buy
     'cold', 'warm', 'hot', 'chilled',
     // NOT stripped: 'crumbled' (cotija/feta/bacon sold pre-crumbled),
