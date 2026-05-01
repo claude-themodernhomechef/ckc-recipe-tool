@@ -67,6 +67,7 @@ const FORM_MODIFIERS_NUTRITION: RegExp[] = [
   /\bfull[\s-]?fat\b/g, /\blow[\s-]?fat\b/g, /\bfat[\s-]?free\b/g, /\bnonfat\b/g,
   /\blow[\s-]?sodium\b/g, /\breduced[\s-]?sodium\b/g,
   /\bcrumbled\b/g, /\bshelled\b/g,
+  /\bhead\b/g, /\bsticks?\b/g, /\bstrips?\b/g, /\bsprigs?\b/g, /\bstalks?\b/g,
 ];
 function stripFormModifiers(name: string): string {
   let s = name.toLowerCase();

@@ -707,6 +707,18 @@ export function parseIngredient(raw: string): {
   str = str.replace(/,?\s*or\s+any\s+(?:other|similar)\b.*$/i, '').trim();
   str = str.replace(/,?\s*depending\s+on\b.*$/i, '').trim();
   str = str.replace(/,?\s*plus\s+(?:more|extra)\b.*$/i, '').trim();
+  // Brand-name strips (anywhere in string, not just suffix):
+  //   "diamond crystal kosher salt"  →  "kosher salt"  →  "salt" (via salt collapse)
+  //   "morton kosher salt"           →  "kosher salt"  →  "salt"
+  str = str.replace(/\bdiamond\s+crystal\b/gi, '').trim();
+  str = str.replace(/\bmorton'?s?\b/gi, '').trim();
+  str = str.replace(/\bmaldon\b/gi, '').trim();
+  // "X-inch piece of <ingredient>" / "X-inch piece <ingredient>"  →  "<ingredient>"
+  // Also handles bare "-inch piece of ginger" leftovers
+  str = str.replace(/\b\d*\.?\d*-?\s*inch\s+piece\s+(?:of\s+)?/gi, '').trim();
+  str = str.replace(/^-inch\s+piece\s+(?:of\s+)?/i, '').trim();
+  // Leading "or " left over from prior or-clause stripping ("or shaved red cabbage")
+  str = str.replace(/^or\s+/i, '').trim();
   // Orphan parens left behind after "to taste" suffix stripping:
   //   "salt, (more to taste)"  →  "to taste" stripped at step 2b leaves "salt, (more"
   //   strip the orphan opening paren + word here.
@@ -734,7 +746,7 @@ export function parseIngredient(raw: string): {
     'chopped', 'minced', 'grated', 'shredded', 'diced', 'sliced', 'crushed',
     'mashed', 'peeled', 'halved', 'quartered', 'cubed', 'julienned',
     'beaten', 'whisked', 'melted', 'softened',
-    'squeezed', 'torn', 'pitted',
+    'squeezed', 'torn', 'pitted', 'shaved',
     'warmed', 'toasted', 'browned', 'trimmed',
     // Temperature states — kitchen treatment, not what you buy
     'cold', 'warm', 'hot', 'chilled',
@@ -991,6 +1003,16 @@ export function parseIngredient(raw: string): {
           if (!name.startsWith('canned') && !name.startsWith('jarred')) name = prefix + name;
         }
       }
+    }
+  }
+
+  // Reorder "sticks/strips/slices <noun>" → "<noun> sticks/strips/slices".
+  // "3 sticks celery" → name="celery sticks"; consumer reads more naturally.
+  // Skip when the leading word is being used as a unit (qty already extracted).
+  if (!unit) {
+    const reorderM = name.match(/^(sticks?|strips?|slices?|sprigs?|stalks?)\s+(.+)$/i);
+    if (reorderM) {
+      name = `${reorderM[2]} ${reorderM[1]}`;
     }
   }
 
