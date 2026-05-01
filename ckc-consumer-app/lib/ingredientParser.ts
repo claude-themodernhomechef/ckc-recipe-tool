@@ -422,6 +422,7 @@ const UNITS: Record<string, string> = {
   quarts:'qt', quart:'qt', qt:'qt',
   pints:'pt', pint:'pt', pt:'pt',
   drops:'drop', drop:'drop',
+  tins:'tin', tin:'tin',
 };
 
 // Words that come after a comma and are always prep instructions, not product descriptors.
@@ -654,11 +655,25 @@ export function parseIngredient(raw: string): {
   // Extract serving note BEFORE stop-word stripping so it isn't lost
   const note = extractServingNote(str);
 
-  // 0-pre. Section headers ("For the dressing:", "For the sauce:", "Sauce:") are
-  // not ingredients — return early with empty name so callers can skip them.
+  // 0-pre. Skip rows that aren't real ingredients:
+  //   - Section headers ("For the dressing:", "Sauce:", "FOR THE MEATBALLS")
+  //   - Sub-recipe references ("5-minute Enchilada Sauce", "Homemade Tomato Sauce")
+  //   - Stray sentences ("I use this scale.")
   {
-    const headerMatch = /^(?:for\s+the\s+)?[a-z\s]+:\s*$/i.test(str.trim());
-    if (headerMatch) {
+    const trimmed = str.trim();
+    // Section header (with or without colon, lower or upper case)
+    if (/^(?:for\s+the\s+)?[a-z\s]+:?\s*$/i.test(trimmed) && /^[A-Z\s]+:?$/.test(trimmed)) {
+      return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
+    }
+    if (/^(?:for\s+the\s+)?[a-z\s]+:\s*$/i.test(trimmed)) {
+      return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
+    }
+    // Sub-recipe reference: "N-minute <Name>", "Homemade <Name>", "<X> Sauce, below"
+    if (/^\d+\s*-\s*(?:minute|min)\s+[A-Z]/.test(trimmed)) {
+      return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
+    }
+    // Stray "I use X" sentences (not preceded by a real ingredient)
+    if (/^I\s+(?:use|have|recommend|like|love)\s+/i.test(trimmed) && trimmed.length < 50) {
       return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
     }
   }
@@ -773,7 +788,16 @@ export function parseIngredient(raw: string): {
   str = str.replace(/,?\s*(?:in|into)\s+(?:half|halves|rounds|slices|wedges|chunks|cubes|pieces|florets|bite[\s-]size\s+\w+)\b.*$/i, '').trim();
   // Digit-based: "into 1/2-inch chunks", "into 3-inch pieces", "into 1 inch cubes"
   str = str.replace(/,?\s*(?:in|into)\s+\d[^,]*$/i, '').trim();
+  // Unicode-fraction-based: "into ½ inch thick rounds" — fractions get normalized
+  // to digits later but at this point they're still ½/¼/etc.
+  str = str.replace(/,?\s*(?:in|into)\s+[¼-¾⅐-⅞][^,]*$/i, '').trim();
+  // Trailing "cut" / "cut in <word>" leftovers from prior partial strips
+  str = str.replace(/,?\s*cut\b.*$/i, '').trim();
   str = str.replace(/,?\s*raw\s*$/i, '').trim();
+  // Trailing em-dash / hyphen + prep instruction: "1 shallot - finely chopped."
+  str = str.replace(/\s*[-–—]\s*(?:finely|coarsely|roughly|thinly)?\s*(?:chopped|minced|sliced|diced|grated|peeled|crushed|halved|quartered|cubed|julienned|grated|shredded)\.?\s*$/i, '').trim();
+  // Trailing standalone period
+  str = str.replace(/\.\s*$/, '').trim();
   // "1/3 cup plus 1 tablespoon X" → combine to total tbsp
   // 1/3 cup = 5.33 tbsp + 1 tbsp ≈ 6 tbsp
   str = str.replace(/^(\d+(?:\s+\d+)?\/\d+|\d+\.?\d*)\s+cups?\s+plus\s+(\d+(?:\.\d+)?)\s+(?:tablespoons?|tbsp)\b/i,
@@ -929,10 +953,18 @@ export function parseIngredient(raw: string): {
   // 5. "N x" piece-count prefix (e.g. "4 x 6oz salmon fillets")
   let pieceCount = 0;
   if (!qty) {
-    const piecePrefixM = str.match(/^(\d+)\s*[xX×]\s+/);
-    if (piecePrefixM) {
-      pieceCount = parseInt(piecePrefixM[1]);
-      str = str.slice(piecePrefixM[0].length).trim();
+    // Special case: "N x M-inch <noun>" → qty=N, name="M-inch <noun>"
+    // (consumer needs to know the size of tortillas/cakes/etc.)
+    const sizedM = str.match(/^(\d+)\s*[xX×]\s+(\d+(?:\/\d+)?)\s*-\s*inch\s+(.+)$/i);
+    if (sizedM) {
+      qty = parseInt(sizedM[1]);
+      str = `${sizedM[2]}-inch ${sizedM[3]}`;
+    } else {
+      const piecePrefixM = str.match(/^(\d+)\s*[xX×]\s+/);
+      if (piecePrefixM) {
+        pieceCount = parseInt(piecePrefixM[1]);
+        str = str.slice(piecePrefixM[0].length).trim();
+      }
     }
   }
 
@@ -1136,6 +1168,12 @@ export function parseIngredient(raw: string): {
     unit = '';
   }
 
+  // Salt is always a seasoning — display just "salt" without qty/unit. Recipes
+  // that say "1/4 + 1/8 tsp fine salt" or "1 tsp salt" don't need a count
+  // shown to the consumer; salt is always to-taste at the store.
+  // (Specifically applies after the salt-collapse below has run.)
+  // Move this check to after the salt collapse — see end of function.
+
   // "can <ingredient>" handling. Fires here (after qty/unit extraction + aliasing)
   // because earlier passes still had the qty prefix in the string.
   //   - default:        "can black beans"  →  "canned black beans"
@@ -1150,32 +1188,65 @@ export function parseIngredient(raw: string): {
     }
   }
 
-  // Can/jar with parenthetical size — pull oz out as actual qty.
+  // Block/box wrappers similar to can/jar — common for cheese, tofu.
+  // Can/jar/tin with parenthetical size — pull oz out as actual qty.
   // Cases handled:
   //   "1 can (14 ounce) full-fat coconut milk"  →  qty=14, unit=oz, name="full-fat coconut milk"
   //   "1 (15-oz.) can black beans"              →  qty=15, unit=oz, name="canned black beans"
-  //   "1 (15 oz) can chickpeas"                 →  qty=15, unit=oz, name="canned chickpeas"
-  // The shopping list then shows "14 oz canned coconut milk" — the actual size
-  // and form the consumer needs at the store.
+  //   "2 (28-ounce) jars marinara sauce"        →  qty=56, unit=oz (×2 jars), name="jarred marinara sauce"
+  //   "1 tin or 160ml of coconut cream"         →  qty=5.5, unit=oz, name="canned coconut cream"
+  //   "1, 19 oz tin black beans"                →  qty=19, unit=oz, name="canned black beans"
+  // The shopping list then shows the actual size and form the consumer needs.
   {
-    const isCanContext = unit === 'can' || unit === 'jar' ||
-      /\bcan\b/i.test(name) || /\bjar\b/i.test(name);
+    const isCanContext = unit === 'can' || unit === 'jar' || unit === 'tin' ||
+      /\b(?:can|jar|tin|block|blocks|box|package|pkg)s?\b/i.test(name);
     if (isCanContext) {
-      // Allow hyphen or period between number and unit: "(15-oz.)", "(15.oz)"
-      const sizeM = name.match(/\(\s*(\d+(?:\.\d+)?)[\s.\-]*(oz|ounce|fl\s*oz|fluid\s+ounce)s?\.?[^)]*\)/i);
-      if (sizeM) {
-        qty = parseFloat(sizeM[1]);
+      // Track the original count before we replace qty (e.g. "2 jars" of 28oz each → ×2)
+      const originalCount = qty || 1;
+
+      // Try paren-oz first: "(15-oz.)", "(28-ounce)", "(7 ounce)"
+      const ozM = name.match(/\(\s*(\d+(?:\.\d+)?)[\s.\-]*(oz|ounce|fl\s*oz|fluid\s+ounce)s?\.?[^)]*\)/i);
+      // Try paren-ml: "(160ml)", "(160 ml)" — convert to oz (1ml ≈ 0.0338 oz)
+      const mlM = !ozM && name.match(/\(?\s*(\d+(?:\.\d+)?)\s*ml\b/i);
+      // Try inline-oz: "19 oz tin", "15 ounce can"
+      const inlineOzM = !ozM && !mlM && name.match(/\b(\d+(?:\.\d+)?)\s*(?:oz|ounce)s?\b/i);
+
+      if (ozM) {
+        qty = Math.round(parseFloat(ozM[1]) * originalCount * 10) / 10;
         unit = 'oz';
-        // Strip the paren spec from name
-        name = name.replace(sizeM[0], '').replace(/\s+/g, ' ').trim();
-        // Strip leading "can " / "jar " — we'll prepend canonical prefix below
-        const isJar = unit === 'jar' || /\bjar\b/i.test(sizeM[0]) || /^jar\s/i.test(name);
-        name = name.replace(/^(?:can|jar)\s+/i, '').trim();
-        // Add canned/jarred prefix unless coconut milk (always canned in recipes)
+        name = name.replace(ozM[0], '').replace(/\s+/g, ' ').trim();
+      } else if (mlM) {
+        const oz = parseFloat(mlM[1]) * 0.0338 * originalCount;
+        qty = Math.round(oz * 2) / 2; // round to nearest 0.5 oz
+        unit = 'oz';
+        name = name.replace(mlM[0], '').replace(/\s+/g, ' ').trim();
+      } else if (inlineOzM) {
+        qty = Math.round(parseFloat(inlineOzM[1]) * originalCount * 10) / 10;
+        unit = 'oz';
+        name = name.replace(inlineOzM[0], '').replace(/\s+/g, ' ').trim();
+      }
+
+      if (ozM || mlM || inlineOzM) {
+        // Strip leading container words and connector "or"/"of"
+        const isJar  = unit === 'jar' || /\bjars?\b/i.test(name);
+        const isBlock = /\bblocks?\b/i.test(name);
+        name = name.replace(/^(?:can|jar|tin|block|box|package|pkg)s?\s+/i, '').trim();
+        name = name.replace(/\b(?:can|jar|tin|block|box|package|pkg)s?\s+(?:or\s+)?(?:of\s+)?/gi, '').trim();
+        name = name.replace(/^or\s+/i, '').trim();
+        name = name.replace(/^of\s+/i, '').trim();
+        name = name.replace(/^,\s*/, '').trim();
+        // Strip "in brine"/"in oil"/"in water" trailing — preserved by recipe but
+        // not a buying-relevant detail (most cheeses/olives in brine are sold in brine)
+        name = name.replace(/\s+in\s+(?:brine|oil|water|syrup)\s*$/i, '').trim();
+        // Add canned/jarred prefix unless coconut milk (always canned)
         if (!/coconut\s+milk\b/i.test(name)) {
-          const prefix = isJar ? 'jarred ' : 'canned ';
-          if (!name.startsWith('canned') && !name.startsWith('jarred')) name = prefix + name;
+          const prefix = isJar ? 'jarred ' : isBlock ? '' : 'canned ';
+          if (prefix && !/^(?:canned|jarred)\b/i.test(name)) name = prefix + name;
         }
+        // Canned/jarred items go in the pantry aisle. Setting forcedCategory here
+        // also prevents fmtQty from normalizing 19 oz → 1.2 lb (the conversion only
+        // fires for "solid" categories like protein/produce).
+        forcedCategory = 'pantry-staples';
       }
     }
   }
@@ -1197,11 +1268,25 @@ export function parseIngredient(raw: string): {
     const FLAVORED_SALT_HINTS = ['seasoning','seasoned','herb','herbed','truffle','smoked','garlic','onion','celery','chili','lemon','citrus','rosemary','vanilla'];
     const PLAIN_SALT_MODIFIERS = ['kosher','sea','fine','coarse','table','iodized','flaky','flake','himalayan','pink','maldon','fleur','de'];
     if (/\bsalt\b/.test(name) && !FLAVORED_SALT_HINTS.some(f => name.includes(f))) {
-      // Strip leading plain modifiers, see if what's left is just "salt"
+      // If "salt" is the dominant word and the rest is modifiers/qty noise,
+      // collapse to just "salt". Allows the qty extraction to leave "+ 1/8
+      // teaspoon salt" → "salt" by ignoring the noise tokens.
+      const NOISE_TOKENS = new Set(['+', '-', '/', ',', 'teaspoon','teaspoons','tsp','tablespoon','tablespoons','tbsp','of','to','taste']);
       const tokens = name.split(/\s+/);
-      const remainingNonModifier = tokens.filter(t => t !== 'salt' && !PLAIN_SALT_MODIFIERS.includes(t));
+      const remainingNonModifier = tokens.filter(t =>
+        t !== 'salt' &&
+        !PLAIN_SALT_MODIFIERS.includes(t) &&
+        !NOISE_TOKENS.has(t) &&
+        !/^[\d/.]+$/.test(t)  // pure number/fraction tokens
+      );
       if (remainingNonModifier.length === 0) name = 'salt';
     }
+  }
+
+  // Salt always displays as just "salt" — drop qty/unit (it's to-taste at the store).
+  if (name === 'salt') {
+    qty = 0;
+    unit = '';
   }
 
   const category = forcedCategory || categorizeIngredient(name || raw);
