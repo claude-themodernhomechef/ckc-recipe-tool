@@ -717,9 +717,11 @@ export function parseIngredient(raw: string): {
     if (/^\d+\s+batch(?:es)?\s+/i.test(trimmed)) {
       return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
     }
-    // "<X> marinade" / "<X> dressing" / "<X> sauce" / "<X> dry rub" with no qty/unit
-    // — sub-recipe reference, not a real ingredient.
-    if (/^[A-Z][a-z]+(?:\s+[a-z]+)?\s+(?:marinade|dressing|dry\s+rub|spice\s+blend|seasoning\s+mix)\s*\.?\s*$/i.test(trimmed)) {
+    // "<X> marinade" / "<X> dressing" with no qty/unit — usually a recipe-specific
+    // sub-recipe reference. Note: "<X> dry rub" / "<X> seasoning" / "<X> spice blend"
+    // are NOT skipped — those are commonly real packaged ingredients (jerk seasoning,
+    // taco seasoning, italian seasoning, etc.).
+    if (/^[A-Z][a-z]+(?:\s+[a-z]+)?\s+(?:marinade|dressing)\s*\.?\s*$/i.test(trimmed)) {
       return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
     }
     // "Optional: any of your other favorite X" / "any of your favorite X" — vague, skip
@@ -747,10 +749,35 @@ export function parseIngredient(raw: string): {
     // Fix "1/ 4" → "1/4" (stray space inside fraction)
     .replace(/(\d)\/\s+(\d)/g, '$1/$2')
     .replace(/(\d)\s+\/(\d)/g, '$1/$2')
+    // "1 and 1/2" → "1 1/2" (drop "and" inside mixed numbers)
+    .replace(/(\d)\s+and\s+(\d+\/\d+)/g, '$1 $2')
+    // "X oz/Y g" or "X oz / Y g" — drop the metric equivalent after slash
+    //   "7oz/200g broccolini" → "7oz broccolini"
+    //   "3.5oz/100g creamy blue cheese" → "3.5oz creamy blue cheese"
+    .replace(/(\d+(?:\.\d+)?\s*(?:oz|ounce|lb|pound)s?)\s*\/\s*\d+(?:\.\d+)?\s*(?:g|gram|kg)s?\b/gi, '$1')
+    // Same in reverse: "200g/7oz" → drop the gram form, keep oz
+    .replace(/\d+(?:\.\d+)?\s*(?:g|gram|kg)s?\s*\/\s*(\d+(?:\.\d+)?\s*(?:oz|ounce|lb|pound)s?)\b/gi, '$1')
     // Multiple consecutive spaces → single space
     .replace(/\s{2,}/g, ' ');
+  // "((About N-M lbs.))" — extract the lbs value as canonical qty (use lower bound)
+  // BEFORE the generic double-paren strip eats it.
+  //   "Organic whole chicken ((About 5-10 lbs. is perfect; See Notes))"
+  //     → "5 lb Organic whole chicken" (then qty=5, unit=lb after standard parse)
+  {
+    const aboutLbsM = str.match(/\(\(?\s*about\s+(\d+)(?:\s*[-–]\s*\d+)?\s*lbs?\.?\s*[^)]*\)\)?/i);
+    if (aboutLbsM) {
+      const stripped = str.replace(aboutLbsM[0], '').trim();
+      str = `${aboutLbsM[1]} lb ${stripped}`;
+    }
+  }
   // Strip leading "About " (recipe author hedge)
   str = str.replace(/^about\s+/i, '').trim();
+  // "half of a small/large/medium X" / "half a X" → "1/2 X"
+  str = str.replace(/^half\s+(?:of\s+)?(?:a\s+|an\s+)?(?:small\s+|large\s+|medium\s+|big\s+)?/i, '1/2 ').trim();
+  // "Finely grated zest and juice of <N> <citrus>" → "<N> <citrus>"
+  str = str.replace(/^(?:finely\s+|coarsely\s+)?grated\s+zest\s+(?:and\s+)?(?:juice\s+(?:of\s+)?)?(?=\d|one|two|a\b|an\b|half)/i, '');
+  // "Zest and juice of <N> <citrus>" → "<N> <citrus>" (no "grated" prefix)
+  str = str.replace(/^zest\s+(?:and|&)\s+juice\s+of\s+(?=\d|one|two|a\b|an\b|half)/i, '');
 
   // 0. Decode HTML entities FIRST so downstream regexes (salt+pepper, etc.)
   // see decoded characters like "&" instead of "&amp;".
@@ -819,6 +846,10 @@ export function parseIngredient(raw: string): {
   // instead of being lost ("lime wedges, to squeeze over the fajitas" →
   // qty="" unit="to serve" name="lime wedges").
   let servingMarker = '';
+  // Em-dash + garnish suffix — rewrite to ", for garnish" so the serving-marker
+  // detection below catches it: "Aleppo pepper- garnish (...)" → "Aleppo pepper, for garnish"
+  // (also handles "to garnish" / "to serve" / "for serving" after em-dash)
+  str = str.replace(/\s*[-–—]\s*(?:garnish|to\s+garnish|to\s+serve|for\s+serving)\b.*$/i, ', for garnish');
   // "Optional for serving: <X>" — explicit prefix, set marker + strip prefix
   // ("Optional for serving: crusty bread" → name="crusty bread", marker="to serve")
   {
@@ -863,6 +894,14 @@ export function parseIngredient(raw: string): {
   str = str.replace(/,?\s*plus\s+(?:more|extra)\b.*$/i, '').trim();
   str = str.replace(/,?\s*at\s+room\s+temperature\b.*$/i, '').trim();
   str = str.replace(/,?\s*to\s+room\s+temperature\b.*$/i, '').trim();
+  // Abbreviated "room temp." form
+  str = str.replace(/,?\s*(?:at|to)\s+room\s+temp\.?\s*$/i, '').trim();
+  // "Organic" prefix on whole proteins (recipe-author marketing label)
+  str = str.replace(/^organic\s+/i, '').trim();
+  // Em-dash + prep instruction trailing: "garlic- grated, pressed or minced"
+  str = str.replace(/\s*[-–—]\s*(?:grated|pressed|minced|chopped|sliced|diced|crushed|peeled|halved|quartered|cubed)(?:[\s,]|\b).*$/i, '').trim();
+  // (Em-dash + serving marker rewrite moved to step 2b — before serving-marker
+  //  detection — so the rewritten ", for garnish" actually gets picked up.)
   // Strip ", NOT just X" recipe-author hedge ("wild rice blend, NOT just wild rice")
   str = str.replace(/,?\s*NOT\s+just\b.*$/i, '').trim();
   // Strip trailing "for brushing" / "for cooking" / "for searing" / "for sautéing" instructions
@@ -905,6 +944,13 @@ export function parseIngredient(raw: string): {
   // Strip "(N–M oz each)" / "(N oz each)" — recipe author's per-piece weight
   // note. Lose the parens (we keep the count from the qty extraction).
   str = str.replace(/\s*\(\s*\d+(?:\.\d+)?(?:\s*[-–]\s*\d+(?:\.\d+)?)?\s*(?:oz|ounce|g|gram)s?\s+each\s*\)/gi, '').trim();
+  // "<count> <fraction-num> <fraction-denom>-ounce can <X>" pattern
+  // ("1 13 1/2-ounce can unsweetened coconut milk" → "13.5 ounce can unsweetened coconut milk")
+  // Replace count + space-separated mixed-number-oz with just the oz value.
+  str = str.replace(/^(\d+)\s+(\d+)\s+(\d+)\/(\d+)\s*-\s*(?:oz|ounce)s?\b/i,
+    (_, _count, whole, num, den) => `${parseInt(whole) + parseInt(num) / parseInt(den)} oz`);
+  // (The "((About N lbs))" extraction was moved to the very top of parseIngredient
+  //  so it runs before the double-paren strip eats it.)
   // "N (X-Y oz) filets/breasts/thighs Z" — "2 (6-8oz) filets center-cut salmon"
   // Pull the upper oz out as size annotation, reorder so the noun lands at the end:
   //   "2 (6-8oz) filets center-cut salmon" → "2 8 oz center-cut salmon filets"
@@ -1083,7 +1129,8 @@ export function parseIngredient(raw: string): {
   // Trailing orphan ", sliced into" / "sliced into" left after thickness strip
   // ate "1/2 inch thick rounds" but left "into" / "sliced into" behind
   str = str.replace(/,?\s*(?:sliced|cut)\s+(?:in|into)\s*$/i, '').trim();
-  str = str.replace(/,?\s*(?:in|into)\s*$/i, '').trim();
+  // Word-boundary required so "in" doesn't get eaten from "cumin", "thin", etc.
+  str = str.replace(/,?\s*\b(?:in|into)\b\s*$/i, '').trim();
   // Trailing ", cut" / ", cut into X" — only when preceded by a comma (so we
   // don't accidentally eat "cut" inside compound nouns like "center cut bacon")
   str = str.replace(/,\s*cut\s+(?:into|in|to)\b.*$/i, '').trim();
@@ -1430,6 +1477,13 @@ export function parseIngredient(raw: string): {
         const next = all[i + 1].toLowerCase().replace(/[.,]+$/, '');
         const HERBS = ['ginger','cilantro','parsley','basil','mint','dill','chives','tarragon','thyme','rosemary','sage','oregano'];
         if (HERBS.includes(next)) return true;
+      }
+      // Preserve "whole" when followed by a count-noun protein (whole chicken,
+      // whole turkey, whole fish, etc.). Important for shopping clarity.
+      if (lower === 'whole' && i + 1 < all.length) {
+        const next = all[i + 1].toLowerCase().replace(/[.,]+$/, '');
+        const PROTEINS = ['chicken','turkey','duck','fish','salmon','trout','goose','rabbit','lamb'];
+        if (PROTEINS.includes(next)) return true;
       }
       // Preserve "crushed" / "diced" when paired with tomato (canned form modifier).
       // Look at any token after this one, not just the immediate next, so
