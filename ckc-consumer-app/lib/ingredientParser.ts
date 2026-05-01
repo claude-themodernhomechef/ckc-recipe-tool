@@ -288,6 +288,10 @@ function cleanForDbLookup(s: string): string {
 // and "steamed rice and naan for serving" → ["steamed rice", "naan for serving"]
 // but keeps "boneless, skinless chicken thighs" as one item.
 export function splitIngredientLine(raw: string): string[] {
+  // Pre-strip "(or any X like Y, Z)" parenthetical alternatives BEFORE splitting.
+  // Otherwise the splitter sees the "or"/commas inside parens and splits incorrectly.
+  raw = raw.replace(/\s*\(\s*or\s+(?:any\s+)?[^)]+\)/gi, '').trim();
+
   // Salt+pepper compound: don't split — let parseIngredient collapse it to "salt + pepper".
   // Without this guard, "kosher salt and black pepper" would split into 2 items.
   {
@@ -611,12 +615,23 @@ function normalizeVolume(qty: number, unit: string): { qty: number; unit: string
 function parseQty(str: string): number {
   for (const [k, v] of Object.entries(FRACTION_MAP)) str = str.split(k).join(v);
   str = str.trim();
-  let m = str.match(/^(\d+)\s+(\d+)\/(\d+)/);
+  // Mixed-number range: "1 1/2-2 lbs" → use lower (1 1/2)
+  let m = str.match(/^(\d+)\s+(\d+)\/(\d+)\s*[-–]\s*\d/);
   if (m) return parseInt(m[1]) + parseInt(m[2]) / parseInt(m[3]);
+  // Plain mixed number: "1 1/2"
+  m = str.match(/^(\d+)\s+(\d+)\/(\d+)/);
+  if (m) return parseInt(m[1]) + parseInt(m[2]) / parseInt(m[3]);
+  // Fraction range: "1/2-1" or "1/4-1/3" → use lower (left side)
+  m = str.match(/^(\d+)\/(\d+)\s*[-–]\s*\d/);
+  if (m) return parseInt(m[1]) / parseInt(m[2]);
+  // Plain fraction: "1/2"
   m = str.match(/^(\d+)\/(\d+)/);
   if (m) return parseInt(m[1]) / parseInt(m[2]);
+  // Decimal range: "1.5-2.5" → use lower (was midpoint, but per Rafi lower is more
+  // conservative for nutrition so we don't overcount calories)
   m = str.match(/^(\d+\.?\d*)\s*[-–]\s*(\d+\.?\d*)/);
-  if (m) return (parseFloat(m[1]) + parseFloat(m[2])) / 2;
+  if (m) return parseFloat(m[1]);
+  // Plain decimal/integer
   m = str.match(/^(\d+\.?\d*)/);
   if (m) return parseFloat(m[1]);
   return 0;
@@ -670,6 +685,17 @@ export function parseIngredient(raw: string): {
     }
     // Sub-recipe reference: "N-minute <Name>", "Homemade <Name>", "<X> Sauce, below"
     if (/^\d+\s*-\s*(?:minute|min)\s+[A-Z]/.test(trimmed)) {
+      return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
+    }
+    // More sub-recipe ref forms — "<X> recipe", "<X> recipe (below)", "<X> recipe (link below)",
+    // "<X>, below", "<X>, above", "PWWB BBQ Dry Rub, below", "1 batch <X>"
+    if (/\brecipe\b\s*(?:\(|$)/i.test(trimmed)) {
+      return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
+    }
+    if (/,\s*(?:below|above|link\s+below|see\s+below|see\s+above)\s*\.?\s*$/i.test(trimmed)) {
+      return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
+    }
+    if (/^\d+\s+batch(?:es)?\s+/i.test(trimmed)) {
       return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
     }
     // Stray "I use X" sentences (not preceded by a real ingredient)
@@ -774,6 +800,34 @@ export function parseIngredient(raw: string): {
   str = str.replace(/,?\s*depending\s+on\b.*$/i, '').trim();
   str = str.replace(/,?\s*plus\s+(?:more|extra)\b.*$/i, '').trim();
   str = str.replace(/,?\s*at\s+room\s+temperature\b.*$/i, '').trim();
+  // "as desired" / "or to taste" / "to your liking" suffixes
+  str = str.replace(/,?\s*as\s+desired\b.*$/i, '').trim();
+  str = str.replace(/,?\s*to\s+your\s+liking\b.*$/i, '').trim();
+  // "(or any X like A, B, C)" / "(or X)" parenthetical alternatives — strip
+  // ("1/2 lb linguini (or any long noodles like fettuccini, spaghetti, etc.)" → "1/2 lb linguini")
+  str = str.replace(/\s*\(\s*or\s+(?:any\s+)?[^)]+\)/gi, '').trim();
+  // "from stem" prep instruction leftover
+  str = str.replace(/,?\s*from\s+stem\b.*$/i, '').trim();
+  // Orphan "&" left after stripping prep words around it: "peeled & sliced into ..."
+  // → if "&" ends up isolated or trailing, drop it.
+  str = str.replace(/\s*&\s*$/i, '').trim();
+  str = str.replace(/\s+&\s*(?=,|$)/g, '').trim();
+  // "N-ounce/N oz package/box/bag of <ingredient>" → preserve as "N oz <ingredient>"
+  // ("1-ounce package of fresh tarragon leaves" → effectively "1 oz fresh tarragon leaves")
+  str = str.replace(/^(\d+)\s*-?\s*(?:oz|ounce)s?\s+(?:package|pkg|pack|box|bag|container|jar)\s+of\s+/i,
+    (_, n) => `${n} oz `);
+  str = str.replace(/^(\d+)\s+(?:oz|ounce)s?\s+(?:package|pkg|pack|box|bag|container|jar)\s+of\s+/i,
+    (_, n) => `${n} oz `);
+  // "Extra X" / "extra X" prefix when "extra" implies "more for serving" — drop
+  str = str.replace(/^extra\s+(?=\w)/i, '').trim();
+  // "N handful(s) of X" → "N oz X" (1 handful ≈ 1 oz, per Rafi's rule)
+  // Also handles bare "handful of X" (qty=1).
+  str = str.replace(/^(\d+|two|three|four|five|a)\s+handfuls?\s+of\s+/i, (_, num) => {
+    const numWord: Record<string, number> = { a: 1, two: 2, three: 3, four: 4, five: 5 };
+    const n = numWord[num.toLowerCase()] ?? parseInt(num, 10);
+    return `${n} oz `;
+  });
+  str = str.replace(/^handfuls?\s+of\s+/i, '1 oz ').trim();
   // "N lemons/limes/oranges, sliced into rounds/slices/wedges" → "1 <citrus>"
   // (3-4 lemon rounds come from cutting one lemon, not buying 3-4 lemons).
   // MUST fire BEFORE the "into rounds" trailing strip below or "rounds" gets eaten.
@@ -854,16 +908,8 @@ export function parseIngredient(raw: string): {
       str = str.replace(arilM[0], `${num} cup pomegranate arils`).trim();
     }
   }
-  // "handful of <herb>" / "small handful of <herb>" / "large handful of <herb>"
-  //                                                              →  "1/2 bunch <herb>"
-  // Handful is colloquial for "about half a bunch" of fresh herbs
-  {
-    const handfulM = str.match(/^(?:a\s+|an\s+)?(?:small\s+|large\s+|big\s+)?handful\s+of\s+(.+)$/i);
-    if (handfulM) {
-      let herb = handfulM[1].replace(/\bleaves\b/i, '').trim();
-      str = `1/2 bunch ${herb}`;
-    }
-  }
+  // (Old "handful of X → 1/2 bunch" rule removed in favor of the unified
+  //  "N handfuls of X → N oz X" rule below — 1 handful ≈ 1 oz per Rafi.)
   // Leading "or " left over from prior or-clause stripping ("or shaved red cabbage")
   str = str.replace(/^or\s+/i, '').trim();
   // Orphan parens left behind after "to taste" suffix stripping:
@@ -907,7 +953,7 @@ export function parseIngredient(raw: string): {
     //                "8 small tortillas" is meaningfully different from large),
     //               'salted', 'frozen' (matter at the store)
     //               'unsalted' (handled separately — stripped because default butter is salted)
-    'finely', 'coarsely', 'freshly', 'roughly', 'thinly', 'thickly',
+    'finely', 'coarsely', 'freshly', 'roughly', 'rough', 'thinly', 'thickly', 'very',
     'medium', // "medium" is the default size — strip; keep small/large
     'unsalted', // butter default is salted — strip "unsalted" so name → "butter"
   ];
@@ -916,6 +962,14 @@ export function parseIngredient(raw: string): {
     // "low-sodium" isn't broken by something inside it, etc.
     str = str.replace(new RegExp(`(?<!-)\\b${w}\\b(?!-)`, 'gi'), '');
   }
+  // Trailing "about <fraction>" volume notes the recipe author added in parens
+  // ("..., rough chopped, about 1/4-1/3 cup") — strip
+  str = str.replace(/,?\s*about\s+\d[^,]*$/i, '').trim();
+  // Strip orphan "&" / "and" left between stripped prep words
+  str = str.replace(/(?:^|,)\s*&\s+/g, ' ').trim();
+  str = str.replace(/\s*&\s*$/, '').trim();
+  str = str.replace(/\s+&\s+(?=$|,)/g, ' ').trim();
+
   // Aggressively normalize the comma/space mess left after stripping prep words.
   // "2 tbsp cold, salted butter, sliced" → strip "cold"+"sliced" → "2 tbsp , salted butter,"
   // → normalize → "2 tbsp salted butter".
@@ -982,7 +1036,10 @@ export function parseIngredient(raw: string): {
     });
 
   // 8. Extract leading quantity
-  const qtyPat = /^((?:\d+\s+)?\d+\/\d+|\d+\.?\d*(?:\s*[-–]\s*\d+\.?\d*)?)/;
+  // Matches the qty (with optional range). Range support extended to fractions:
+  //   "1 1/2-2 lbs", "1/2-1 tsp", "1/4-1/3 cup", "1.5-2.5 cups", "1 - 1 1/2 cups"
+  // The full match includes the range suffix; parseQty returns the LOWER bound.
+  const qtyPat = /^((?:\d+\s+)?\d+\/\d+(?:\s*[-–]\s*(?:\d+\s+)?\d+(?:\/\d+)?)?|\d+\.?\d*(?:\s*[-–]\s*(?:(?:\d+\s+)?\d+\/\d+|\d+\.?\d*))?)/;
   if (!qty) {
     const qtyM = str.match(qtyPat);
     if (qtyM) { qty = parseQty(qtyM[1]); str = str.slice(qtyM[0].length).trim(); }
@@ -1023,6 +1080,12 @@ export function parseIngredient(raw: string): {
   if (unit) {
     str = str.replace(/^\d+\.?\d*\s*(?:oz\.?|lbs?\.?|lb\.?|g|kg|ml|l|cups?|tbsps?|tsps?)\s*/i, '').trim();
   }
+  // 11b. Strip range-upper-bound leftovers from forms the qty regex can't capture:
+  //   "1 - 1 1/2 cups mozzarella" → qty took "1", leftover " - 1 1/2 cups mozzarella"
+  //   "1/2 cup to 1 cup barbecue sauce" → qty took "1/2", leftover "to 1 cup barbecue sauce"
+  // After qty/unit extraction, strip trailing "<dash|to> <num/frac> <unit>?" leftovers.
+  str = str.replace(/^\s*[-–]\s*(?:\d+\s+)?\d+(?:\/\d+|\.\d+)?\s*(?:cups?|tbsps?|tsps?|oz|lb|lbs|tablespoons?|teaspoons?|pounds?|ounces?)?\s*/i, '').trim();
+  str = str.replace(/^to\s+(?:\d+\s+)?\d+(?:\/\d+|\.\d+)?\s*(?:cups?|tbsps?|tsps?|oz|lb|lbs|tablespoons?|teaspoons?|pounds?|ounces?)?\s*/i, '').trim();
 
   // 12. Convert metric to imperial — smart unit choice based on ingredient.
   //   - Butter:           grams → tbsp (1 tbsp ≈ 14g), nearest 0.5 tbsp
