@@ -292,6 +292,20 @@ export function splitIngredientLine(raw: string): string[] {
   // Otherwise the splitter sees the "or"/commas inside parens and splits incorrectly.
   raw = raw.replace(/\s*\(\s*or\s+(?:any\s+)?[^)]+\)/gi, '').trim();
 
+  // Garnish/topping/filling-addition list: split each into its own ingredient
+  // with a "for garnish" marker so each gets unit="to garnish".
+  // "optional garnishes: sour cream, avocado, cilantro, scallions"
+  //   → ["sour cream, for garnish", "avocado, for garnish", "cilantro, for garnish", ...]
+  // The "add garnishes" toggle in the consumer app can then conditionally
+  // include/exclude these from the shopping list and nutrition totals.
+  {
+    const garnishM = raw.match(/^(?:optional\s+)?(?:garnishes?|toppings?|filling\s+additions?|add[\s-]?ins?)\s*[:.\-—]\s*(.+)$/i);
+    if (garnishM) {
+      const items = garnishM[1].split(/,\s*(?!and\b)|(?:,\s*)?\s+and\s+/i).map(s => s.trim()).filter(Boolean);
+      return items.map(item => `${item}, for garnish`);
+    }
+  }
+
   // Salt+pepper compound: don't split — let parseIngredient collapse it to "salt + pepper".
   // Without this guard, "kosher salt and black pepper" would split into 2 items.
   {
@@ -800,6 +814,9 @@ export function parseIngredient(raw: string): {
   str = str.replace(/,?\s*depending\s+on\b.*$/i, '').trim();
   str = str.replace(/,?\s*plus\s+(?:more|extra)\b.*$/i, '').trim();
   str = str.replace(/,?\s*at\s+room\s+temperature\b.*$/i, '').trim();
+  // "Optional:" prefix on individual ingredient lines (not garnish list — that's
+  // pre-stripped in the splitter)
+  str = str.replace(/^optional\s*[:.\-—]\s*/i, '').trim();
   // "as desired" / "or to taste" / "to your liking" suffixes
   str = str.replace(/,?\s*as\s+desired\b.*$/i, '').trim();
   str = str.replace(/,?\s*to\s+your\s+liking\b.*$/i, '').trim();
@@ -808,6 +825,11 @@ export function parseIngredient(raw: string): {
   str = str.replace(/\s*\(\s*or\s+(?:any\s+)?[^)]+\)/gi, '').trim();
   // "from stem" prep instruction leftover
   str = str.replace(/,?\s*from\s+stem\b.*$/i, '').trim();
+  // Trailing "on a diagonal" / "1\" thick" / "1/2-inch thick" prep specs
+  str = str.replace(/,?\s*on\s+a\s+diagonal\b.*$/i, '').trim();
+  str = str.replace(/,?\s*\d+(?:\/\d+)?["\s\-]*(?:inch|cm|in)\s+thick\b.*$/i, '').trim();
+  str = str.replace(/\s*\d+(?:\/\d+)?"\s+thick\s*$/i, '').trim();
+  str = str.replace(/\s*\d+(?:\/\d+)?"\s*$/i, '').trim();
   // Orphan "&" left after stripping prep words around it: "peeled & sliced into ..."
   // → if "&" ends up isolated or trailing, drop it.
   str = str.replace(/\s*&\s*$/i, '').trim();
@@ -845,8 +867,10 @@ export function parseIngredient(raw: string): {
   // Unicode-fraction-based: "into ½ inch thick rounds" — fractions get normalized
   // to digits later but at this point they're still ½/¼/etc.
   str = str.replace(/,?\s*(?:in|into)\s+[¼-¾⅐-⅞][^,]*$/i, '').trim();
-  // Trailing "cut" / "cut in <word>" leftovers from prior partial strips
-  str = str.replace(/,?\s*cut\b.*$/i, '').trim();
+  // Trailing ", cut" / ", cut into X" — only when preceded by a comma (so we
+  // don't accidentally eat "cut" inside compound nouns like "center cut bacon")
+  str = str.replace(/,\s*cut\s+(?:into|in|to)\b.*$/i, '').trim();
+  str = str.replace(/,\s*cut\s*$/i, '').trim();
   str = str.replace(/,?\s*raw\s*$/i, '').trim();
   // Trailing em-dash / hyphen + prep instruction: "1 shallot - finely chopped."
   str = str.replace(/\s*[-–—]\s*(?:finely|coarsely|roughly|thinly)?\s*(?:chopped|minced|sliced|diced|grated|peeled|crushed|halved|quartered|cubed|julienned|grated|shredded)\.?\s*$/i, '').trim();
@@ -954,6 +978,7 @@ export function parseIngredient(raw: string): {
     //               'salted', 'frozen' (matter at the store)
     //               'unsalted' (handled separately — stripped because default butter is salted)
     'finely', 'coarsely', 'freshly', 'roughly', 'rough', 'thinly', 'thickly', 'very',
+    'lengthwise', 'crosswise', 'diagonally',
     'medium', // "medium" is the default size — strip; keep small/large
     'unsalted', // butter default is salted — strip "unsalted" so name → "butter"
   ];
@@ -1185,6 +1210,10 @@ export function parseIngredient(raw: string): {
 
   name = name.replace(/^(of|a|an|the)\s+/, '');
   name = name.replace(/\s+for$/, '').trim();
+  // Strip orphan parens left when "(to taste)" / "(divided)" got partially eaten
+  // by suffix strippers — e.g. "black pepper (" → "black pepper"
+  name = name.replace(/\s*[()]+\s*$/g, '').trim();
+  name = name.replace(/^\s*[()]+\s*/g, '').trim();
 
   if (name.includes(' or ')) {
     const parts = name.split(' or ');
@@ -1351,6 +1380,11 @@ export function parseIngredient(raw: string): {
     qty = 0;
     unit = '';
   }
+  // Same for plain pepper variants — pepper is to-taste, not a measured purchase.
+  if (name === 'pepper' || name === 'black pepper' || name === 'white pepper') {
+    qty = 0;
+    unit = '';
+  }
 
   const category = forcedCategory || categorizeIngredient(name || raw);
   return { qty, unit, name: name || raw.toLowerCase(), category, raw, note };
@@ -1358,18 +1392,32 @@ export function parseIngredient(raw: string): {
 
 // ── Format helpers ─────────────────────────────────────────────────────────────
 
+// Units that should display as plural when qty > 1 (slice → slices, etc.).
+// Volume/weight units (cup, tbsp, oz, lb) stay singular by convention.
+const PLURALIZABLE_UNITS = new Set([
+  'slice', 'piece', 'strip', 'sprig', 'stalk', 'clove',
+  'wedge', 'pinch', 'dash', 'drop',
+  'can', 'jar', 'tin', 'block', 'box', 'bag', 'package',
+  'bunch', 'head', 'ear', 'sheet', 'stick',
+]);
+function pluralize(unit: string, qty: number): string {
+  if (qty <= 1 || !PLURALIZABLE_UNITS.has(unit)) return unit;
+  if (unit === 'leaf') return 'leaves';
+  return unit + 's';
+}
+
 export function fmtQty(qty: number, unit: string, category?: string): string {
   if (!qty) return unit || '';
   const solidCategories = new Set(['protein', 'produce', 'meat', 'seafood', 'frozen']);
   if (unit === 'lb' || (unit === 'oz' && category && solidCategories.has(category))) {
     const n = normalizeWeight(qty, unit);
-    return `${fmtNum(n.qty)} ${n.unit}`;
+    return `${fmtNum(n.qty)} ${pluralize(n.unit, n.qty)}`;
   }
   if (unit === 'tsp' || unit === 'tbsp') {
     const parts = normalizeVolume(qty, unit);
     return parts.map(p => `${fmtNum(p.qty)} ${p.unit}`).join(' + ');
   }
-  return unit ? `${fmtNum(qty)} ${unit}` : fmtNum(qty);
+  return unit ? `${fmtNum(qty)} ${pluralize(unit, qty)}` : fmtNum(qty);
 }
 
 // Dairy internal sort: eggs first, then cheeses, then sour cream/yogurt, then milks/cream/butter
