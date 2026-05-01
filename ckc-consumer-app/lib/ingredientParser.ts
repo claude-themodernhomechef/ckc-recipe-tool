@@ -1130,6 +1130,12 @@ export function parseIngredient(raw: string): {
     unit = servingMarker;
   }
 
+  // "pinch" / "dash" with no qty are seasoning amounts — display the ingredient
+  // alone (no qty/unit prefix). "pinch of salt" → just "salt".
+  if (!qty && (unit === 'pinch' || unit === 'dash')) {
+    unit = '';
+  }
+
   // "can <ingredient>" handling. Fires here (after qty/unit extraction + aliasing)
   // because earlier passes still had the qty prefix in the string.
   //   - default:        "can black beans"  →  "canned black beans"
