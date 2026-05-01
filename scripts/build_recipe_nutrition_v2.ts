@@ -16,7 +16,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 // Import the production parser directly!
-import { parseIngredient } from '../ckc-consumer-app/lib/ingredientParser';
+import { parseIngredient, splitIngredientLine } from '../ckc-consumer-app/lib/ingredientParser';
 
 const SA_PATH       = path.join(__dirname, '../service-account.json');
 const INGREDIENT_DB = path.join(__dirname, '../data/ingredientNutrition_v2.json');
@@ -38,6 +38,60 @@ const COOKING_DEFAULTS: Array<{ pattern: RegExp; qty: number; unit: string; note
   { pattern: /\blard\b/i,       qty: 1, unit: 'tbsp', note: '1 tbsp' },
   { pattern: /\bshortening\b/i, qty: 1, unit: 'tbsp', note: '1 tbsp' },
 ];
+
+// ── "To serve" / "to garnish" standards ──────────────────────────────────────
+// When the parser detects a serving/garnish marker (unit = "to serve" /
+// "to garnish") and qty is 0, apply a per-serving default. The qty will be
+// multiplied by the recipe's `servings` count to get the total recipe amount.
+//
+// Per Rafi: grain "to serve" gets 1/2 cup cooked per serving; common
+// garnishes get the amounts below (cheese 1 oz, herbs 1 tbsp,
+// pickled onions 2 tbsp, olive oil drizzle 1 tbsp).
+const SERVING_DEFAULTS: Array<{
+  pattern: RegExp;
+  perServing: { qty: number; unit: string };
+  note: string;
+}> = [
+  // Grains — 1/2 cup cooked per serving
+  { pattern: /\b(?:steamed\s+)?(?:rice|brown\s+rice|white\s+rice|jasmine\s+rice|basmati\s+rice|cauliflower\s+rice|quinoa|couscous|pasta|noodles?|orzo|farro|barley|bulgur)\b/i,
+    perServing: { qty: 0.5, unit: 'cup' }, note: '½ cup cooked per serving' },
+  // Flatbreads / breads — 1 piece per serving
+  { pattern: /\b(?:naan|pita|tortillas?|flatbread|bread|roti|focaccia)\b/i,
+    perServing: { qty: 1, unit: 'piece' }, note: '1 piece per serving' },
+  // Cheese garnishes — 1 oz per serving
+  { pattern: /\b(?:cheddar|cotija|mozzarella|parmesan|feta|gruyere|gouda|brie|provolone|queso\s+fresco|manchego|blue\s+cheese|goat\s+cheese)\b/i,
+    perServing: { qty: 1, unit: 'oz' }, note: '1 oz per serving' },
+  // Pickled onions — 2 tbsp per serving (placed before generic herb pattern)
+  { pattern: /\bpickled\s+(?:red\s+)?onion/i,
+    perServing: { qty: 2, unit: 'tbsp' }, note: '2 tbsp per serving' },
+  // Olive oil drizzle — 1 tbsp per serving
+  { pattern: /\b(?:olive\s+oil|extra[\s-]virgin\s+olive\s+oil|evoo)\b/i,
+    perServing: { qty: 1, unit: 'tbsp' }, note: '1 tbsp per serving' },
+  // Herb leaves (cilantro/parsley/etc.) — 1 tbsp per serving
+  { pattern: /\b(?:cilantro|parsley|basil|mint|dill|chives|tarragon)\b/i,
+    perServing: { qty: 1, unit: 'tbsp' }, note: '1 tbsp per serving' },
+  // Lime / lemon wedges — 1 wedge per serving
+  { pattern: /\b(?:lime|lemon)\s+wedges?\b/i,
+    perServing: { qty: 1, unit: 'piece' }, note: '1 wedge per serving' },
+];
+
+function applyServingDefault(parsed: { qty: number; unit: string; name: string }, servings: number):
+  { qty: number; unit: string; note: string } | null
+{
+  const isServingMarker = parsed.unit === 'to serve' || parsed.unit === 'to garnish';
+  if (!isServingMarker || parsed.qty !== 0) return null;
+  const haystack = parsed.name.toLowerCase();
+  for (const def of SERVING_DEFAULTS) {
+    if (def.pattern.test(haystack)) {
+      return {
+        qty: def.perServing.qty * servings,
+        unit: def.perServing.unit,
+        note: def.note,
+      };
+    }
+  }
+  return null;
+}
 
 // ── Unit normalizer — shopping list parser uses these unit names ──────────────
 // Maps shopping-list parser canonical units → DB measure labels
@@ -551,7 +605,15 @@ async function main() {
     const ingredientResults: any[] = [];
     let matchedCount = 0, totalCount = 0;
 
+    // Apply the production splitter so "X and Y, for serving" becomes two
+    // ingredients, each carrying the "for serving" suffix.
+    const splitIngredients: string[] = [];
     for (const raw of recipe.ingredients) {
+      if (!raw || !raw.trim()) continue;
+      for (const part of splitIngredientLine(raw)) splitIngredients.push(part);
+    }
+
+    for (const raw of splitIngredients) {
       if (!raw || !raw.trim()) continue;
 
       // Skip multi-spice "EACH:" strings — negligible calories
@@ -596,6 +658,19 @@ async function main() {
         if (cookingDefault) {
           parsed = { ...(parsed ?? { name: raw, qty: 0, unit: '' }), qty: cookingDefault.qty, unit: cookingDefault.unit };
           assumedDefault = cookingDefault.note;
+        }
+      }
+
+      // "To serve" / "to garnish" defaults — when the parser produced a serving
+      // marker (unit="to serve" or "to garnish") with no qty, multiply the
+      // per-serving standard by recipe servings to get the recipe total.
+      // Examples: rice "to serve" → 0.5 cup × N servings; cheese "to garnish"
+      // → 1 oz × N servings.
+      if (parsed) {
+        const servingDefault = applyServingDefault(parsed, servings);
+        if (servingDefault) {
+          parsed = { ...parsed, qty: servingDefault.qty, unit: servingDefault.unit };
+          assumedDefault = servingDefault.note;
         }
       }
 

@@ -310,7 +310,7 @@ export function splitIngredientLine(raw: string): string[] {
     /,?\s*to\s+serve\b.*$/i,
     /,?\s*for\s+garnish(?:ing)?\b.*$/i,
     /,?\s*to\s+garnish\b.*$/i,
-    /,?\s*to\s+(?:squeeze|drizzle|spoon|pour)\s+(?:over|on)\b.*$/i,
+    /,?\s*(?:to|for)\s+(?:squeeze|drizzle|drizzling|spoon|pour|pouring)(?:\s+(?:over|on))?\b.*$/i,
     /,?\s*to\s+taste\b.*$/i,
     /,?\s*as\s+needed\b.*$/i,
   ];
@@ -730,11 +730,11 @@ export function parseIngredient(raw: string): {
     servingMarker = 'to garnish';
     str = str.replace(/,?\s*(?:for|to)\s+(?:garnish(?:ing)?|topping|top(?:ping)?\s*(?:with)?)\b.*/i, '').trim();
   }
-  // Serving: "for serving", "to serve", "to squeeze over X", "to drizzle over X",
-  //          "to spoon over X", "to pour over X"
-  else if (/,?\s*(?:for\s+serving|to\s+serve|to\s+(?:squeeze|drizzle|spoon|pour)\s+(?:over|on))\b/i.test(str)) {
+  // Serving: "for serving", "to serve", "to/for drizzle/drizzling/squeeze/spoon/pour [over X]"
+  // ("over/on" optional so "olive oil, to drizzle" / "...for drizzling" also fire)
+  else if (/,?\s*(?:for\s+serving|to\s+serve|(?:to|for)\s+(?:squeeze|drizzle|drizzling|spoon|pour|pouring)(?:\s+(?:over|on))?)\b/i.test(str)) {
     servingMarker = 'to serve';
-    str = str.replace(/,?\s*(?:for\s+serving|to\s+serve|to\s+(?:squeeze|drizzle|spoon|pour)\s+(?:over|on))\b.*/i, '').trim();
+    str = str.replace(/,?\s*(?:for\s+serving|to\s+serve|(?:to|for)\s+(?:squeeze|drizzle|drizzling|spoon|pour|pouring)(?:\s+(?:over|on))?)\b.*/i, '').trim();
   }
 
   // 2c. Strip bare recipe-note suffixes (no parens around them):
