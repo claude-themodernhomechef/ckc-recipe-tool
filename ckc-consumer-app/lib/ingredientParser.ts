@@ -98,6 +98,10 @@ const BASELINE_DB: Record<string, string> = {
   'provolone':'dairy','swiss cheese':'dairy','pepper jack':'dairy',
   'mexican cheese':'dairy','queso fresco':'dairy','cotija':'dairy',
   'plain greek yogurt':'dairy','greek yogurt':'dairy','yogurt':'dairy',
+  'yoghurt':'dairy','natural yoghurt':'dairy','natural yogurt':'dairy',
+  'greek yoghurt':'dairy','plain greek yoghurt':'dairy',
+  'non-fat greek yogurt':'dairy','full-fat greek yogurt':'dairy',
+  'pecorino':'dairy','grated pecorino':'dairy','pecorino romano':'dairy',
   'kefir':'dairy',
   'tzatziki':'dairy','tzatziki sauce':'dairy',
 
@@ -179,6 +183,22 @@ const BASELINE_DB: Record<string, string> = {
   'pumpkin seeds':'pantry-staples','sunflower seeds':'pantry-staples',
   'chipotle peppers in adobo':'pantry-staples','chipotle peppers in adobo sauce':'pantry-staples',
   'pickled red onions':'produce','pickled jalapenos':'produce','pickled jalapeños':'produce',
+  // Round 28 backfill — high-frequency unmatched
+  'sichuan peppercorn':'pantry-staples','sichuan peppercorns':'pantry-staples',
+  'green cardamom':'pantry-staples','green cardamoms':'pantry-staples','cardamom':'pantry-staples',
+  'tajin':'pantry-staples','tajin powder':'pantry-staples',
+  'shredded coconut':'pantry-staples','unsweetened shredded coconut':'pantry-staples',
+  'shredded unsweetened coconut':'pantry-staples',
+  'orzo pasta':'pantry-staples','dry orzo pasta':'pantry-staples',
+  'better than bouillon':'pantry-staples',
+  'better than bouillon chicken base':'pantry-staples',
+  'better than bouillon beef base':'pantry-staples',
+  'red boat fish sauce':'pantry-staples',
+  'pickled cucumbers':'produce','pickled onions':'produce',
+  'pearl onions':'produce','mini cucumbers':'produce','baby cucumbers':'produce',
+  'red chillies':'produce','red chilli':'produce','red chili':'produce','red chilies':'produce',
+  'rainbow chard':'produce','swiss chard':'produce',
+  'queso oaxaca':'dairy',
 
   // ── Pantry Consumables ───────────────────────────────────────────────────────
   'tortillas':'pantry-consumables','flour tortillas':'pantry-consumables',
@@ -761,6 +781,42 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'worcestershire':'worcestershire sauce',
   // Round 27 backfill
   'poultry seasoning':'dried poultry blend',
+  // Round 28 backfill
+  'half & half':'half-and-half', 'half &amp; half':'half-and-half',
+  'natural yoghurt':'yogurt', 'natural yogurt':'yogurt', 'yoghurt':'yogurt',
+  'greek yoghurt':'greek yogurt', 'plain greek yoghurt':'plain greek yogurt',
+  '0% fat greek yoghurt':'non-fat greek yogurt', '0% greek yoghurt':'non-fat greek yogurt',
+  '90% lean ground beef':'ground beef', '93% lean ground beef':'ground beef',
+  '93% lean ground turkey':'ground turkey', '99% lean ground turkey':'ground turkey',
+  'mini cucumbers':'cucumber', 'mini cucumber':'cucumber',
+  'baby cucumbers':'cucumber', 'baby cucumber':'cucumber',
+  'persian cucumber':'cucumber', 'persian cucumbers':'cucumber',
+  'thumb ginger':'fresh ginger', 'piece fresh ginger':'fresh ginger',
+  'green part of the scallions':'scallion', 'green part of scallions':'scallion',
+  'low-salt chicken broth':'chicken broth', 'low salt chicken broth':'chicken broth',
+  'tamari/soy sauce':'soy sauce', 'tamari':'soy sauce',
+  'red boat fish sauce':'fish sauce',
+  'chunky red salsa':'salsa', 'chunky salsa':'salsa', 'red salsa':'salsa',
+  'bbq sauce of choice':'bbq sauce', 'oil of choice':'olive oil',
+  'dry orzo pasta':'orzo', 'orzo pasta':'orzo',
+  'red chillies':'red chili', 'red chilies':'red chili', 'red chilli':'red chili',
+  'green chillies':'green chili', 'green chilies':'green chili',
+  'shredded unsweetened coconut':'shredded coconut',
+  'unsweetened shredded coconut':'shredded coconut',
+  'flat-leaf parsley':'parsley', 'flat leaf parsley':'parsley',
+  'flat leaves-leaf parsley':'parsley',
+  'bunch cilantro':'cilantro',
+  'small bunch cilantro':'cilantro',
+  'large bunch cilantro':'cilantro',
+  'prepared rice':'white rice', 'cooked rice':'white rice',
+  'steamed white rice':'white rice', 'steamed brown rice':'brown rice',
+  'firm white fish':'white fish',
+  'green cardamoms':'cardamom', 'green cardamom':'cardamom',
+  'tajin powder':'tajin',
+  'better than bouillon chicken base':'chicken broth',
+  'better than bouillon beef base':'beef broth',
+  'better than bouillon vegetable base':'vegetable broth',
+  '16-20 shrimp':'shrimp',
   // Garlic — normalize word order; bare "garlic" = cloves
   // 'garlic clove' singular preserved at qty=1 by parser logic; do NOT alias to plural.
   'clove garlic':'garlic cloves',
@@ -1000,6 +1056,14 @@ export function parseIngredient(raw: string): {
     if (/^[\s\-–—]+$/.test(trimmed)) {
       return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
     }
+    // Skip "For the X:" / "For X:" recipe-section headers
+    if (/^for\s+(?:the\s+)?[\w\s-]+:\s*\*?$/i.test(trimmed)) {
+      return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
+    }
+    // Skip lone "Boiling water" / "Hot water" / "Cold water" — instructions, not ingredients
+    if (/^(?:boiling|hot|cold|warm)\s+water\s*\.?\s*$/i.test(trimmed) && trimmed.length < 30) {
+      return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
+    }
   }
 
   // 0-fix-typos. Common spelling/punctuation fixes that break downstream parsing.
@@ -1007,6 +1071,8 @@ export function parseIngredient(raw: string): {
   str = str
     .replace(/\bhandfull\b/gi, 'handful')        // common typo
     .replace(/\bhandfulls\b/gi, 'handfuls')
+    // "<N>% lean ground X" → "ground X" (fat% irrelevant for shopping)
+    .replace(/\b\d+\s*%\s+lean\s+ground\s+/gi, 'ground ')
     // "a few" / "few" as a count → 2 (matches user spec for sprigs/etc.)
     .replace(/^a\s+few\s+/i, '2 ')
     .replace(/^few\s+/i, '2 ')
@@ -1829,11 +1895,17 @@ export function parseIngredient(raw: string): {
   // Drop a comma that immediately follows a unit token.
   str = str.replace(/^(\d+(?:[.\/]\d+)?)\s+([a-z]+)\s*,\s*/i, '$1 $2 ');
 
-  // 3. Vague quantities — return early with no scalable number
+  // 3. Vague quantities — return early with no scalable number.
+  // Strip leading "a " / "an " / "small " / "large " before vague qualifiers
+  // so "a drizzle of olive oil" / "small handful coriander" route correctly.
+  str = str.replace(/^(?:a|an|small|large|big|generous|healthy)\s+(?=(?:few|handful|splash|sprinkle|drizzle|to\s+taste|as\s+needed|some|squeeze|touch|knob|pinch|dash)\b)/i, '').trim();
   const strLower = str.toLowerCase();
   for (const vague of VAGUE_WORDS) {
     if (strLower.startsWith(vague)) {
-      const vagueNameStr = str.slice(vague.length).replace(/^[,\s:]+/, '').trim();
+      // Strip leading "of" / "of a" / "of the" after the vague word
+      //   "drizzle of olive oil" → name="olive oil"
+      //   "pinch of sugar" → name="sugar"
+      const vagueNameStr = str.slice(vague.length).replace(/^[,\s:]+/, '').replace(/^of\s+(?:a\s+|an\s+|the\s+)?/i, '').trim();
       const vagueName = vagueNameStr.replace(/\(.*?\)/g, '').replace(/,.*$/, '').trim().toLowerCase();
       return { qty: 0, unit: '', name: vagueName || strLower, category: categorizeIngredient(vagueName || strLower), raw, note };
     }
