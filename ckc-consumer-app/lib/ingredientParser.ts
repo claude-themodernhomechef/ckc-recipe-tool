@@ -303,6 +303,10 @@ export function splitIngredientLine(raw: string): string[] {
   // Pre-strip "(or any X like Y, Z)" parenthetical alternatives BEFORE splitting.
   // Otherwise the splitter sees the "or"/commas inside parens and splits incorrectly.
   raw = raw.replace(/\s*\(\s*or\s+(?:any\s+)?[^)]+\)/gi, '').trim();
+  // Pre-strip ", plus X for Y" / ", plus more" trailing — recipe author offering
+  // an extra portion that isn't a separate ingredient.
+  raw = raw.replace(/,\s*plus\s+(?:more|extra|\w+(?:\s+\w+)?)\s+(?:for\s+\w+|as\s+needed|to\s+taste|if\s+needed|to\s+\w+).*$/i, '').trim();
+  raw = raw.replace(/,\s*plus\s+more\b.*$/i, '').trim();
   // Pre-insert a space between letter+digit (recipe authors sometimes paste
   // "2 eggs2-3 garlic" with no space) so qty boundaries are visible.
   // Decode HTML entities first so &frac14;/&#39; etc. don't get mangled.
@@ -432,7 +436,7 @@ export function splitIngredientLine(raw: string): string[] {
   // The "add garnishes" toggle in the consumer app can then conditionally
   // include/exclude these from the shopping list and nutrition totals.
   {
-    const garnishM = raw.match(/^(?:optional\s+)?(?:garnishes?|toppings?|filling\s+additions?|add[\s-]?ins?)\s*[:.\-—]\s*(.+)$/i);
+    const garnishM = raw.match(/^(?:optional\s+|suggested\s+|recommended\s+)?(?:garnishes?|toppings?|filling\s+additions?|add[\s-]?ins?)\s*[:.\-—]\s*(.+)$/i);
     if (garnishM) {
       const items = garnishM[1].split(/,\s*(?!and\b)|(?:,\s*)?\s+and\s+/i).map(s => s.trim()).filter(Boolean);
       return items.map(item => `${item}, for garnish`);
@@ -478,12 +482,27 @@ export function splitIngredientLine(raw: string): string[] {
     /,?\s*to\s+taste\b.*$/i,
     /,?\s*as\s+needed\b.*$/i,
   ];
+  // Mask paren content so suffix patterns don't match suffixes that live INSIDE
+  // a paren (e.g. "2 lemons (1 juiced and 1 cut into wedges for serving)" — the
+  // "for serving" is part of the recipe-author's note, not a trailing marker).
+  const sufParens: string[] = [];
+  const sufMasked = raw.replace(/\([^)]*\)/g, m => {
+    sufParens.push(m);
+    return 'XSFX' + (sufParens.length - 1) + 'X';
+  });
   for (const pat of suffixPatterns) {
-    const m = raw.match(pat);
+    const m = sufMasked.match(pat);
     if (m) {
-      trailingSuffix = m[0].replace(/^,?\s*/, ', ');
-      raw = raw.slice(0, m.index!).trim();
-      break;
+      // Compute index in original raw by accounting for masked-vs-original offsets.
+      // Simpler: find the matched text in raw — since we only stripped paren content,
+      const matchedText = m[0];
+      const restoredMatch = matchedText.replace(/XSFX(\d+)X/g, (_, i) => sufParens[parseInt(i, 10)] || '');
+      const realIdx = raw.lastIndexOf(restoredMatch);
+      if (realIdx >= 0) {
+        trailingSuffix = restoredMatch.replace(/^,?\s*/, ', ');
+        raw = raw.slice(0, realIdx).trim();
+        break;
+      }
     }
   }
 
@@ -557,7 +576,34 @@ export function splitIngredientLine(raw: string): string[] {
       const after  = segment.slice(idx + sep.length).trim();
       // When a serving suffix is set, be permissive on " or " — recipe author
       // is offering accompaniments, even if not all are in the DB.
+      // EXCEPTION: when both halves end with the same noun (e.g. "white rice or
+      // brown rice"), it's a variety alternative — take first only, don't split.
       const isServingOr = !!trailingSuffix && sep === ' or ';
+      if (isServingOr) {
+        const beforeLastWord = before.split(/\s+/).pop()?.toLowerCase() || '';
+        const afterLastWord  = after.split(/\s+/).pop()?.toLowerCase() || '';
+        // Variety alternative: same noun on both sides ("white rice or brown rice")
+        // OR before is missing a noun ("Steamed white or brown rice" — before="Steamed
+        // white" has no DB ingredient, after="brown rice" does). Keep first only;
+        // parser's OR collapse will append the noun to single-word firsts.
+        const beforeHasNoun = endsWithKnownIngredient(before);
+        const afterHasNoun  = endsWithKnownIngredient(after);
+        const sameNoun = beforeLastWord && beforeLastWord === afterLastWord;
+        if (sameNoun) {
+          final.push(before);
+          didSplit = true;
+          break;
+        }
+        if (!beforeHasNoun && afterHasNoun) {
+          // Before is just an adjective ("Steamed white"); append the noun
+          // from after ("brown rice" → "rice") so the result is complete.
+          //   "Steamed white or brown rice" → "Steamed white rice"
+          //   "2 tbsp vegetable or coconut oil" → "2 tbsp vegetable oil"
+          final.push(`${before} ${afterLastWord}`);
+          didSplit = true;
+          break;
+        }
+      }
       if ((endsWithKnownIngredient(before) && endsWithKnownIngredient(after)) || isServingOr) {
         final.push(before, after);
         didSplit = true;
@@ -1027,14 +1073,28 @@ export function parseIngredient(raw: string): {
   // ", more to taste" / ", more if needed" / orphan ", more" — strip
   str = str.replace(/,\s*more\s+(?:to\s+taste|if\s+needed|as\s+needed).*$/i, '').trim();
   str = str.replace(/,?\s+more\s*,?\s*$/i, '').trim();
+  // ", plus more …" / ", plus <X> for serving|garnish|as needed" — strip the
+  // entire trailing clause (recipe author offering an extra portion).
+  //   "1 tsp cumin, plus more for serving" → "1 tsp cumin"
+  //   "3 tbsp basil, plus basil leaves for serving" → "3 tbsp basil"
+  str = str.replace(/,\s*plus\s+(?:more|extra|[a-z][a-z\s]*)\s+(?:for\s+\w+|as\s+needed|to\s+taste|if\s+needed|to\s+\w+).*$/i, '').trim();
+  str = str.replace(/,\s*plus\s+more\b.*$/i, '').trim();
+  // ", room temperature" / ", at room temperature" / ", room temp" trailing
+  str = str.replace(/,\s*(?:at\s+)?room\s+temp(?:erature)?\.?\s*$/i, '').trim();
   // Trailing "- optional" / "- optional!" with em-dash or hyphen
   str = str.replace(/\s*[-–—]\s*optional\!?\s*$/i, '').trim();
   // ", <noun>, or <noun>" alternative list (simple non-prep alt-list at end)
   //   "1 tsp brown sugar, maple, or honey" → "1 tsp brown sugar"
   str = str.replace(/,\s*\w+(?:\s+\w+)?,?\s+or\s+\w+(?:\s+\w+)?\s*$/i, '').trim();
-  // "leaves and tender stems" / "leaves and stems" → "" (drop entire trailing
-  // herb-part clause; user prefers just "fresh cilantro" not "fresh cilantro leaves").
-  str = str.replace(/\s+(?:leaves|leaf)(?:\s+and\s+(?:tender\s+)?(?:stems?|roots?))?\s*$/i, '').trim();
+  // "leaves and (tender|fine) stems" / "leaves and stems" → "" (drop entire
+  // trailing herb-part clause; user prefers just "fresh cilantro" not "fresh
+  // cilantro leaves").
+  // SKIP when preceded by herb-leaf nouns where "leaves" is the ACTUAL ingredient
+  // (bay leaves, curry leaves, lime leaves, kaffir leaves) — those need to keep
+  // "leaves" as the noun.
+  if (!/\b(?:bay|curry|lime|kaffir|grape|fig|cabbage|lettuce)\s+leaves?\s*$/i.test(str)) {
+    str = str.replace(/\s+(?:leaves|leaf)(?:\s+and\s+(?:tender\s+|fine\s+|small\s+)?(?:stems?|roots?))?\s*$/i, '').trim();
+  }
   // " and stems" / " and roots" / " and leaves" trailing on herbs — drop the alt
   // (recipe author specifying both halves of the herb; for shopping just buy the bunch).
   //   "fresh cilantro leaves and stems" → "fresh cilantro leaves"
@@ -1218,29 +1278,39 @@ export function parseIngredient(raw: string): {
       servingMarker = 'to serve';
     }
   }
-  // "to taste" / "use to taste" / "to your taste" / "as needed"
-  if (/,?\s*(?:use\s+)?to\s+(?:your\s+)?taste\b|,?\s*as\s+needed\b/i.test(str)) {
-    servingMarker = 'to taste';
-    str = str.replace(/,?\s*(?:use\s+)?to\s+(?:your\s+)?taste\b.*/i, '').trim();
-    str = str.replace(/,?\s*as\s+needed\b.*/i, '').trim();
-  }
-  // Garnish: "for garnish", "to garnish", "for garnishing", "for topping",
-  //          "to top", "to top with"
-  else if (/,?\s*(?:for|to)\s+(?:garnish(?:ing)?|topping|top(?:ping)?)\b/i.test(str)) {
-    servingMarker = 'to garnish';
-    str = str.replace(/,?\s*(?:for|to)\s+(?:garnish(?:ing)?|topping|top(?:ping)?\s*(?:with)?)\b.*/i, '').trim();
-  }
-  // Serving: "for serving", "to serve", "to/for drizzle/drizzling/squeeze/spoon/pour [over X]"
-  // ("over/on" optional so "olive oil, to drizzle" / "...for drizzling" also fire)
-  else if (/,?\s*(?:for\s+serving|to\s+serve|(?:to|for)\s+(?:squeeze|drizzle|drizzling|spoon|pour|pouring)(?:\s+(?:over|on))?)\b/i.test(str)) {
-    servingMarker = 'to serve';
-    str = str.replace(/,?\s*(?:for\s+serving|to\s+serve|(?:to|for)\s+(?:squeeze|drizzle|drizzling|spoon|pour|pouring)(?:\s+(?:over|on))?)\b.*/i, '').trim();
+  // Mask paren content so serving-marker strips don't cross paren boundaries
+  // (e.g. "(1 juiced and 1 cut into wedges for serving)" — the "for serving" is
+  // inside a paren that should be stripped wholesale, not used as a marker).
+  {
+    const smParens: string[] = [];
+    const masked = str.replace(/\([^)]*\)/g, m => { smParens.push(m); return 'XSM' + (smParens.length - 1) + 'X'; });
+    const restore = (s: string) => s.replace(/XSM(\d+)X/g, (_, i) => smParens[parseInt(i, 10)] || '');
+    let working = masked;
+    if (/,?\s*(?:use\s+)?to\s+(?:your\s+)?taste\b|,?\s*as\s+needed\b/i.test(working)) {
+      servingMarker = 'to taste';
+      working = working.replace(/,?\s*(?:use\s+)?to\s+(?:your\s+)?taste\b.*/i, '').trim();
+      working = working.replace(/,?\s*as\s+needed\b.*/i, '').trim();
+    }
+    else if (/,?\s*(?:for|to)\s+(?:garnish(?:ing)?|topping|top(?:ping)?)\b/i.test(working)) {
+      servingMarker = 'to garnish';
+      working = working.replace(/,?\s*(?:for|to)\s+(?:garnish(?:ing)?|topping|top(?:ping)?\s*(?:with)?)\b.*/i, '').trim();
+    }
+    else if (/,?\s*(?:for\s+serving|to\s+serve|(?:to|for)\s+(?:squeeze|drizzle|drizzling|spoon|pour|pouring)(?:\s+(?:over|on))?)\b/i.test(working)) {
+      servingMarker = 'to serve';
+      working = working.replace(/,?\s*(?:for\s+serving|to\s+serve|(?:to|for)\s+(?:squeeze|drizzle|drizzling|spoon|pour|pouring)(?:\s+(?:over|on))?)\b.*/i, '').trim();
+    }
+    str = restore(working);
   }
 
   // After serving-marker strip, clean up trailing orphan ", more" / "more"
   // left behind from ", more to taste" patterns:
   str = str.replace(/,\s*more\s*,?\s*$/i, '').trim();
   str = str.replace(/\s+more\s*$/i, '').trim();
+  // Trailing ", plus X" leftover after step 2b stripped "for serving":
+  //   "...basil, plus basil leaves" → "...basil"  (plus + repeat noun)
+  //   "...cumin, plus more" → "...cumin"
+  //   "...flakes, plus more" → "...flakes"
+  str = str.replace(/,\s*plus\s+(?:more|extra|\w+(?:\s+\w+)?)\s*,?\s*$/i, '').trim();
 
   // 2c. Strip bare recipe-note suffixes (no parens around them):
   //     "chicken legs see notes above"  →  "chicken legs"
@@ -1559,7 +1629,7 @@ export function parseIngredient(raw: string): {
   //   "tomatoes, sliced in half" / "in halves" → strip
   //   "ears of corn, shucked raw" → strip "raw"
   // Word-based forms first
-  str = str.replace(/,?\s*(?:in|into)\s+(?:half|halves|rounds|slices|wedges|chunks|cubes|pieces|florets|bite[\s-]size\s+\w+)\b.*$/i, '').trim();
+  str = str.replace(/,?\s*(?:in|into)\s+(?:half|halves|rounds|slices|wedges|chunks|cubes|pieces|florets|bite[\s-]size\s+\w+)\b[^)]*$/i, '').trim();
   // Digit-based: "into 1/2-inch chunks", "into 3-inch pieces", "into 1 inch cubes"
   str = str.replace(/,?\s*(?:in|into)\s+\d[^,]*$/i, '').trim();
   // Unicode-fraction-based: "into ½ inch thick rounds" — fractions get normalized
