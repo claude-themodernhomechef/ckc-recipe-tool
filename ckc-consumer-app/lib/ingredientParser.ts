@@ -182,6 +182,22 @@ const BASELINE_DB: Record<string, string> = {
   'walnut halves':'pantry-staples','walnut pieces':'pantry-staples',
   'pumpkin seeds':'pantry-staples','sunflower seeds':'pantry-staples',
   'chipotle peppers in adobo':'pantry-staples','chipotle peppers in adobo sauce':'pantry-staples',
+  // Round 29 DB additions
+  'green chiles':'pantry-staples','green chile':'pantry-staples',
+  'castelvetrano olives':'pantry-staples','frescatrano olives':'pantry-staples',
+  'cavatappi':'pantry-staples',
+  'lo mein':'pantry-staples','lo mein noodles':'pantry-staples','egg noodles':'pantry-staples',
+  'cornbread mix':'pantry-staples','cornbread':'pantry-consumables',
+  'instant yeast':'pantry-staples','active dry yeast':'pantry-staples','dry yeast':'pantry-staples',
+  'blackened seasoning':'pantry-staples','tuscan seasoning':'pantry-staples',
+  'havarti':'dairy','havarti dill':'dairy',
+  'crusty bread':'pantry-consumables','italian bread':'pantry-consumables','sourdough bread':'pantry-consumables',
+  'butternut squash':'produce','honeynut squash':'produce',
+  'mediterranean salad':'produce',
+  'beets':'produce','beet':'produce','golden beets':'produce',
+  'asparagus':'produce','asparagus spears':'produce',
+  'coconut manna':'pantry-consumables','coconut butter':'pantry-consumables',
+  'anchovy':'pantry-staples','anchovies':'pantry-staples','anchovy fillets':'pantry-staples','anchovy paste':'pantry-staples',
   'pickled red onions':'produce','pickled jalapenos':'produce','pickled jalapeños':'produce',
   // Round 28 backfill — high-frequency unmatched
   'sichuan peppercorn':'pantry-staples','sichuan peppercorns':'pantry-staples',
@@ -360,7 +376,7 @@ export function splitIngredientLine(raw: string): string[] {
   // BEFORE the comma-splitter sees the herb list (otherwise each herb becomes a
   // separate ingredient).
   raw = raw.replace(
-    /\b(?:tender|soft|mixed|fresh)?\s*herbs?\b\s*,?\s*such\s+as\s+([a-z][a-z\s,]*?)(?:,\s*or\s+(?:a\s+|some\s+)?combination[a-z\s]*)?\s*\.?\s*$/i,
+    /\b(?:tender|soft|mixed|fresh)?\s*herbs?\b\s*[:,]?\s*(?:such\s+as\s+)?([a-z][a-z\s,]*?)(?:,\s*or\s+(?:a\s+|some\s+)?combination[a-z\s]*)?\s*\.?\s*$/i,
     (_, list: string) => {
       const items = list
         .split(/\s*,\s*|\s+(?:and|or)\s+/i)
@@ -781,6 +797,33 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'worcestershire':'worcestershire sauce',
   // Round 27 backfill
   'poultry seasoning':'dried poultry blend',
+  // Round 29 backfill — single-recipe long tail
+  'canned garbanzo beans':'chickpeas', 'garbanzo beans':'chickpeas',
+  'roasted salted pepitas':'pumpkin seeds', 'salted pepitas':'pumpkin seeds',
+  'canned green chilis':'green chiles', 'canned green chilies':'green chiles',
+  'green chilis':'green chiles',
+  'delallo cavatappi pasta':'cavatappi', 'cavatappi pasta':'cavatappi',
+  'delallo castelvetrano olives':'castelvetrano olives',
+  'pitted castelvetrano olives':'castelvetrano olives',
+  'overnight jasmine rice':'jasmine rice',
+  'thick asparagus spears':'asparagus', 'asparagus spears':'asparagus',
+  'chiffonade basil':'basil',
+  'shelled salted pistachios':'pistachios', 'shelled pistachios':'pistachios',
+  'roasted beets':'beets', 'roasted beet':'beets',
+  'diy curry powder':'curry powder',
+  'tostadas':'tortilla chips', 'tostada chips':'tortilla chips',
+  'boneless center cut pork tenderloin':'pork tenderloin',
+  'pork tenderloin strips':'pork tenderloin',
+  'persian cucumbers':'cucumber',
+  'long wide pasta noodles':'pasta', 'wide pasta noodles':'pasta',
+  '-ingredient mediterranean salad':'mediterranean salad',
+  '6-ounce cod fish fillets':'cod fillet', 'cod fish fillets':'cod fillet',
+  'cod fillets':'cod fillet',
+  'sea salt':'salt', 'flaky sea salt':'salt', 'kosher sea salt':'salt',
+  'havarti dill cheese':'havarti', 'havarti dill':'havarti',
+  'honeynut squash':'butternut squash',
+  'arrowroot powder':'arrowroot',
+  'leafy parsley':'parsley',
   // Round 28 backfill
   'half & half':'half-and-half', 'half &amp; half':'half-and-half',
   'natural yoghurt':'yogurt', 'natural yogurt':'yogurt', 'yoghurt':'yogurt',
@@ -1071,6 +1114,16 @@ export function parseIngredient(raw: string): {
   str = str
     .replace(/\bhandfull\b/gi, 'handful')        // common typo
     .replace(/\bhandfulls\b/gi, 'handfuls')
+    // "<N> thin slices of <X>" → "<N> slices <X>" (drop "thin", keep slice count)
+    .replace(/\b(\d+)\s+thin\s+slices?\s+(?:of\s+)?/gi, '$1 slices ')
+    // "<N>-Ingredient X" recipe-title prefix — strip leading "<N>-Ingredient "
+    .replace(/^\d+\s*[-–—]\s*ingredient\s+/i, '')
+    // Cost annotation "$X.XX" — strip
+    .replace(/\$\s*\d+(?:\.\d+)?/g, '')
+    // ", washed" / ", washed and X" trailing produce-prep — strip
+    .replace(/,\s*washed(?:\s+and\s+\w+)?\s*$/i, '')
+    // Semicolon list: drop everything after ";"
+    .replace(/;[^]*$/, '')
     // "<N>% lean ground X" → "ground X" (fat% irrelevant for shopping)
     .replace(/\b\d+\s*%\s+lean\s+ground\s+/gi, 'ground ')
     // "a few" / "few" as a count → 2 (matches user spec for sprigs/etc.)
@@ -1148,6 +1201,11 @@ export function parseIngredient(raw: string): {
   str = str.replace(/,\s*(?:white\s+(?:and\s+(?:pale\s+|light\s+)?green\s+)?parts?(?:\s+only)?|(?:pale\s+|light\s+)?green\s+parts?(?:\s+only)?|tops?\s+only)\b.*$/i, '').trim();
   // ", soaked for X minutes/hours…" / ", soaked overnight" prep instruction — strip
   str = str.replace(/,\s*soaked\s+(?:for\s+\w+(?:\s+\w+)?|overnight|in\s+\w+).*$/i, '').trim();
+  // ", like X" trailing recipe-author preference (e.g. ", like Sauvignon Blanc")
+  str = str.replace(/,\s*like\s+[a-z][^,]*(?:,[^,]*)*$/i, '').trim();
+  // Orphan "thinly" / "thickly" not followed by sliced/cut/diced (the prep word
+  // got stripped earlier, leaving the adverb dangling) — strip.
+  str = str.replace(/\b(thinly|thickly)\s+(?!sliced|cut|diced|chopped|grated|shaved)/gi, '').trim();
   // " - I used <X>" / " - I use <Y>" trailing recipe-author note — strip everything after
   //   "Poultry Seasoning - I used McCormick which includes thyme..." → "Poultry Seasoning"
   str = str.replace(/\s*[-–—]\s*I\s+(?:used|use|like|recommend|prefer)\b.*$/i, '').trim();
@@ -1349,6 +1407,14 @@ export function parseIngredient(raw: string): {
   //   "(leaves of about 3 sprigs)" → strip
   //   "(tendrils)" → strip
   str = str.replace(/\(\s*(?:leaves|stems|tendrils|fronds|tops|roots|hot\s+house\s+cucumber)[^)]*\)/gi, '').trim();
+  // Strip parens whose content is only prep instructions (washed/scrubbed/dried/etc.)
+  //   "(washed, dried, and sliced thin)" → strip
+  //   "(scrubbed, dried, and sliced into 1/8 inch thick coins)" → strip
+  //   "(peeled and cut into cubes)" → strip
+  str = str.replace(
+    /\(\s*(?:washed|scrubbed|dried|peeled|cleaned|trimmed|patted|rinsed|husked|shucked|seeded|cored|stemmed|deveined|cut|chopped|sliced|diced|minced|grated|smashed|pressed|halved|quartered|cubed|julienned|torn|crumbled|crushed|drained)[^)]*\)/gi,
+    ''
+  ).trim();
   // Strip long author-note parens that begin with "I" / "you" / "we" or contain
   // first-person commentary like "have also used", "tried", "worked perfectly".
   //   "(I have also used cottage cheese it worked perfectly with my LF diet)" → strip
@@ -1871,6 +1937,9 @@ export function parseIngredient(raw: string): {
       str = str.replace(new RegExp(`(?<!-)\\b${w}\\b(?!-)`, 'gi'), '');
     }
   }
+  // Orphan "thinly" / "thickly" — after PREP_WORDS_SINGLE stripped "sliced"/"cut"/etc.,
+  // the adverb is left dangling without a verb. Strip it.
+  str = str.replace(/\b(?:thinly|thickly)\s+/gi, '').trim();
   // Trailing "about <fraction>" volume notes the recipe author added in parens
   // ("..., rough chopped, about 1/4-1/3 cup") — strip
   str = str.replace(/,?\s*about\s+\d[^,]*$/i, '').trim();
