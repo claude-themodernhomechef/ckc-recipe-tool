@@ -303,6 +303,13 @@ export function splitIngredientLine(raw: string): string[] {
   // Pre-strip "(or any X like Y, Z)" parenthetical alternatives BEFORE splitting.
   // Otherwise the splitter sees the "or"/commas inside parens and splits incorrectly.
   raw = raw.replace(/\s*\(\s*or\s+(?:any\s+)?[^)]+\)/gi, '').trim();
+  // Pre-collapse "Juice of N <citrus>" → "N <citrus>" BEFORE mega-split (otherwise
+  // mega-split sees "1 large lemon" as a new ingredient and splits "Juice of"
+  // into its own segment).
+  raw = raw.replace(/^juice\s+of\s+(\d+(?:\s+\d+\/\d+)?(?:\.\d+)?)\s+(?:large\s+|small\s+|medium\s+|big\s+)?(lemons?|limes?|oranges?|grapefruits?)\b[^()]*/i,
+    (_, n, fruit) => `${n} ${fruit}`).trim();
+  raw = raw.replace(/^juice\s+of\s+(\d+(?:\s+\d+\/\d+)?(?:\.\d+)?)\s+(?:large\s+|small\s+|medium\s+|big\s+)?(lemons?|limes?|oranges?|grapefruits?)\b/i,
+    '$1 $2').trim();
   // Pre-strip ", plus X for Y" / ", plus more" trailing — recipe author offering
   // an extra portion that isn't a separate ingredient.
   raw = raw.replace(/,\s*plus\s+(?:more|extra|\w+(?:\s+\w+)?)\s+(?:for\s+\w+|as\s+needed|to\s+taste|if\s+needed|to\s+\w+).*$/i, '').trim();
@@ -478,6 +485,8 @@ export function splitIngredientLine(raw: string): string[] {
     /,?\s*to\s+serve\b.*$/i,
     /,?\s*for\s+garnish(?:ing)?\b.*$/i,
     /,?\s*to\s+garnish\b.*$/i,
+    /,?\s*for\s+topping\b.*$/i,
+    /,?\s*to\s+top\b.*$/i,
     /,?\s*(?:to|for)\s+(?:squeeze|drizzle|drizzling|spoon|pour|pouring)(?:\s+(?:over|on))?\b.*$/i,
     /,?\s*to\s+taste\b.*$/i,
     /,?\s*as\s+needed\b.*$/i,
@@ -578,7 +587,16 @@ export function splitIngredientLine(raw: string): string[] {
       // is offering accompaniments, even if not all are in the DB.
       // EXCEPTION: when both halves end with the same noun (e.g. "white rice or
       // brown rice"), it's a variety alternative — take first only, don't split.
+      const isServingAnd = !!trailingSuffix && sep === ' and ';
       const isServingOr = !!trailingSuffix && sep === ' or ';
+      // Permissive " and " split for serving lists too — recipe author offering
+      // multiple accompaniments. "Crumbled feta and crushed pita chips, for topping"
+      // → both items as garnishes.
+      if (isServingAnd) {
+        final.push(before, after);
+        didSplit = true;
+        break;
+      }
       if (isServingOr) {
         const beforeLastWord = before.split(/\s+/).pop()?.toLowerCase() || '';
         const afterLastWord  = after.split(/\s+/).pop()?.toLowerCase() || '';
@@ -1065,7 +1083,7 @@ export function parseIngredient(raw: string): {
   // Catches: ", sliced thin", ", coarsely chopped", ", finely minced", ", smashed",
   //          ", scaled & gutted", ", cleaned", ", thinly sliced", ", more to taste"
   str = str.replace(
-    /,\s*(?:thinly|thickly|finely|coarsely|roughly|rough|loosely|small|large|medium)?\s*(?:sliced|chopped|minced|diced|grated|crushed|smashed|pressed|peeled|halved|quartered|cubed|julienned|torn|whisked|beaten|squeezed|trimmed|cleaned|rinsed|patted|scrubbed|scaled|gutted|cracked|cooked|warmed|toasted|quartered\s+lengthwise)\b[^,]*$/i,
+    /,\s*(?:thinly|thickly|finely|coarsely|roughly|rough|loosely|small|large|medium)?\s*(?:sliced|chopped|minced|diced|grated|crushed|smashed|pressed|peeled|halved|quartered|cubed|julienned|torn|whisked|beaten|squeezed|trimmed|cleaned|rinsed|patted|scrubbed|scaled|gutted|cracked|cooked|warmed|toasted|quartered\s+lengthwise)\b[^,)]*$/i,
     ''
   ).trim();
   // Trailing "& <prep>" / "and <prep>" right after a stripped clause
@@ -1254,6 +1272,11 @@ export function parseIngredient(raw: string): {
   str = str.replace(/\(\([^)]*\)[^)]*\)/g, '').trim();
   // Only strip long parens that contain letters suggesting a recipe note (e.g. "see", "page", "about")
   str = str.replace(/\((?:see|about|note|if|for|use|make|recipe)[^)]*\)/gi, '').trim();
+  // Strip parens that start with "leaves of" / "stems of" / "tendrils" / etc. —
+  // recipe-author clarification of ingredient parts, not a real spec.
+  //   "(leaves of about 3 sprigs)" → strip
+  //   "(tendrils)" → strip
+  str = str.replace(/\(\s*(?:leaves|stems|tendrils|fronds|tops|roots|hot\s+house\s+cucumber)[^)]*\)/gi, '').trim();
   // Strip long author-note parens that begin with "I" / "you" / "we" or contain
   // first-person commentary like "have also used", "tried", "worked perfectly".
   //   "(I have also used cottage cheese it worked perfectly with my LF diet)" → strip
