@@ -566,6 +566,10 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'sage leaf':'sage',
   // Onion family
   'green onion':'scallion', 'spring onion':'scallion', 'scallions':'scallion', 'green onions':'scallion',
+  'spring onions':'scallion',
+  'lower-sodium soy sauce':'soy sauce', 'low-sodium soy sauce':'soy sauce', 'reduced-sodium soy sauce':'soy sauce',
+  'black peppercorns':'black pepper', 'black peppercorn':'black pepper',
+  'sichuan peppercorns':'sichuan peppercorn',
   // Garlic — normalize word order; bare "garlic" = cloves
   'garlic clove':'garlic cloves',
   'clove garlic':'garlic cloves',
@@ -798,6 +802,8 @@ export function parseIngredient(raw: string): {
   str = str
     .replace(/\bhandfull\b/gi, 'handful')        // common typo
     .replace(/\bhandfulls\b/gi, 'handfuls')
+    // "half and half" — preserve through stop-word filter (which strips "and")
+    .replace(/\bhalf\s+and\s+half\b/gi, 'half-and-half')
     // Normalize multi-word fat descriptors so "fat" isn't stripped mid-phrase by
     // PREP_WORDS_SINGLE, and so the stop-word filter can preserve them as a unit.
     //   "full fat coconut milk"  →  "full-fat coconut milk"
