@@ -821,6 +821,10 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   // Round 32 — Goodbye Meatballs follow-up
   'canned tomatoes':'whole peeled tomatoes',
   'canned whole peeled tomatoes':'whole peeled tomatoes',
+  'shredded cotija cheese':'cotija cheese', 'shredded cotija':'cotija cheese',
+  'canned black beans':'black beans',
+  'canned chickpeas':'chickpeas','canned kidney beans':'kidney beans','canned pinto beans':'pinto beans',
+  'canned cannellini beans':'cannellini beans','canned navy beans':'navy beans',
   'whole milk full-fat ricotta cheese':'ricotta cheese',
   'whole milk ricotta cheese':'ricotta cheese',
   'full-fat ricotta cheese':'ricotta cheese',
