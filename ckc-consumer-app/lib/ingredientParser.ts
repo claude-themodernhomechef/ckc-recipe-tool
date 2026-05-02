@@ -427,7 +427,8 @@ export function splitIngredientLine(raw: string): string[] {
   //   "1/2 teaspoon each: crushed red pepper flakes, dried oregano, salt"
   //     → ["1/2 tsp crushed red pepper flakes", "1/2 tsp dried oregano", "1/2 tsp salt"]
   {
-    const eachM = raw.match(/^(\d+(?:\s+\d+)?\/\d+|\d+\.?\d*)\s+(\w+)\s+each\s*[:.\-—]\s*(.+)$/i);
+    // First try with explicit colon/dash punctuation, then fall back to no-punct form.
+    const eachM = raw.match(/^(\d+(?:\s+\d+)?\/\d+|\d+\.?\d*)\s+(\w+)\s+each\s*(?:[:.\-—]\s*|\s+)(.+)$/i);
     if (eachM) {
       const qtyStr = eachM[1];
       const unitStr = eachM[2];
@@ -758,6 +759,8 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'pepitas':'pumpkin seeds', 'pepita':'pumpkin seeds',
   'cornflour':'cornstarch', 'corn flour':'cornstarch',
   'worcestershire':'worcestershire sauce',
+  // Round 27 backfill
+  'poultry seasoning':'dried poultry blend',
   // Garlic — normalize word order; bare "garlic" = cloves
   // 'garlic clove' singular preserved at qty=1 by parser logic; do NOT alias to plural.
   'clove garlic':'garlic cloves',
@@ -1079,6 +1082,9 @@ export function parseIngredient(raw: string): {
   str = str.replace(/,\s*(?:white\s+(?:and\s+(?:pale\s+|light\s+)?green\s+)?parts?(?:\s+only)?|(?:pale\s+|light\s+)?green\s+parts?(?:\s+only)?|tops?\s+only)\b.*$/i, '').trim();
   // ", soaked for X minutes/hours…" / ", soaked overnight" prep instruction — strip
   str = str.replace(/,\s*soaked\s+(?:for\s+\w+(?:\s+\w+)?|overnight|in\s+\w+).*$/i, '').trim();
+  // " - I used <X>" / " - I use <Y>" trailing recipe-author note — strip everything after
+  //   "Poultry Seasoning - I used McCormick which includes thyme..." → "Poultry Seasoning"
+  str = str.replace(/\s*[-–—]\s*I\s+(?:used|use|like|recommend|prefer)\b.*$/i, '').trim();
   // Multi-word trailing prep clause after comma — strip ENTIRE clause to end.
   // Catches: ", sliced thin", ", coarsely chopped", ", finely minced", ", smashed",
   //          ", scaled & gutted", ", cleaned", ", thinly sliced", ", more to taste"
