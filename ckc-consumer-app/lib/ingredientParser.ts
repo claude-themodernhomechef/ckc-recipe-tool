@@ -818,6 +818,26 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'center-cut salmon filets':'salmon filets', 'center cut salmon filets':'salmon filets',
   'center-cut salmon filet':'salmon filet', 'center cut salmon filet':'salmon filet',
   'center-cut, skin-on salmon fillets':'salmon fillets',
+  // Round 31 — bottom-tier unstickers
+  'salt + pepper':'salt',
+  '6-inch tortillas':'corn tortillas', '8-inch tortillas':'flour tortillas','10-inch tortillas':'flour tortillas',
+  'shredded cotija cheese':'cotija', 'cotija cheese':'cotija',
+  'frescatrano olives':'castelvetrano olives',
+  'baby creamer potato':'yukon gold potato', 'baby creamer potatoes':'yukon gold potatoes',
+  'creamer potato':'yukon gold potato', 'creamer potatoes':'yukon gold potatoes',
+  'pure clam juice':'clam juice',
+  'skinless halibut':'halibut', 'skinless cod':'cod', 'skinless salmon':'salmon',
+  'skinless tilapia':'tilapia',
+  'frozen sweet peas':'frozen peas', 'sweet peas':'peas',
+  'grassfed ground beef':'ground beef', 'grass-fed ground beef':'ground beef',
+  'grassfed ground turkey':'ground turkey', 'grass-fed ground turkey':'ground turkey',
+  'dried poultry blend':'poultry seasoning',
+  'mixed herbs':'fresh herbs',
+  'maple chipotle ketchup':'ketchup',
+  'head red cabbage':'red cabbage', 'head cabbage':'cabbage', 'head green cabbage':'green cabbage',
+  "za'atar viniagrette":"za'atar", "za’atar viniagrette":"za'atar",
+  'persian cucumbers cut into bite sized':'cucumber',
+  'persian cucumbers':'cucumber',
   // Round 29 backfill — single-recipe long tail
   'canned garbanzo beans':'chickpeas', 'garbanzo beans':'chickpeas',
   'roasted salted pepitas':'pumpkin seeds', 'salted pepitas':'pumpkin seeds',
@@ -1235,6 +1255,20 @@ export function parseIngredient(raw: string): {
   str = str.replace(/,\s*(?:white\s+(?:and\s+(?:pale\s+|light\s+)?green\s+)?parts?(?:\s+only)?|(?:pale\s+|light\s+)?green\s+parts?(?:\s+only)?|tops?\s+only)\b.*$/i, '').trim();
   // ", soaked for X minutes/hours…" / ", soaked overnight" prep instruction — strip
   str = str.replace(/,\s*soaked\s+(?:for\s+\w+(?:\s+\w+)?|overnight|in\s+\w+).*$/i, '').trim();
+  // "X-ounce can/jar/bag/box <noun>" leading prefix — strip the size+container so
+  // the noun is what gets matched. The container+oz transform later still fires
+  // on the qty extracted upstream.
+  //   "(10-oz.) bag frozen sweet peas" → "frozen sweet peas"
+  //   "14-ounce cans coconut milk" → "coconut milk"
+  str = str.replace(/^\(?\s*\d+(?:\.\d+)?[\s-]*(?:oz|ounce|ounces?)\.?\s*\)?\s*(?:can|cans|jar|jars|bag|bags|box|boxes|package|packages|pkg|tin|tins|bottle|bottles)\s+/i, '');
+  // "into bite sized X" / "into bite-sized X" / "into X pieces" trailing — strip
+  str = str.replace(/\s+(?:cut\s+)?into\s+bite[\s-]*siz(?:e|ed)\s+\w+\s*$/i, '').trim();
+  // ", taste and adjust X" / "(taste and adjust X)" — recipe-author note
+  str = str.replace(/,?\s*\(?\s*taste\s+(?:and\s+)?adjust\b[^)]*\)?\s*$/i, '').trim();
+  // "swish of X" / "sprinkle of X" / "drizzle of X" / "lil <X>" — vague qty markers
+  str = str.replace(/^(?:just\s+)?a?\s*(?:swish|sprinkle|drizzle|lil|little|tiny\s+bit|small\s+amount)\s+of\s+/i, '').trim();
+  str = str.replace(/^just\s+a?\s*lil\s+/i, '').trim();
+  str = str.replace(/^just\s+a?\s*little\s+/i, '').trim();
   // ", like X" trailing recipe-author preference (e.g. ", like Sauvignon Blanc")
   str = str.replace(/,\s*like\s+[a-z][^,]*(?:,[^,]*)*$/i, '').trim();
   // Orphan "thinly" / "thickly" not followed by sliced/cut/diced (the prep word
