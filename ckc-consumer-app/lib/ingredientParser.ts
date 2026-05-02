@@ -300,7 +300,11 @@ export function splitIngredientLine(raw: string): string[] {
   raw = raw.replace(/\s*\(\s*or\s+(?:any\s+)?[^)]+\)/gi, '').trim();
   // Pre-insert a space between letter+digit (recipe authors sometimes paste
   // "2 eggs2-3 garlic" with no space) so qty boundaries are visible.
-  raw = raw.replace(/([a-z])(\d)/gi, '$1 $2');
+  // Decode HTML entities first so &frac14;/&#39; etc. don't get mangled.
+  raw = raw
+    .replace(/&frac14;/g, '¼').replace(/&frac12;/g, '½').replace(/&frac34;/g, '¾')
+    .replace(/&#(?:8211|8212);/g, '-')
+    .replace(/([a-z])(\d)/gi, '$1 $2');
   // " or sub <X> and <Y>" / " or sub <X>" trailing alternative — strip entirely
   // (recipe author offering a substitute, not a separate ingredient).
   raw = raw.replace(/\s*[-–—]?\s*or\s+sub\b[^()]*$/i, '').trim();
@@ -861,8 +865,10 @@ export function parseIngredient(raw: string): {
     .replace(/^a\s+few\s+/i, '2 ')
     .replace(/^few\s+/i, '2 ')
     // Pre-insert a space between letter+digit when smushed (recipe authors
-    // sometimes paste "2 eggs2-3 garlic" with no space) so the splitter sees
-    // a clean word boundary.
+    // sometimes paste "2 eggs2-3 garlic" with no space). Decode HTML fraction
+    // entities first so &frac14;/&frac12; aren't split into "frac 14" / "frac 12".
+    .replace(/&frac14;/g, '¼').replace(/&frac12;/g, '½').replace(/&frac34;/g, '¾')
+    .replace(/&#(?:8211|8212);/g, '-')
     .replace(/([a-z])(\d)/gi, '$1 $2')
     // Hyphenated "freshly-cracked" / "fresh-cracked" / "fresh-ground" — these are
     // prep-method modifiers, not product descriptors. Strip the hyphenated word
