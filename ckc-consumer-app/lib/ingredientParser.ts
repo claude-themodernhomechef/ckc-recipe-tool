@@ -182,6 +182,10 @@ const BASELINE_DB: Record<string, string> = {
   'walnut halves':'pantry-staples','walnut pieces':'pantry-staples',
   'pumpkin seeds':'pantry-staples','sunflower seeds':'pantry-staples',
   'chipotle peppers in adobo':'pantry-staples','chipotle peppers in adobo sauce':'pantry-staples',
+  // Round 34
+  'ginger-garlic paste':'pantry-staples','ginger garlic paste':'pantry-staples',
+  'marinara sauce':'pantry-staples','tomato basil sauce':'pantry-staples',
+  'wild rice':'pantry-staples','wild rice blend':'pantry-staples',
   // Round 30 DB — unsticks bottom-tier recipes
   'cooked shredded chicken':'protein','shredded chicken':'protein',
   'enchilada sauce':'pantry-staples','red enchilada sauce':'pantry-staples',
@@ -808,8 +812,7 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'pepitas':'pumpkin seeds', 'pepita':'pumpkin seeds',
   'cornflour':'cornstarch', 'corn flour':'cornstarch',
   'worcestershire':'worcestershire sauce',
-  // Round 27 backfill
-  'poultry seasoning':'dried poultry blend',
+  // Round 27 backfill — REMOVED circular alias 'poultry seasoning' → 'dried poultry blend' (round 34: nutrition DB has 'poultry seasoning' as canonical)
   // Round 30 — alias to nutrition-DB canonical names for stuck recipes
   'stone-ground polenta':'polenta', 'stoneground polenta':'polenta',
   'center cut bacon':'bacon', 'center-cut bacon':'bacon',
@@ -818,6 +821,32 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'center-cut salmon filets':'salmon filets', 'center cut salmon filets':'salmon filets',
   'center-cut salmon filet':'salmon filet', 'center cut salmon filet':'salmon filet',
   'center-cut, skin-on salmon fillets':'salmon fillets',
+  // Round 34 — clean-up of high-frequency 80-99% tier issues
+  'dried poultry blend':'poultry seasoning',
+  'steamed broccoli':'broccoli',
+  'dry wild rice blend':'wild rice blend',
+  'dry wild rice':'wild rice',
+  'non-fat greek yogurt':'fat free greek yogurt',
+  '0% fat greek yoghurt':'fat free greek yogurt', '0% fat greek yogurt':'fat free greek yogurt',
+  'fat-free greek yogurt':'fat free greek yogurt',
+  'parmigiano':'parmigiano-reggiano',
+  'parmigiano reggiano cheese':'parmigiano-reggiano cheese',
+  'parmigiano reggiano':'parmigiano-reggiano',
+  'gluten-free tamari soy sauce':'soy sauce',
+  'jarred favorite marinara sauce':'marinara sauce', 'favorite marinara sauce':'marinara sauce',
+  'turkish persian cucumbers':'cucumber', 'turkish persian english cucumbers':'cucumber',
+  'persian cucumbers into coins':'cucumber',
+  'bonesless skinless chicken thighs':'boneless skinless chicken thighs',
+  'red capsicum':'red bell pepper', 'capsicum':'bell pepper',
+  'firm slightly tart apples':'apples', 'firm tart apples':'apples',
+  'boiled russet potatoes':'russet potatoes',
+  'finely-chopped kale tough stems removed':'kale',
+  'cubes ice':'ice', 'ice cubes':'ice',
+  'wide strips of lime zest from 1 lime':'lime', 'lime zest from 1 lime':'lime',
+  'bulb garlic separated into cloves':'garlic',
+  'sour cream full-fat greek yogurt':'sour cream',
+  'shelled salted pistachios ground':'pistachios',
+  'crusty bread for dipping':'crusty bread',
   // Round 33 — Lamb Chops + Broccolini
   'rack of lamb':'lamb racks',
   'fresh poultry herbs':'poultry blend fresh herbs',
