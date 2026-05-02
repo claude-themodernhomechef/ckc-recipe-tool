@@ -928,6 +928,11 @@ export function parseIngredient(raw: string): {
     if (/^I\s+(?:use|have|recommend|like|love)\s+/i.test(trimmed) && trimmed.length < 50) {
       return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
     }
+    // Skip lines that are only dashes/em-dashes/whitespace (recipe-section
+    // separators that got entity-decoded to dashes).
+    if (/^[\s\-–—]+$/.test(trimmed)) {
+      return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
+    }
   }
 
   // 0-fix-typos. Common spelling/punctuation fixes that break downstream parsing.
@@ -1010,6 +1015,26 @@ export function parseIngredient(raw: string): {
   str = str.replace(/,\s*(?:white\s+(?:and\s+(?:pale\s+|light\s+)?green\s+)?parts?(?:\s+only)?|(?:pale\s+|light\s+)?green\s+parts?(?:\s+only)?|tops?\s+only)\b.*$/i, '').trim();
   // ", soaked for X minutes/hours…" / ", soaked overnight" prep instruction — strip
   str = str.replace(/,\s*soaked\s+(?:for\s+\w+(?:\s+\w+)?|overnight|in\s+\w+).*$/i, '').trim();
+  // Multi-word trailing prep clause after comma — strip ENTIRE clause to end.
+  // Catches: ", sliced thin", ", coarsely chopped", ", finely minced", ", smashed",
+  //          ", scaled & gutted", ", cleaned", ", thinly sliced", ", more to taste"
+  str = str.replace(
+    /,\s*(?:thinly|thickly|finely|coarsely|roughly|rough|loosely|small|large|medium)?\s*(?:sliced|chopped|minced|diced|grated|crushed|smashed|pressed|peeled|halved|quartered|cubed|julienned|torn|whisked|beaten|squeezed|trimmed|cleaned|rinsed|patted|scrubbed|scaled|gutted|cracked|cooked|warmed|toasted|quartered\s+lengthwise)\b[^,]*$/i,
+    ''
+  ).trim();
+  // Trailing "& <prep>" / "and <prep>" right after a stripped clause
+  str = str.replace(/\s*[&]\s*(?:scaled|gutted|cleaned|trimmed|peeled)\s*$/i, '').trim();
+  // ", more to taste" / ", more if needed" / orphan ", more" — strip
+  str = str.replace(/,\s*more\s+(?:to\s+taste|if\s+needed|as\s+needed).*$/i, '').trim();
+  str = str.replace(/,?\s+more\s*,?\s*$/i, '').trim();
+  // Trailing "- optional" / "- optional!" with em-dash or hyphen
+  str = str.replace(/\s*[-–—]\s*optional\!?\s*$/i, '').trim();
+  // ", <noun>, or <noun>" alternative list (simple non-prep alt-list at end)
+  //   "1 tsp brown sugar, maple, or honey" → "1 tsp brown sugar"
+  str = str.replace(/,\s*\w+(?:\s+\w+)?,?\s+or\s+\w+(?:\s+\w+)?\s*$/i, '').trim();
+  // "leaves and tender stems" / "leaves and stems" → "" (drop entire trailing
+  // herb-part clause; user prefers just "fresh cilantro" not "fresh cilantro leaves").
+  str = str.replace(/\s+(?:leaves|leaf)(?:\s+and\s+(?:tender\s+)?(?:stems?|roots?))?\s*$/i, '').trim();
   // " and stems" / " and roots" / " and leaves" trailing on herbs — drop the alt
   // (recipe author specifying both halves of the herb; for shopping just buy the bunch).
   //   "fresh cilantro leaves and stems" → "fresh cilantro leaves"
@@ -1052,6 +1077,31 @@ export function parseIngredient(raw: string): {
   str = str.replace(/^(\d+(?:\s+\d+\/\d+)?)\s+ears?\s+of\s+corn\b/i, '$1 ears corn');
   // ", shucked" / ", shucked raw" / ", husked" — strip ear-of-corn prep instructions
   str = str.replace(/,?\s*(?:shucked|husked)(?:\s+raw)?\b.*$/i, '').trim();
+  // "(thinly|finely)? sliced or shaved" → "shredded" (recipe author's intent for
+  // thin-cut cabbage/produce; consumer buys pre-shredded).
+  str = str.replace(/\b(?:thinly|finely)?\s*sliced\s+or\s+shaved\b/gi, 'shredded').trim();
+  // Strip "assorted" / "various" / "mixed" leading on herbs/produce — vague qualifier
+  str = str.replace(/\bassorted\s+/gi, '').replace(/\bvarious\s+/gi, '');
+  // ", fronds for garnish" / ", fronds discarded" — secondary part of same plant; strip
+  str = str.replace(/,\s*fronds?\s+(?:for\s+\w+|discarded|reserved)\b.*$/i, '').trim();
+  // "for stuffing" trailing instruction (not a real prep, just placement)
+  str = str.replace(/\s+for\s+stuffing\b.*$/i, '').trim();
+  // "<noun> from a can of <noun>" — recipe author repeats noun for emphasis; dedupe
+  //   "chipotles from a can of chipotles in adobo" → "chipotles in adobo"
+  str = str.replace(/\b(\w+)\s+from\s+a\s+can\s+of\s+\1\b/gi, '$1');
+  // ", plus N <unit> <X>" trailing measurement add-on — strip
+  //   "...adobo, plus 1 tbsp. adobo sauce" → "...adobo"
+  str = str.replace(/,\s*plus\s+\d+(?:\/\d+)?\s+\w+\.?\s+[\w\s]+$/i, '').trim();
+  // "whole fish (X, Y or Z)" → "whole <noun-of-X>". Take last word of first
+  // alternative as the variety (drops color adjectives like "red snapper" → "snapper").
+  //   "1 3lb whole fish (red snapper, branzino or seabass)" → "1 3lb whole snapper"
+  str = str.replace(
+    /\b(whole\s+)fish\s*\(\s*([\w]+(?:\s+[\w]+)?)\s*[,][^)]*\)/i,
+    (_, lead: string, firstOpt: string) => {
+      const tokens = firstOpt.trim().split(/\s+/);
+      return `${lead}${tokens[tokens.length - 1]}`;
+    }
+  );
   // "rind of <N> <fruit>" / "<N> rind of <fruit>" / "<N> <fruit> rind" → "<N> <fruit>"
   // (rind quantity refers to the fraction of fruit needed — a recipe calling for
   // "1/2 rind of a preserved lemon" needs 1/2 of one preserved lemon).
@@ -1186,6 +1236,11 @@ export function parseIngredient(raw: string): {
     servingMarker = 'to serve';
     str = str.replace(/,?\s*(?:for\s+serving|to\s+serve|(?:to|for)\s+(?:squeeze|drizzle|drizzling|spoon|pour|pouring)(?:\s+(?:over|on))?)\b.*/i, '').trim();
   }
+
+  // After serving-marker strip, clean up trailing orphan ", more" / "more"
+  // left behind from ", more to taste" patterns:
+  str = str.replace(/,\s*more\s*,?\s*$/i, '').trim();
+  str = str.replace(/\s+more\s*$/i, '').trim();
 
   // 2c. Strip bare recipe-note suffixes (no parens around them):
   //     "chicken legs see notes above"  →  "chicken legs"
@@ -1858,10 +1913,10 @@ export function parseIngredient(raw: string): {
       if (/\d/.test(c) && /(?:oz|ounce|inch|"|lb|pound|gram|kg|ml|cm|mm)\b/i.test(c)) {
         return `(${c})`;
       }
-      // Keep parens whose content is an alternative list (commas + "or") with
-      // recognized herbs/ingredients — recipe author's flexibility for the user.
-      //   "(cilantro, dill, mint, or basil)"
-      if (/,/.test(c) && /\bor\b/.test(c) &&
+      // Keep parens whose content is an herb/produce alternative list — recipe
+      // author's flexibility for the user. "or" optional (allows comma-only lists).
+      //   "(cilantro, dill, mint, or basil)" / "(thyme, oregano, parsley, rosemary)"
+      if (/,/.test(c) &&
           /\b(?:basil|cilantro|parsley|mint|dill|chives|tarragon|thyme|rosemary|sage|oregano|chervil|marjoram)\b/i.test(c)) {
         return ` (${c})`;
       }
@@ -1885,7 +1940,7 @@ export function parseIngredient(raw: string): {
       // matters at the store ("fresh dill" ≠ "dried dill").
       if ((lower === 'fresh' || lower === 'freshly') && i + 1 < all.length) {
         const next = all[i + 1].toLowerCase().replace(/[.,]+$/, '');
-        const HERBS = ['ginger','cilantro','parsley','basil','mint','dill','chives','tarragon','thyme','rosemary','sage','oregano'];
+        const HERBS = ['ginger','cilantro','parsley','basil','mint','dill','chives','tarragon','thyme','rosemary','sage','oregano','chili','chile','chilies','chiles','chives'];
         if (HERBS.includes(next)) return true;
       }
       // Preserve "whole" when followed by a count-noun protein OR "milk".
@@ -1893,7 +1948,7 @@ export function parseIngredient(raw: string): {
       //   "whole milk mozzarella" / "whole milk ricotta" — fat content matters
       if (lower === 'whole' && i + 1 < all.length) {
         const next = all[i + 1].toLowerCase().replace(/[.,]+$/, '');
-        const PROTEINS = ['chicken','turkey','duck','fish','salmon','trout','goose','rabbit','lamb'];
+        const PROTEINS = ['chicken','turkey','duck','fish','salmon','trout','goose','rabbit','lamb','snapper','branzino','seabass','bass','halibut','cod','tilapia','mackerel'];
         if (PROTEINS.includes(next) || next === 'milk' || next === 'wheat' || next === 'grain') return true;
       }
       // Preserve "full-fat" / "low-fat" / "reduced-fat" / "non-fat" when paired with
