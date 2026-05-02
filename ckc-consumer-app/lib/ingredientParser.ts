@@ -307,7 +307,7 @@ export function splitIngredientLine(raw: string): string[] {
   // the splitter's "and" pass doesn't break on the herb list:
   //   "tender herbs, such as basil and mint" → "tender herbs, such as basil"
   raw = raw.replace(/(\bsuch\s+as\s+\w+(?:\s+\w+)?)\s*(?:,\s*\w+(?:\s+\w+)?)*\s+(?:and|or|&)\s+\w+(?:\s+\w+)?/gi, '$1');
-  // Inline split: catches recipe-author smush of two ingredients onto one line.
+  // Inline split: catches recipe-author smush of multiple ingredients onto one line.
   //   "1½ yellow onions, finely chopped 6 garlic cloves, thinly sliced"
   //     → "1½ yellow onions, finely chopped" + "6 garlic cloves, thinly sliced"
   // Pattern: <prep-word> <digit>...<piece-or-unit-noun> — the piece word at the
@@ -317,6 +317,26 @@ export function splitIngredientLine(raw: string): string[] {
     /(\b(?:chopped|sliced|minced|diced|peeled|halved|quartered|grated|crushed|cubed|julienned|torn|whisked|beaten))\s+(\d+(?:\s+\d+\/\d+)?(?:\.\d+)?\s+(?:[a-z]+\s+){0,2}(?:cup|cups|tbsp|tablespoon|tablespoons|tsp|teaspoon|teaspoons|oz|ounce|ounces|lb|pound|pounds|clove|cloves|head|heads|bunch|bunches|stalk|stalks|piece|pieces|slice|slices|sprig|sprigs|can|cans)\b)/gi,
     '$1, $2'
   );
+  // Mega-paragraph splitter: when a single line contains MULTIPLE "<num> <unit/count-noun>"
+  // patterns (recipe author dumped everything into one line), insert commas before
+  // every secondary qty-start. Skip content inside parens (preserve "(8 ounces)" etc.).
+  // Triggers only when the line is long (>60 chars) and we find ≥2 unit-anchored qtys.
+  if (raw.length > 60) {
+    // Mask paren content so qtys inside parens aren't split:
+    const parens: string[] = [];
+    const masked = raw.replace(/\([^)]*\)/g, m => { parens.push(m); return 'XPAREN' + (parens.length - 1) + 'X'; });
+    // Split before "<num>[/<num>][\s<num>/<num>]\s<unit-or-count-noun>" mid-string
+    const QTY_BOUNDARY = /(?<=[a-z\)])\s+(?=(?:\d+(?:\/\d+)?(?:\s+\d+\/\d+)?|\d+\s*-\s*\d+)\s+(?:[a-z]+\s+){0,2}(?:cups?|tbsps?|tablespoons?|tsps?|teaspoons?|oz|ounces?|lbs?|pounds?|grams?|ml|cloves?|heads?|bunches?|stalks?|sprigs?|cans?|pkgs?|pieces?|slices?|sticks?|ears?|eggs?|onions?|shallots?|tomatoes?|potatoes?|carrots?|lemons?|limes?|peppers?|chilies|chiles|leeks?|cucumbers?|basil|cilantro|parsley|mint|dill|chives|tarragon|thyme|rosemary|sage|oregano|salt|pepper))/gi;
+    const splits = masked.split(QTY_BOUNDARY).map(s => s.trim()).filter(Boolean);
+    if (splits.length >= 3) {
+      // 3+ qty-anchored chunks = a true mega-paragraph. Return splits directly,
+      // bypassing the conservative comma-merge below (which would re-glue them).
+      const restored = splits
+        .map(s => s.replace(/XPAREN(\d+)X/g, (_, i) => parens[parseInt(i, 10)] || '').trim())
+        .filter(Boolean);
+      return restored;
+    }
+  }
 
   // "Optional for serving: <X>" — the part after the colon is the actual
   // ingredient. Rewrite to "<X>, for serving" so the parser picks it up
@@ -432,11 +452,13 @@ export function splitIngredientLine(raw: string): string[] {
     return false;
   }
 
-  // Pass 2: "and" / "or" / "/" split — split when BOTH sides END with a known DB ingredient
+  // Pass 2: "and" / "/" split — split when BOTH sides END with a known DB ingredient.
+  // NOTE: " or " intentionally excluded — policy is "always take first option".
+  // The parser's name-level " or " collapse (in parseIngredient) handles those.
   const final: string[] = [];
   for (const segment of working) {
     let didSplit = false;
-    for (const sep of [' and ', ' or ', '/']) {
+    for (const sep of [' and ', '/']) {
       const idx = segment.toLowerCase().indexOf(sep);
       if (idx < 0) continue;
       const before = segment.slice(0, idx).trim();
@@ -478,6 +500,7 @@ const UNITS: Record<string, string> = {
   slices:'slice', slice:'slice',
   pieces:'piece', piece:'piece', pcs:'piece',
   filets:'filet', filet:'filet', fillets:'filet', fillet:'filet',
+  ears:'ear', ear:'ear',
   sprigs:'sprig', sprig:'sprig',
   stalks:'stalk', stalk:'stalk',
   pinches:'pinch', pinch:'pinch',
@@ -571,7 +594,7 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'black peppercorns':'black pepper', 'black peppercorn':'black pepper',
   'sichuan peppercorns':'sichuan peppercorn',
   // Garlic — normalize word order; bare "garlic" = cloves
-  'garlic clove':'garlic cloves',
+  // 'garlic clove' singular preserved at qty=1 by parser logic; do NOT alias to plural.
   'clove garlic':'garlic cloves',
   'cloves garlic':'garlic cloves',
   'garlic':'garlic cloves',
@@ -802,6 +825,15 @@ export function parseIngredient(raw: string): {
   str = str
     .replace(/\bhandfull\b/gi, 'handful')        // common typo
     .replace(/\bhandfulls\b/gi, 'handfuls')
+    // "a few" / "few" as a count → 2 (matches user spec for sprigs/etc.)
+    .replace(/^a\s+few\s+/i, '2 ')
+    .replace(/^few\s+/i, '2 ')
+    // Hyphenated "freshly-cracked" / "fresh-cracked" / "fresh-ground" — these are
+    // prep-method modifiers, not product descriptors. Strip the hyphenated word
+    // entirely so it doesn't merge with adjacent stop-word strips.
+    //   "fresh-cracked black pepper"  →  "black pepper"
+    //   "freshly-ground black pepper" →  "black pepper"
+    .replace(/\b(?:freshly|fresh)[\s-]+(?:cracked|ground|grated|chopped|squeezed|picked)\b/gi, '')
     // "half and half" — preserve through stop-word filter (which strips "and")
     .replace(/\bhalf\s+and\s+half\b/gi, 'half-and-half')
     // Normalize multi-word fat descriptors so "fat" isn't stripped mid-phrase by
@@ -865,10 +897,19 @@ export function parseIngredient(raw: string): {
   // "Small chunk <X>" / "Chunk of <X>" → "<X>, for garnish"
   // (recipe author wrote "shave off a piece for garnish" intent).
   str = str.replace(/^(?:small\s+|large\s+)?chunk\s+(?:of\s+)?(.+)$/i, '$1, for garnish').trim();
-  // "rind of <N> <fruit>" / "<N> <fruit> rind" → "<N> <fruit>"
-  // (round up rind to whole fruit — recipe author bought the fruit, not just the peel).
-  //   "rind of 1 preserved lemon" → "1 preserved lemon"
-  //   "rind of a lemon"            → "1 lemon"
+  // "<N> ears of corn" → "<N> ears corn" (strip "of" so unit=ear, name=corn,
+  // then piece-word reorder produces "<N> corn ears")
+  str = str.replace(/^(\d+(?:\s+\d+\/\d+)?)\s+ears?\s+of\s+corn\b/i, '$1 ears corn');
+  // ", shucked" / ", shucked raw" / ", husked" — strip ear-of-corn prep instructions
+  str = str.replace(/,?\s*(?:shucked|husked)(?:\s+raw)?\b.*$/i, '').trim();
+  // "rind of <N> <fruit>" / "<N> rind of <fruit>" / "<N> <fruit> rind" → "<N> <fruit>"
+  // (rind quantity refers to the fraction of fruit needed — a recipe calling for
+  // "1/2 rind of a preserved lemon" needs 1/2 of one preserved lemon).
+  //   "rind of 1 preserved lemon"           → "1 preserved lemon"
+  //   "rind of a lemon"                     → "1 lemon"
+  //   "1/2 rind of a preserved lemon"       → "1/2 preserved lemon"
+  //   "1/2 rind of 1 preserved lemon"       → "1/2 preserved lemon"
+  str = str.replace(/^(\d+(?:\/\d+)?(?:\s+\d+\/\d+)?)\s+rind\s+of\s+(?:a\s+|an\s+|\d+\s+)?(?=[a-z])/i, '$1 ');
   str = str.replace(/^rind\s+of\s+(?:a\s+|an\s+)?(?=[a-z])/i, '1 ');
   str = str.replace(/^rind\s+of\s+(?=\d)/i, '');
   str = str.replace(/\s+rind\s*$/i, '').trim();
@@ -1249,21 +1290,32 @@ export function parseIngredient(raw: string): {
   if (servingMarker) {
     str = str.replace(/^(?:\d+(?:\s*[-–]\s*\d+)?\s+|two\s+|three\s+|four\s+|five\s+|a\s+|an\s+)?handfuls?\s+of\s+/i, '').trim();
   }
-  // "N handfuls of X" — count + ingredient (no parens). Range form too.
-  str = str.replace(/^(\d+(?:\s*[-–]\s*\d+)?|two|three|four|five|a)\s+handfuls?\s+of\s+/i, (_, num) => {
+  // "N handfuls of X" / "N handfuls X" — count + ingredient (no parens). Range form too.
+  // For herbs (basil/cilantro/parsley/mint/etc.), 1 handful = 2 oz fresh leaves.
+  // For olives, 1 handful = 1/3 cup. Everything else, 1 handful = 1 oz.
+  const HERB_RE = /\b(?:basil|cilantro|coriander|parsley|mint|dill|chives|tarragon|thyme|rosemary|sage|oregano|chervil|marjoram)\b/i;
+  str = str.replace(/^(\d+(?:\s*[-–]\s*\d+)?|two|three|four|five|a)\s+handfuls?\s+(?:of\s+)?/i, (_, num) => {
     const numWord: Record<string, number> = { a: 1, two: 2, three: 3, four: 4, five: 5 };
     let n: number;
     if (numWord[num.toLowerCase()] != null) n = numWord[num.toLowerCase()];
     else {
-      // Range like "3-4" — use lower
       const rangeM = num.match(/^(\d+)/);
       n = rangeM ? parseInt(rangeM[1], 10) : 1;
     }
-    // For olives specifically, convert handful → 1/3 cup
     if (/\bolives?\b/i.test(str)) return `${n / 3} cup `;
+    if (HERB_RE.test(str)) return `${n * 2} oz fresh `;
     return `${n} oz `;
   });
-  str = str.replace(/^handfuls?\s+of\s+/i, () => /\bolives?\b/i.test(str) ? '1/3 cup ' : '1 oz ').trim();
+  str = str.replace(/^handfuls?\s+(?:of\s+)?/i, () => {
+    if (/\bolives?\b/i.test(str)) return '1/3 cup ';
+    if (HERB_RE.test(str)) return '2 oz fresh ';
+    return '1 oz ';
+  }).trim();
+  // For herb handfuls, append " leaves" to make the shopping name explicit
+  // (matches user spec: "handful basil, torn" → "2 oz fresh basil leaves")
+  if (/^\d+\s+oz\s+fresh\s+/i.test(str) && HERB_RE.test(str) && !/\bleaves?\b/i.test(str)) {
+    str = str.replace(/^(\d+\s+oz\s+fresh\s+\w+)\b/i, '$1 leaves');
+  }
   // "N lemons/limes/oranges, sliced into slices/wedges" → "1 <citrus>"
   // (3-4 lemon wedges come from cutting one lemon, not buying 3-4 lemons).
   // NOTE: "rounds" intentionally excluded — recipe author cuts rounds from
@@ -1719,9 +1771,9 @@ export function parseIngredient(raw: string): {
   // Don't fire when the noun already contains the piece word (avoids
   // "4 white fish filets filets"). Skip if name is empty (already handled
   // by other rules like piece-count logic above).
-  if ((unit === 'filet' || unit === 'fillet' || unit === 'slice' || unit === 'piece') && qty > 0 && name) {
+  if ((unit === 'filet' || unit === 'fillet' || unit === 'slice' || unit === 'piece' || unit === 'ear' || unit === 'sprig' || unit === 'stalk') && qty > 0 && name) {
     const nameLower = name.toLowerCase();
-    const pieceWords = ['filet','filets','fillet','fillets','slice','slices','piece','pieces'];
+    const pieceWords = ['filet','filets','fillet','fillets','slice','slices','piece','pieces','ear','ears','sprig','sprigs','stalk','stalks'];
     const alreadyHasPiece = pieceWords.some(w => new RegExp(`\\b${w}\\b`, 'i').test(nameLower));
     if (!alreadyHasPiece) {
       // Pluralize when qty > 1 (or fractional > 1)
@@ -1733,7 +1785,11 @@ export function parseIngredient(raw: string): {
 
   // 17. Special cases & alias map
   if (unit === 'clove' && !name) name = 'garlic';
-  if (unit === 'clove' && (name === 'garlic' || name === 'garlic cloves')) { name = 'garlic cloves'; unit = ''; }
+  if (unit === 'clove' && (name === 'garlic' || name === 'garlic cloves' || name === 'garlic clove')) {
+    // Singular "1 garlic clove" when qty=1, plural otherwise
+    name = qty === 1 ? 'garlic clove' : 'garlic cloves';
+    unit = '';
+  }
   if (unit === 'head'  && name === 'garlic') { name = 'garlic (whole head)'; unit = ''; }
   // Garlic measured in tsp/tbsp (minced) → convert to clove-equivalent so it aggregates cleanly
   if ((unit === 'tsp' || unit === 'tbsp') && (name === 'garlic' || name === 'garlic cloves')) {
@@ -1869,7 +1925,7 @@ export function parseIngredient(raw: string): {
       // If "salt" is the dominant word and the rest is modifiers/qty noise,
       // collapse to just "salt". Allows things like "+ 1/8 teaspoon salt" or
       // "cooking / kosher salt" to all become just "salt".
-      const NOISE_TOKENS = new Set(['+', '-', '/', ',', 'teaspoon','teaspoons','tsp','tablespoon','tablespoons','tbsp','of','to','taste','cooking','baking','or','and','&','plus','diamond','crystal','morton','mortons']);
+      const NOISE_TOKENS = new Set(['+', '-', '/', ',', 'teaspoon','teaspoons','tsp','tablespoon','tablespoons','tbsp','of','to','taste','cooking','baking','or','and','&','plus','diamond','crystal','morton','mortons','pinch','pinches','dash','dashes','generous','small','large','big','heaping']);
       // Pre-tokenize: split on whitespace AND on slash so "cooking/kosher" → ["cooking","kosher"]
       const tokens = name.split(/[\s/]+/).filter(Boolean);
       const remainingNonModifier = tokens.filter(t =>
