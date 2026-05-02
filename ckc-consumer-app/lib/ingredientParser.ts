@@ -355,7 +355,12 @@ export function splitIngredientLine(raw: string): string[] {
   // Decode HTML entities first so &frac14;/&#39; etc. don't get mangled.
   raw = raw
     .replace(/&frac14;/g, '¼').replace(/&frac12;/g, '½').replace(/&frac34;/g, '¾')
+    .replace(/&#8531;/g, '⅓').replace(/&#8532;/g, '⅔')
+    .replace(/&#8533;/g, '⅕').replace(/&#8537;/g, '⅙').replace(/&#8539;/g, '⅛')
     .replace(/&#(?:8211|8212);/g, '-')
+    .replace(/&#(?:8216|8217|39);/g, "'")
+    .replace(/&#(?:8220|8221);/g, '"')
+    .replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ')
     .replace(/([a-z])(\d)/gi, '$1 $2');
   // " or sub <X> and <Y>" / " or sub <X>" trailing alternative — strip entirely
   // (recipe author offering a substitute, not a separate ingredient).
@@ -1112,6 +1117,14 @@ export function parseIngredient(raw: string): {
   // 0-fix-typos. Common spelling/punctuation fixes that break downstream parsing.
   // Always normalize these even if the recipe author left them broken.
   str = str
+    // Entity decode FIRST so semicolons in entities aren't broken by later strips
+    .replace(/&frac14;/g, '¼').replace(/&frac12;/g, '½').replace(/&frac34;/g, '¾')
+    .replace(/&#8531;/g, '⅓').replace(/&#8532;/g, '⅔')
+    .replace(/&#8533;/g, '⅕').replace(/&#8537;/g, '⅙').replace(/&#8539;/g, '⅛')
+    .replace(/&#(?:8211|8212);/g, '-')
+    .replace(/&#(?:8216|8217|39);/g, "'")
+    .replace(/&#(?:8220|8221);/g, '"')
+    .replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ')
     .replace(/\bhandfull\b/gi, 'handful')        // common typo
     .replace(/\bhandfulls\b/gi, 'handfuls')
     // "<N> thin slices of <X>" → "<N> slices <X>" (drop "thin", keep slice count)
@@ -1122,7 +1135,7 @@ export function parseIngredient(raw: string): {
     .replace(/\$\s*\d+(?:\.\d+)?/g, '')
     // ", washed" / ", washed and X" trailing produce-prep — strip
     .replace(/,\s*washed(?:\s+and\s+\w+)?\s*$/i, '')
-    // Semicolon list: drop everything after ";"
+    // Semicolon list: drop everything from ";" onward (entities decoded above)
     .replace(/;[^]*$/, '')
     // "<N>% lean ground X" → "ground X" (fat% irrelevant for shopping)
     .replace(/\b\d+\s*%\s+lean\s+ground\s+/gi, 'ground ')
@@ -1133,7 +1146,12 @@ export function parseIngredient(raw: string): {
     // sometimes paste "2 eggs2-3 garlic" with no space). Decode HTML fraction
     // entities first so &frac14;/&frac12; aren't split into "frac 14" / "frac 12".
     .replace(/&frac14;/g, '¼').replace(/&frac12;/g, '½').replace(/&frac34;/g, '¾')
+    .replace(/&#8531;/g, '⅓').replace(/&#8532;/g, '⅔')
+    .replace(/&#8533;/g, '⅕').replace(/&#8537;/g, '⅙').replace(/&#8539;/g, '⅛')
     .replace(/&#(?:8211|8212);/g, '-')
+    .replace(/&#(?:8216|8217|39);/g, "'")
+    .replace(/&#(?:8220|8221);/g, '"')
+    .replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ')
     .replace(/([a-z])(\d)/gi, '$1 $2')
     // Hyphenated "freshly-cracked" / "fresh-cracked" / "fresh-ground" — these are
     // prep-method modifiers, not product descriptors. Strip the hyphenated word
@@ -1155,8 +1173,8 @@ export function parseIngredient(raw: string): {
     // Fix "1/ 4" → "1/4" (stray space inside fraction)
     .replace(/(\d)\/\s+(\d)/g, '$1/$2')
     .replace(/(\d)\s+\/(\d)/g, '$1/$2')
-    // "1 and 1/2" → "1 1/2" (drop "and" inside mixed numbers)
-    .replace(/(\d)\s+and\s+(\d+\/\d+)/g, '$1 $2')
+    // "1 and 1/2" / "1 & 1/2" → "1 1/2" (drop conjunction inside mixed numbers)
+    .replace(/(\d)\s+(?:and|&)\s+(\d+\/\d+)/g, '$1 $2')
     // "X oz/Y g" or "X oz / Y g" — drop the metric equivalent after slash
     //   "7oz/200g broccolini" → "7oz broccolini"
     //   "3.5oz/100g creamy blue cheese" → "3.5oz creamy blue cheese"
