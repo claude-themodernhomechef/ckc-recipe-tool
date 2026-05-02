@@ -89,7 +89,8 @@ const BASELINE_DB: Record<string, string> = {
   'vegan butter':'dairy','ghee':'dairy',
   'milk':'dairy','whole milk':'dairy','skim milk':'dairy','2% milk':'dairy',
   'oat milk':'dairy','almond milk':'dairy','coconut milk':'dairy','soy milk':'dairy',
-  'heavy cream':'dairy','heavy whipping cream':'dairy','half and half':'dairy',
+  'heavy cream':'dairy','heavy whipping cream':'dairy','half and half':'dairy','half-and-half':'dairy',
+  'buttermilk':'dairy','low-fat buttermilk':'dairy',
   'sour cream':'dairy','cream cheese':'dairy','ricotta':'dairy',
   'mascarpone':'dairy','cottage cheese':'dairy',
   'parmesan':'dairy','mozzarella':'dairy','cheddar':'dairy','feta':'dairy',
@@ -174,6 +175,10 @@ const BASELINE_DB: Record<string, string> = {
   'sesame seeds':'pantry-staples','pine nuts':'pantry-staples',
   'walnuts':'pantry-staples','almonds':'pantry-staples','pecans':'pantry-staples',
   'cashews':'pantry-staples','peanuts':'pantry-staples','pistachios':'pantry-staples',
+  'walnut halves':'pantry-staples','walnut pieces':'pantry-staples',
+  'pumpkin seeds':'pantry-staples','sunflower seeds':'pantry-staples',
+  'chipotle peppers in adobo':'pantry-staples','chipotle peppers in adobo sauce':'pantry-staples',
+  'pickled red onions':'produce','pickled jalapenos':'produce','pickled jalapeños':'produce',
 
   // ── Pantry Consumables ───────────────────────────────────────────────────────
   'tortillas':'pantry-consumables','flour tortillas':'pantry-consumables',
@@ -625,6 +630,10 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'lower-sodium soy sauce':'soy sauce', 'low-sodium soy sauce':'soy sauce', 'reduced-sodium soy sauce':'soy sauce',
   'black peppercorns':'black pepper', 'black peppercorn':'black pepper',
   'sichuan peppercorns':'sichuan peppercorn',
+  // Synonym aliases (round 22 backfill)
+  'pepitas':'pumpkin seeds', 'pepita':'pumpkin seeds',
+  'cornflour':'cornstarch', 'corn flour':'cornstarch',
+  'worcestershire':'worcestershire sauce',
   // Garlic — normalize word order; bare "garlic" = cloves
   // 'garlic clove' singular preserved at qty=1 by parser logic; do NOT alias to plural.
   'clove garlic':'garlic cloves',
@@ -929,6 +938,19 @@ export function parseIngredient(raw: string): {
   str = str.replace(/,\s*(?:white\s+(?:and\s+(?:pale\s+|light\s+)?green\s+)?parts?(?:\s+only)?|(?:pale\s+|light\s+)?green\s+parts?(?:\s+only)?|tops?\s+only)\b.*$/i, '').trim();
   // ", soaked for X minutes/hours…" / ", soaked overnight" prep instruction — strip
   str = str.replace(/,\s*soaked\s+(?:for\s+\w+(?:\s+\w+)?|overnight|in\s+\w+).*$/i, '').trim();
+  // " and stems" / " and roots" / " and leaves" trailing on herbs — drop the alt
+  // (recipe author specifying both halves of the herb; for shopping just buy the bunch).
+  //   "fresh cilantro leaves and stems" → "fresh cilantro leaves"
+  str = str.replace(/\b(leaves|stems|tops)\s+and\s+(?:leaves|stems|tops|roots)\b/i, '$1').trim();
+  // Unwrap descriptor parens immediately following an adjective/prep word:
+  //   "boneless, (skinless chicken breasts)"  → "boneless skinless chicken breasts"
+  //   "1 ½ cups shredded (matchstick carrots)" → "1 ½ cups shredded matchstick carrots"
+  // Pattern: after comma OR adjective, an opening paren whose content starts with
+  // a known descriptor (skinless/bone-in/matchstick/pre-shredded/etc.) — drop the parens.
+  str = str.replace(
+    /(,?\s*(?:boneless|skinless|bone-in|matchstick|pre-shredded|shredded|cooked|chopped|sliced|diced|peeled))\s*,?\s*\(\s*((?:skinless|bone-in|boneless|matchstick|pre-shredded|shredded|cooked|chopped|sliced|diced|peeled|skin-on)\b[^)]*)\)/gi,
+    (_, lead, inside) => `${lead.replace(/^,\s*/, ' ')} ${inside}`
+  );
   // ", omit if X" / ", omit when X" — recipe-author conditional note — strip
   str = str.replace(/,\s*omit\s+(?:if|when)\b.*$/i, '').trim();
   // ", either X or Y" / ", either pre-packaged or sliced…" — alternative source list
@@ -1802,15 +1824,24 @@ export function parseIngredient(raw: string): {
     //   "linguine or spaghetti"  → "linguine"  (parts[0] already complete)
     const firstWords = parts[0].split(/\s+/);
     const lastWords  = parts[parts.length - 1].split(/\s+/);
+    const PREP_WORDS_FOR_OR = ['shredded','chopped','sliced','grated','minced','cubed','crushed','diced','smashed','julienned'];
+    const lastWordOfFirst = (firstWords[firstWords.length - 1] || '').toLowerCase();
+    const firstEndsInPrep = PREP_WORDS_FOR_OR.includes(lastWordOfFirst);
     // If parts[0] is already a complete known ingredient, use it as-is.
     // (Prevents "butter or vegan butter" → "butter butter" and
     //  "butter or 1 1/2 teaspoons olive oil" → "butter oil".)
     if (firstWords.length === 1 && lastWords.length > 1 && !INGREDIENT_DB[parts[0].toLowerCase()]) {
       const tail = lastWords[lastWords.length - 1];
-      // Dedupe: don't append the same word that's already there
       name = (tail.toLowerCase() === parts[0].toLowerCase())
         ? parts[0]
         : `${parts[0]} ${tail}`.trim();
+    } else if (firstEndsInPrep && lastWords.length >= 1) {
+      // First part ends in a prep word with no noun ("cooked shredded" or
+      // "shredded or chopped X"); append the noun from the last part.
+      //   "cooked shredded or chopped chicken" → "cooked shredded chicken"
+      //   "shredded or cubed chicken" → "shredded chicken"
+      const tail = lastWords[lastWords.length - 1];
+      name = `${parts[0]} ${tail}`.trim();
     } else {
       name = parts[0];
     }
