@@ -810,6 +810,14 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'worcestershire':'worcestershire sauce',
   // Round 27 backfill
   'poultry seasoning':'dried poultry blend',
+  // Round 30 — alias to nutrition-DB canonical names for stuck recipes
+  'stone-ground polenta':'polenta', 'stoneground polenta':'polenta',
+  'center cut bacon':'bacon', 'center-cut bacon':'bacon',
+  'center cut bacon slices':'bacon', 'center-cut bacon slices':'bacon',
+  'center-cut salmon':'salmon', 'center cut salmon':'salmon',
+  'center-cut salmon filets':'salmon filets', 'center cut salmon filets':'salmon filets',
+  'center-cut salmon filet':'salmon filet', 'center cut salmon filet':'salmon filet',
+  'center-cut, skin-on salmon fillets':'salmon fillets',
   // Round 29 backfill — single-recipe long tail
   'canned garbanzo beans':'chickpeas', 'garbanzo beans':'chickpeas',
   'roasted salted pepitas':'pumpkin seeds', 'salted pepitas':'pumpkin seeds',
