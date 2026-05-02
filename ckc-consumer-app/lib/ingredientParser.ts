@@ -298,6 +298,16 @@ export function splitIngredientLine(raw: string): string[] {
   // Pre-strip "(or any X like Y, Z)" parenthetical alternatives BEFORE splitting.
   // Otherwise the splitter sees the "or"/commas inside parens and splits incorrectly.
   raw = raw.replace(/\s*\(\s*or\s+(?:any\s+)?[^)]+\)/gi, '').trim();
+  // Pre-insert a space between letter+digit (recipe authors sometimes paste
+  // "2 eggs2-3 garlic" with no space) so qty boundaries are visible.
+  raw = raw.replace(/([a-z])(\d)/gi, '$1 $2');
+  // " or sub <X> and <Y>" / " or sub <X>" trailing alternative — strip entirely
+  // (recipe author offering a substitute, not a separate ingredient).
+  raw = raw.replace(/\s*[-–—]?\s*or\s+sub\b[^()]*$/i, '').trim();
+  // Trailing "- optional" / " optional" lone marker after em-dash/hyphen — strip
+  raw = raw.replace(/\s*[-–—]\s*optional\b\s*\.?\s*$/i, '').trim();
+  // Lone trailing em-dash/hyphen left over from earlier strips
+  raw = raw.replace(/\s*[-–—]\s*$/, '').trim();
   // Pre-strip long author-note parens BEFORE splitting (commas inside the paren
   // would otherwise trigger a bad comma-split). Mirrors the rule in parseIngredient.
   //   "(I have also used cottage cheese it worked perfectly...)" → strip
@@ -321,16 +331,28 @@ export function splitIngredientLine(raw: string): string[] {
   // patterns (recipe author dumped everything into one line), insert commas before
   // every secondary qty-start. Skip content inside parens (preserve "(8 ounces)" etc.).
   // Triggers only when the line is long (>60 chars) and we find ≥2 unit-anchored qtys.
-  if (raw.length > 60) {
+  // Pre-strip "either X or Y" alternative-source phrase before mega-split sees it
+  // (otherwise the inner qty in "either pre-packaged or sliced from 2 large heads"
+  // would trigger a bad split).
+  raw = raw.replace(/,\s*either\b[^,]*(?:or\b[^,]*)?(?=,|$)/i, '').trim();
+  // Pre-strip "or <qty> <unit> <noun>" alternative phrases — recipe author
+  // offering a substitute, not a separate ingredient. Take first option only.
+  //   "1/2 tablespoon butter or 1 1/2 teaspoons olive oil" → "1/2 tablespoon butter"
+  // Skip if a serving suffix is present (handled by Pass 2 split for accompaniments).
+  if (!/\bfor\s+serving|to\s+serve|to\s+garnish|for\s+garnish|to\s+taste|as\s+needed\b/i.test(raw)) {
+    raw = raw.replace(/\s+or\s+(?:\d+(?:\/\d+)?(?:\s+\d+\/\d+)?|\d+\s*-\s*\d+)\s+(?:[a-z]+\s+){0,3}(?:cups?|tbsps?|tablespoons?|tsps?|teaspoons?|oz|ounces?|lbs?|pounds?)\s+[a-z][^,()]*$/i, '').trim();
+  }
+  if (raw.length >= 20) {
     // Mask paren content so qtys inside parens aren't split:
     const parens: string[] = [];
     const masked = raw.replace(/\([^)]*\)/g, m => { parens.push(m); return 'XPAREN' + (parens.length - 1) + 'X'; });
     // Split before "<num>[/<num>][\s<num>/<num>]\s<unit-or-count-noun>" mid-string
     const QTY_BOUNDARY = /(?<=[a-z\)])\s+(?=(?:\d+(?:\/\d+)?(?:\s+\d+\/\d+)?|\d+\s*-\s*\d+)\s+(?:[a-z]+\s+){0,2}(?:cups?|tbsps?|tablespoons?|tsps?|teaspoons?|oz|ounces?|lbs?|pounds?|grams?|ml|cloves?|heads?|bunches?|stalks?|sprigs?|cans?|pkgs?|pieces?|slices?|sticks?|ears?|eggs?|onions?|shallots?|tomatoes?|potatoes?|carrots?|lemons?|limes?|peppers?|chilies|chiles|leeks?|cucumbers?|basil|cilantro|parsley|mint|dill|chives|tarragon|thyme|rosemary|sage|oregano|salt|pepper))/gi;
     const splits = masked.split(QTY_BOUNDARY).map(s => s.trim()).filter(Boolean);
-    if (splits.length >= 3) {
-      // 3+ qty-anchored chunks = a true mega-paragraph. Return splits directly,
-      // bypassing the conservative comma-merge below (which would re-glue them).
+    if (splits.length >= 2) {
+      // 2+ qty-anchored chunks → likely a smushed multi-ingredient line.
+      // Return splits directly, bypassing the conservative comma-merge below
+      // (which would re-glue them).
       const restored = splits
         .map(s => s.replace(/XPAREN(\d+)X/g, (_, i) => parens[parseInt(i, 10)] || '').trim())
         .filter(Boolean);
@@ -453,17 +475,23 @@ export function splitIngredientLine(raw: string): string[] {
   }
 
   // Pass 2: "and" / "/" split — split when BOTH sides END with a known DB ingredient.
-  // NOTE: " or " intentionally excluded — policy is "always take first option".
-  // The parser's name-level " or " collapse (in parseIngredient) handles those.
+  // EXCEPTION: when a trailing serving suffix was captured (for serving / to serve /
+  //            to garnish), DO split on " or " — the recipe author is offering a
+  //            choice of accompaniment, both should appear in the shopping list.
+  //            Otherwise " or " is excluded ("always take first option" policy).
+  const seps = trailingSuffix ? [' and ', ' or ', '/'] : [' and ', '/'];
   const final: string[] = [];
   for (const segment of working) {
     let didSplit = false;
-    for (const sep of [' and ', '/']) {
+    for (const sep of seps) {
       const idx = segment.toLowerCase().indexOf(sep);
       if (idx < 0) continue;
       const before = segment.slice(0, idx).trim();
       const after  = segment.slice(idx + sep.length).trim();
-      if (endsWithKnownIngredient(before) && endsWithKnownIngredient(after)) {
+      // When a serving suffix is set, be permissive on " or " — recipe author
+      // is offering accompaniments, even if not all are in the DB.
+      const isServingOr = !!trailingSuffix && sep === ' or ';
+      if ((endsWithKnownIngredient(before) && endsWithKnownIngredient(after)) || isServingOr) {
         final.push(before, after);
         didSplit = true;
         break;
@@ -805,6 +833,10 @@ export function parseIngredient(raw: string): {
     if (/^(?:optional\s*[:.\-—]\s*)?any\s+of\s+your\s+(?:other\s+)?favorite\b/i.test(trimmed)) {
       return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
     }
+    // "Any of these X" / "Any of those X" — vague placeholder, skip.
+    if (/^any\s+of\s+(?:these|those|the)\b/i.test(trimmed)) {
+      return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
+    }
     // "Any other X you'd like to add" / "Any other X you'd like" — vague placeholder, skip.
     // Pre-decode HTML entity for apostrophe (&#39; = ') so the regex catches the
     // common recipe-author "you'd" form.
@@ -828,6 +860,10 @@ export function parseIngredient(raw: string): {
     // "a few" / "few" as a count → 2 (matches user spec for sprigs/etc.)
     .replace(/^a\s+few\s+/i, '2 ')
     .replace(/^few\s+/i, '2 ')
+    // Pre-insert a space between letter+digit when smushed (recipe authors
+    // sometimes paste "2 eggs2-3 garlic" with no space) so the splitter sees
+    // a clean word boundary.
+    .replace(/([a-z])(\d)/gi, '$1 $2')
     // Hyphenated "freshly-cracked" / "fresh-cracked" / "fresh-ground" — these are
     // prep-method modifiers, not product descriptors. Strip the hyphenated word
     // entirely so it doesn't merge with adjacent stop-word strips.
@@ -883,9 +919,23 @@ export function parseIngredient(raw: string): {
   // "<N> <citrus>, zested and juiced" / "zest and juice of N <citrus>" simplification
   str = str.replace(/^(\d+(?:\s*\d+\/\d+)?\s+(?:lemons?|limes?|oranges?))\s*,\s*zested\s+and\s+juiced\b.*$/i, '$1');
   // "<N> <leek/scallion>, white and pale green parts only" → "<N> <leek>"
-  str = str.replace(/,\s*(?:white\s+(?:and\s+(?:pale\s+|light\s+)?green\s+)?parts?\s+only|(?:pale\s+|light\s+)?green\s+parts?\s+only|tops?\s+only)\b.*$/i, '').trim();
+  // Also covers "white and green parts thinly sliced" (no "only") for scallions.
+  str = str.replace(/,\s*(?:white\s+(?:and\s+(?:pale\s+|light\s+)?green\s+)?parts?(?:\s+only)?|(?:pale\s+|light\s+)?green\s+parts?(?:\s+only)?|tops?\s+only)\b.*$/i, '').trim();
   // ", soaked for X minutes/hours…" / ", soaked overnight" prep instruction — strip
   str = str.replace(/,\s*soaked\s+(?:for\s+\w+(?:\s+\w+)?|overnight|in\s+\w+).*$/i, '').trim();
+  // ", omit if X" / ", omit when X" — recipe-author conditional note — strip
+  str = str.replace(/,\s*omit\s+(?:if|when)\b.*$/i, '').trim();
+  // ", either X or Y" / ", either pre-packaged or sliced…" — alternative source list
+  str = str.replace(/,\s*either\b[^,]*(?:or\b[^,]*)?(?:,[^,]*)*$/i, '').trim();
+  // ", strings removed" / ", strings discarded" — produce prep instructions
+  str = str.replace(/,\s*strings?\s+(?:removed|discarded|trimmed)\b.*$/i, '').trim();
+  // "<noun>, <prep-list> or <prep>" — when the comma part is a prep-only list
+  // ending with " or X" (e.g. "pressed or minced", "minced or grated"), strip it.
+  str = str.replace(/,\s*(?:pressed|minced|chopped|grated|sliced|crushed|peeled|grated)(?:\s+or\s+(?:pressed|minced|chopped|grated|sliced|crushed|peeled|grated))+\b.*$/i, '').trim();
+  // ", X or Y, <prep>" — alternative-list of substitutable proteins/ingredients
+  // followed by a prep clause. Recipe author offering options; take first option only.
+  //   "boneless pork chops, tenderloin or loin, thinly sliced" → "boneless pork chops"
+  str = str.replace(/,\s*[a-z][a-z\s-]*\s+or\s+[a-z][a-z\s-]*,\s*(?:thinly|finely|coarsely|roughly)?\s*(?:sliced|chopped|diced|minced|grated)\b.*$/i, '').trim();
   // ", X or other Y" / ", X or any other Y" — alternative-list after comma; drop entirely
   //   "8 ounces baby arugula, spinach or other tender greens" → "8 ounces baby arugula"
   str = str.replace(/,\s*[a-z][^,]*\s+or\s+(?:any\s+)?(?:other|similar)\b.*$/i, '').trim();
@@ -1699,7 +1749,7 @@ export function parseIngredient(raw: string): {
       if (lower === 'whole' && i + 1 < all.length) {
         const next = all[i + 1].toLowerCase().replace(/[.,]+$/, '');
         const PROTEINS = ['chicken','turkey','duck','fish','salmon','trout','goose','rabbit','lamb'];
-        if (PROTEINS.includes(next) || next === 'milk') return true;
+        if (PROTEINS.includes(next) || next === 'milk' || next === 'wheat' || next === 'grain') return true;
       }
       // Preserve "full-fat" / "low-fat" / "reduced-fat" / "non-fat" when paired with
       // a dairy/coconut product — fat content matters for nutrition + diet compliance.
@@ -1746,8 +1796,15 @@ export function parseIngredient(raw: string): {
     //   "linguine or spaghetti"  → "linguine"  (parts[0] already complete)
     const firstWords = parts[0].split(/\s+/);
     const lastWords  = parts[parts.length - 1].split(/\s+/);
-    if (firstWords.length === 1 && lastWords.length > 1) {
-      name = `${parts[0]} ${lastWords[lastWords.length - 1]}`.trim();
+    // If parts[0] is already a complete known ingredient, use it as-is.
+    // (Prevents "butter or vegan butter" → "butter butter" and
+    //  "butter or 1 1/2 teaspoons olive oil" → "butter oil".)
+    if (firstWords.length === 1 && lastWords.length > 1 && !INGREDIENT_DB[parts[0].toLowerCase()]) {
+      const tail = lastWords[lastWords.length - 1];
+      // Dedupe: don't append the same word that's already there
+      name = (tail.toLowerCase() === parts[0].toLowerCase())
+        ? parts[0]
+        : `${parts[0]} ${tail}`.trim();
     } else {
       name = parts[0];
     }
@@ -1792,10 +1849,10 @@ export function parseIngredient(raw: string): {
   }
   if (unit === 'head'  && name === 'garlic') { name = 'garlic (whole head)'; unit = ''; }
   // Garlic measured in tsp/tbsp (minced) → convert to clove-equivalent so it aggregates cleanly
-  if ((unit === 'tsp' || unit === 'tbsp') && (name === 'garlic' || name === 'garlic cloves')) {
+  if ((unit === 'tsp' || unit === 'tbsp') && (name === 'garlic' || name === 'garlic cloves' || name === 'garlic clove')) {
     qty = Math.round((unit === 'tbsp' ? qty * 3 : qty) * 10) / 10;
     unit = '';
-    name = 'garlic cloves';
+    name = qty === 1 ? 'garlic clove' : 'garlic cloves';
   }
   // Note: previously converted "inch" → "tbsp" for ginger (microplaned equivalent),
   // but that produced confusing display ("1 tbsp ginger" when consumer needs to
