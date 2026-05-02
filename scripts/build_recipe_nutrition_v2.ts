@@ -115,6 +115,7 @@ const UNIT_TO_LABEL: Record<string, string> = {
   'bunch': 'Bunch',
   'ear': 'Ear',
   'fillet': 'Fillet',
+  'filet': 'Fillet',
   'breast': 'Breast',
   'thigh': 'Thigh',
   'pinch': 'Pinch', 'dash': 'Dash',
@@ -143,23 +144,53 @@ const FALLBACK_GRAMS: Record<string, number> = {
 // User standard: 1 chicken breast = 4 oz (raw), no cooking yield adjustment.
 const STANDARD_GRAMS: Record<string, number> = {
   // Proteins — poultry
-  'chicken breast':        113,  // 4 oz raw
-  'chicken thigh':          85,  // 3 oz raw
-  'chicken leg':           113,
+  // Per-piece standards (raw weight):
+  //   bone-in chicken breast = 10 oz (283g) — most-restrictive default for bone-in
+  //   bone-in chicken thigh  =  6 oz (170g)
+  //   boneless skinless chicken breast = 8 oz (227g)
+  //   boneless skinless chicken thigh  = 4 oz (113g)
+  // The lookup uses partial-key matching, so longer keys win when present.
+  'bone-in chicken breast':         283,
+  'bone in chicken breast':         283,
+  'bone-in skin-on chicken breast': 283,
+  'bone-in chicken thigh':          170,
+  'bone in chicken thigh':          170,
+  'bone-in skin-on chicken thigh':  170,
+  'boneless skinless chicken breast': 227,
+  'skinless boneless chicken breast': 227,
+  'boneless chicken breast':          227,
+  'boneless skinless chicken thigh':  113,
+  'skinless boneless chicken thigh':  113,
+  'boneless chicken thigh':           113,
+  // Generic fallbacks: assume boneless/skinless when not specified
+  'chicken breast':        227,  // 8 oz raw (boneless/skinless default)
+  'chicken thigh':         113,  // 4 oz raw (boneless/skinless default)
+  'chicken leg':           170,  // 6 oz (bone-in)
   'chicken drumstick':      85,
   'chicken wing':           30,
-  'turkey breast':         113,
+  'turkey breast':         227,
   // Proteins — seafood
-  'salmon':                113,  // 4 oz fillet default
-  'salmon fillet':         113,
-  'cod fillet':            113,
-  'tilapia fillet':        113,
+  // Generic fish filet default = 6 oz (170g) per piece (raw, skin-on)
+  'fish filet':            170,
+  'fish fillet':           170,
+  'white fish filet':      170,
+  'white fish fillet':     170,
+  'salmon':                170,  // 6 oz fillet default
+  'salmon filet':          170,
+  'salmon fillet':         170,
+  'cod filet':             170,
+  'cod fillet':            170,
+  'tilapia filet':         170,
+  'tilapia fillet':        170,
+  'halibut filet':         170,
+  'halibut fillet':        170,
+  'sea bass filet':        170,
+  'sea bass fillet':       170,
+  'mahi mahi filet':       170,
+  'mahi mahi fillet':      170,
+  'tuna steak':            170,
   'shrimp':                  7,  // per piece (medium)
   'prawn':                   8,
-  'tuna steak':            113,
-  'halibut fillet':        113,
-  'sea bass fillet':       113,
-  'mahi mahi fillet':      113,
   // Proteins — meat (large cuts)
   'pork chop':             170,   // 6 oz
   'pork tenderloin':       454,   // full tenderloin ≈ 1 lb
@@ -442,6 +473,19 @@ function toGrams(qty: number, unit: string, ingEntry: any, ingName?: string): nu
 
   // 2. Standard fallback
   if (label && FALLBACK_GRAMS[label]) return qty * FALLBACK_GRAMS[label];
+
+  // 2b. Piece-style units (Fillet/Breast/Thigh/Slice/Piece) without DB measure —
+  // fall back to STANDARD_GRAMS lookup on the ingredient name. This is where
+  // "4 filets white fish" picks up the 6-oz/piece default, "2 bone-in chicken
+  // thighs" picks up 6 oz/piece, etc.
+  if ((label === 'Fillet' || label === 'Breast' || label === 'Thigh' || label === 'Piece') && ingName) {
+    const lower = ingName.toLowerCase().trim();
+    if (STANDARD_GRAMS[lower] !== undefined) return qty * STANDARD_GRAMS[lower];
+    // Longest-key first so "boneless skinless chicken breast" wins over "chicken breast"
+    const keys = Object.keys(STANDARD_GRAMS).sort((a, b) => b.length - a.length);
+    const matchKey = keys.find(k => lower.includes(k));
+    if (matchKey) return qty * STANDARD_GRAMS[matchKey];
+  }
 
   // 3. No unit → check STANDARD_GRAMS table first (count items with known serving size)
   if (!unit) {
