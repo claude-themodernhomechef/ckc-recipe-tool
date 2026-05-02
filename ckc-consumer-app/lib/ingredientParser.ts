@@ -818,6 +818,12 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'center-cut salmon filets':'salmon filets', 'center cut salmon filets':'salmon filets',
   'center-cut salmon filet':'salmon filet', 'center cut salmon filet':'salmon filet',
   'center-cut, skin-on salmon fillets':'salmon fillets',
+  // Round 33 — Lamb Chops + Broccolini
+  'rack of lamb':'lamb racks',
+  'fresh poultry herbs':'poultry blend fresh herbs',
+  'poultry herbs':'poultry blend fresh herbs',
+  "gaby's garlic goodness olive oil":'garlic-infused olive oil',
+  "gaby’s garlic goodness olive oil":'garlic-infused olive oil',
   // Round 32 — Goodbye Meatballs follow-up
   'canned tomatoes':'whole peeled tomatoes',
   'canned whole peeled tomatoes':'whole peeled tomatoes',
