@@ -182,6 +182,14 @@ const BASELINE_DB: Record<string, string> = {
   'walnut halves':'pantry-staples','walnut pieces':'pantry-staples',
   'pumpkin seeds':'pantry-staples','sunflower seeds':'pantry-staples',
   'chipotle peppers in adobo':'pantry-staples','chipotle peppers in adobo sauce':'pantry-staples',
+  // Round 30 DB — unsticks bottom-tier recipes
+  'cooked shredded chicken':'protein','shredded chicken':'protein',
+  'enchilada sauce':'pantry-staples','red enchilada sauce':'pantry-staples',
+  'shredded cheese':'dairy','shredded mexican cheese':'dairy','mexican cheese blend':'dairy',
+  'stone-ground polenta':'pantry-staples','polenta':'pantry-staples',
+  'center cut bacon':'protein','center-cut bacon':'protein',
+  'center-cut salmon':'protein','center cut salmon':'protein',
+  'salmon filets':'protein','center-cut salmon filets':'protein',
   // Round 29 DB additions
   'green chiles':'pantry-staples','green chile':'pantry-staples',
   'castelvetrano olives':'pantry-staples','frescatrano olives':'pantry-staples',
