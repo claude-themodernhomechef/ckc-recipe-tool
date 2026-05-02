@@ -818,6 +818,16 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'center-cut salmon filets':'salmon filets', 'center cut salmon filets':'salmon filets',
   'center-cut salmon filet':'salmon filet', 'center cut salmon filet':'salmon filet',
   'center-cut, skin-on salmon fillets':'salmon fillets',
+  // Round 32 — Goodbye Meatballs follow-up
+  'canned tomatoes':'whole peeled tomatoes',
+  'canned whole peeled tomatoes':'whole peeled tomatoes',
+  'whole milk full-fat ricotta cheese':'ricotta cheese',
+  'whole milk ricotta cheese':'ricotta cheese',
+  'full-fat ricotta cheese':'ricotta cheese',
+  'whole-milk ricotta':'ricotta cheese',
+  'grated parmesan cheese':'parmesan cheese', 'grated parmesan':'parmesan cheese',
+  'grated parmigiano-reggiano cheese':'parmigiano-reggiano',
+  'grated parmigiano-reggiano':'parmigiano-reggiano',
   // Round 31 — bottom-tier unstickers
   'salt + pepper':'salt',
   '6-inch tortillas':'corn tortillas', '8-inch tortillas':'flour tortillas','10-inch tortillas':'flour tortillas',
