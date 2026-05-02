@@ -739,6 +739,14 @@ export function parseIngredient(raw: string): {
     if (/^[A-Z][a-z]+(?:\s+[a-z]+)?\s+(?:marinade|dressing)\s*\.?\s*$/i.test(trimmed)) {
       return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
     }
+    // Cooking-instruction lines that got mixed in with ingredients —
+    //   "Preheat the oven at 250°C or 480°F."
+    //   "Add the coconut milk, vegetable stock and all the baked ingredients..."
+    //   "Heat the pan over medium high heat."
+    //   "Bring water to a boil."
+    if (/^(?:preheat|heat|add\s+the|mix|combine|stir|cook|bake|bring|place|remove|drain|reduce|simmer|serve|whisk|pour|sprinkle|garnish|brush|sauté|chop|peel|wash|rinse|set\s+aside|let\s+rest|let\s+cool|cool\s+(?:slightly|completely)|allow\s+to)\s+/i.test(trimmed)) {
+      return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
+    }
     // "Optional: any of your other favorite X" / "any of your favorite X" — vague, skip
     if (/^(?:optional\s*[:.\-—]\s*)?any\s+of\s+your\s+(?:other\s+)?favorite\b/i.test(trimmed)) {
       return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
@@ -763,6 +771,12 @@ export function parseIngredient(raw: string): {
   str = str
     .replace(/\bhandfull\b/gi, 'handful')        // common typo
     .replace(/\bhandfulls\b/gi, 'handfuls')
+    // Normalize multi-word fat descriptors so "fat" isn't stripped mid-phrase by
+    // PREP_WORDS_SINGLE, and so the stop-word filter can preserve them as a unit.
+    //   "full fat coconut milk"  →  "full-fat coconut milk"
+    //   "low fat yogurt"         →  "low-fat yogurt"
+    .replace(/\b(full|low|non|reduced)\s+fat\b/gi, '$1-fat')
+    .replace(/\bfat\s+free\b/gi, 'fat-free')
     .replace(/\bred[\s-]+pepper(\s+flakes?)\b/gi, 'red pepper$1')  // "red-pepper" → "red pepper"
     .replace(/\bblack[\s-]+pepper\b/gi, 'black pepper')
     .replace(/\bwhite[\s-]+pepper\b/gi, 'white pepper')
@@ -798,6 +812,21 @@ export function parseIngredient(raw: string): {
   str = str.replace(/^(?:finely\s+|coarsely\s+)?grated\s+zest\s+(?:and\s+)?(?:juice\s+(?:of\s+)?)?(?=\d|one|two|a\b|an\b|half)/i, '');
   // "Zest and juice of <N> <citrus>" → "<N> <citrus>" (no "grated" prefix)
   str = str.replace(/^zest\s+(?:and|&)\s+juice\s+of\s+(?=\d|one|two|a\b|an\b|half)/i, '');
+  // "rind of <N> <fruit>" / "<N> <fruit> rind" → "<N> <fruit>"
+  // (round up rind to whole fruit — recipe author bought the fruit, not just the peel).
+  //   "rind of 1 preserved lemon" → "1 preserved lemon"
+  //   "rind of a lemon"            → "1 lemon"
+  str = str.replace(/^rind\s+of\s+(?:a\s+|an\s+)?(?=[a-z])/i, '1 ');
+  str = str.replace(/^rind\s+of\s+(?=\d)/i, '');
+  str = str.replace(/\s+rind\s*$/i, '').trim();
+  // "medium-to-large" / "small-to-medium" / "small to large" hyphenated size descriptor
+  // — strip; we don't track this granularity.
+  str = str.replace(/\b(?:small|medium|large|big)(?:\s*-\s*to\s*-\s*|\s+to\s+|\s*-\s*)(?:small|medium|large|big)\b/gi, '').trim();
+  // ", clean of any dirt" / ", cleaned of dirt" / "scrubbed clean" trailing instructions
+  str = str.replace(/,?\s*(?:clean(?:ed)?\s+of\s+(?:any\s+)?dirt|scrubbed\s+clean)\s*$/i, '').trim();
+  // "from a can of X" / "from a jar of X" / "from a Y" trailing descriptor — strip
+  //   "drained from a can of chickpeas" → "drained"
+  str = str.replace(/,?\s*from\s+(?:a|an|the)\s+(?:can|jar|tin|bottle|box|package|pouch)\s+of\s+[a-z][^,]*$/i, '').trim();
 
   // 0. Decode HTML entities FIRST so downstream regexes (salt+pepper, etc.)
   // see decoded characters like "&" instead of "&amp;".
@@ -860,6 +889,11 @@ export function parseIngredient(raw: string): {
   str = str.replace(/\(\([^)]*\)\)/g, '').replace(/\(Note\s*\d*\)/gi, '').trim();
   // Only strip long parens that contain letters suggesting a recipe note (e.g. "see", "page", "about")
   str = str.replace(/\((?:see|about|note|if|for|use|make|recipe)[^)]*\)/gi, '').trim();
+  // Strip long author-note parens that begin with "I" / "you" / "we" or contain
+  // first-person commentary like "have also used", "tried", "worked perfectly".
+  //   "(I have also used cottage cheese it worked perfectly with my LF diet)" → strip
+  str = str.replace(/\(\s*(?:I|i|you|You|we|We)\s+[^)]{20,}\)/g, '').trim();
+  str = str.replace(/\([^)]*\b(?:worked\s+perfectly|tried\s+(?:it|this)|works\s+great|highly\s+recommend)\b[^)]*\)/gi, '').trim();
 
   // 2b. Detect serving / garnish / taste markers BEFORE stripping them.
   // The marker is surfaced as the "unit" so it shows in the qty column
@@ -953,6 +987,17 @@ export function parseIngredient(raw: string): {
   // "(or any X like A, B, C)" / "(or X)" parenthetical alternatives — strip
   // ("1/2 lb linguini (or any long noodles like fettuccini, spaghetti, etc.)" → "1/2 lb linguini")
   str = str.replace(/\s*\(\s*or\s+(?:any\s+)?[^)]+\)/gi, '').trim();
+  // "<adj> or <adj> <plural-noun>" → "<adj> <noun>" (take first option, keep
+  // trailing noun, singularize). Handles forms like:
+  //   "yukon gold or red potatoes"   → "yukon gold potatoes"
+  //   "russet or yukon potatoes"     → "russet potatoes"
+  //   "red or yellow onions"         → "red onions"
+  // Restricted to a known set of produce/protein nouns so we don't accidentally
+  // collapse legitimate "X or Y" prep instructions.
+  str = str.replace(
+    /\b([a-z]+(?:\s+[a-z]+)?)\s+or\s+[a-z]+(?:\s+[a-z]+)?\s+(potatoes?|onions?|peppers?|tomatoes?|apples?|pears?|squashes?|beans?|lentils?|carrots?|chiles?|chilies|peaches?|plums?)\b/gi,
+    '$1 $2'
+  );
   // "(any X, such as A, B, C)" — alternatives without "or" prefix
   //   ("2 tablespoons oil (any neutral oil, such as canola, vegetable, peanut, etc.)" → "2 tablespoons oil")
   str = str.replace(/\s*\(\s*any\s+\w+[^)]*\)/gi, '').trim();
@@ -1057,12 +1102,13 @@ export function parseIngredient(raw: string): {
   if (/^\d[\d\s.\/-]*\s*(?:cups?|tbsp|tablespoons?|tsp|teaspoons?|lbs?|pounds?)\b/i.test(str)) {
     str = str.replace(/\s*\(\s*\d+(?:\.\d+)?(?:\s*[-–]\s*(?:to\s+)?\d+(?:\.\d+)?)?\s*(?:oz|ounce|g|gram|lb|pound)s?\.?\s*\)/gi, '').trim();
   }
-  // Strip "Use leftover X" / "Use X" / similar trailing recipe-author notes
-  // that appear AFTER a parenthetical without their own punctuation:
+  // Strip "Use leftover X" / "Use X" / similar trailing recipe-author notes:
   //   "2 cups Shredded Chicken (10-12 ounces) Use leftover chicken, or use rotisserie chicken"
-  // Allow commas (notes span clauses), but NOT cross close-paren (don't eat ")"
-  // of an enclosing paren we want to preserve/strip wholesale).
-  str = str.replace(/\s+use\s+(?:leftover\s+|cooked\s+)?[a-z][^)]*$/i, '').trim();
+  //   "Use leftover chicken (rotisserie, baked, grilled, etc)"
+  // Match optional trailing paren-clause too so the "Use X (Y, Z)" form is
+  // fully stripped (the single-bracket [^)]* form would fail because the
+  // trailing ")" prevents the $ anchor from matching).
+  str = str.replace(/\s+use\s+(?:leftover\s+|cooked\s+)?[a-z][^()]*(?:\s*\([^)]*\))?\s*$/i, '').trim();
   // "shredded cheese – cotija, mozzarella, jack..." or "cheese – cotija, X, Y"
   // Take the FIRST specific cheese as the canonical, prefix with "shredded".
   // Runs HERE (after yield-note paren strip) so "(8 ounces)" between "cheese"
@@ -1490,7 +1536,12 @@ export function parseIngredient(raw: string): {
       PREP_WORDS.has(firstWord) ||
       STOP_WORDS.includes(firstWord)
     );
-    str = firstIsPrep ? str.slice(0, commaIdx).trim() : str.replace(/,\s*/g, ' ').trim();
+    // Guard: if the after-comma part contains a real product noun (cheese/milk/
+    // yogurt/etc.), it's a product descriptor not a prep instruction — keep it.
+    //   "1 cup whole milk, full-fat ricotta cheese" — "full-fat" is a stop word
+    //   but "ricotta cheese" is the actual product. Merge instead of strip.
+    const afterHasProductNoun = /\b(?:cheese|milk|yogurt|yoghurt|cream|ricotta|mozzarella|parmesan|cheddar|feta|cottage|coconut|broth|stock|paste|sauce)\b/i.test(afterComma);
+    str = (firstIsPrep && !afterHasProductNoun) ? str.slice(0, commaIdx).trim() : str.replace(/,\s*/g, ' ').trim();
   }
 
   // 15. Clean name: strip remaining parens (but PRESERVE size/weight specs the
@@ -1532,6 +1583,13 @@ export function parseIngredient(raw: string): {
         const next = all[i + 1].toLowerCase().replace(/[.,]+$/, '');
         const PROTEINS = ['chicken','turkey','duck','fish','salmon','trout','goose','rabbit','lamb'];
         if (PROTEINS.includes(next) || next === 'milk') return true;
+      }
+      // Preserve "full-fat" / "low-fat" / "reduced-fat" / "non-fat" when paired with
+      // a dairy/coconut product — fat content matters for nutrition + diet compliance.
+      //   "full-fat coconut milk", "full-fat ricotta", "low-fat yogurt"
+      if (lower === 'full-fat' || lower === 'reduced-fat' || lower === 'low-fat' || lower === 'non-fat' || lower === 'fat-free') {
+        const restJoined = all.slice(i + 1).join(' ').toLowerCase();
+        if (/\b(?:coconut\s+milk|coconut\s+cream|ricotta|yogurt|yoghurt|sour\s+cream|cream\s+cheese|cottage\s+cheese|milk|cheese)\b/.test(restJoined)) return true;
       }
       // Preserve "crushed" / "diced" when paired with tomato (canned form modifier).
       // Look at any token after this one, not just the immediate next, so
@@ -1714,7 +1772,7 @@ export function parseIngredient(raw: string): {
       // If "salt" is the dominant word and the rest is modifiers/qty noise,
       // collapse to just "salt". Allows things like "+ 1/8 teaspoon salt" or
       // "cooking / kosher salt" to all become just "salt".
-      const NOISE_TOKENS = new Set(['+', '-', '/', ',', 'teaspoon','teaspoons','tsp','tablespoon','tablespoons','tbsp','of','to','taste','cooking','baking']);
+      const NOISE_TOKENS = new Set(['+', '-', '/', ',', 'teaspoon','teaspoons','tsp','tablespoon','tablespoons','tbsp','of','to','taste','cooking','baking','or','and','&','plus','diamond','crystal','morton','mortons']);
       // Pre-tokenize: split on whitespace AND on slash so "cooking/kosher" → ["cooking","kosher"]
       const tokens = name.split(/[\s/]+/).filter(Boolean);
       const remainingNonModifier = tokens.filter(t =>
@@ -1723,7 +1781,14 @@ export function parseIngredient(raw: string): {
         !NOISE_TOKENS.has(t) &&
         !/^[\d/.]+$/.test(t)  // pure number/fraction tokens
       );
-      if (remainingNonModifier.length === 0) name = 'salt';
+      if (remainingNonModifier.length === 0) {
+        name = 'salt';
+        // Salt is universally "to taste" in our system — drop the qty/unit so
+        // the shopping list / nutrition layer treats it consistently regardless
+        // of what brand-specific measurement the recipe author specified.
+        qty = 0;
+        unit = '';
+      }
     }
   }
 
