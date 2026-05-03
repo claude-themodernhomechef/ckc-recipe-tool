@@ -194,6 +194,16 @@ const BASELINE_DB: Record<string, string> = {
   'center cut bacon':'protein','center-cut bacon':'protein',
   'center-cut salmon':'protein','center cut salmon':'protein',
   'salmon filets':'protein','center-cut salmon filets':'protein',
+  // Round 42 DB additions (user wants kept as-is)
+  'crunchy peanut butter':'pantry-staples',
+  'coarse mustard':'pantry-staples','stone-ground mustard':'pantry-staples','wholegrain mustard':'pantry-staples',
+  'canned diced fire-roasted tomatoes':'pantry-staples',
+  'fire-roasted tomatoes':'pantry-staples',
+  'pearl couscous':'pantry-staples','black lentils':'pantry-staples','beluga lentils':'pantry-staples',
+  'long-grain white rice':'pantry-staples','linguine':'pantry-staples',
+  'cashew butter':'pantry-staples','blue cheese':'dairy','wonton strips':'pantry-consumables',
+  'bacon bits':'protein','sourdough bread':'pantry-consumables',
+  'dark lager':'pantry-staples','lemon pepper seasoning':'pantry-staples',
   // Round 40 DB additions
   'better that bouillon chicken base':'pantry-staples', // typo of 'than' kept as user spec
   'better than bouillon chicken base':'pantry-staples',
@@ -871,6 +881,44 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'center-cut salmon filets':'salmon filets', 'center cut salmon filets':'salmon filets',
   'center-cut salmon filet':'salmon filet', 'center cut salmon filet':'salmon filet',
   'center-cut, skin-on salmon fillets':'salmon fillets',
+  // Round 42 — long-tail batch
+  // Dry-X grain prefix → strip "dry"
+  'dry basmati rice':'basmati rice',
+  'dry black lentils':'black lentils',
+  'dry israeli couscous':'pearl couscous','israeli couscous':'pearl couscous',
+  'dry jasmine rice':'jasmine rice',
+  'dry liguine':'linguine','liguine':'linguine',
+  'dry long-grain white rice':'long-grain white rice',
+  'dry pearl couscous':'pearl couscous',
+  'dry short cut pasta':'pasta','short cut pasta':'pasta',
+  'dry unoaked white wine':'dry white wine','unoaked white wine':'dry white wine',
+  // Creamy/crispy prefix
+  'creamy blue cheese':'blue cheese',
+  'creamy cashew butter⁣':'cashew butter','creamy cashew butter':'cashew butter',
+  'creamy tzatziki sauce':'tzatziki sauce',
+  'crispy bacon bits':'bacon bits',
+  'crispy wonton strips':'wonton strips',
+  // 'crunchy peanut butter' kept as-is (user spec); DB entry below handles it
+  // Vague qty markers
+  'couple dashes of sauce':'hot sauce','dashes of sauce':'hot sauce',
+  'cracks of black pepper':'black pepper','cranks of black pepper':'black pepper',
+  'dollop of vegan sour cream':'sour cream',
+  'drizzle olive oil':'olive oil',
+  // Specific aliases
+  'cm piece ginger':'fresh ginger','centimeter piece ginger':'fresh ginger',
+  'cod fillet pieces':'cod fillet',
+  'crustless sourdough broken':'sourdough bread','crustless sourdough':'sourdough bread',
+  'cut up fish':'fish','cut up assorted fish':'fish','assorted fish':'fish',
+  'dairy-free sweet potatoes':'sweet potatoes','dairy free sweet potatoes':'sweet potatoes',
+  'dalkin&co lemon pepper seasoning':'lemon pepper seasoning',
+  'dalkin&amp;co lemon pepper seasoning':'lemon pepper seasoning',
+  'lemon pepper seasoning':'lemon pepper seasoning',
+  'dark lager like negro modelo':'dark lager','negro modelo':'dark lager',
+  // 'coarse mustard' kept as-is (user spec); DB entry below
+  // 'canned diced fire-roasted tomatoes' kept (canned form); DB entry below
+  'diced fire-roasted tomatoes with their juices':'canned diced fire-roasted tomatoes',
+  'diced fire-roasted tomatoes':'canned diced fire-roasted tomatoes',
+  'dulce verde':'lettuce',
   // Round 41 — repeating long-tail (parsed forms with parens/junk that need exact-key alias)
   '+ 1 tbsp extra virgin olive oil':'olive oil',
   '+ 1 teaspoon cornstarch':'cornstarch',

@@ -74,6 +74,10 @@ const FORM_MODIFIERS_NUTRITION: RegExp[] = [
   /\bmild\b/g, /\bhot\b/g, /\bspicy\b/g,
   // Cut style — 'english-cut' / 'center-cut' / 'flat-iron' descriptive but not in DB
   /\benglish[\s-]?cut\b/g, /\bcenter[\s-]?cut\b/g,
+  // Texture/preparation descriptors — kept for shopping display, not in nutrition DB
+  /\b(?:crunchy|creamy|crispy|crusty)\b/g,
+  /\b(?:diced|crushed|sliced|chopped|ground|whole\s+peeled)\b/g,
+  /\b(?:stone[\s-]?ground|wholegrain|whole[\s-]?grain|coarse)\b/g,
   // Variety/origin descriptors — keep for shopping display but not in nutrition DB
   /\b(?:bartlett|valencia|hass|granny\s+smith|honeycrisp|fuji|gala|pink\s+lady)\b/g,
   /\b(?:lacinato|tuscan|dinosaur|curly|red\s+russian)\b/g,
