@@ -611,20 +611,20 @@ export function splitIngredientLine(raw: string): string[] {
   // The "add garnishes" toggle in the consumer app can then conditionally
   // include/exclude these from the shopping list and nutrition totals.
   {
-    const garnishM = raw.match(/^(?:optional\s+|suggested\s+|recommended\s+)?(?:garnishes?|toppings?|filling\s+additions?|add[\s-]?ins?|additions?|add[\s-]?in\s+for\s+\w+)\s*[:.\-—]\s*(.+)$/i);
+    const garnishM = raw.match(/^(?:optional\s+|suggested\s+|recommended\s+|for\s+)?(?:garnishes?|toppings?|filling\s+additions?|add[\s-]?ins?|additions?|add[\s-]?in\s+for\s+\w+)\s*[:.\-—]\s*(.+)$/i);
     if (garnishM) {
-      const items = garnishM[1].split(/,\s*(?!and\b)|(?:,\s*)?\s+and\s+/i).map(s => s.trim()).filter(Boolean);
+      const items = garnishM[1].split(/,\s*(?!and\b)|(?:,\s*)?\s+and(?:\/or)?\s+/i).map(s => s.trim()).filter(Boolean);
       return items.map(item => `${item}, for garnish`);
     }
     // "for serving, as desired: A, B, C" / "to serve: A, B, C" — colon-list with
     // serving marker. Each item gets a "for serving" suffix.
     //   "for serving, as desired: olive oil, parsley, lemon zest, crusty bread"
     //     → ["olive oil, for serving", "parsley, for serving", ...]
-    const serveM = raw.match(/^(?:for\s+serving|to\s+serve)(?:,\s*as\s+desired)?\s*[:.\-—]\s*(.+)$/i);
+    const serveM = raw.match(/^(?:suggested\s+)?(?:for\s+serving|to\s+serve)(?:,\s*as\s+desired)?\s*[:.\-—]\s*(.+)$/i);
     if (serveM) {
       const items = serveM[1]
         .replace(/,?\s*etc\.?\s*$/i, '')
-        .split(/,\s*(?!and\b)|(?:,\s*)?\s+and\s+/i)
+        .split(/,\s*(?!and\b)|(?:,\s*)?\s+and(?:\/or)?\s+/i)
         .map(s => s.trim())
         .filter(Boolean);
       return items.map(item => `${item}, for serving`);
@@ -941,6 +941,55 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'center-cut salmon filets':'salmon filets', 'center cut salmon filets':'salmon filets',
   'center-cut salmon filet':'salmon filet', 'center cut salmon filet':'salmon filet',
   'center-cut, skin-on salmon fillets':'salmon fillets',
+  // Round 55 — batch from round 54 audit (post alias-bug-fix)
+  '3-ingredient mediterranean salad,  ((or sliced tomatoes and cucumbers, and chopped parsley) )':'',
+  'a spice mill or mortar and pestle':'',
+  'any other seasoning you like (garlic powder, chili powder, nutritional yeast, old bay even!)':'',
+  'cooked or raw vegetables to accompany (i like roasted broccoli)':'',
+  'ten to twelve 8"–10" metal skewers, or bamboo, soaked 30 minutes':'',
+  '1  head, (or about 1 cup roughly chopped fresh cilantro)':'fresh cilantro',
+  'suggested for serving: cooked white rice and tzatziki (homemade or store-bought)':'cooked white rice',
+  '2 cups cooked, chopped chicken':'cooked chicken',
+  'roasted corn kernels':'corn',
+  'any other seasonings you like (i used simply organics adobo)':'',
+  'for serving, as desired: cooked quinoa or rice, mixed greens, shredded cheddar or pepper jack, diced avocado or guacamole, finely chopped cilantro, additional bbq sauce, etc.':'cooked quinoa',
+  'red snapper':'red snapper',
+  'for serving, as desired: cooked rice or grains of choice, capered lemon dill sauce (below)':'cooked rice',
+  'optional toppings, (see notes)':'',
+  '2 cups cooked, chopped/shredded chicken':'cooked shredded chicken',
+  'yam potato':'sweet potato','yam or sweet potato':'sweet potato',
+  'stock cube mixed with 200ml of boiling water':'bouillon cube','stock cube':'bouillon cube',
+  'sour cream pico de gallo guacamole shredded cheese':'sour cream',
+  'thick bacon slices':'bacon',
+  'wild caught sockeye salmon (or any salmon you have access to':'salmon','wild caught sockeye salmon':'salmon',
+  'thickened / heavy cream':'heavy cream',
+  'tamari/soy sauce/fish sauce':'soy sauce',
+  'wild-caught jumbo shrimp':'shrimp',
+  'tiny pinch of red pepper flakes':'red pepper flakes',
+  '13.5 ounce cans unsweetened (full-fat coconut milk)':'full-fat coconut milk',
+  'shaoxing rice wine dry sherry':'shaoxing rice wine','shaoxing rice wine, dry sherry or sake':'shaoxing rice wine',
+  'streaky free-range bacon slices':'bacon',
+  '8-10 pre-soaked skewers (optional)':'',
+  'whole wheat elbows':'whole wheat pasta','whole wheat elbows or shells':'whole wheat pasta',
+  'white cheddar cheese slice':'white cheddar cheese',
+  'side of salmon boneless skinless':'salmon',
+  'sheet seaweed':'nori','dried seaweed or sushi nori':'nori',
+  'thick pieces of skinless white firm fish fillet':'white fish',
+  'thick italian crust bread slices':'italian bread',
+  'vegan yoghurt':'vegan yogurt',
+  'shredded lettuce/cabbage':'lettuce',
+  'wonton strips scallions sesame seeds':'wonton strips',
+  'vinegar- white':'white vinegar','vinegar- white or rice wine':'white vinegar',
+  'slender heirloom carrots clean dry':'carrots',
+  'strands mace':'mace',
+  'white albacore tuna in olive oil':'albacore tuna in olive oil','white albacore tuna packed in olive oil':'albacore tuna in olive oil',
+  'for serving, as desired: extra virgin olive oil, leafy parsley, lemon zest, lemon wedges, crusty bread, etc.':'olive oil',
+  'shop-bought crispy onions':'crispy onions',
+  'whole lamb shoulder scored':'lamb shoulder',
+  'soft figs':'dried figs','soft dried figs':'dried figs',
+  'sautã©ed cauliflower rice':'cauliflower rice','sautéed cauliflower rice (to serve over)':'cauliflower rice',
+  'unrefined brown sugar':'brown sugar',
+  'tablesponns butter':'butter','tablesponns unsalted butter':'butter',
   // Round 54 — batch from round 53 audit
   'mediterranean salad':'',
   'thick soft whole grain slices':'whole grain bread','thick soft whole grain or white bread':'whole grain bread',

@@ -38963,6 +38963,101 @@
       }
     ]
   },
+  "red snapper": {
+    "source": "usda",
+    "foodId": "fdc_2419469",
+    "label": "Whole Clean Snapper (Netuno)",
+    "category": "Seafood",
+    "per100g": {
+      "calories": { "value": 78, "unit": "kcal" },
+      "protein": { "value": 17.2, "unit": "g" },
+      "fat": { "value": 0.39, "unit": "g" },
+      "saturatedFat": { "value": 0, "unit": "g" },
+      "cholesterol": { "value": 63, "unit": "mg" },
+      "sodium": { "value": 51, "unit": "mg" },
+      "carbs": { "value": 0, "unit": "g" },
+      "fiber": { "value": 0, "unit": "g" },
+      "sugars": { "value": 0, "unit": "g" }
+    },
+    "measures": [
+      { "label": "Serving", "gramWeight": 113 },
+      { "label": "Gram", "gramWeight": 1 },
+      { "label": "Ounce", "gramWeight": 28.349523125 },
+      { "label": "Pound", "gramWeight": 453.59237 },
+      { "label": "Fillet", "gramWeight": 170 }
+    ]
+  },
+  "bouillon cube": {
+    "source": "usda",
+    "foodId": "fdc_2703440",
+    "label": "MAGGI Bouillon Chicken Flavor",
+    "category": "Soups & Stocks",
+    "per100g": {
+      "calories": { "value": 225, "unit": "kcal" },
+      "protein": { "value": 10, "unit": "g" },
+      "fat": { "value": 7.5, "unit": "g" },
+      "saturatedFat": { "value": 2.5, "unit": "g" },
+      "cholesterol": { "value": 0, "unit": "mg" },
+      "sodium": { "value": 21250, "unit": "mg" },
+      "carbs": { "value": 25, "unit": "g" },
+      "fiber": { "value": 0, "unit": "g" },
+      "sugars": { "value": 10, "unit": "g" }
+    },
+    "measures": [
+      { "label": "Cube", "gramWeight": 4 },
+      { "label": "Gram", "gramWeight": 1 },
+      { "label": "Teaspoon", "gramWeight": 4 },
+      { "label": "Tablespoon", "gramWeight": 12 }
+    ]
+  },
+  "full-fat coconut milk": {
+    "source": "usda",
+    "foodId": "fdc_2383953",
+    "label": "365 Whole Foods Market Organic Coconut Milk",
+    "category": "Dairy Alternatives",
+    "per100g": {
+      "calories": { "value": 219, "unit": "kcal" },
+      "protein": { "value": 1.56, "unit": "g" },
+      "fat": { "value": 21.88, "unit": "g" },
+      "saturatedFat": { "value": 20.31, "unit": "g" },
+      "cholesterol": { "value": 0, "unit": "mg" },
+      "sodium": { "value": 31.25, "unit": "mg" },
+      "carbs": { "value": 3.13, "unit": "g" },
+      "fiber": { "value": 0, "unit": "g" },
+      "sugars": { "value": 1.56, "unit": "g" }
+    },
+    "measures": [
+      { "label": "Serving", "gramWeight": 80 },
+      { "label": "Gram", "gramWeight": 1 },
+      { "label": "Ounce", "gramWeight": 28.349523125 },
+      { "label": "Cup", "gramWeight": 240 },
+      { "label": "Tablespoon", "gramWeight": 15 },
+      { "label": "Can", "gramWeight": 400 }
+    ]
+  },
+  "albacore tuna in olive oil": {
+    "source": "usda",
+    "foodId": "fdc_2670483",
+    "label": "Sea Tales Solid White Albacore Tuna in Olive Oil",
+    "category": "Seafood",
+    "per100g": {
+      "calories": { "value": 149, "unit": "kcal" },
+      "protein": { "value": 23.5, "unit": "g" },
+      "fat": { "value": 5.5, "unit": "g" },
+      "saturatedFat": { "value": 0.78, "unit": "g" },
+      "cholesterol": { "value": 39, "unit": "mg" },
+      "sodium": { "value": 274, "unit": "mg" },
+      "carbs": { "value": 0.78, "unit": "g" },
+      "fiber": { "value": 0, "unit": "g" },
+      "sugars": { "value": 0, "unit": "g" }
+    },
+    "measures": [
+      { "label": "Serving", "gramWeight": 113 },
+      { "label": "Gram", "gramWeight": 1 },
+      { "label": "Ounce", "gramWeight": 28.349523125 },
+      { "label": "Can", "gramWeight": 142 }
+    ]
+  },
   "'nduja paste": {
     "source": "label",
     "foodId": "label_nduja_paste",
