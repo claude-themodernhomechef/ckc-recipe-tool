@@ -3426,6 +3426,13 @@ export function parseIngredient(raw: string): {
     unit = '';
   }
 
+  // Final alias pass — applied AFTER all stop-word strips and singularization
+  // since many alias keys only match the fully-normalized name (e.g.
+  // "delallo castelvetrano olives" emerges only after "pitted" is stripped).
+  if (name && INGREDIENT_ALIASES[name] !== undefined) {
+    name = INGREDIENT_ALIASES[name];
+  }
+
   const category = forcedCategory || categorizeIngredient(name || raw);
   return { qty, unit, name: name || raw.toLowerCase(), category, raw, note };
 }
