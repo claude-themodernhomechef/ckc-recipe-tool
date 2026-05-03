@@ -68,6 +68,12 @@ const FORM_MODIFIERS_NUTRITION: RegExp[] = [
   /\blow[\s-]?sodium\b/g, /\breduced[\s-]?sodium\b/g,
   /\breduced[\s-]?fat\b/g,
   /\b\d+%?\s*lean\b/g,
+  // Herb 'fresh' prefix is a shopping-display preference; nutrition lookup retries without it
+  /\bfresh\b/g,
+  // Mild/hot spice qualifiers
+  /\bmild\b/g, /\bhot\b/g, /\bspicy\b/g,
+  // Cut style — 'english-cut' / 'center-cut' / 'flat-iron' descriptive but not in DB
+  /\benglish[\s-]?cut\b/g, /\bcenter[\s-]?cut\b/g,
   /\bcrumbled\b/g, /\bshelled\b/g,
   /\bhead\b/g, /\bsticks?\b/g, /\bstrips?\b/g, /\bsprigs?\b/g, /\bstalks?\b/g,
 ];
