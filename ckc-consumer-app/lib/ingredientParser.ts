@@ -411,6 +411,29 @@ const BASELINE_DB: Record<string, string> = {
   'sweet potato':'produce','sweet potatoes':'produce',
   'cucumbers':'produce','strawberries':'produce','blueberries':'produce','dates':'pantry-consumables','raisins':'pantry-consumables','dried figs':'pantry-consumables',
   'shrimp':'protein','salt':'pantry-consumables','black pepper':'pantry-consumables','cayenne pepper':'pantry-consumables','salt + pepper':'pantry-consumables',
+
+  // ── Round 73 — final 30+ category gaps ────────────────────────────────────────
+  'coconut':'produce','desiccated coconut':'pantry-consumables','shredded coconut':'pantry-consumables',
+  'japanese eggplants':'produce','japanese eggplant':'produce','green papaya':'produce','little gems':'produce',
+  'cashewnuts':'pantry-consumables','cashew nuts':'pantry-consumables',
+  'kewpie':'pantry-consumables','kewpie mayo':'pantry-consumables',
+  'brandy':'pantry-consumables','cognac':'pantry-consumables','masala':'pantry-consumables',
+  'sandwich rolls':'pantry-consumables','tostada shells':'pantry-consumables','jarred marinara':'pantry-consumables',
+  'cornichons':'pantry-consumables','sultanas':'pantry-consumables',
+  'pasta- acini de pepe':'pantry-consumables','acini de pepe':'pantry-consumables',
+  'date syrup':'pantry-consumables','date paste':'pantry-consumables','treacle':'pantry-consumables',
+  'hominy':'pantry-consumables','rajma':'pantry-consumables','dry kidney beans':'protein',
+  'hoisin':'pantry-consumables','hoisin sauce':'pantry-consumables',
+  'lardons':'protein','pancetta':'protein',
+  'aji panca paste':'pantry-consumables',
+  'cornmeal':'pantry-consumables','fine cornmeal':'pantry-consumables',
+  'white sesame seed':'pantry-consumables','white sesame seeds':'pantry-consumables','black sesame seed':'pantry-consumables','black sesame seeds':'pantry-consumables',
+  'pork tenderloins':'protein','pork tenderloin':'protein',
+  'marjoram':'produce','fresh marjoram':'produce',
+  'veggie stock':'pantry-consumables','veggie or chicken stock':'pantry-consumables',
+  'canned chipotle peppers':'pantry-consumables','chipotle peppers':'pantry-consumables',
+  'kitchen bouquet':'pantry-consumables',
+  'veggies':'produce','chopped veggies':'produce',
 };
 
 // Runtime DB — starts as a copy of the baseline; Firestore loading adds/overrides
