@@ -185,6 +185,22 @@ function isSkippable(raw: string): boolean {
   if (!raw || !raw.trim()) return true;
   if (/\beach\s*:/i.test(raw)) return true; // multi-spice
   if (/\bto\s+taste\b/i.test(raw.toLowerCase())) return true;
+  const t = raw.trim().toLowerCase();
+  // Lone fragments / qty-only / unit-only that are splitter byproducts
+  if (t.length <= 2) return true; // "x", "a", "/", "--", etc.
+  if (/^[-–—\/.,;:\s]+$/.test(t)) return true; // pure punctuation
+  if (/^(?:approx|about|scant|heaping|lightly|generous|generously|rounded|level|packed|other|extra|more|some|a\s+few|a\s+bit)\.?$/i.test(t)) return true;
+  // Bare qty + unit with no ingredient noun: "3 tbsp", "1/2 teaspoon", "2 pounds", "2-3 tablespoons"
+  if (/^\d+(?:\s+\d+\/\d+)?(?:[.\/]\d+)?(?:\s*-\s*\d+(?:[.\/]\d+)?)?\s*(?:tsps?|tbsps?|teaspoons?|tablespoons?|cups?|oz|ounces?|lbs?|pounds?|grams?|kg|g|ml|l|pieces?|slices?|sticks?|sprigs?|stalks?|stems?|cloves?|cans?|jars?|pkgs?|sheets?|drops?|pinch|dash|handful|tubes?)\.?$/i.test(t)) return true;
+  // "use N <unit>" / "total pieces" / "X kg / Y lb" qty-conversion fragments
+  if (/^use\s+\d/i.test(t)) return true;
+  if (/^\d+(?:[.\/]\d+)?\s*(?:kg|g|ml|l|lb|lbs|oz|cups?)\s*\/\s*\d+(?:[.\/]\d+)?\s*(?:kg|g|ml|l|lb|lbs|oz|cups?)/i.test(t)) return true;
+  // Fragments ending in "from", "of", "made of" — splitter leftovers
+  if (/\b(?:from|of|made\s+of)\s*$/i.test(t) && t.length < 50) return true;
+  // Empty trailing markers like ", to garnish:", ", for serving:"
+  if (/^[,\s]*(?:to|for)\s+(?:serving|serve|garnish(?:ing)?|topping)\s*[:.]?\s*$/i.test(t)) return true;
+  // "X total" / "total X" qty-aggregation noise
+  if (/^total\s+\w+$|^\w+\s+total$/i.test(t)) return true;
   return false;
 }
 

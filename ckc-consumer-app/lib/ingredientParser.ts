@@ -463,6 +463,20 @@ export function splitIngredientLine(raw: string): string[] {
   // an extra portion that isn't a separate ingredient.
   raw = raw.replace(/,\s*plus\s+(?:more|extra|\w+(?:\s+\w+)?)\s+(?:for\s+\w+|as\s+needed|to\s+taste|if\s+needed|to\s+\w+).*$/i, '').trim();
   raw = raw.replace(/,\s*plus\s+more\b.*$/i, '').trim();
+  // Pre-strip ", or N <unit> [cooked] X" trailing — alt-form alternative the
+  // recipe author offers for a canned/dried-bean swap. Mega-split would otherwise
+  // turn this into a separate ingredient.
+  //   "1 (15-oz) can black beans, drained, or 1 1/2 cups cooked black beans"
+  //     → drop ", or 1 1/2 cups cooked black beans"
+  raw = raw.replace(/,\s*or\s+[\d¼½¾⅓⅔⅛⅜⅝⅞](?:[.\/\s][\d¼½¾⅓⅔⅛⅜⅝⅞]+)*\s+(?:cups?|tbsps?|tablespoons?|tsps?|teaspoons?|oz|ounces?|lbs?|pounds?|grams?)\.?\s+(?:cooked\s+)?[\w\s-]+$/i, '').trim();
+  // Pre-collapse "Zest and juice of [N] [citrus]" / "grated zest and juice of"
+  // → "[N] [citrus]" so the citrus becomes the ingredient (mega-split would
+  // otherwise produce "zest juice of" as a fragment).
+  raw = raw.replace(/^(?:finely\s+)?(?:grated\s+)?(?:the\s+)?zest\s+and\s+juice\s+of\s+(\d+(?:\s+\d+\/\d+)?(?:\.\d+)?)?\s*(?:large\s+|small\s+|medium\s+)?(lemons?|limes?|oranges?|grapefruits?)\b[^()]*/i,
+    (_, n, fruit) => `${n || '1'} ${fruit}`).trim();
+  // Pre-strip trailing ", from <something>" recipe-author note (e.g. "minced
+  // yellow onion, from 1 small onion" → "minced yellow onion").
+  raw = raw.replace(/,\s*from\s+\d+\b[^()]*$/i, '').trim();
   // ", plus N <unit>" mid-line → " + N <unit>" so plus-split rule fires
   // ("4 tablespoons, plus 1/3 cup olive oil" → "4 tablespoons + 1/3 cup olive oil")
   raw = raw.replace(/,\s*plus\s+(\d+(?:\s+\d+\/\d+)?(?:\.\d+)?|\d+\/\d+|[¼-¾⅐-⅞])\s+(cups?|tbsps?|tablespoons?|tsps?|teaspoons?|oz|ounces?|lbs?|pounds?)/gi, ' + $1 $2');
@@ -944,6 +958,54 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'center-cut salmon filets':'salmon filets', 'center cut salmon filets':'salmon filets',
   'center-cut salmon filet':'salmon filet', 'center cut salmon filet':'salmon filet',
   'center-cut, skin-on salmon fillets':'salmon fillets',
+  // Round 58 — splitter-noise cleanup pass
+  'garlicherbs':'garlic herb','garlic herb':'garlic herb',
+  'sort of flatbread or couscous or rice':'cooked rice',
+  'swiss chard collard greens greens':'collard greens','collard greens mustard greens':'collard greens',
+  '2 cups peeled, diced white sweet potatoes*':'sweet potatoes',
+  ', for garnish: 2 tablespoons finely chopped fresh flat-leaf parsley, chives and/or green onions':'fresh italian parsley',
+  'extra harissa':'harissa',
+  'or 1/4 tsp. kosher salt':'salt','or 1 1/2 cups black beans':'black beans','or 1 1/2 cups chickpeas':'chickpeas',
+  '5 teaspoon (20g) diamond crystal':'salt','diamond crystal':'salt','morton kosher salt':'salt',
+  'but lovely: fresh oregano':'fresh oregano','but lovely: minced fresh oregano':'fresh oregano',
+  '(jalapeno slices':'jalapeno','(jalapeno slices, for garnish':'jalapeno',
+  'pine nuts some more lemon zest gomasio bee pollen big salt flakes':'pine nuts',
+  'capered lemon dill sauce':'',
+  'any combination of kimchi chile crisp nori sheets':'kimchi',
+  'mixed herbs - basil':'fresh basil',
+  'more cashews seeds':'cashews','more cashews or hemp seeds':'cashews',
+  'used as scoopers to eat bites of salad':'',
+  'tornherbs (like mint, dill, parsley, or for serving)':'fresh herbs','fresh tornherbs':'fresh herbs','tornherbs':'fresh herbs',
+  'mixed cilantro':'fresh cilantro',
+  'bell peppers mix red':'bell peppers',
+  'smoked paprika oregano':'smoked paprika',
+  'soy sauce/fish sauce':'soy sauce',
+  'roastedfresh tomatoes':'roasted tomatoes','roasted fresh tomatoes':'roasted tomatoes',
+  'pasta- acini de pepe pastina':'pastina',
+  'little gem lettuce red':'little gem lettuce','little gem lettuce, red or green leaf lettuce':'little gem lettuce',
+  'spring onions / scallions':'fresh scallions',
+  'bunch cilantro leaves':'fresh cilantro',
+  'stems a few leaves reserved':'',
+  'or free-range chicken':'whole chicken','large organic or free-range chicken':'whole chicken',
+  'or the same weight in chicken thighs with the skin on the bone pieces':'chicken thighs',
+  'additional parsley':'fresh parsley','additional chopped parsley':'fresh parsley',
+  'slivered pistachios':'pistachios',
+  'plus chiles':'chiles','plus thinly sliced chiles':'chiles',
+  'steamed jasmine rice':'jasmine rice',
+  'drumsticks legs':'chicken drumsticks',
+  'black peppercorns all wrapped in a packet made of':'black peppercorns',
+  'green leek':'leek','green leek leaves':'leek',
+  'filet arctic char':'arctic char',
+  'other herbs':'fresh herbs',
+  'tubes':'',
+  'italianfresh seasoning':'italian seasoning','italian fresh seasoning':'italian seasoning',
+  'white wine marsala wine':'white wine',
+  'stir-fry vegetables':'mixed vegetables',
+  'optional, for garnish: hot sauce, pickled red onion, jalapeño (fresh or pickled), avocado':'hot sauce',
+  'crisp salad greens':'mixed greens',
+  '1 cup fresh packed':'',
+  'baby back ribs neck bones':'baby back ribs',
+  '0022 pieces*':'',
   // Round 57 — fix the 2 sub-80% recipes (BBQ Chicken Bowls + Pan-Fried Salmon)
   'additional bbq sauce':'bbq sauce',
   'pwwb bbq dry rub':'','pwwb bbq dry rub, below':'',
