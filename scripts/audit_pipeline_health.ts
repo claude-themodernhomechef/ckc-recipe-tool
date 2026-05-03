@@ -26,7 +26,7 @@ import * as admin from 'firebase-admin';
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { parseIngredient, categorizeIngredientWithMatch, addIngredientToDb } from '../ckc-consumer-app/lib/ingredientParser';
+import { parseIngredient, categorizeIngredientWithMatch, addIngredientToDb, splitIngredientLine } from '../ckc-consumer-app/lib/ingredientParser';
 
 const SA_PATH       = path.join(__dirname, '../service-account.json');
 const INGREDIENT_DB = path.join(__dirname, '../data/ingredientNutrition_v2.json');
@@ -65,6 +65,7 @@ const FORM_MODIFIERS_NUTRITION: RegExp[] = [
   /\bbone[\s-]?in\b/g, /\bboneless\b/g,
   /\bskin[\s-]?on\b/g, /\bskinless\b/g,
   /\bfull[\s-]?fat\b/g, /\blow[\s-]?fat\b/g, /\bfat[\s-]?free\b/g, /\bnonfat\b/g,
+  /\bwhole[\s-]?milk\b/g,
   /\blow[\s-]?sodium\b/g, /\breduced[\s-]?sodium\b/g,
   /\breduced[\s-]?fat\b/g,
   /\b\d+%?\s*lean\b/g,
@@ -80,6 +81,7 @@ const FORM_MODIFIERS_NUTRITION: RegExp[] = [
   /\b(?:stone[\s-]?ground|wholegrain|whole[\s-]?grain|coarse)\b/g,
   // Variety/origin descriptors — keep for shopping display but not in nutrition DB
   /\b(?:bartlett|valencia|hass|granny\s+smith|honeycrisp|fuji|gala|pink\s+lady)\b/g,
+  /\bvidalia\b/g,
   /\b(?:lacinato|tuscan|dinosaur|curly|red\s+russian)\b/g,
   /\b(?:atlantic|pacific|wild|wild[\s-]?caught|farm[\s-]?raised|sustainably[\s-]?caught)\b/g,
   /\b(?:san\s+marzano|roma|cherry|grape|heirloom|beefsteak|early\s+girl)\b/g,
@@ -301,7 +303,12 @@ async function main() {
     let matched = 0;
     let counted = 0;
 
+    // Split each raw line first (mirrors production build_recipe_nutrition_v2.ts behavior)
+    const splitRaws: string[] = [];
     for (const raw of recipe.ingredients) {
+      for (const part of splitIngredientLine(raw)) splitRaws.push(part);
+    }
+    for (const raw of splitRaws) {
       if (isSkippable(raw)) { totalSkipped++; continue; }
 
       const normalised = preprocessIngredient(raw);
