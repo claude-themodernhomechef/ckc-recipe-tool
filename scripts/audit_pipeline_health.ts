@@ -74,6 +74,15 @@ const FORM_MODIFIERS_NUTRITION: RegExp[] = [
   /\bmild\b/g, /\bhot\b/g, /\bspicy\b/g,
   // Cut style — 'english-cut' / 'center-cut' / 'flat-iron' descriptive but not in DB
   /\benglish[\s-]?cut\b/g, /\bcenter[\s-]?cut\b/g,
+  // Variety/origin descriptors — keep for shopping display but not in nutrition DB
+  /\b(?:bartlett|valencia|hass|granny\s+smith|honeycrisp|fuji|gala|pink\s+lady)\b/g,
+  /\b(?:lacinato|tuscan|dinosaur|curly|red\s+russian)\b/g,
+  /\b(?:atlantic|pacific|wild|wild[\s-]?caught|farm[\s-]?raised|sustainably[\s-]?caught)\b/g,
+  /\b(?:san\s+marzano|roma|cherry|grape|heirloom|beefsteak|early\s+girl)\b/g,
+  /\b(?:persian|kirby|english|hothouse|hot\s+house)\b/g,
+  /\b(?:thai|italian|french|spanish|chinese|japanese|korean|mexican|indian|moroccan)\b/g,
+  /\b(?:european|asian|american)\b/g,
+  /\b(?:meyer)\b/g,
   /\bcrumbled\b/g, /\bshelled\b/g,
   /\bhead\b/g, /\bsticks?\b/g, /\bstrips?\b/g, /\bsprigs?\b/g, /\bstalks?\b/g,
 ];
