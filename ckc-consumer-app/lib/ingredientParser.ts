@@ -194,6 +194,12 @@ const BASELINE_DB: Record<string, string> = {
   'center cut bacon':'protein','center-cut bacon':'protein',
   'center-cut salmon':'protein','center cut salmon':'protein',
   'salmon filets':'protein','center-cut salmon filets':'protein',
+  // Round 43 DB additions
+  'fried almonds':'pantry-staples',
+  'fingerling potatoes':'produce','baby back pork ribs':'protein','chicken sausage':'protein',
+  'jumbo shrimp':'protein','extra-jumbo shrimp':'protein',
+  'fig preserves':'pantry-staples','coconut flakes':'pantry-staples',
+  'frozen spinach':'produce','frozen peas':'produce','frozen edamame':'produce',
   // Round 42 DB additions (user wants kept as-is)
   'crunchy peanut butter':'pantry-staples',
   'coarse mustard':'pantry-staples','stone-ground mustard':'pantry-staples','wholegrain mustard':'pantry-staples',
@@ -881,6 +887,28 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'center-cut salmon filets':'salmon filets', 'center cut salmon filets':'salmon filets',
   'center-cut salmon filet':'salmon filet', 'center cut salmon filet':'salmon filet',
   'center-cut, skin-on salmon fillets':'salmon fillets',
+  // Round 43 — long-tail
+  'egg-free garlic aioli regular mayo':'mayo','egg-free garlic aioli':'mayo',
+  'elbow-style pasta':'pasta',
+  'extra-jumbo shrimp':'jumbo shrimp',
+  'extra-large bunch asparagus':'asparagus',
+  'extra-virgin olive oil for pan':'olive oil',
+  'fig preserves/jam':'fig preserves',
+  'filet arctic char salmon steelhead trout cod haddock':'salmon',
+  'arctic char':'salmon','steelhead trout':'salmon',
+  'fillets center-cut salmon skinned':'salmon fillets',
+  'fingerling potatoes vertically':'fingerling potatoes',
+  'firmly brown sugar':'brown sugar',
+  'flake/chips coconut':'coconut flakes',
+  'flat leave parsley':'fresh italian parsley',
+  'flesh zest half a lemon':'lemon',
+  'for garnish: 2 tablespoons finely chopped fresh flat-leaf parsley':'fresh italian parsley',
+  'for garnish: 2 tablespoons finely chopped fresh flat-leaf parsley ':'fresh italian parsley',
+  'frozen leaf spinach defrosted liquid out':'frozen spinach',
+  'frozen peas defrosted':'frozen peas',
+  'frozen spinach thawed/ dry':'frozen spinach',
+  'full racks baby back pork ribs':'baby back pork ribs','full rack baby back pork ribs':'baby back pork ribs',
+  'fully-cooked chicken sausage links':'chicken sausage','fully cooked chicken sausage':'chicken sausage',
   // Round 42 — long-tail batch
   // Dry-X grain prefix → strip "dry"
   'dry basmati rice':'basmati rice',
@@ -1508,8 +1536,12 @@ export function parseIngredient(raw: string): {
     if (/^[\s\-–—]+$/.test(trimmed)) {
       return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
     }
-    // Skip "For the X:" / "For X:" recipe-section headers
-    if (/^for\s+(?:the\s+)?[\w\s-]+:\s*\*?$/i.test(trimmed)) {
+    // Skip "For the X:" / "For X:" recipe-section headers (with or without colon)
+    if (/^for\s+(?:the\s+)?[\w\s-]+:?\s*\*?$/i.test(trimmed) && !/\d/.test(trimmed) && trimmed.length < 40) {
+      return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
+    }
+    // Skip "freezer bag", "mortar and pestle", and other equipment lines
+    if (/^(?:large\s+|small\s+|medium\s+)?(?:freezer\s+bag|mortar\s+and\s+pestle|spice\s+mill|skewers?)\b/i.test(trimmed)) {
       return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
     }
     // Skip lone "Boiling water" / "Hot water" / "Cold water" — instructions, not ingredients
