@@ -958,6 +958,14 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'center-cut salmon filets':'salmon filets', 'center cut salmon filets':'salmon filets',
   'center-cut salmon filet':'salmon filet', 'center cut salmon filet':'salmon filet',
   'center-cut, skin-on salmon fillets':'salmon fillets',
+  // Round 59 — final 11 cleanup
+  'some sort of flatbread or couscous or rice':'cooked rice',
+  'other fresh':'fresh herbs',
+  '4 x':'',
+  '/ or cilantro':'fresh cilantro',
+  '1 inch julienne pieces':'',
+  'julienne pieces':'',
+  'use ½ teaspoon morton), more, as needed':'salt',
   // Round 58 — splitter-noise cleanup pass
   'garlicherbs':'garlic herb','garlic herb':'garlic herb',
   'sort of flatbread or couscous or rice':'cooked rice',

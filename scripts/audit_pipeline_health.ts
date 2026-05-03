@@ -199,8 +199,16 @@ function isSkippable(raw: string): boolean {
   if (/\b(?:from|of|made\s+of)\s*$/i.test(t) && t.length < 50) return true;
   // Empty trailing markers like ", to garnish:", ", for serving:"
   if (/^[,\s]*(?:to|for)\s+(?:serving|serve|garnish(?:ing)?|topping)\s*[:.]?\s*$/i.test(t)) return true;
-  // "X total" / "total X" qty-aggregation noise
-  if (/^total\s+\w+$|^\w+\s+total$/i.test(t)) return true;
+  // "X total" / "total X" qty-aggregation noise (also "4 pieces total")
+  if (/^total\s+\w+$|^\w+\s+total$|^\d+\s+\w+\s+total$/i.test(t)) return true;
+  // "1/2 cup blanched" / "5 cups chopped into bite-sized pieces" — qty+unit+prep, no noun
+  if (/^[\d¼½¾⅓⅔⅛⅜⅝⅞.\/\s-]+\s*(?:tsps?|tbsps?|teaspoons?|tablespoons?|cups?|oz|ounces?|lbs?|pounds?|grams?|kg|g|ml|inch|inches)\s+(?:chopped|diced|sliced|crushed|minced|julienne|julienned|blanched|peeled|cubed|halved|quartered|grated|shredded)\b.*$/i.test(t)) return true;
+  // "4 x" / "4 X" qty-with-multiplier-noise
+  if (/^\d+\s*x\s*$/i.test(t)) return true;
+  // "use <qty> <unit>" with trailing junk
+  if (/^use\s+[\d¼½¾⅓⅔⅛⅜⅝⅞.\/\s-]+\s*\w+/i.test(t)) return true;
+  // "<qty> <unit>, <qty> <unit>" double-unit conversion ("4 tablespoons, 2 oz")
+  if (/^[\d¼½¾⅓⅔⅛⅜⅝⅞.\/\s-]+\s*\w+,\s*[\d¼½¾⅓⅔⅛⅜⅝⅞.\/\s-]+\s*\w+\s*$/i.test(t)) return true;
   return false;
 }
 
