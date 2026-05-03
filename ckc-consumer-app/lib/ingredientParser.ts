@@ -351,6 +351,18 @@ export function splitIngredientLine(raw: string): string[] {
   // Pre-strip "(or any X like Y, Z)" parenthetical alternatives BEFORE splitting.
   // Otherwise the splitter sees the "or"/commas inside parens and splits incorrectly.
   raw = raw.replace(/\s*\(\s*or\s+(?:any\s+)?[^)]+\)/gi, '').trim();
+  // "(for serving)" / "(for garnish)" / "(to taste)" parenthetical suffix —
+  // unwrap to bare suffix so the trailing-suffix detection finds it.
+  raw = raw.replace(/\s*\(\s*(for\s+(?:serving|garnish(?:ing)?|topping)|to\s+(?:serve|garnish|taste|top)|as\s+needed)\s*\)\s*$/i, ', $1').trim();
+  // Slash-list "X/Y/Z" without qty — split into separate items (recipe author
+  // offering a list of garnish/serving alternatives).
+  // Fires only when the line has NO qty/unit and contains 2+ slashes between word groups.
+  if (!/^\s*\d/.test(raw) && (raw.match(/\//g) || []).length >= 2) {
+    const slashItems = raw.split(/\s*\/\s*/).map(s => s.trim()).filter(Boolean);
+    if (slashItems.length >= 2 && slashItems.every(s => s.length > 1 && s.length < 50)) {
+      return slashItems.map(item => `${item}, for garnish`);
+    }
+  }
   // Pre-collapse "Juice of N <citrus>" → "N <citrus>" BEFORE mega-split (otherwise
   // mega-split sees "1 large lemon" as a new ingredient and splits "Juice of"
   // into its own segment).
@@ -587,7 +599,13 @@ export function splitIngredientLine(raw: string): string[] {
       const cleaned = cleanForDbLookup(part);
       const firstWord = cleaned.split(/\s+/)[0] ?? '';
       const isModifier = PREP_WORDS.has(firstWord) || STOP_WORDS.includes(firstWord);
-      if (!isModifier && !!INGREDIENT_DB[cleaned]) {
+      // When a serving suffix is set, recipe author is offering a list of garnish/
+      // serving items — be more permissive: split even when prep-word is first
+      // (e.g. "sliced scallions" — keep as separate garnish item).
+      // Use endsWithKnownIngredient (looks past prep words) instead of strict DB hit.
+      const passLooksLikeIngredient = !isModifier && !!INGREDIENT_DB[cleaned];
+      const passServingPermissive = !!trailingSuffix && endsWithKnownIngredient(part);
+      if (passLooksLikeIngredient || passServingPermissive) {
         result.push(part);
       } else {
         result[result.length - 1] += ', ' + part;
@@ -824,6 +842,10 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   // Round 34 — clean-up of high-frequency 80-99% tier issues
   'dried poultry blend':'poultry seasoning',
   'steamed broccoli':'broccoli',
+  '(2-inch) piece fresh ginger':'fresh ginger',
+  '2-inch piece fresh ginger':'fresh ginger',
+  'piece fresh ginger':'fresh ginger',
+  'coconut yogurt':'coconut yoghurt',
   'dry wild rice blend':'wild rice blend',
   'dry wild rice':'wild rice',
   'non-fat greek yogurt':'fat free greek yogurt',
@@ -918,7 +940,7 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'half & half':'half-and-half', 'half &amp; half':'half-and-half',
   'natural yoghurt':'yogurt', 'natural yogurt':'yogurt', 'yoghurt':'yogurt',
   'greek yoghurt':'greek yogurt', 'plain greek yoghurt':'plain greek yogurt',
-  '0% fat greek yoghurt':'non-fat greek yogurt', '0% greek yoghurt':'non-fat greek yogurt',
+  '0% fat greek yoghurt':'fat free greek yogurt', '0% greek yoghurt':'fat free greek yogurt',
   '90% lean ground beef':'ground beef', '93% lean ground beef':'ground beef',
   '93% lean ground turkey':'ground turkey', '99% lean ground turkey':'ground turkey',
   'mini cucumbers':'cucumber', 'mini cucumber':'cucumber',
@@ -1251,7 +1273,7 @@ export function parseIngredient(raw: string): {
     //   "full fat coconut milk"  →  "full-fat coconut milk"
     //   "low fat yogurt"         →  "low-fat yogurt"
     .replace(/\b(full|low|non|reduced)\s+fat\b/gi, '$1-fat')
-    .replace(/\bfat\s+free\b/gi, 'fat-free')
+    // 'fat free' kept as two words — nutrition DB has 'fat free greek yogurt' with space
     .replace(/\bred[\s-]+pepper(\s+flakes?)\b/gi, 'red pepper$1')  // "red-pepper" → "red pepper"
     .replace(/\bblack[\s-]+pepper\b/gi, 'black pepper')
     .replace(/\bwhite[\s-]+pepper\b/gi, 'white pepper')
