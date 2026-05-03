@@ -911,6 +911,16 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'center-cut salmon filets':'salmon filets', 'center cut salmon filets':'salmon filets',
   'center-cut salmon filet':'salmon filet', 'center cut salmon filet':'salmon filet',
   'center-cut, skin-on salmon fillets':'salmon fillets',
+  // Round 49 — long-tail
+  // 'lite coconut milk' KEPT (added DB entry)
+  'little gem lettuce 3-4 heads':'little gem lettuce',
+  'loaf crusty bread':'crusty bread','small loaf crusty bread':'crusty bread',
+  'long grain jasmine rice':'jasmine rice','long-grain jasmine rice':'jasmine rice',
+  'long noodles of choice':'noodles','long noodles':'noodles',
+  'long sweet potatoes':'sweet potatoes',
+  'lots of black pepper':'black pepper','lots of freshly ground black pepper':'black pepper',
+  'lots of limes':'limes','lots of fresh limes':'limes',
+  'lower-sodium tamari':'low-sodium tamari','lower sodium tamari':'low-sodium tamari',
   // Round 48 — exact-match aliases for persistent + new items
   '+ 1/3 cup extra virgin olive oil':'olive oil',
   '+ 3 tablespoons sesame seeds':'sesame seeds',

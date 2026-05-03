@@ -59935,81 +59935,57 @@
     ]
   },
   "seasoning salt": {
-    "source": "edamam",
-    "foodId": "food_aj7w3xab0epj7cbgkbkpwadysovd",
-    "label": "Seasoning",
     "category": "Generic foods",
-    "per100g": {
-      "calories": {
-        "value": 307,
-        "unit": "kcal"
-      },
-      "protein": {
-        "value": 9.59,
-        "unit": "g"
-      },
-      "fat": {
-        "value": 7.53,
-        "unit": "g"
-      },
-      "carbs": {
-        "value": 65.6,
-        "unit": "g"
-      },
-      "fiber": {
-        "value": 11.3,
-        "unit": "g"
-      }
-    },
+    "label": "Lawry's Seasoned Salt",
     "measures": [
       {
-        "label": "Serving",
-        "gramWeight": 4
+        "gramWeight": 5,
+        "label": "Serving"
       },
       {
-        "label": "Whole",
-        "gramWeight": 4.4
+        "gramWeight": 28.349523125,
+        "label": "Ounce"
       },
       {
-        "label": "Envelope",
-        "gramWeight": 4.4
+        "gramWeight": 1,
+        "label": "Gram"
       },
       {
-        "label": "Package",
-        "gramWeight": 4.4
+        "gramWeight": 1000,
+        "label": "Kilogram"
       },
       {
-        "label": "Packet",
-        "gramWeight": 4.4
+        "gramWeight": 5,
+        "label": "Teaspoon"
       },
       {
-        "label": "Gram",
-        "gramWeight": 1
-      },
-      {
-        "label": "Ounce",
-        "gramWeight": 28.349523125
-      },
-      {
-        "label": "Pound",
-        "gramWeight": 453.59237
-      },
-      {
-        "label": "Kilogram",
-        "gramWeight": 1000
-      },
-      {
-        "label": "Teaspoon",
-        "gramWeight": 1.5
-      },
-      {
-        "label": "Tablespoon",
-        "gramWeight": 4.4
-      },
-      {
-        "gramWeight": 0.01
+        "gramWeight": 15,
+        "label": "Tablespoon"
       }
-    ]
+    ],
+    "per100g": {
+      "calories": {
+        "unit": "kcal",
+        "value": 0
+      },
+      "carbs": {
+        "unit": "g",
+        "value": 0
+      },
+      "fat": {
+        "unit": "g",
+        "value": 0
+      },
+      "fiber": {
+        "unit": "g",
+        "value": 0
+      },
+      "protein": {
+        "unit": "g",
+        "value": 0
+      }
+    },
+    "source": "manual-USDA-FDC-411064"
   },
   "baby bell peppers": {
     "source": "edamam",
@@ -182254,6 +182230,607 @@
       },
       {
         "gramWeight": 0.067
+      }
+    ]
+  },
+  "asafoetida": {
+    "category": "Generic foods",
+    "label": "Asafoetida (Hing)",
+    "measures": [
+      {
+        "gramWeight": 5,
+        "label": "Serving"
+      },
+      {
+        "gramWeight": 28.349523125,
+        "label": "Ounce"
+      },
+      {
+        "gramWeight": 1,
+        "label": "Gram"
+      },
+      {
+        "gramWeight": 1000,
+        "label": "Kilogram"
+      },
+      {
+        "gramWeight": 5,
+        "label": "Teaspoon"
+      },
+      {
+        "gramWeight": 15,
+        "label": "Tablespoon"
+      }
+    ],
+    "per100g": {
+      "calories": {
+        "unit": "kcal",
+        "value": 303
+      },
+      "carbs": {
+        "unit": "g",
+        "value": 67.5
+      },
+      "fat": {
+        "unit": "g",
+        "value": 0.75
+      },
+      "fiber": {
+        "unit": "g",
+        "value": 4
+      },
+      "protein": {
+        "unit": "g",
+        "value": 4
+      }
+    },
+    "source": "manual-PMC-research"
+  },
+  "better that bouillon chicken base": {
+    "category": "Generic foods",
+    "label": "Better Than Bouillon Chicken Base",
+    "measures": [
+      {
+        "gramWeight": 5,
+        "label": "Serving"
+      },
+      {
+        "gramWeight": 28.349523125,
+        "label": "Ounce"
+      },
+      {
+        "gramWeight": 1,
+        "label": "Gram"
+      },
+      {
+        "gramWeight": 1000,
+        "label": "Kilogram"
+      },
+      {
+        "gramWeight": 5,
+        "label": "Teaspoon"
+      },
+      {
+        "gramWeight": 15,
+        "label": "Tablespoon"
+      }
+    ],
+    "per100g": {
+      "calories": {
+        "unit": "kcal",
+        "value": 250
+      },
+      "carbs": {
+        "unit": "g",
+        "value": 33
+      },
+      "fat": {
+        "unit": "g",
+        "value": 1
+      },
+      "fiber": {
+        "unit": "g",
+        "value": 0
+      },
+      "protein": {
+        "unit": "g",
+        "value": 8
+      }
+    },
+    "source": "manual-USDA-FDC-2571766"
+  },
+  "better than bouillon chicken base": {
+    "category": "Generic foods",
+    "label": "Better Than Bouillon Chicken Base",
+    "measures": [
+      {
+        "gramWeight": 5,
+        "label": "Serving"
+      },
+      {
+        "gramWeight": 28.349523125,
+        "label": "Ounce"
+      },
+      {
+        "gramWeight": 1,
+        "label": "Gram"
+      },
+      {
+        "gramWeight": 1000,
+        "label": "Kilogram"
+      },
+      {
+        "gramWeight": 5,
+        "label": "Teaspoon"
+      },
+      {
+        "gramWeight": 15,
+        "label": "Tablespoon"
+      }
+    ],
+    "per100g": {
+      "calories": {
+        "unit": "kcal",
+        "value": 250
+      },
+      "carbs": {
+        "unit": "g",
+        "value": 33
+      },
+      "fat": {
+        "unit": "g",
+        "value": 1
+      },
+      "fiber": {
+        "unit": "g",
+        "value": 0
+      },
+      "protein": {
+        "unit": "g",
+        "value": 8
+      }
+    },
+    "source": "manual-USDA-FDC-2571766"
+  },
+  "better than bouillon beef base": {
+    "category": "Generic foods",
+    "label": "Better Than Bouillon Chicken Base",
+    "measures": [
+      {
+        "gramWeight": 5,
+        "label": "Serving"
+      },
+      {
+        "gramWeight": 28.349523125,
+        "label": "Ounce"
+      },
+      {
+        "gramWeight": 1,
+        "label": "Gram"
+      },
+      {
+        "gramWeight": 1000,
+        "label": "Kilogram"
+      },
+      {
+        "gramWeight": 5,
+        "label": "Teaspoon"
+      },
+      {
+        "gramWeight": 15,
+        "label": "Tablespoon"
+      }
+    ],
+    "per100g": {
+      "calories": {
+        "unit": "kcal",
+        "value": 250
+      },
+      "carbs": {
+        "unit": "g",
+        "value": 33
+      },
+      "fat": {
+        "unit": "g",
+        "value": 1
+      },
+      "fiber": {
+        "unit": "g",
+        "value": 0
+      },
+      "protein": {
+        "unit": "g",
+        "value": 8
+      }
+    },
+    "source": "manual-USDA-FDC-2571766"
+  },
+  "better than bouillon vegetable base": {
+    "category": "Generic foods",
+    "label": "Better Than Bouillon Chicken Base",
+    "measures": [
+      {
+        "gramWeight": 5,
+        "label": "Serving"
+      },
+      {
+        "gramWeight": 28.349523125,
+        "label": "Ounce"
+      },
+      {
+        "gramWeight": 1,
+        "label": "Gram"
+      },
+      {
+        "gramWeight": 1000,
+        "label": "Kilogram"
+      },
+      {
+        "gramWeight": 5,
+        "label": "Teaspoon"
+      },
+      {
+        "gramWeight": 15,
+        "label": "Tablespoon"
+      }
+    ],
+    "per100g": {
+      "calories": {
+        "unit": "kcal",
+        "value": 250
+      },
+      "carbs": {
+        "unit": "g",
+        "value": 33
+      },
+      "fat": {
+        "unit": "g",
+        "value": 1
+      },
+      "fiber": {
+        "unit": "g",
+        "value": 0
+      },
+      "protein": {
+        "unit": "g",
+        "value": 8
+      }
+    },
+    "source": "manual-USDA-FDC-2571766"
+  },
+  "lawry's seasoning salt": {
+    "category": "Generic foods",
+    "label": "Lawry's Seasoned Salt",
+    "measures": [
+      {
+        "gramWeight": 5,
+        "label": "Serving"
+      },
+      {
+        "gramWeight": 28.349523125,
+        "label": "Ounce"
+      },
+      {
+        "gramWeight": 1,
+        "label": "Gram"
+      },
+      {
+        "gramWeight": 1000,
+        "label": "Kilogram"
+      },
+      {
+        "gramWeight": 5,
+        "label": "Teaspoon"
+      },
+      {
+        "gramWeight": 15,
+        "label": "Tablespoon"
+      }
+    ],
+    "per100g": {
+      "calories": {
+        "unit": "kcal",
+        "value": 0
+      },
+      "carbs": {
+        "unit": "g",
+        "value": 0
+      },
+      "fat": {
+        "unit": "g",
+        "value": 0
+      },
+      "fiber": {
+        "unit": "g",
+        "value": 0
+      },
+      "protein": {
+        "unit": "g",
+        "value": 0
+      }
+    },
+    "source": "manual-USDA-FDC-411064"
+  },
+  "lawry's seasoned salt": {
+    "category": "Generic foods",
+    "label": "Lawry's Seasoned Salt",
+    "measures": [
+      {
+        "gramWeight": 5,
+        "label": "Serving"
+      },
+      {
+        "gramWeight": 28.349523125,
+        "label": "Ounce"
+      },
+      {
+        "gramWeight": 1,
+        "label": "Gram"
+      },
+      {
+        "gramWeight": 1000,
+        "label": "Kilogram"
+      },
+      {
+        "gramWeight": 5,
+        "label": "Teaspoon"
+      },
+      {
+        "gramWeight": 15,
+        "label": "Tablespoon"
+      }
+    ],
+    "per100g": {
+      "calories": {
+        "unit": "kcal",
+        "value": 0
+      },
+      "carbs": {
+        "unit": "g",
+        "value": 0
+      },
+      "fat": {
+        "unit": "g",
+        "value": 0
+      },
+      "fiber": {
+        "unit": "g",
+        "value": 0
+      },
+      "protein": {
+        "unit": "g",
+        "value": 0
+      }
+    },
+    "source": "manual-USDA-FDC-411064"
+  },
+  "lawrys seasoning salt": {
+    "category": "Generic foods",
+    "label": "Lawry's Seasoned Salt",
+    "measures": [
+      {
+        "gramWeight": 5,
+        "label": "Serving"
+      },
+      {
+        "gramWeight": 28.349523125,
+        "label": "Ounce"
+      },
+      {
+        "gramWeight": 1,
+        "label": "Gram"
+      },
+      {
+        "gramWeight": 1000,
+        "label": "Kilogram"
+      },
+      {
+        "gramWeight": 5,
+        "label": "Teaspoon"
+      },
+      {
+        "gramWeight": 15,
+        "label": "Tablespoon"
+      }
+    ],
+    "per100g": {
+      "calories": {
+        "unit": "kcal",
+        "value": 0
+      },
+      "carbs": {
+        "unit": "g",
+        "value": 0
+      },
+      "fat": {
+        "unit": "g",
+        "value": 0
+      },
+      "fiber": {
+        "unit": "g",
+        "value": 0
+      },
+      "protein": {
+        "unit": "g",
+        "value": 0
+      }
+    },
+    "source": "manual-USDA-FDC-411064"
+  },
+  "fried almonds": {
+    "category": "Generic foods",
+    "label": "Fried Almonds",
+    "measures": [
+      {
+        "gramWeight": 28,
+        "label": "Serving"
+      },
+      {
+        "gramWeight": 28.349523125,
+        "label": "Ounce"
+      },
+      {
+        "gramWeight": 1,
+        "label": "Gram"
+      },
+      {
+        "gramWeight": 120,
+        "label": "Cup"
+      },
+      {
+        "gramWeight": 7.5,
+        "label": "Tablespoon"
+      },
+      {
+        "gramWeight": 1,
+        "label": "Almond"
+      }
+    ],
+    "per100g": {
+      "calories": {
+        "unit": "kcal",
+        "value": 600
+      },
+      "carbs": {
+        "unit": "g",
+        "value": 19
+      },
+      "fat": {
+        "unit": "g",
+        "value": 53
+      },
+      "fiber": {
+        "unit": "g",
+        "value": 10
+      },
+      "protein": {
+        "unit": "g",
+        "value": 20
+      }
+    },
+    "source": "manual-USDA-FDC-2409927"
+  },
+  "lite coconut milk": {
+    "source": "edamam",
+    "foodId": "food_by1k6v2adj7drhbq9w1rpbpen9ms",
+    "label": "Lite Coconut Milk",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 108,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 2.02,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 10.7,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 2.81,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 57
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 423.75
+      },
+      {
+        "label": "Can",
+        "gramWeight": 423.75
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 226
+      }
+    ]
+  },
+  "light coconut milk": {
+    "source": "edamam",
+    "foodId": "food_by1k6v2adj7drhbq9w1rpbpen9ms",
+    "label": "Lite Coconut Milk",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 108,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 2.02,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 10.7,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 2.81,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 57
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 423.75
+      },
+      {
+        "label": "Can",
+        "gramWeight": 423.75
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 226
       }
     ]
   }
