@@ -972,6 +972,17 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'center-cut salmon filets':'salmon filets', 'center cut salmon filets':'salmon filets',
   'center-cut salmon filet':'salmon filet', 'center cut salmon filet':'salmon filet',
   'center-cut, skin-on salmon fillets':'salmon fillets',
+  // Round 71 — final 9 cleanup (aliasing to actual DB keys, not idealized names)
+  'garlic herb':'garlic',
+  'roasted tomatoes':'fire roasted tomatoes',
+  'dried chilies':'dried red chilies',
+  'havarti':'havarti dill cheese','havarti cheese':'havarti dill cheese',
+  'dehydrated onion':'dehydrated minced onion',
+  'ranch seasoning':'ranch',
+  'plantain':'plantain chips',
+  'italian cheese blend':'mexican cheese blend',
+  'whole milk greek yogurt':'plain whole milk greek yogurt',
+  'sweet rice':'thai sweet rice',
   // Round 70 — fuzzy-match conversion to exact (final batch)
   'oregano marjoram':'fresh oregano','oregano marjoram or thyme sprigs':'fresh oregano',
   'chicken thighs boneless & skinless':'boneless skinless chicken thighs',
