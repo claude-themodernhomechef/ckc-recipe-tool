@@ -1537,7 +1537,7 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'julienne pieces':'',
   'use ½ teaspoon morton), more, as needed':'salt',
   // Round 58 — splitter-noise cleanup pass
-  'garlicherbs':'garlic herb','garlic herb':'garlic herb',
+  'garlicherbs':'garlic',
   'sort of flatbread or couscous or rice':'cooked rice',
   'swiss chard collard greens greens':'collard greens','collard greens mustard greens':'collard greens',
   '2 cups peeled, diced white sweet potatoes*':'sweet potatoes',
@@ -2344,7 +2344,7 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   '6-ounce cod fish fillets':'cod fillet', 'cod fish fillets':'cod fillet',
   'cod fillets':'cod fillet',
   'sea salt':'salt', 'flaky sea salt':'salt', 'kosher sea salt':'salt',
-  'havarti dill cheese':'havarti', 'havarti dill':'havarti',
+  // (round 71 aliases havarti → havarti dill cheese)
   'honeynut squash':'butternut squash',
   'arrowroot powder':'arrowroot',
   'leafy parsley':'parsley',
