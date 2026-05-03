@@ -13,6 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Fonts } from '../constants/theme';
 import { fetchCatalogRecipes } from '../lib/firestore';
 import { normalizeIngredient, parseIngredient } from '../lib/ingredientParser';
+import { applyDietSwap } from '../lib/dietSwaps';
 
 // ── Ingredient categorisation ─────────────────────────────────────────────────
 
@@ -73,6 +74,17 @@ export default function ShoppingPlannerScreen() {
   const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set());
   const [searchQuery, setSearchQuery] = useState('');
   const [showRecipePicker, setShowRecipePicker] = useState(false);
+  const [activeDiets, setActiveDiets] = useState<string[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const AsyncStorage = require('@react-native-async-storage/async-storage').default;
+        const stored = await AsyncStorage.getItem('@ckc/userDiets');
+        if (stored) setActiveDiets(JSON.parse(stored));
+      } catch {}
+    })();
+  }, []);
 
   useEffect(() => {
     fetchCatalogRecipes().then(firestoreRecipes => {
@@ -106,7 +118,8 @@ export default function ShoppingPlannerScreen() {
 
   // Build aggregated shopping list from selected recipes
   const shoppingList = useMemo(() => {
-    const byCategory: Record<Category, Map<string, string[]>> = {
+    type ItemAccum = { displayName: string; swapNote: string; recipes: string[] };
+    const byCategory: Record<Category, Map<string, ItemAccum>> = {
       Protein:          new Map(),
       Produce:          new Map(),
       DairyEggs:        new Map(),
@@ -118,11 +131,13 @@ export default function ShoppingPlannerScreen() {
     for (const recipe of allRecipes) {
       if (!selectedIds.has(recipe.id)) continue;
       for (const ing of recipe.ingredients) {
+        const swap = applyDietSwap(ing.name, activeDiets);
+        if (swap.removed) continue;
         const key = ing.name.toLowerCase();
         if (!byCategory[ing.category].has(key)) {
-          byCategory[ing.category].set(key, []);
+          byCategory[ing.category].set(key, { displayName: swap.name, swapNote: swap.swapNote, recipes: [] });
         }
-        byCategory[ing.category].get(key)!.push(recipe.name);
+        byCategory[ing.category].get(key)!.recipes.push(recipe.name);
       }
     }
 
@@ -133,10 +148,16 @@ export default function ShoppingPlannerScreen() {
           .filter(([name]) =>
             !searchQuery || name.includes(searchQuery.toLowerCase())
           )
-          .map(([name, recipes]) => ({ name, recipes, key: `${cat}-${name}` })),
+          .map(([name, item]) => ({
+            name,
+            displayName: item.displayName,
+            swapNote: item.swapNote,
+            recipes: item.recipes,
+            key: `${cat}-${name}`,
+          })),
       }))
       .filter(section => section.data.length > 0);
-  }, [selectedIds, searchQuery]);
+  }, [selectedIds, searchQuery, activeDiets]);
 
   const selectedRecipes = allRecipes.filter(r => selectedIds.has(r.id));
   const totalItems = shoppingList.reduce((acc, s) => acc + s.data.length, 0);
@@ -270,8 +291,11 @@ export default function ShoppingPlannerScreen() {
                   </View>
                   <View style={styles.ingredientInfo}>
                     <Text style={[styles.ingredientName, checked && styles.ingredientNameChecked]}>
-                      {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
+                      {item.displayName.charAt(0).toUpperCase() + item.displayName.slice(1)}
                     </Text>
+                    {item.swapNote ? (
+                      <Text style={styles.swapNote} numberOfLines={2}>{item.swapNote}</Text>
+                    ) : null}
                     <Text style={styles.ingredientRecipes} numberOfLines={1}>
                       {item.recipes.join(' · ')}
                     </Text>
@@ -520,6 +544,12 @@ const styles = StyleSheet.create({
   ingredientNameChecked: {
     textDecorationLine: 'line-through',
     color: Colors.textMuted,
+  },
+  swapNote: {
+    fontFamily: Fonts.body,
+    fontSize: 11,
+    color: Colors.gold,
+    fontStyle: 'italic',
   },
   ingredientRecipes: {
     fontFamily: Fonts.body,

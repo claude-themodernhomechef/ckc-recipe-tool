@@ -102,7 +102,13 @@ export default function SetupCompleteScreen({ navigation, route }: Props) {
           <TouchableOpacity
             style={[styles.primaryBtn, loading && { opacity: 0.6 }]}
             activeOpacity={0.85}
-            onPress={() => navigation.navigate('MainTabs')}
+            onPress={async () => {
+              try {
+                const AsyncStorage = require('@react-native-async-storage/async-storage').default;
+                await AsyncStorage.setItem('@ckc/userDiets', JSON.stringify(protocols));
+              } catch {}
+              navigation.navigate('MainTabs');
+            }}
           >
             {loading
               ? <ActivityIndicator color={Colors.bg} />

@@ -42,6 +42,7 @@ EXTRACT_JS = """
   const og = document.querySelector('meta[property="og:image"]');
   if (og && og.content && og.content.startsWith('http')) result.img = og.content;
 
+  // ── JSON-LD ──
   for (const s of document.querySelectorAll('script[type="application/ld+json"]')) {
     try {
       const raw = JSON.parse(s.textContent);
@@ -61,7 +62,7 @@ EXTRACT_JS = """
         }
 
         // Rating
-        if (n.aggregateRating) {
+        if (!result.rating && n.aggregateRating) {
           result.rating      = n.aggregateRating.ratingValue  || null;
           result.reviewCount = n.aggregateRating.reviewCount  ||
                                n.aggregateRating.ratingCount  || null;
@@ -79,6 +80,30 @@ EXTRACT_JS = """
       }
     } catch(e) {}
   }
+
+  // ── Microdata fallback for rating ──
+  if (!result.rating) {
+    const rv = document.querySelector('[itemprop="ratingValue"]');
+    if (rv) {
+      result.rating = rv.getAttribute('content') || rv.textContent.trim() || null;
+    }
+    const rc = document.querySelector('[itemprop="reviewCount"], [itemprop="ratingCount"]');
+    if (rc) {
+      result.reviewCount = rc.getAttribute('content') || rc.textContent.trim() || null;
+    }
+  }
+
+  // ── Visible star text fallback ──
+  // Looks for patterns like "4.8 from 123 votes" or "Rated 4.8 out of 5"
+  if (!result.rating) {
+    const body = document.body.innerText;
+    const m1 = body.match(/rated?\\s+(\\d\\.\\d)\\s+out of\\s+5/i);
+    const m2 = body.match(/(\\d\\.\\d)\\s+(stars?|out of)/i);
+    const m3 = body.match(/(\\d\\.\\d)\\s+from\\s+\\d+\\s+(vote|rating|review)/i);
+    const match = m1 || m2 || m3;
+    if (match) result.rating = match[1];
+  }
+
   return result;
 }
 """

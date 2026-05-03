@@ -1,6 +1,10 @@
 {
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.88.0",
     "firebase": "^12.10.0",
     "firebase-admin": "^13.7.0"
+  },
+  "devDependencies": {
+    "puppeteer": "^24.40.0"
   }
 }

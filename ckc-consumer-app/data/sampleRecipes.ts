@@ -30,7 +30,7 @@ export interface Recipe {
   ingredients: string[];
   builtInStarch?: boolean;
   builtInVeg?: boolean;
-  status?: 'yes' | 'no' | 'maybe' | 'pending';
+  status?: 'yes' | 'no' | 'maybe' | 'pending' | 'needs_review' | 'approved';
   processingStatus?: 'complete' | 'pending_review' | 'failed' | 'error';
 }
 

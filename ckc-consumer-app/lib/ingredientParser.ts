@@ -474,6 +474,7 @@ export function splitIngredientLine(raw: string): string[] {
     .replace(/&#(?:8216|8217|39);/g, "'")
     .replace(/&#(?:8220|8221);/g, '"')
     .replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ')
+    .replace(/[‘’]/g, "'").replace(/[“”]/g, '"')
     .replace(/([a-z])(\d)/gi, '$1 $2');
   // " or sub <X> and <Y>" / " or sub <X>" trailing alternative — strip entirely
   // (recipe author offering a substitute, not a separate ingredient).
@@ -940,6 +941,34 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'center-cut salmon filets':'salmon filets', 'center cut salmon filets':'salmon filets',
   'center-cut salmon filet':'salmon filet', 'center cut salmon filet':'salmon filet',
   'center-cut, skin-on salmon fillets':'salmon fillets',
+  // Round 54 — batch from round 53 audit
+  'mediterranean salad':'',
+  'thick soft whole grain slices':'whole grain bread','thick soft whole grain or white bread':'whole grain bread',
+  'sautéed cauliflower rice':'cauliflower rice','sauteed cauliflower rice':'cauliflower rice',
+  'sautéed broccoli':'broccoli','sauteed broccoli':'broccoli',
+  'twists of black pepper':'black pepper','twists of freshly ground black pepper':'black pepper',
+  'whole wheat bread slice':'whole wheat bread',
+  'whole snapper':'red snapper','whole fish':'red snapper',
+  'thick-cut bacon slices':'bacon',
+  'for serving, as desired: cooked quinoa or rice, mixed greens, shredded cheddar or pepper jack, diced avocado or guacamole, finely chopped cilantro, additional bbq sauce, etc.':'cooked quinoa',
+  'for serving, as desired: cooked rice or grains of choice, capered lemon dill sauce (below)':'cooked rice',
+  'any combination of kimchi chile crisp nori sheets cucumber avocado':'kimchi',
+  'teaspon garlic powder':'garlic powder',
+  'toppings':'',
+  'thick coconut milk':'full-fat coconut milk',
+  "trader joe's chicken shawarma":'chicken shawarma',"trader joe's chicken shawarma (or see notes making the chicken from scratch!)":'chicken shawarma',
+  'slab of salmon':'salmon',
+  'steamed rice cilantro lime chili oil':'cooked white rice',
+  'sesame oil olive oil':'sesame oil','sesame oil or extra virgin olive oil':'sesame oil',
+  'sweet potato chunks thicker is better':'sweet potato',
+  'unsated butter':'butter','unsated':'butter',
+  'suggested garnishes: pickled red onion fresh cilantro chili crunch':'pickled red onion',
+  'suggested garnishes: vegan parmesan cheese fresh basil':'vegan parmesan cheese','suggested garnishes: vegan parmesan fresh basil':'vegan parmesan cheese',
+  'thin asparagus stalks':'asparagus',
+  'scotch bonnet papper':'scotch bonnet pepper',
+  'side wild salmon fillet':'salmon fillet',
+  'smoked salmon into pieces':'smoked salmon',
+  'sweet potatoes into 1/4-inch cubes':'sweet potatoes',
   // Round 53 — batch from round 52 audit
   'steamed rice naan':'cooked white rice','steamed rice and naan':'cooked white rice',
   'steamed white':'cooked white rice','steamed white or brown rice':'cooked white rice',
@@ -1892,6 +1921,7 @@ export function parseIngredient(raw: string): {
     .replace(/&#(?:8216|8217|39);/g, "'")
     .replace(/&#(?:8220|8221);/g, '"')
     .replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ')
+    .replace(/[‘’]/g, "'").replace(/[“”]/g, '"')
     .replace(/\bhandfull\b/gi, 'handful')        // common typo
     .replace(/\bhandfulls\b/gi, 'handfuls')
     // "&quot;" → '"' (more entities)
@@ -1956,6 +1986,7 @@ export function parseIngredient(raw: string): {
     .replace(/&#(?:8216|8217|39);/g, "'")
     .replace(/&#(?:8220|8221);/g, '"')
     .replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ')
+    .replace(/[‘’]/g, "'").replace(/[“”]/g, '"')
     .replace(/([a-z])(\d)/gi, '$1 $2')
     // Hyphenated "freshly-cracked" / "fresh-cracked" / "fresh-ground" — these are
     // prep-method modifiers, not product descriptors. Strip the hyphenated word

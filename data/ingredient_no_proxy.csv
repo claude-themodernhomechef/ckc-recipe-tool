@@ -1,0 +1,19 @@
+ingredient,reason
+sunflower oil,exact match in database
+mediterranean salad,"complete dish, not a simple ingredient"
+garlic bread,"complete prepared dish, not a basic ingredient"
+salad,"complete prepared dish, not a basic ingredient"
+sweet peas,exact match in database
+sauce,too generic without specification
+cooking liquid,"generic placeholder, not a specific ingredient"
+stuffing,"prepared dish with variable ingredients, no nutritional proxy"
+whole fish,"species-dependent, insufficient information for nutritional match"
+capered lemon dill sauce,composite condiment sauce without direct proxy
+cedar plank,"cooking equipment, not food"
+toppings,generic descriptor without specific nutritional content
+lime chips,processed snack without direct nutritional proxy in database
+pizza toppings,generic descriptor without specific nutritional content
+freezer bag,"cooking equipment, not food"
+skewer,"cooking equipment, not food"
+cast iron skillet,"cooking equipment, not food"
+squash mash,"processed preparation, no nutritional proxy available"

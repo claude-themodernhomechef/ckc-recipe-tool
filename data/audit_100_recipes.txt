@@ -1,0 +1,1780 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  RECIPE PARSER REVIEW — 100 worst-matched recipes (lowest match rate first)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Format:  raw ingredient string  →  parsed display
+         If splitter produces multiple, each split line shown with ↳
+         "qty unit name" or "marker | name" if no qty
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Easy Chicken Enchiladas    [needs_review]    match rate: 40%
+    simple-chicken-enchiladas
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  2 cups Shredded Chicken (10-12 ounces) Use leftover chicken ( rotisse…  →  2 cup cooked shredded chicken
+  5-minute Enchilada Sauce or Roasted Enchilada Sauce (2 cups)            →  (skipped)
+  salt + pepper, to taste                                                 →  to taste | salt + pepper
+  8 x 6-inch tortillas (corn or flour or a corn &amp; flour blend)        →  8 6-inch tortillas
+  2 cups shredded cheese ( 8 ounces) &#8211; cotija, shredded Mexican b…  →  2 cup shredded cotija cheese
+  optional filling additions: canned green chilies, frozen corn, black …  →  to garnish | canned green chilies
+                                                                           ↳  to garnish | frozen corn
+                                                                           ↳  to garnish | black beans
+  optional garnishes: sour cream, avocado, cilantro, scallions, pickled…  →  to garnish | sour cream
+                                                                           ↳  to garnish | avocado
+                                                                           ↳  to garnish | cilantro
+                                                                           ↳  to garnish | scallion
+                                                                           ↳  to garnish | pickled jalapeno
+                                                                           ↳  to garnish | pickled onions
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Goodbye Meatballs    [needs_review]    match rate: 50%
+    recipes-goodbye-meatballs
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  FOR THE MEATBALLS                                                       →  (skipped)
+  1 cup whole milk, full fat ricotta cheese (I have also used cottage c…  →  1 cup whole milk full-fat ricotta cheese 1/2 cup parsley 1/2 cup grated parmesan cheese 1/3 cup panko bread crumbs
+                                                                           ↳  2 eggs
+                                                                           ↳  2 garlic cloves grated onion
+                                                                           ↳  2 tsp kosher salt plus morefreshly black pepper and/or red pepper flakes
+                                                                           ↳  1 lb ground beef
+                                                                           ↳  1 lb ground pork
+                                                                           ↳  2 tbsp olive oil
+  FOR THE SAUCE                                                           →  (skipped)
+  1 ½ medium yellow or red onions, finely chopped 6 garlic cloves, thin…  →  salt + pepper
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Creamy Polenta    [needs_review]    match rate: 67%
+    5twRgGX6CBwTYI0d56Th
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 cup stone-ground polenta*               →  1 cup stone-ground polenta
+  4 to 4½ cups water (divided)              →  4 cup water
+  2 tablespoons extra-virgin olive oil      →  2 tbsp olive oil
+  ½ teaspoon sea salt (plus more to taste)  →  salt
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Bacon-Wrapped Air Fryer Chicken Breast    [needs_review]    match rate: 67%
+    bacon-wrapped-air-fryer-chicken-breast
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  4  skinless boneless chicken breasts (8 ounces each)  →  4 boneless skinless chicken breasts
+  8 slices center cut bacon                             →  8 center cut bacon slices
+  1/2 teaspoon kosher salt                              →  salt
+  freshly ground black pepper (to taste)                →  black pepper
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Perfect Pan-Roasted Salmon    [needs_review]    match rate: 67%
+    perfect-pan-roasted-salmon
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  2 (6-8oz) filets center-cut salmon  →  1 lb center-cut salmon filets
+  2 tsp ghee                          →  2 tsp ghee
+  salt + pepper, to taste             →  to taste | salt + pepper
+  2 tbsp olive or avocado oil         →  2 tbsp olive oil
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Spring Fish Chowder    [needs_review]    match rate: 75%
+    HykULxXU0ey778vZKNFJ
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  3 leeks, white and pale green parts only, tough outer layer removed     →  3 leeks
+  2 Tbsp. extra-virgin olive oil                                          →  2 tbsp olive oil
+  1 lb. baby creamer (Yukon Gold) potatoes, halved (quartered if larger…  →  1 lb baby creamer potato
+  2 tsp. kosher salt, divided                                             →  salt
+  1 1/2 tsp. freshly ground black pepper, plus more                       →  black pepper
+  1 cup pure clam juice                                                   →  1 cup pure clam juice
+  2 bay leaves                                                            →  2 bay leaves
+  1 lb. skinless halibut  or cod fillet, cut into 2x1" pieces             →  1 lb skinless halibut
+  1 cup heavy cream                                                       →  1 cup heavy cream
+  1 (10-oz.) bag frozen sweet peas, thawed                                →  1 (10-oz.) bag frozen sweet peas
+  1 Tbsp. fresh lemon juice                                               →  1 tbsp lemon juice
+  Pea shoots (tendrils) or sprouts, basil leaves, finely grated lemon z…  →  pea shoots
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  How to Cook Jasmine Rice    [needs_review]    match rate: 75%
+    how-to-cook-jasmine-rice
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 cup jasmine rice                   →  1 cup jasmine rice
+  1 1/4 cups water ((cold tap water))  →  1 ¼ cup water
+  1 cup jasmine rice                   →  1 cup jasmine rice
+  1 1/4 cups MINUS 2 tbsp   water      →  1 cup water
+                                        ↳  2 tbsp water
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Castelvetrano Olive Chicken Skillet    [needs_review]    match rate: 75%
+    olive-chicken-skillet-with-lemon-shallot
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  3 tablespoons olive oil                                                 →  3 tbsp olive oil
+  6 bone-in, skin-on chicken thighs (2.5–3 pounds), trimmed of excess f…  →  6 bone-in skin-on chicken thighs
+  4 large shallots, quartered lengthwise                                  →  4 shallots
+  2 lemons, juiced (approx. ⅓ cup lemon juice)                            →  2 lemons
+  ½ cup chicken stock or broth                                            →  ½ cup chicken broth
+  one 10-ounce jar pitted Frescatrano or Castelvetrano olives, drained …  →  1 10-ounce jar frescatrano olives
+  kosher salt &amp; ground black pepper, to season                        →  to taste | salt + pepper
+  for serving, as desired: extra virgin olive oil, leafy parsley, lemon…  →  to serve | olive oil
+                                                                           ↳  to serve | leafy parsley
+                                                                           ↳  to serve | lemon zest
+                                                                           ↳  to serve | lemon wedges
+                                                                           ↳  to serve | crusty bread
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Chicken Shawarma Bowl    [needs_review]    match rate: 78%
+    chicken-shawarma-bowl
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 package Trader Joe’s chicken shawarma (or see notes making the chic…  →  1 pkg trader joe’s chicken shawarma
+  1 1/2 cups long-grain white rice                                        →  1 ½ cup long-grain white rice
+  1 teaspoon each onion powder and garlic powder                          →  1 tsp each onion powder
+                                                                           ↳  garlic powder
+  1/2 teaspoon kosher salt                                                →  salt
+  1 tablespoon Better Than Bouillon chicken base                          →  1 tbsp better than bouillon chicken base
+  2 1/4 cups water                                                        →  2 ¼ cup water
+  zest of 1 lemon                                                         →  1 lemon
+  2 cups finely shredded purple cabbage                                   →  2 cup shredded purple cabbage
+  1/4 cup white vinegar                                                   →  ¼ cup white vinegar
+  1/4 cup water                                                           →  ¼ cup water
+  2 tablespoons olive oil                                                 →  2 tbsp olive oil
+  1/2 teaspoon each salt and sugar                                        →  ½ tsp each salt
+                                                                           ↳  sugar
+  1/2 cucumber, grated and water squeezed out                             →  ½ cucumber
+  1/4 cup plain Greek yogurt                                              →  ¼ cup plain greek yogurt
+  2 tablespoons olive oil or mayo                                         →  2 tbsp olive oil
+  1/4 cup crumbled feta cheese                                            →  ¼ cup crumbled feta cheese
+  1 clove garlic, grated                                                  →  1 garlic clove
+  1 teaspoon dried dill, or 3 tablespoons fresh dill                      →  1 tsp dill
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Easy Paleo Low FODMAP Meatloaf    [needs_review]    match rate: 78%
+    easy-paleo-low-fodmap-meatloaf
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 lb grassfed ground beef                                               →  1 lb grassfed ground beef
+  1 lb ground pork                                                        →  1 lb ground pork
+  1  whole egg                                                            →  1 egg
+  3/4 tsp salt                                                            →  salt
+  2 tsp Poultry Seasoning - I used McCormick which includes thyme (sage…  →  2 tsp poultry seasoning - i used mccormick which includes thyme (sage, marjoram, rosemary, black pepper nutmeg)
+  1/2 tsp dried oregano (or 2 tbsp fresh chopped)                         →  ½ tsp oregano
+  1/4 tsp dried basil (or 1 tbsp fresh chopped)                           →  ¼ tsp basil
+  1 tsp dried chives                                                      →  1 tsp chives
+  1/4 cup maple chipotle ketchup*                                         →  ¼ cup maple chipotle ketchup
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  5-Ingredient Green Curry    [needs_review]    match rate: 78%
+    green-curry
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  12 ounces firm tofu                                         →  12 oz firm tofu
+  a swish of olive oil + a sprinkle of salt                   →  swish of olive oil + a sprinkle of salt
+  2 sweet potatoes, peeled and cubed                          →  2 sweet potatoes
+  4 tablespoons green curry paste (I used Thai Kitchen)       →  ¼ cup green curry paste
+  three 14-ounce cans coconut milk                            →  3 14-ounce cans coconut milk
+  3-or-so cups broccoli florets                               →  3 cup broccoli florets
+  1 cup white rice                                            →  1 cup white rice
+  a handful of chopped fresh cilantro                         →  2 oz leaves fresh cilantro
+  a handful of golden raisins                                 →  1 oz golden raisins
+  just a lil fish sauce (trust me!) and brown sugar to taste  →  to taste | just a lil fish sauce
+                                                               ↳  to taste | brown sugar
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Garlic Caper Lamb Chop With Tomato Burrata Peach Salad    [needs_review]    match rate: 78%
+    recipes-double-cut-lamb-chops-with-garlic-caper-rub
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  ½ cup finely chopped mixed fresh herbs (parsley, chives, and mint)      →  ½ cup mixed herbs (parsley, chives, mint)
+  6 tablespoons extra-virgin olive oil, divided                           →  ⅜ cup olive oil
+  ¼ cup drained and rinsed capers, divided                                →  ¼ cup capers
+  1 tablespoon plus 1 teaspoon grated lemon zest plus 2 tablespoon fres…  →  1 tbsp plus 1 teaspoon grated lemon zest plus 2 tablespoon lemon juice
+  ¼ teaspoon black pepper                                                 →  black pepper
+  ¼ teaspoon crushed red pepper, divided                                  →  ¼ tsp red pepper
+  Kosher salt, to taste                                                   →  salt
+  8 medium garlic cloves                                                  →  8 garlic cloves
+  4 anchovy fillets, drained                                              →  4 anchovy fillets
+  2 pounds double-cut lamb chops (about 8 chops from 2 racks), frenched   →  2 lb double-cut lamb chops frenched
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Best Ever Grilled BBQ Chicken    [needs_review]    match rate: 79%
+    grilled-bbq-chicken-recipe
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  one 4-5-pound package bone-in chicken thighs (see Recipe Notes)  →  1 4-5-pound package bone-in chicken thighs
+  kosher salt, to season                                           →  kosher salt to season
+  2 cups BBQ sauce of choice                                       →  2 cup bbq sauce of choice
+  one 16-ounce beer of choice (see Recipe Notes)                   →  1 16-ounce beer of choice
+  1 tablespoon kosher salt                                         →  salt
+  3 tablespoons firmly packed brown sugar                          →  3 tbsp firmly brown sugar
+  1 ½ teaspoons chili powder                                       →  1 ½ tsp chili powder
+  1 ½ teaspoons ground cumin                                       →  1 ½ tsp ground cumin
+  1 ½ teaspoons garlic powder                                      →  1 ½ tsp garlic powder
+  1 ½ teaspoons mustard powder                                     →  1 ½ tsp mustard powder
+  1 ½ teaspoons onion powder                                       →  1 ½ tsp onion powder
+  1 ½ teaspoons smoked paprika                                     →  1 ½ tsp smoked paprika
+  ½ teaspoon ground black pepper                                   →  black pepper
+  optional: ⅛-¼ teaspoon cayenne pepper                            →  ⅛ tsp cayenne pepper
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Persian Chopped Salad    [needs_review]    match rate: 79%
+    osvmPWJY7SKDHPDNtP0w
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  4 persian cucumbers cut into bite sized pieces            →  4 persian cucumbers cut into bite sized
+  1 yellow bell pepper, cut into bite sized pieces          →  1 yellow bell pepper
+  1 bunch radishes, trimmed and cut into bite sized pieces  →  1 bunch radishes
+  1 small purple onion, diced                               →  1 purple onion
+  1 can garbanzo beans, rinsed and drained                  →  1 can garbanzo beans
+  2 ounces fresh dill, finely chopped                       →  2 oz fresh dill
+  1 cup packed fresh mint, finely chopped                   →  1 cup fresh mint
+  1 cup finely chopped flat leaf parsley                    →  1 cup flat leaf parsley
+  Za’atar Viniagrette                                       →  za’atar viniagrette
+  1 clove garlic, minced                                    →  1 garlic clove
+  ¼ cup olive oil                                           →  ¼ cup olive oil
+  4 tablespoons red wine vinegar                            →  ¼ cup red wine vinegar
+  2 teaspoons za’atar                                       →  2 tsp za’atar
+  kosher salt                                               →  salt
+  4 persian cucumbers cut into bite sized pieces            →  4 persian cucumbers cut into bite sized
+  1 yellow bell pepper, cut into bite sized pieces          →  1 yellow bell pepper
+  1 bunch radishes, trimmed and cut into bite sized pieces  →  1 bunch radishes
+  1 small purple onion, diced                               →  1 purple onion
+  1 can garbanzo beans, rinsed and drained                  →  1 can garbanzo beans
+  2 ounces fresh dill, finely chopped                       →  2 oz fresh dill
+  1 cup packed fresh mint, finely chopped                   →  1 cup fresh mint
+  1 cup finely chopped flat leaf parsley                    →  1 cup flat leaf parsley
+  Za’atar Viniagrette                                       →  za’atar viniagrette
+  1 clove garlic, minced                                    →  1 garlic clove
+  ¼ cup olive oil                                           →  ¼ cup olive oil
+  4 tablespoons red wine vinegar                            →  ¼ cup red wine vinegar
+  2 teaspoons za’atar                                       →  2 tsp za’atar
+  kosher salt                                               →  salt
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Thai Inspired Chicken Meatball Soup    [needs_review]    match rate: 79%
+    pJlWErrrDogTJUomF5KD
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 (4-inch) piece fresh ginger, peeled                                   →  1 (4-inch) piece fresh ginger
+  6 garlic cloves, peeled                                                 →  6 garlic cloves
+  1 jalapeño                                                              →  1 jalapeño
+  2 pounds ground chicken                                                 →  2 lb ground chicken
+  1 large bunch cilantro, leaves and stems finely chopped, a few whole …  →  1 bunch cilantro leaves
+                                                                           ↳  to serve | stems a few leaves reserved
+  3 tablespoons fish sauce                                                →  3 tbsp fish sauce
+  Kosher salt                                                             →  salt
+  2 tablespoons vegetable or coconut oil, plus more as needed             →  2 tbsp neutral oil
+  2 cups chicken broth                                                    →  2 cup chicken broth
+  1 (14-ounce) can full-fat coconut milk                                  →  14 oz full-fat coconut milk
+  1/2 teaspoon granulated sugar                                           →  ½ tsp granulated sugar
+  5 ounces baby spinach                                                   →  5 oz baby spinach
+  1 tablespoon lime juice, plus lime wedges for serving                   →  1 tbsp lime juice
+  Steamed white or brown rice, for serving                                →  to serve | steamed white rice
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Blistered Green Bean Casserole with Parmesan and Rosemary    [needs_review]    match rate: 79%
+    pages-recipes-blistered-green-bean-casserole-parmesan-rosemary
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  800g green beans, trimmed                                   →  1 ¾ lb green beans
+  3½ tbsp olive oil                                           →  3 ½ tbsp olive oil
+  15g picked rosemary                                         →  ½ oz picked rosemary
+  2 onions (360g), thinly sliced                              →  2 onions
+  6 garlic cloves, thinly sliced                              →  6 garlic cloves
+  ⅛ tsp ground turmeric                                       →  ⅛ tsp ground turmeric
+  150ml chicken or vegetable stock                            →  5.1 oz chicken broth
+  150ml double cream                                          →  5.1 oz double cream
+  40g parmesan, finely grated, plus 40g shaved with a peeler  →  1 ⅜ oz parmesan cheese
+  1 tbsp dijon mustard                                        →  1 tbsp dijon mustard
+  50g shop-bought crispy onions                               →  1 ¾ oz shop-bought crispy onions
+  a pinch of sugar (optional)                                 →  pinch of sugar
+  1 lemon, cut in half                                        →  1 lemon
+  fine sea salt and black pepper                              →  salt + pepper
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Copycat Erewhon Cabbage Slaw    [needs_review]    match rate: 80%
+    2fa1Ac9sVKhEYl4zmCHr
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 Small Head Red Cabbage (finely chopped)                               →  1 head red cabbage
+  1 Cup Cilantro (finely chopped; this is about one bunch)                →  1 cup cilantro
+  1 Cup Parsley (finely chopped; this is about one bunch)                 →  1 cup parsley
+  3/4 Cup Green Onion (finely chopped; this is about one bunch)           →  ¾ cup scallion
+  1/3 Cup Olive Oil                                                       →  ⅓ cup olive oil
+  1/4 Cup Apple Cider Vinegar                                             →  ¼ cup apple cider vinegar
+  1/3 Cup Coconut Aminos (you can also substitute for tamari or low-sod…  →  ⅓ cup coconut aminos
+  2 Tablespoons Maple Syrup                                               →  2 tbsp maple syrup
+  1-2 Teaspoons Sea Salt (taste and adjust salt levels as desired)        →  1 tsp sea salt (taste adjust salt levels
+  1-2 Teaspoons Ground Black Pepper (taste and adjust pepper levels as …  →  1 tsp black pepper (taste adjust pepper levels
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Grilled Broccolini    [needs_review]    match rate: 80%
+    4V59axXu1Y9GaJiUzSOS
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 1/2 pounds broccolini                         →  1 ½ lb broccolini
+  1 teaspoon kosher salt                          →  salt
+  1 teaspoon freshly cracked black pepper         →  black pepper
+  3 tablespoons Gaby’s Garlic Goodness Olive Oil  →  3 tbsp gaby’s garlic goodness olive oil
+  1  lemon                                        →  1 lemon
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Butcher's Steak with Leafy Greens Salsa    [needs_review]    match rate: 80%
+    EPbkCAEmZn6fxcGr7qnH
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 ½ pounds hanger, thick skirt or flat-iron steak                       →  1 ½ lb hanger thick skirt
+  Kosher salt and freshly ground black pepper                             →  salt + pepper
+  6 scallions                                                             →  6 scallion
+  ½ small bunch kale, Swiss chard, collard greens or mustard greens, le…  →  ½ bunch kale
+                                                                           ↳  swiss chard collard greens greens
+  1 garlic clove, finely grated                                           →  1 garlic clove
+  ⅓ cup olive oil                                                         →  ⅓ cup olive oil
+  1 tablespoon canola or grapeseed oil                                    →  1 tbsp neutral oil
+  1 lemon or lime, halved                                                 →  1 lemon
+  Flaky salt                                                              →  salt
+  Potato chips (optional)                                                 →  potato chips
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Creme Fraiche Chive Mashed Potatoes    [needs_review]    match rate: 80%
+    JNVyScSlt6OTCRDnOAuS
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  3 lbs yukon gold potatoes (peeled or unpeeled and cubed)  →  3 lb yukon gold potatoes
+  4 oz (1 stick) salted butter, diced                       →  4 oz salted butter
+  8 oz creme fraiche, at room temperature                   →  8 oz sour cream
+  3  tablesoons minced chives                               →  3 tablesoons chives
+  salt + pepper, to taste                                   →  to taste | salt + pepper
+  1/4 cup heavy cream, if needed                            →  ¼ cup heavy cream
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Homemade Pita Bread    [needs_review]    match rate: 80%
+    Lz8PUuNwzGk5t4ORcCGo
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  2 cups (256 grams) all-purpose flour, plus more for sprinkling  →  2 cup all-purpose flour
+  1 teaspoon (5 grams) kosher salt                                →  salt
+  1 teaspoon (4 grams) instant yeast, see notes above             →  1 tsp instant yeast
+  a scant 3/4 cup (165 grams) lukewarm water                      →  a
+                                                                   ↳  ¾ cup lukewarm water
+  1 tablespoon (14 grams) olive oil, plus more for drizzling      →  1 tbsp olive oil
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Vegetable Fried Rice    [needs_review]    match rate: 80%
+    PCXgPa7NEr852hq1t5uY
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  2 tablespoons sesame oil, separated                                     →  2 tbsp sesame oil separated
+  1 small onion, chopped (approximately 1 cup)                            →  1 onion
+  1 bunch green onion, chopped, white part separated from greens          →  1 bunch scallion
+  3 cloves garlic, minced                                                 →  3 garlic cloves
+  approx 2 cups cooked & cooled brown or white rice                       →  approx
+                                                                           ↳  2 cup & brown
+  1 cup finely chopped cauliflower rice (optional)                        →  1 cup cauliflower rice
+  2-3 cups chopped veggies (broccoli, snow peas, carrots, greens, mushr…  →  2 cup veggies
+  2-3 tablespoons gluten free tamari                                      →  2 tbsp gluten free tamari
+  1/2-1 teaspoon rice wine vinegar                                        →  ½ tsp rice wine vinegar
+  optional add ins: cooked chicken, tofu, egg, nuts or seeds              →  to garnish | chicken
+                                                                           ↳  to garnish | tofu
+                                                                           ↳  to garnish | egg
+                                                                           ↳  to garnish | nuts
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Traditional Greek Salad Recipe    [needs_review]    match rate: 80%
+    SDpjKiu7Nb8FAaI2LUGV
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1  medium red onion, (thinly sliced into half moons)                    →  1 red onion
+  4  medium juicy tomatoes, (sliced into bite-sized pieces or wedges)     →  4 juicy tomatoes
+  1  English cucumber, (partially peeled to make a striped pattern and …  →  1 english cucumber
+  1  green bell pepper, (cored and sliced into rings)                     →  1 green bell pepper
+  1  handful  (pitted Kalamata olives)                                    →  ⅓ cup kalamata olives
+  1 1/2 teaspoons dried oregano                                           →  1 ½ tsp oregano
+  Kosher salt                                                             →  salt
+  1/4 cup extra virgin olive oil                                          →  ¼ cup olive oil
+  1-2 tablespoons red wine vinegar                                        →  1 tbsp red wine vinegar
+  1  (7 ounce) block Greek feta cheese in brine,  (torn into slabs)       →  7 oz greek feta cheese in brine
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Baked Ziti    [needs_review]    match rate: 80%
+    baked-ziti
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 pound uncooked ziti                                                   →  1 lb ziti
+  1 (4 ounce) package pancetta (or diced bacon)                           →  4 oz pancetta
+  1 pound ground Italian sausage                                          →  1 lb ground italian sausage
+  1 small white onion, diced                                              →  1 white onion
+  5 large cloves garlic, minced                                           →  5 garlic cloves
+  1/2 teaspoon each: crushed red pepper flakes, dried oregano, fine sea…  →  ½ tsp red pepper flakes
+                                                                           ↳  ½ tsp oregano
+                                                                           ↳  salt
+  2 (28-ounce) jars marinara sauce                                        →  56 oz jarred marinara sauce
+  2 handfuls (3 ounces) fresh baby spinach                                →  2 oz 3 ounces
+  16 ounces shredded whole milk mozzarella, divided                       →  16 oz shredded whole milk mozzarella cheese
+  2/3 cup freshly-grated Parmesan, divided                                →  ⅔ cup parmesan cheese
+  chopped fresh basil and/or parsley, for topping                         →  to garnish | fresh basil
+                                                                           ↳  to garnish | parsley
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Chicken Egg Roll Bowl    [needs_review]    match rate: 80%
+    chicken-egg-roll-bowl
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 lb 93% ground chicken                                                 →  1 lb 93% ground chicken
+  3 tablespoons less sodium soy sauce (or gluten-free soy sauce, divide…  →  3 tbsp less sodium soy sauce
+  3 medium  scallion (sliced, dark green parts separated for garnish)     →  3 scallion
+  2 cloves garlic (minced)                                                →  2 garlic cloves
+  ½ teaspoon fresh ground ginger or ginger paste                          →  ½ tsp ginger
+  3 cups slaw mix with cabbage (carrots and/or broccoli slaw, or your f…  →  3 cup slaw mix with cabbage
+  2 cups baby bok choy (chopped, from 2)                                  →  2 cup baby bok choy
+  ½ tablespoon Chinese rice wine ( (mirin) or dry sherry)                 →  ½ tbsp chinese rice wine
+  ½ tablespoons sesame oil                                                →  ½ tbsp sesame oil
+  2 cups cooked white rice (for serving)                                  →  2 cup white rice
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Chicken Zucchini Pasta    [needs_review]    match rate: 80%
+    chicken-zucchini-pasta
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  2 cups cooked, chopped/shredded chicken  →  2 cup 2 cups cooked, chopped/shredded chicken
+  2-3 cups raw sliced zucchini             →  2 cup zucchini
+  1 jar pasta sauce                        →  1 pasta sauce
+  1 box bowtie pasta                       →  1 bowtie pasta
+  parmesan cheese                          →  parmesan cheese
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Citrus Salmon Confit    [needs_review]    match rate: 80%
+    citrus-salmon-confit
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 1/2 pound slab of salmon                                              →  1 ½ lb slab of salmon
+  Diamond Crystal kosher salt                                             →  salt
+  Freshly ground black pepper                                             →  black pepper
+  3 small mandarin oranges                                                →  3 mandarin oranges
+  1 medium shallot                                                        →  1 shallot
+  4 garlic cloves                                                         →  4 garlic cloves
+  1 small lime                                                            →  1 lime
+  3 tablespoons fish sauce                                                →  3 tbsp fish sauce
+  1 cup  high quality olive oil  (plus more as needed, I love the Brigh…  →  1 cup high olive oil
+  1/3 cup fresh torn herbs like mint, dill and parsley (for serving )     →  ⅓ cup herbs like mint dill parsley
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Cilantro Lime Slaw    [needs_review]    match rate: 80%
+    fvKZKyMuhq8HtAXqwt44
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 (14-ounce) bag coleslaw mix*          →  1 (14-ounce) bag coleslaw mix
+  ¼ cup red onion (thinly sliced)         →  ¼ cup red onion
+  ¼ cup cilantro (finely chopped)         →  ¼ cup cilantro
+  1  jalapeño (finely chopped, optional)  →  1 jalapeño
+  1  lime (juice)                         →  1 lime
+  ½ teaspoon salt (to taste)              →  salt
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Braised Lamb Shoulder with Fennel and Orange    [needs_review]    match rate: 80%
+    pages-recipes-braised-lamb-shoulder-fennel-orange
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 whole lamb shoulder (2.5kg), fat lightly scored  →  5 ½ lb whole lamb shoulder scored
+  2 fennel bulbs (900g), cut in 4 wedges each        →  2 fennel bulbs
+  1 head of garlic, trimmed                          →  1 garlic (whole head)
+  3 red onions (400g), cut in 4 wedges               →  3 red onions
+  1 red chilli, split in half                        →  1 red chilli split
+  1 orange, cut in quarters                          →  1 orange
+  2 cinnamon sticks                                  →  2 cinnamon sticks
+  4 bay leaves                                       →  4 bay leaves
+  2 sprigs of rosemary                               →  2 rosemary sprigs
+  1L chicken stock                                   →  1 l chicken stock
+  2 tbsp coriander seeds, coarsely crushed           →  2 tbsp coriander seeds
+  2 tbsp ground cumin                                →  2 tbsp ground cumin
+  2 ½ tsp ground cinnamon                            →  2 ½ tsp ground cinnamon
+  60ml olive oil                                     →  2 oz olive oil
+  100g tomato paste                                  →  3 ½ oz tomato paste
+  1 orange zest                                      →  1 orange zest
+  2 large oranges, peeled and sliced                 →  2 oranges
+  25g picked coriander                               →  ⅞ oz picked coriander
+  25g picked mint                                    →  ⅞ oz picked mint
+  fine sea salt and black pepper                     →  salt + pepper
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Greek Style Lamb Burgers    [needs_review]    match rate: 80%
+    sHwiQKEpkdqi4yAS0Qhm
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 lb (500g) ground lamb (or use beef, turkey, chicken or a plant-base…  →  1 lb ground lamb
+  1 small white onion, grated                                             →  1 white onion
+  4 garlic cloves, crushed                                                →  4 garlic cloves
+  1 teaspoon ground cumin                                                 →  1 tsp ground cumin
+  1 teaspoon ground coriander                                             →  1 tsp ground coriander
+  1 teaspoon ground cinnamon                                              →  1 tsp ground cinnamon
+  1 teaspoon salt                                                         →  salt
+  Handful of flat-leaf parsley, finely chopped                            →  2 oz flat leaves-leaf parsley
+  ⅓ cup crumbled feta (about 55g/2oz)                                     →  ⅓ cup crumbled feta cheese
+  1 tablespoon olive oil                                                  →  1 tbsp olive oil
+  6 burger buns                                                           →  6 burger buns
+  1/4 cup creamy tzatziki sauce                                           →  ¼ cup creamy tzatziki sauce
+  1 cup spinach leaves                                                    →  1 cup spinach
+  1/2 cucumber, thinly sliced or shaved into strips                       →  ½ cucumber
+  1/4 cup spicy zhoug sauce  (or use fresh basil pesto)                   →  ¼ cup spicy zhoug sauce
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Tarragon Chicken with Asparagus    [needs_review]    match rate: 80%
+    tarragon-chicken-with-asparagus-lemon-leeks
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  2 lemons                                                                →  2 lemons
+  1/ 4 cup olive oil                                                      →  ¼ cup olive oil
+  4-6 garlic cloves, finely minced ( or use a garlic press)               →  4 garlic cloves
+  2 teaspoons salt                                                        →  salt
+  1 teaspoon dijon mustard                                                →  1 tsp dijon mustard
+  ½ teaspoon pepper                                                       →  pepper
+  1-ounce package of fresh tarragon leaves, rough chopped, about ¼-⅓  c…  →  1 oz fresh tarragon leaves
+  1 extra-large bunch asparagus, trimmed (about 1 1/2 pounds)             →  1 extra-large bunch asparagus
+  1-2 large leeks, sliced into ½ inch thick rounds ( if dirty, rinse, s…  →  1 leek
+  1 1/2-2 lbs chicken breasts (boneless, skinless), cut in half,  or su…  →  1 ½ lb chicken breasts
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Teriyaki Chicken Stir Fry    [needs_review]    match rate: 80%
+    teriyaki-chicken-stir-fry
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1  and ¼ lbs boneless skinless chicken breast (cut into 2-inch pieces)  →  1 1/4 lbs boneless skinless chicken breast
+  salt + pepper, to taste                                                 →  to taste | salt + pepper
+  1 tablespoon vegetable oil                                              →  1 tbsp neutral oil
+  1 tablespoon sesame seeds                                               →  1 tbsp sesame seeds
+  ¼ Cup soy sauce                                                         →  ¼ cup soy sauce
+  ½ Cup water                                                             →  ½ cup water
+  2 teaspoons minced garlic                                               →  2 garlic cloves
+  2 teaspoons minced ginger                                               →  2 tsp ginger
+  3 tablespoons of  honey                                                 →  3 tbsp honey
+  1 teaspoon toasted sesame oil                                           →  1 tsp sesame oil
+  1 tablespoon + 1 teaspoon cornstarch                                    →  1 tbsp + 1 teaspoon cornstarch
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Golden Coconut Broth Bowl with Crispy Tofu    [needs_review]    match rate: 81%
+    8odqH3JiSPeeiBcnYh6E
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  2 teaspoons avocado oil                                                 →  2 tsp avocado oil
+  2  large shallots, peeled and chopped                                   →  2 shallots
+  3- inch piece of ginger, peeled and chopped                             →  ginger
+  4 cloves garlic, peeled and chopped                                     →  4 garlic cloves
+  1  hot chili, cut in half                                               →  1 chili
+  wide strips of lime zest from 1 lime                                    →  wide strips of lime zest from
+                                                                           ↳  1 lime
+  1 ½ teaspoons ground turmeric                                           →  1 ½ tsp ground turmeric
+  sea salt and ground black pepper, to taste                              →  to taste | salt + pepper
+  3 cups filtered water                                                   →  3 cup filtered water
+  1 14- oz can (400 mL) full fat coconut milk                             →  13 ½ oz 14- oz ) full-fat coconut milk
+  1 tablespoon gluten-free tamari soy sauce                               →  1 tbsp gluten-free tamari soy sauce
+  1 tablespoon light miso                                                 →  1 tbsp light miso
+  14 ounce block (400 grams) firm or extra firm tofu, pressed for 30 mi…  →  14 oz firm
+  2 teaspoons avocado oil                                                 →  2 tsp avocado oil
+  1 tablespoon arrowroot starch                                           →  1 tbsp arrowroot starch
+  sea salt and ground black pepper, to taste                              →  to taste | salt + pepper
+  any other seasoning you like (garlic powder, chili powder, nutritiona…  →  any other seasoning you like
+  2 cups cooked quinoa, or other grain that you like                      →  2 cup quinoa
+  cooked or raw vegetables to accompany (I like roasted broccoli)         →  or vegetables to accompany
+  sliced green onions                                                     →  scallion
+  chopped cilantro                                                        →  cilantro
+  lime wedges                                                             →  lime wedges
+  sesame seeds                                                            →  sesame seeds
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Crispy Chicken Katsu Bowls    [needs_review]    match rate: 81%
+    chicken-katsu-bowls
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  2/3 cup, plus 2 tablespoons  tamari or soy sauce                        →  ⅔ cup 2/3 cup, plus 2 tablespoons  tamari or soy sauce
+  1 tablespoon toasted sesame oil                                         →  1 tbsp sesame oil
+  1 tablespoon honey                                                      →  1 tbsp honey
+  2 teaspoons grated ginger                                               →  2 tsp grated ginger
+  2 tablespoons chopped green onions                                      →  2 tbsp scallion
+  1 teaspoon, plus 3 tablespoons sesame seeds                             →  1 tsp 1 teaspoon, plus 3 tablespoons sesame seeds
+  4  chicken cutlets, or 2 boneless chicken breasts, sliced in half hor…  →  4 chicken cutlets
+  1 cup Panko                                                             →  1 cup panko
+  chili flakes                                                            →  chili flakes
+  1 bag frozen shelled edamame                                            →  1 bag frozen shelled edamame
+  3-4 cups rice, cooked                                                   →  3 cup rice
+  cucumber, avocado, pickled ginger, and nori sheets – for serving        →  to serve | cucumber
+                                                                           ↳  to serve | avocado pickled ginger
+                                                                           ↳  to serve | nori sheets –
+  1/3 cup olive oil mayo                                                  →  ⅓ cup olive oil mayo
+  1 to 2 tablespoons sriracha                                             →  1 tbsp sriracha
+  2 teaspoons soy sauce or tamari                                         →  2 tsp soy sauce
+  1 teaspoon honey                                                        →  1 tsp honey
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Poblano and Mushroom TexMex Enchiladas    [needs_review]    match rate: 81%
+    poblano-mushroom-texmex-enchiladas
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  3 cups mushrooms, cut into strips                                       →  3 cup mushrooms
+  1 1/2 cups sweet potatoes, medium dice                                  →  1 ½ cup sweet potatoes dice
+  1 cup onions, peeled and diced                                          →  1 cup onion
+  1  poblano pepper, medium dice                                          →  1 poblano pepper dice
+  2 cloves  garlic, minced                                                →  2 garlic cloves
+  1/2 tsp turmeric powder                                                 →  ½ tsp turmeric powder
+  1/2 tsp cumin powder                                                    →  ½ tsp cumin powder
+  1/2 tsp smoked paprika powder                                           →  ½ tsp smoked paprika powder
+  1 tsp chili powder                                                      →  1 tsp chili powder
+  1, 19 oz tin black beans                                                →  19 oz canned black beans
+  1 large handful spinach, rough chop                                     →  1 oz spinach chop
+  1/4 cup cilantro, chopped                                               →  ¼ cup cilantro
+  1-2 tbsp lime juice                                                     →  1 tbsp lime juice
+  8  corn tortillas                                                       →  8 corn tortillas
+  1 - 1 1/2 cups mozzarella, I use Miyokos brand                          →  1 cup mozzarella cheese i
+  white sauce recipe (below)                                              →  (skipped)
+  spicy TexMex enchilada sauce recipe (link below)                        →  (skipped)
+  Serving Options* chopped cilantro, chopped tomatoes, avocado slices, …  →  options cilantro tomatoes avocado slices
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Vegan Caesar Salad With Crisp Chickpeas    [needs_review]    match rate: 81%
+    recipes-1020763-vegan-caesar-salad-with-crisp-chickpeas
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1/2 small loaf crusty bread, such as sourdough, torn into 1-inch piec…  →  ½ loaf crusty bread
+  1/4 cup extra-virgin olive oil                                          →  ¼ cup olive oil
+  Kosher salt and freshly ground black pepper                             →  salt + pepper
+  1 (14-ounce) can chickpeas, drained, rinsed and thoroughly dried        →  14 oz canned chickpeas
+  1 large bunch lacinato kale, stems removed and roughly chopped into 1…  →  1 bunch lacinato kale
+  1 large head romaine lettuce, roughly chopped into 1-inch pieces (abo…  →  1 head romaine lettuce
+  1 cup whole (unroasted) cashews                                         →  1 cup cashews
+  1 snack-size (2-by-3-inch) sheet roasted nori, crumbled (optional)      →  1 snack-size (2-by-3-inch) sheet roasted nori crumbled
+  1/4 cup nutritional yeast, plus more for serving                        →  ¼ cup nutritional yeast
+  1/4 cup fresh lemon juice (from 1 to 2 lemons)                          →  ¼ cup lemon juice
+  3 garlic cloves                                                         →  3 garlic cloves
+  2 teaspoons brine from a jar of capers                                  →  2 tsp brine
+  1 teaspoon Dijon mustard                                                →  1 tsp dijon mustard
+  1 teaspoon white miso paste                                             →  1 tsp white miso paste
+  3/4 teaspoon kosher salt                                                →  salt
+  1/2 teaspoon freshly ground black pepper                                →  black pepper
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Coconut and Lemongrass Steak Skewers    [needs_review]    match rate: 82%
+    APXRSgd12sIMlCVkX8bP
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  2 serrano chiles, chopped (seeds and all)                               →  2 serrano chiles
+  ¼ cup fresh lime juice                                                  →  ¼ cup lime juice
+  2 Tbsp. extra-virgin olive oil                                          →  2 tbsp olive oil
+  2 Tbsp. finely chopped red onion                                        →  2 tbsp red onion
+  2 tsp. honey                                                            →  2 tsp honey
+  Kosher salt                                                             →  salt
+  2 lemongrass stalks, bottom third only, tough outer layers removed, t…  →  2 lemongrass stalks bottom third only tough outer layers removed
+  2 serrano chiles, with seeds if you want some heat                      →  2 serrano chiles with seeds if you want some heat
+  1 2" piece ginger, peeled, thinly sliced                                →  1 2" piece ginger
+  4 garlic cloves                                                         →  4 garlic cloves
+  1 13.5-oz. can unsweetened coconut milk                                 →  1 13.5-oz. can coconut milk
+  ⅓ cup seasoned rice vinegar                                             →  ⅓ cup seasoned rice vinegar
+  1½ lb. trimmed hanger, flatiron, or flap (bavette) steak, cut into 1"…  →  1 ½ lb hanger flatiron
+  Vegetable oil (for grill)                                               →  neutral oil
+  Kosher salt                                                             →  salt
+  Chopped cilantro (for serving)                                          →  cilantro
+  Ten to twelve 8"–10" metal skewers, or bamboo, soaked 30 minutes        →  10 to twelve 8"–10" metal skewers
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Baked Stuffed Tomatoes    [needs_review]    match rate: 82%
+    Fbr7nBMrtphQCBzJn4d9
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  2 large (or 3 medium) tomatoes (beefsteak or large slicer tomatoes wo…  →  2 tomatoes
+  Kosher salt                                                             →  salt
+  1 cup whole-milk cottage cheese ((sub ricotta))                         →  1 cup whole-milk cottage cheese
+  1/2 cup grated Parmigiano-Reggiano cheese, divided                      →  ½ cup grated parmigiano-reggiano cheese
+  3 Tbsp. finely chopped fresh parsley, divided                           →  3 tbsp fresh parsley
+  1 to 2  garlic cloves, grated                                           →  1 garlic cloves
+  1 tsp. lemon zest (from 1 lemon)                                        →  1 lemon
+  A pinch of  crushed red pepper flakes (or cracked black pepper)         →  pinch of red pepper flakes
+  Heaping 1/4 cup Panko breadcrumbs                                       →  heaping
+                                                                           ↳  ¼ cup panko breadcrumbs
+  1 Tbsp. extra-virgin olive oil                                          →  1 tbsp olive oil
+  Optional for serving: crusty bread                                      →  to serve | crusty bread
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Chicken Fricassee    [needs_review]    match rate: 82%
+    Qc4Q2x9WZfvFD9tLhr18
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  4  chicken drumsticks ((~150g/5oz each, Note 1))                        →  4 chicken drumsticks
+  4  chicken thighs (, skin-on and bone-in (~250g/8oz each, Note 1))      →  4 chicken thighs (, bone-in skin-on (~8oz each, note 1))
+  1 tsp salt ((cooking / kosher salt))                                    →  salt
+  1/2 tsp black pepper                                                    →  black pepper
+  4 tbsp / 60g  unsalted butter                                           →  ¼ cup / 60g butter
+  300g / 10oz  white mushrooms (, halved if small, or cut in 4 to 6 if …  →  10 oz white mushrooms ( if
+  2  medium brown onions (, sliced 0.6cm (1/2in) wide)                    →  2 brown onions (, 0.6cm (1/2in) wide)
+  2  garlic cloves (, finely minced)                                      →  2 garlic cloves
+  1  bay leaf (, fresh (sub dried))                                       →  1 bay leaf
+  3  thyme sprigs ((or 1/2 tsp dried thyme))                              →  3 thyme sprigs
+  3 tbsp flour (, plain / all-purpose)                                    →  3 tbsp flour
+  1/2 cup white wine (, preferably chardonnay  (Note 2))                  →  ½ cup white wine
+  3 cups chicken stock (, low sodium (preferably homemade!))              →  3 cup chicken stock ( low sodium
+  1/4 tsp salt ((cooking / kosher salt))                                  →  salt
+  1/4 tsp black pepper                                                    →  black pepper
+  2 tbsp parsley (, chopped)                                              →  2 tbsp parsley
+  2/3 cup thickened/heavy cream                                           →  ⅔ cup thickened/heavy cream
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Best Potato Salad    [needs_review]    match rate: 82%
+    V4CrRQthfi79rzcXE7fh
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  3 pounds Yukon Gold or red potatoes*, cut into 3/4-inch cubes           →  3 lb yukon gold potatoes
+  2 tablespoons apple cider vinegar                                       →  2 tbsp apple cider vinegar
+  1 1/4 cups mayonnaise                                                   →  1 ¼ cup mayonnaise
+  1/3 cup dill pickle relish (optional)                                   →  ⅓ cup dill pickle relish
+  1 teaspoon celery salt                                                  →  1 tsp celery salt
+  1 teaspoon Dijon mustard                                                →  1 tsp dijon mustard
+  4 hard-boiled eggs, diced                                               →  4 hard-boiled eggs
+  2 celery stalks, diced                                                  →  2 celery stalks
+  half of a small red onion, thinly sliced                                →  ½ red onion
+  sea salt and freshly-cracked black pepper                               →  salt
+                                                                           ↳  black pepper
+  optional toppings: smoked paprika or Old Bay seasoning, chopped fresh…  →  to garnish | smoked paprika
+                                                                           ↳  to garnish | fresh chives
+                                                                           ↳  to garnish | hard-boiled eggs
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Sticky Grapefruit Miso Salmon    [needs_review]    match rate: 82%
+    cQpD9e7GUKSuRTNz3naW
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  2 cups sushi rice                                                       →  2 cup sushi rice
+  3 tablespoons white miso                                                →  3 tbsp white miso
+  2 tablespoons honey                                                     →  2 tbsp honey
+  1 tablespoon vegetable oil                                              →  1 tbsp neutral oil
+  1 tablespoon freshly grated ginger                                      →  1 tbsp ginger
+  2 teaspoons fresh grapefruit zest plus 1 tablespoon juice               →  2 tsp grapefruit zest plus 1 tablespoon juice
+  4 (6- to 8-ounce) skinless salmon fillets, patted dry                   →  4 (6- to 8-ounce) skinless salmon fillets
+  salt + pepper                                                           →  salt + pepper
+  4 scallions, thinly sliced                                              →  4 scallion
+  1 tablespoon unsalted butter, cubed                                     →  1 tbsp butter
+  Any combination of kimchi, chile crisp, toasted nori sheets, and slic…  →  to serve | any combination of kimchi chile crisp nori sheets
+                                                                           ↳  to serve | cucumber avocado
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Creamy Coconut Chicken Satay Meatballs    [needs_review]    match rate: 82%
+    creamy-coconut-chicken-satay-meatballs
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 lb. ground chicken or turkey                                          →  1 lb ground chicken
+  1/2 cup panko breadcrumbs                                               →  ½ cup panko breadcrumbs
+  1  egg                                                                  →  1 egg
+  6  scallions (green onion), divided ()                                  →  6 scallion
+  2 tsp. grated fresh ginger                                              →  2 tsp grated fresh ginger
+  1 tsp. granulated garlic (or garlic powder)                             →  1 tsp granulated garlic
+  2 tsp. lower-sodium soy sauce or tamari                                 →  2 tsp soy sauce
+  1 tsp. toasted sesame oil                                               →  1 tsp sesame oil
+  1/2 tsp. kosher salt                                                    →  salt
+  1 Tbsp. neutral cooking oil ((I use avocado oil))                       →  1 tbsp neutral cooking oil
+  2 Tbsp. minced fresh ginger                                             →  2 tbsp fresh ginger
+  2  garlic cloves, minced                                                →  2 garlic cloves
+  2 tsp. Thai red curry paste                                             →  2 tsp thai red curry paste
+  1 tsp. ground turmeric                                                  →  1 tsp ground turmeric
+  1 (13.5-oz.) can lite coconut milk                                      →  13 ½ oz lite coconut milk
+  3 Tbsp. natural creamy peanut butter (it should be loose and runny)     →  3 tbsp natural creamy peanut butter
+  2 tsp. fish sauce                                                       →  2 tsp fish sauce
+  2 tsp. brown sugar                                                      →  2 tsp brown sugar
+  1 to 2 Tbsp. fresh lime juice ((from 1 lime))                           →  1 tbsp lime juice
+  Suggested garnishes: pickled red onion, fresh cilantro, and chili cru…  →  to garnish | pickled red onion
+                                                                           ↳  to garnish | fresh cilantro
+                                                                           ↳  to garnish | chili crunch
+  Jasmine or basmati rice                                                 →  jasmine rice
+  Sautéed broccoli                                                        →  sautéed broccoli
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  French Onion Pork Chops    [needs_review]    match rate: 82%
+    french-onion-pork-chops
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  4  boneless pork chops (I like to use top loin)                         →  4 boneless pork chops
+  Sea salt and cracked black pepper                                       →  salt + pepper
+  1/2 cup all purpose flour, + 1 TBSP                                     →  ½ cup all purpose flour 1 tbsp
+  2 tsp onion powder (optional)                                           →  2 tsp onion powder
+  1 tsp dried thyme (optional)                                            →  1 tsp thyme
+  1/4 cup unsalted butter                                                 →  ¼ cup butter
+  1/4 cup olive oil                                                       →  ¼ cup olive oil
+  3 cups thinly sliced onions (Preferably sliced with a mandolin on the…  →  3 cup thinly onions
+  2 TBSP fresh thyme                                                      →  2 tbsp fresh thyme
+  2  cloves of garlic, smashed and minced                                 →  2 garlic cloves
+  1/2 cup dry white wine, like sauvignon blanc or pinot grigio            →  ½ cup dry white wine like sauvignon blanc
+  1/2 cup beef stock/broth                                                →  ½ cup beef broth
+  1 tsp Better Than Bouillon beef base (optional) (I like adding this f…  →  1 tsp better than bouillon beef base
+  1 tsp Worcestershire sauce                                              →  1 tsp worcestershire sauce
+  1 cup grated gruyère cheese                                             →  1 cup grated gruyère cheese
+  2 TBSP panko breadcrumbs, toasted (*See notes)                          →  2 tbsp panko breadcrumbs
+  Fresh chopped chives, for garnish                                       →  to garnish | chives
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Grilled Broccoli Crunch Salad    [needs_review]    match rate: 82%
+    grilled-broccoli-crunch-salad
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 head of broccoli                                  →  1 head broccoli
+  7oz/200g broccolini                                 →  7 oz broccolini
+  6 slices streaky free-range bacon                   →  6 streaky free-range bacon slices
+  1/2 cup toasted almonds, chopped                    →  ½ cup almonds
+  1/2 cup toasted sunflower seeds                     →  ½ cup sunflower seeds
+  1/2 cup dried cranberries                           →  ½ cup cranberries
+  2 scallions (spring onions), sliced finely          →  2 scallion
+  3.5oz/100g creamy blue cheese (or use creamy feta)  →  3 ½ oz creamy blue cheese
+  1 tablespoon lemon juice                            →  1 tbsp lemon juice
+  1 tablespoon olive oil                              →  1 tbsp olive oil
+  Salt                                                →  salt
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Grilled Salmon Fillets with Crispy Skin    [needs_review]    match rate: 82%
+    grilled-salmon-fillets-with-crispy-skin
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  four 6-ounce skin-on salmon fillets, about 1-inch thick (approx. 1 ½ …  →  4 6-ounce skin-on salmon fillets
+  2 tablespoons avocado oil or high smoke point vegetable oil of choice   →  2 tbsp avocado oil
+  kosher salt and ground black pepper, to season                          →  to taste | salt + pepper
+  brown sugar BBQ dry rub (below)                                         →  brown sugar bbq dry rub
+  nonstick cooking spray, for grilling                                    →  nonstick cooking spray for grilling
+  2 tablespoons lightly packed brown sugar                                →  2 tbsp brown sugar
+  1 teaspoon chili powder                                                 →  1 tsp chili powder
+  1 teaspoon garlic powder                                                →  1 tsp garlic powder
+  1 teaspoon onion powder                                                 →  1 tsp onion powder
+  1 teaspoon smoked paprika                                               →  1 tsp smoked paprika
+  1 heaping teaspoon kosher salt                                          →  salt
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Indonesian Grilled Sambal Chicken    [needs_review]    match rate: 82%
+    grilled-sambal-chicken
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  2 &#8211; 2 ½ lbs Chicken (boneless, skinless chicken thighs)           →  2 lb chicken
+  4 garlic cloves                                                         →  4 garlic cloves
+  1 ½ tablespoon sliced fresh ginger                                      →  1 ½ tbsp fresh ginger
+  ¼ cup sriracha sauce                                                    →  ¼ cup sriracha sauce
+  ¼ cup fish sauce                                                        →  ¼ cup fish sauce
+  ½ cup brown sugar                                                       →  ½ cup brown sugar
+  ¼ cup rice wine vinegar                                                 →  ¼ cup rice wine vinegar
+  2 tablespoons olive oil or peanut oil                                   →  2 tbsp olive oil
+  1 tablespoon soy sauce or Bragg&#8217;s liquid Amino                    →  1 tbsp soy sauce
+  ¼ cup Sambal Olek ( garlic chili paste) plus 1 -2 tablespoons more fo…  →  ¼ cup sambal olek plus 1 -2 tablespoons more for extra spicy
+  8-10 Pre-soaked Skewers (optional)                                      →  8 pre-soaked skewers
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  30 minute grilled veggie orzo [ORZO]    [needs_review]    match rate: 82%
+    hBVKrnGtn8mjCjOHnz4J
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  For the grilled veggies:                                                →  (skipped)
+  1-2 tablespoons olive oil or avocado oil                                →  1 tbsp olive oil
+  1  sweet yellow onion, peeled and quartered (or cut into thick slices)  →  1 sweet yellow onion
+  1  medium zucchini, cut into ½” thick rounds or strips                  →  1 zucchini
+  1 teaspoon garlic powder                                                →  1 tsp garlic powder
+  salt + pepper                                                           →  salt + pepper
+  For the pasta:                                                          →  (skipped)
+  8 oz orzo pasta (1 cup dried orzo)                                      →  8 oz orzo pasta
+  ⅓ cup reserved pasta water                                              →  ⅓ cup reserved pasta water
+  ¼ cup salted butter                                                     →  ¼ cup salted butter
+  ½ cup goat cheese crumbles                                              →  ½ cup goat cheese crumbles
+  Optional: 1 (15 ounce) can of chickpeas, rinsed and drained             →  15 oz canned of chickpeas
+  8-10  large basil leaves, julienned (about 1/3 cup packed basil)        →  8 basil leaves
+  salt + pepper, to taste                                                 →  to taste | salt + pepper
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Halibut Florentine    [needs_review]    match rate: 82%
+    jP60yy50nvIXQTvl8nCN
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  4 5 oz thick pieces  of skinless white firm fish fillet  ((such as gr…  →  20 oz thick pieces of skinless white firm fish fillet
+  1 tablespoons extra virgin olive oil                                    →  1 tbsp olive oil
+  1 tablespoon salted butter                                              →  1 tbsp salted butter
+  1 cup red bell pepper chopped                                           →  1 cup red bell pepper
+  2 cloves garlic minced                                                  →  2 garlic cloves
+  9 ounces fresh baby spinach (from two bags)                             →  9 oz baby spinach
+  2 ounces 1/3 less fat cream cheese (I like Philadelphia)                →  2 oz 1/3 less cream cheese
+  ¼ cup half &amp; half cream                                             →  ¼ cup half & half cream
+  3 tablespoons grated Parmesan cheese                                    →  3 tbsp grated parmesan cheese
+  kosher salt                                                             →  salt
+  fresh black pepper                                                      →  black pepper
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Italian Fish Soup    [needs_review]    match rate: 82%
+    jbi8uJ9dyskpHlR0vgRe
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 pound cut up assorted fish (eg. shrimp,prawns, cod, haddock, calama…  →  1 lb cut up fish
+  2 tablespoons olive oil                                                 →  2 tbsp olive oil
+  2-3 cloves garlic chopped                                               →  2 garlic cloves
+  1-2 dashes hot pepper flakes (optional)                                 →  1 dash pepper flakes
+  ¼ cup dry white wine                                                    →  ¼ cup dry white wine
+  ¾ cup tomato puree (passata)                                            →  ¾ cup tomato puree
+  1¼ -1½ cups  water  ((depending on how thick you want it, more soup o…  →  1 ¼ cup water
+  salt to taste* (I added a pinch)                                        →  salt
+  1 teaspoon oregano                                                      →  1 tsp oregano
+  1 teaspoon basil                                                        →  1 tsp basil
+  ¼ cup chopped fresh Italian parsley                                     →  ¼ cup parsley
+  4 slices thick Italian crust bread (grilled or plain)                   →  4 thick italian crust bread slices
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Korean BBQ Steak Bowls with Spicy Sesame Dressing    [needs_review]    match rate: 82%
+    korean-bbq-steak-bowls-with-spicy-sesame-dressing
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  2/3 cup low sodium soy sauce                                    →  ⅔ cup low sodium soy sauce
+  1/4 cup mirin                                                   →  ¼ cup mirin
+  1 tablespoon fresh minced or crushed ginger                     →  1 tbsp or ginger
+  1 tablespoon toasted sesame oil                                 →  1 tbsp sesame oil
+  2-3 tablespoons brown sugar                                     →  2 tbsp brown sugar
+  1-2 tablespoons sambal oelek (spicy chili paste)                →  1 tbsp sambal oelek
+  5 cloves garlic                                                 →  5 garlic cloves
+  1 lb. top sirloin steak, cut into very thin pieces              →  1 lb top sirloin steak
+  2 bell peppers (red and yellow), spiralized or cut into strips  →  2 bell peppers spiralized
+  2 handfuls of spinach                                           →  2 oz spinach
+  wonton strips, scallions, and sesame seeds for topping          →  to garnish | wonton strips
+                                                                   ↳  to garnish | scallion
+                                                                   ↳  to garnish | sesame seeds
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Festive Hummus with Roasted Brussels Sprouts and Chestnuts    [needs_review]    match rate: 82%
+    pages-recipes-festive-hummus-roasted-brussels-sprouts-chestnuts
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  120ml olive oil                                             →  4.1 oz olive oil
+  10g sage leaves                                             →  ⅜ oz sage
+  200g cooked chestnuts, roughly broken                       →  7 oz chestnuts broken
+  400g brussels sprouts, trimmed and cut in half              →  14 oz brussels sprouts
+  2 lemons; 5 shaved strips of zest and 2½ tbsp juice         →  2 lemons; 5 strips of zest 2 1/2 tbsp juice
+  700g jar of cooked chickpeas, drained (500g)                →  1 ⅝ lb chickpeas
+  2 garlic cloves, peeled                                     →  2 garlic cloves
+  ¼ tsp ground cumin, plus ⅛ tsp extra for sprinkling on top  →  ¼ tsp ground cumin plus 1/8 tsp extra
+  120ml tahini                                                →  4.1 oz tahini
+  1 tbsp white balsamic vinegar                               →  1 tbsp white balsamic vinegar
+  Fine sea salt and black pepper                              →  salt + pepper
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Paleo Pork Tenderloin with Teriyaki Sauce    [needs_review]    match rate: 82%
+    paleo-pork-tenderloin-teriyaki-whole30
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1/2 tbsp brown mustard {Whole30 compliant}                              →  ½ tbsp brown mustard {whole 30 compliant}
+  1/4 cup coconut aminos                                                  →  ¼ cup coconut aminos
+  2 tbsp balsamic vinegar                                                 →  2 tbsp balsamic vinegar
+  2 cloves garlic (minced)                                                →  2 garlic cloves
+  1 inch fresh ginger (finely grated)                                     →  1 inch fresh ginger
+  1  Tbsp date paste* or pure maple syrup                                 →  1 tbsp date paste
+  pinch cayenne pepper (optional)                                         →  cayenne pepper
+  3 Tbsp light flavored oil - light olive or avocado oil are best (divi…  →  3 tbsp light flavored oil - light olive
+  Thinly sliced scallions for garnish                                     →  to garnish | thinly scallions
+  2  pork tenderloins (About 2 1/2 lbs total)                             →  2 pork tenderloins
+  Sea salt (for tenderloins)                                              →  salt
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Cast Iron Pork Chops With Pears & Ginger    [needs_review]    match rate: 82%
+    pan-fried-pork-chops-with-pear-and-ginger-sauce-skillet-pork-chops
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  4  6-8 oz boneless pork chops                                       →  4 6-8 oz boneless pork chops
+  Sea salt &amp; cracked black pepper, to taste                       →  to taste | salt + pepper
+  1 TBSP olive oil                                                    →  1 tbsp olive oil
+  2 TBSP apple cider vinegar                                          →  2 tbsp apple cider vinegar
+  2 TBSP unrefined brown sugar                                        →  2 tbsp unrefined brown sugar
+  1 TBSP roughly chopped fresh rosemary                               →  1 tbsp fresh rosemary
+  1 cup Chicken or vegetable broth                                    →  1 cup chicken broth
+  1 TBSP freshly grated ginger                                        →  1 tbsp ginger
+  1  ripe pear (Bosc or Anjou), roughly chopped or sliced lengthwise  →  1 pear
+  1/2  sweet yellow onion, cut into wedges                            →  ½ sweet yellow onion
+  1 tsp corn starch                                                   →  1 tsp corn starch
+  2 TBSP cold water                                                   →  2 tbsp water
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Chicken Paprikash    [needs_review]    match rate: 82%
+    recipes-1018068-chicken-paprikash
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  3 to 4 pounds chicken thighs and drumsticks, or whole chicken legs  →  3 lb chicken thighs
+                                                                       ↳  drumsticks legs
+  Kosher salt and freshly ground black pepper to taste                →  to taste | salt + pepper
+  1 tablespoon neutral oil, like canola                               →  1 tbsp neutral oil like canola
+  3 tablespoons unsalted butter                                       →  3 tbsp butter
+  1 large yellow or Spanish onion, peeled and diced                   →  1 yellow onion
+  3 cloves garlic, peeled and minced                                  →  3 garlic cloves
+  3 tablespoons Hungarian paprika, sweet or hot, or a combination     →  3 tbsp hungarian paprika sweet
+  3 tablespoons all-purpose flour                                     →  3 tbsp all-purpose flour
+  1 cup canned crushed tomatoes or 1 large ripe tomato, chopped       →  1 cup canned crushed tomato
+  1 cup chicken broth, homemade or, if not, low-sodium                →  1 cup chicken broth
+  1 pound egg noodles                                                 →  1 lb egg noodles
+  3/4 cup sour cream                                                  →  ¾ cup sour cream
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Sheet Pan Sun-Dried Tomato Chicken Bowls    [needs_review]    match rate: 82%
+    sun-dried-tomato-chicken-bowls
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  6  boneless skinless chicken breasts or thighs           →  6 boneless skinless chicken breasts
+  1 tablespoon balsamic vinegar                            →  1 tbsp balsamic vinegar
+  1 tablespoon lemon juice                                 →  1 tbsp lemon juice
+  1 teaspoon smoked paprika                                →  1 tsp smoked paprika
+  1 teaspoon dried oregano                                 →  1 tsp oregano
+  4 cloves garlic, chopped                                 →  4 garlic cloves
+  salt + pepper                                            →  salt + pepper
+  2-3  bell peppers, sliced                                →  2 bell peppers
+  3-4 cups cooked rice                                     →  3 cup rice
+  mixed herbs, lettuce, and Tzatziki, for serving          →  to serve | mixed herbs lettuce
+                                                            ↳  to serve | tzatziki
+  3/4 cup crumbled feta cheese                             →  ¾ cup crumbled feta cheese
+  1 jar (8 ounce)  oil-packed sun-dried tomatoes, chopped  →  8 oz jarred oil-packed sun-dried tomatoes
+  3 tablespoons balsamic vinegar                           →  3 tbsp balsamic vinegar
+  2 tablespoons lemon juice                                →  2 tbsp lemon juice
+  2 teaspoons  honey                                       →  2 tsp honey
+  1 clove  garlic, chopped                                 →  1 garlic clove
+  1/2 cup mixed herbs: basil, dill, parsley                →  ½ cup mixed herbs: basil
+                                                            ↳  dill
+                                                            ↳  parsley
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Tender and Tangy Brisket    [needs_review]    match rate: 82%
+    tzqzmEPcZil3eQbC6KNf
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  2 TBSP coconut oil or avocado oil                       →  2 tbsp coconut oil
+  1 TBSP unrefined sea salt *                             →  1 tbsp unrefined sea salt
+  1  PLAIN brisket, 3 pounds (NOT corned beef brisket)    →  1 plain brisket 3 pounds
+  1 cup sliced onions                                     →  1 cup onion
+  1/2 cup organic apple cider vinegar                     →  ½ cup apple cider vinegar
+  1/3 cup bone broth                                      →  ⅓ cup bone broth
+  1/3 cup unsulphured organic molasses                    →  ⅓ cup unsulphured molasses
+  2 tsp dried thyme                                       →  2 tsp thyme
+  2 tsp garlic powder                                     →  2 tsp garlic powder
+  2  bay leaves                                           →  2 bay leaves
+  3 cups roughly chopped carrots and parsnips (optional)  →  3 cup carrots parsnips
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Roasted Root Vegetables with Jalapeno Yogurt Sauce    [needs_review]    match rate: 82%
+    xSJv5beluVkDJVb96nJk
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 lb carrots (5 medium), peeled and chopped into 2-inch pieces          →  1 lb carrot
+  ½ lb beets (3 medium/4 small) peeled and chopped into 1-inch wedges     →  ½ lb beets
+  1 tablespoon olive oil                                                  →  1 tbsp olive oil
+  1 ½ teaspoons za’atar spice                                             →  1 ½ tsp za’atar spice
+  sea salt and ground black pepper, to taste                              →  to taste | salt + pepper
+  1 cup mixed herbs, packed (I used parsley, dill &amp; basil), plus ex…  →  1 cup mixed herbs
+  1  small jalapeño pepper, seeded and chopped (I left some of the seed…  →  1 jalapeño pepper
+  1  garlic clove, peeled                                                 →  1 garlic clove
+  2 tablespoons shelled and salted pistachios, plus extra for garnish     →  2 tbsp shelled salted pistachios
+  2 tablespoons olive oil                                                 →  2 tbsp olive oil
+  1 tablespoon lemon juice                                                →  1 tbsp lemon juice
+  sea salt and ground black pepper, to taste                              →  to taste | salt + pepper
+  1 cup thick non-dairy yogurt (see notes for recommendations)            →  1 cup thick non-dairy yogurt
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Creamy One-Pot Pasta With Smoked Salmon and Asparagus    [needs_review]    match rate: 83%
+    2018-07-09-creamy-one-pot-pasta-with-smoked-salmon-and-asparagus
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1/2 lb linguini (or any long noodles like fettuccini, spaghetti, etc.)  →  ½ lb linguini
+  2 TBSP olive oil                                                        →  2 tbsp olive oil
+  2 cloves of garlic, minced                                              →  2 garlic cloves
+  1 cup diced red onion                                                   →  1 cup red onion
+  1  heaping cup of roughly chopped asparagus, woody ends discarded (Se…  →  1 cup asparagus woody ends discarded
+  2-3 cups vegetable broth; have extra on hand in case you need it.       →  2 cup vegetable broth; have extra on hand in case you need it
+  1  small to medium-sized lemon, zested and juiced                       →  1 -sized lemon
+  1 cup of whole fat milk (You can substitute cream if you aren't tryin…  →  1 cup whole milk
+  1/4-1/3  cup cream cheese                                               →  ¼ cup cream cheese
+  4  handfuls of baby spinach                                             →  4 oz baby spinach
+  2 TBSP capers, drained                                                  →  2 tbsp capers
+  8 oz smoked salmon, roughly chopped                                     →  8 oz smoked salmon
+  Kosher salt and cracked black pepper, to taste                          →  to taste | salt + pepper
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Tahdig Rice    [needs_review]    match rate: 83%
+    8Ov9k0ScuCxTO2YEU1Dx
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1/4 tsp  ground saffron             →  ¼ tsp ground saffron
+  2 cubes  ice                        →  2 cubes ice
+  2 cups basmati rice                 →  2 cup basmati rice
+  1 1/2 tsp  salt                     →  salt
+  4  tbsp  neutral flavored oil       →  ¼ cup neutral flavored oil
+  4 tbsp  unsalted butter  (melted )  →  ¼ cup butter
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  How To Make Homemade Croutons    [needs_review]    match rate: 83%
+    AlQzscljcykbe8ivuAtG
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 loaf of bread (about 12 ounces), cut into 3/4-inch cubes  →  1 loaf of bread
+  1/4 cup olive oil                                           →  ¼ cup olive oil
+  2 teaspoons Italian seasoning, homemade or store-bought     →  2 tsp italian seasoning
+  1 teaspoon garlic powder                                    →  1 tsp garlic powder
+  3/4 teaspoon fine sea salt                                  →  salt
+  1/2 teaspoon black pepper                                   →  black pepper
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Pan con Tomate    [needs_review]    match rate: 83%
+    CDtdopJ9lckWJpWbVXBu
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 loaf ciabatta bread, (or similar hearty bread)                        →  1 loaf ciabatta bread
+  3   tomatoes, (large and very ripe tomatoes are best, I used heirloom…  →  3 tomatoes
+  Extra virgin olive oil,                                                 →  olive oil
+  1 to 2  garlic cloves, (sliced in half)                                 →  1 garlic cloves
+  sea salt, (or kosher salt)                                              →  salt
+  splash of fresh lime juice ((optional))                                 →  of fresh lime juice
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Tomato Aguachile    [needs_review]    match rate: 83%
+    JU0XjZiffPZfRUsQKvgZ
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 garlic clove, finely chopped                                          →  1 garlic clove
+  ½ cup fresh lime juice                                                  →  ½ cup lime juice
+  2 tsp. adobo sauce from a can of chipotle chiles in adobo               →  2 tsp adobo sauce
+  1½ tsp. (or more) sugar                                                 →  1 ½ tsp sugar
+  ½ tsp. Diamond Crystal or ¼ tsp. Morton kosher salt, plus more          →  ½ tsp or 1/4 tsp. kosher salt
+  1 Persian cucumber, quartered lengthwise, sliced on a diagonal 1" thi…  →  1 persian cucumber
+  ½ small red onion, thinly sliced                                        →  ½ red onion
+  ½ avocado, halved crosswise, sliced                                     →  ½ avocado
+  8 oz. mixed tomatoes, halved, cut into ½"-thick wedges if large         →  8 oz mixed tomatoes
+  2 Tbsp. extra-virgin olive oil                                          →  2 tbsp olive oil
+  ½ medium jalapeño, thinly sliced into rounds                            →  ½ jalapeño
+  Tostadas or tortilla chips (for serving)                                →  tostadas chips
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Spring Orange Asparagus    [needs_review]    match rate: 83%
+    KZjBmnYM9Cz1qT28TdLb
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  Zest of one orange, plus more for garnish          →  1 orange
+  2 TBSP freshly squeezed orange juice               →  2 tbsp orange juice
+  2 TBSP + 1 TBSP extra virgin olive oil, divided    →  2 tbsp + 1 tbsp extra virgin olive oil
+  3/4 tsp unrefined sea salt                         →  ¾ tsp unrefined sea salt
+  1/2 tsp dried tarragon                             →  ½ tsp tarragon
+  1  bunch fresh asparagus, cut into 1u0022 pieces*  →  1 bunch asparagus
+                                                      ↳  22 pieces 0022 pieces*
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Frijoles de la Olla    [needs_review]    match rate: 83%
+    Y8EiY0wcHI8iy73wsXKF
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  3 spring onions or scallions, trimmed, or ¼ medium onion                →  3 scallion
+  2 sprigs hardy herbs (such as avocado leaves, rosemary, thyme, or bay)  →  2 hardy herbs sprigs
+  3 small sprigs tender herbs (such as epazote, cilantro, basil, or min…  →  3 tender herbs sprigs
+  3 garlic cloves, crushed                                                →  3 garlic cloves
+  1 lb. dried beans (such as pinto, black, cannellini, or kidney), rins…  →  1 lb beans picked through
+  2 Tbsp. Diamond Crystal or 1 Tbsp. plus ½ tsp. Morton kosher salt       →  2 tbsp or 1 tbsp. plus 1/2 tsp. kosher salt
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Better Broccoli Casserole    [needs_review]    match rate: 83%
+    better-broccoli-casserole-recipe
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  2 cups vegetable broth or water                                         →  2 cup vegetable broth
+  1 cup quinoa (any color), rinsed under running water in a mesh sieve …  →  1 cup quinoa
+  16 ounces broccoli florets, either pre-packaged or sliced from 2 larg…  →  1 lb broccoli florets
+  2 tablespoons olive oil                                                 →  2 tbsp olive oil
+  &frac34; teaspoon salt                                                  →  salt
+  10 twists of freshly ground black pepper                                →  10 twists of black pepper
+  &frac14; teaspoon red pepper flakes, omit if sensitive to spice         →  ¼ tsp red pepper flakes
+  8 ounces (about 2 &frac12; cups) freshly grated cheddar cheese, divid…  →  8 oz cheddar cheese
+  1 cup low-fat milk (cow&#8217;s milk tastes best but unsweetened plai…  →  1 cup low-fat milk
+  &frac12; tablespoon butter or 1 &frac12; teaspoons olive oil            →  ½ tbsp butter
+  1 clove garlic, pressed or minced                                       →  1 garlic clove
+  1 slice whole wheat bread (substitute gluten-free bread for a gluten-…  →  1 whole wheat bread slice
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Creamy Roasted Red Pepper Pasta with Grilled Chicken    [needs_review]    match rate: 83%
+    creamy-roasted-red-pepper-pasta
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 lb boneless skinless chicken breasts (, grilled and sliced into str…  →  1 lb boneless skinless chicken breasts
+  12 oz. dry liguine or fettuccine pasta                                  →  12 oz dry liguine
+  2 Tbsp butter                                                           →  2 tbsp butter
+  1/3 cup finely chopped shallot                                          →  ⅓ cup shallot
+  1 Tbsp minced garlic                                                    →  3 garlic cloves
+  1 1/2 Tbsp flour                                                        →  1 ½ tbsp flour
+  1 1/4 cups milk                                                         →  1 ¼ cup milk
+  Salt and freshly ground black pepper                                    →  salt + pepper
+  1/4 cup heavy cream                                                     →  ¼ cup heavy cream
+  1  (16 oz) jar roasted red bell peppers, drained                        →  1 lb roasted red bell peppers
+  1/2 cup finely shredded parmesan cheese (, plus more shredded or shav…  →  ½ cup shredded parmesan cheese
+  2 Tbsp each chopped fresh basil and parsley                             →  2 tbsp each fresh basil
+                                                                           ↳  parsley
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Easy Air Fryer Pizza    [needs_review]    match rate: 83%
+    easy-air-fryer-pizza
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 lb pizza dough ball, divided into two or three                        →  1 lb pizza dough ball
+  Pizza sauce                                                             →  pizza sauce
+  Olive oil                                                               →  olive oil
+  Garlic salt (optional)                                                  →  garlic salt
+  Italian herbs (optional)                                                →  italian herbs
+  Shredded Italian blend or mozzarella cheese (You can also use torn up…  →  shredded italian blend
+  Any other toppings you&#39;d like to add to your pizza                  →  (skipped)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Cumin Rice    [needs_review]    match rate: 83%
+    lGV3RcZRczjG9ER8m7Nf
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 Tbsp butter ($0.11)                     →  1 tbsp butter
+  2 tsp cumin seeds ($0.30)                 →  2 tsp cumin seeds
+  1.5 cups long grain jasmine rice ($0.72)  →  1 ½ cup long grain jasmine rice
+  1 clove garlic ($0.08)                    →  1 garlic clove
+  1/2 tsp salt ($0.02)                      →  salt
+  3 cups water ($0.00)                      →  3 cup water
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Spinach and Feta Dumplings in Lemon Butter    [needs_review]    match rate: 83%
+    pages-recipes-spinach-feta-dumplings-lemon-butter
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  125g crustless sourdough, roughly broken                                →  4 oz crustless sourdough broken
+  250ml whole milk                                                        →  8 ½ oz whole milk
+  25g parmesan, finely grated, plus extra for serving                     →  ⅞ oz parmesan cheese
+  1 egg, beaten                                                           →  1 egg
+  3 tbsp olive oil                                                        →  3 tbsp olive oil
+  1 onion (180g), finely chopped                                          →  1 onion
+  4 garlic cloves, crushed                                                →  4 garlic cloves
+  20g coriander, finely chopped                                           →  ⅔ oz cilantro
+  1 tbsp picked oregano leaves                                            →  1 tbsp picked oregano
+  250g frozen leaf spinach, defrosted, liquid squeezed out and roughly …  →  9 oz frozen leaf spinach defrosted liquid out
+  80g feta, roughly crumbled                                              →  2 ¾ oz feta cheese crumbled
+  2 tbsp plain flour                                                      →  2 tbsp plain flour
+  160g unsalted butter                                                    →  11 ½ tbsp butter
+  4 garlic cloves, skin on, bashed with the flat side of a knife          →  4 garlic cloves
+  1 large lemon, skin removed with a peeler, plus 2 tablespoons of juice  →  1 lemon
+  3 oregano sprigs                                                        →  3 oregano sprigs
+  urfa or aleppo chilli flakes                                            →  urfa flakes
+  Fine sea salt and black pepper                                          →  salt + pepper
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Perfect Chicken Scampi    [needs_review]    match rate: 83%
+    perfect-chicken-scampi
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1.5 pounds boneless skinless chicken breasts (or chicken thighs, cut …  →  1 ½ lb boneless skinless chicken breasts
+  1 tablespoon Dalkin&amp;Co lemon pepper seasoning                       →  1 tbsp dalkin&co lemon pepper seasoning
+  1/2 cup flour                                                           →  ½ cup flour
+  12 ounces spaghetti                                                     →  12 oz spaghetti
+  2 tablespoons olive oil                                                 →  2 tbsp olive oil
+  6 tablesponns unsalted butter (divided)                                 →  6 tablesponns butter
+  1 cup dry white wine                                                    →  1 cup dry white wine
+  6 cloves garlic (finely chopped)                                        →  6 garlic cloves
+  2  lemons (1 of them is zested and juiced )                             →  2 lemons
+  1/4 cup parsley (finely chopped)                                        →  ¼ cup parsley
+  1/4 cup chives (finely chopped)                                         →  ¼ cup chives
+  1/2 cup parmesan cheese (finely grated )                                →  ½ cup parmesan cheese
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Vietnamese Pickled Carrot and Daikon    [needs_review]    match rate: 83%
+    recipes-vietnamesedaikonandcarrotpickles
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  2 pounds carrots (about 5 medium), peeled         →  2 lb carrots
+  2 pounds daikon radishes (about 2 large), peeled  →  2 lb daikon radishes
+  1 cup plus 4 teaspoons of sugar                   →  1 cup plus 4 teaspoons of sugar
+  2 teaspoons salt                                  →  salt
+  2 1/2 cups white vinegar                          →  2 ½ cup white vinegar
+  2 cups warm water                                 →  2 cup water
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Salsa Verde Shrimp Burrito Bowls    [needs_review]    match rate: 83%
+    shrimp-burrito-bowls
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 1/2 lbs raw 16-20 shrimp (, peeled and deveined)  →  1 ½ lb 16-20 shrimp
+  3 tablespoons olive oil (, divided)                 →  3 tbsp olive oil
+  1/2 teaspoon ground cumin                           →  ½ tsp ground cumin
+  2/3 cup salsa verde                                 →  ⅔ cup salsa verde
+  1/2 cup chopped cilantro (, divided)                →  ½ cup cilantro
+  4 cups steamed white rice                           →  4 cup steamed white rice
+  2 teaspoons lime zest                               →  2 tsp lime zest
+  2 tablespoons lime juice                            →  2 tbsp lime juice
+  1 1/2 cups seasoned black beans (, warmed)          →  1 ½ cup seasoned black beans
+  1 cup pico de gallo (, for serving)                 →  1 cup pico de gallo
+  shredded cabbage (, for serving)                    →  shredded cabbage
+  guacamole (, for serving)                           →  guacamole
+  1/2 cup mayonnaise                                  →  ½ cup mayonnaise
+  1/2 cup Mexican crema  ((or sour cream))            →  ½ cup mexican crema
+  2-3  canned chipotle peppers (, plus adobo sauce)   →  2 canned chipotle peppers
+  1/2 teaspoon granulated sugar                       →  ½ tsp granulated sugar
+  1  small garlic clove                               →  1 garlic clove
+  1/2  lime (, juiced)                                →  ½ lime
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Spinach Artichoke Salmon Skillet    [needs_review]    match rate: 83%
+    spinach-artichoke-salmon-skillet
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  4 (6-oz.) salmon fillets                                                →  4 (6-oz.) salmon fillets
+  3 Tbsp. extra-virgin olive oil, divided                                 →  3 tbsp olive oil
+  1 tsp. paprika                                                          →  1 tsp paprika
+  1 tsp. dried thyme                                                      →  1 tsp thyme
+  1/2 tsp. garlic powder                                                  →  ½ tsp garlic powder
+  1 1/4 tsp. kosher salt, divided                                         →  salt
+  1/2 tsp. black pepper, divided                                          →  black pepper
+  1/2 cup finely chopped shallots                                         →  ½ cup shallots
+  3  garlic cloves, thinly sliced                                         →  3 garlic cloves
+  Pinch of  crushed red pepper flakes                                     →  red pepper flakes
+  1 1/4 cups dry orzo pasta                                               →  1 ¼ cup dry orzo pasta
+  2 1/2 cups lower-sodium vegetable or chicken broth                      →  2 ½ cup lower-sodium vegetable
+  2 tsp. Dijon mustard                                                    →  2 tsp dijon mustard
+  1/2 cup heavy cream ((sub half-and-half or canned full-fat coconut mi…  →  ½ cup heavy cream
+  2 generous handfuls fresh baby spinach (or ~4 cups)                     →  2 generous handfuls baby spinach
+  1 (12-oz.) jar marinated artichoke hearts, drained                      →  12 oz jarred marinated artichoke hearts
+  1/3 cup grated Parmesan or Pecorino Romano cheese ((or 2 to 3 Tbsp. n…  →  ⅓ cup grated parmesan cheese
+  1  lemon, zest and juice                                                →  1 lemon zest juice
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Quick and Easy Shrimp Tacos    [needs_review]    match rate: 83%
+    tk2Zueudg6RvLZutzZXO
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 lb. peeled and deveined medium to large raw shrimp, tails removed  …  →  1 lb shrimp tails removed
+  2 Tbsp. extra-virgin olive oil                                          →  2 tbsp olive oil
+  2 Tbsp. taco seasoning (mild or spicy) ((I like Siete brand))           →  2 tbsp taco seasoning
+  1/3 cup sour cream ((or plain full-fat Greek yogurt))                   →  ⅓ cup sour cream
+  1/2 cup jarred salsa verde (or tomatillo salsa)                         →  ½ cup jarred salsa verde
+  2 ears sweet corn, grilled or seared  ((or 1 cup frozen and thawed fi…  →  2 sweet corn ears
+  2 1/2 cups shredded or thinly sliced cabbage ((or pre-shredded colesl…  →  2 ½ cup shredded cabbage
+  1/2 cup coarsely chopped fresh cilantro                                 →  ½ cup fresh cilantro
+  1/3 cup crumbled queso fresco ((or cotija cheese))                      →  ⅓ cup crumbled queso fresco
+  Kosher salt to taste                                                    →  salt
+  2  limes                                                                →  2 limes
+  8  tortillas, warmed                                                    →  8 tortillas
+  Optional for garnish: hot sauce, pickled red onion, jalapeño (fresh o…  →  to garnish | optional, for garnish: hot sauce, pickled red onion, jalapeño (fresh or pickled), avocado
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Vietnamese Pickled Carrots and Daikon    [needs_review]    match rate: 83%
+    uYuD9o2SFoWdXdYD92fu
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  2  medium carrots (, peeled cut into 3mm / 1/10&quot; batons (Note 1))  →  2 carrots
+  1/2  large daikon (white radish) (, peeled, cut the same as carrots (…  →  ½ daikon
+  1 1/2 cups boiling water                                                →  1 ½ cup boiling water
+  1/2 cup white sugar                                                     →  ½ cup white sugar
+  4 tsp cooking / kosher salt                                             →  salt
+  3/4 cup rice wine vinegar ((sub apple cider vinegar))                   →  ¾ cup rice wine vinegar
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Whole30 Peppered Steak Stir-Fry    [needs_review]    match rate: 83%
+    whole30-peppered-steak
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1.5 lbs flank steak                                        →  1 ½ lb flank steak
+  1 tbsp avocado oil                                         →  1 tbsp avocado oil
+  1 tbsp coconut aminos                                      →  1 tbsp coconut aminos
+  1 tsp kosher salt                                          →  salt
+  2 tbsp tapioca flour/starch                                →  2 tbsp tapioca flour/starch
+  1 tsp black peppercorns                                    →  black pepper
+  ¼ cup coconut aminos                                       →  ¼ cup coconut aminos
+  ¼ cup beef broth                                           →  ¼ cup beef broth
+  2 tbsp rice vinegar                                        →  2 tbsp rice vinegar
+  1 tsp red boat fish sauce                                  →  1 tsp red boat fish sauce
+  4 cloves minced garlic                                     →  4 garlic cloves
+  1 tsp ground ginger                                        →  1 tsp ground ginger
+  ½ tsp garlic powder                                        →  ½ tsp garlic powder
+  ¼ tsp cayenne pepper                                       →  ¼ tsp cayenne pepper
+  2 tbsp avocado oil (plus more if needed)                   →  2 tbsp avocado oil
+  1  medium-sized red bell pepper (cut into ½ inch cubes)    →  1 medium-sized red bell pepper
+  1  medium-sized green bell pepper (cut into ½ inch cubes)  →  1 medium-sized green bell pepper
+  1  small white onion (cut into ½ inch cubes)               →  1 white onion
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Cuban Mojo Bowl    [needs_review]    match rate: 84%
+    TlFzaPFUulKG7g2jXHD5
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  4 lbs / 1.8 kg boneless pork shoulder                              →  4 lb boneless pork shoulder
+  1/3 cup / 80 ml fresh orange juice, about 2 medium oranges         →  ⅓ cup / 80 ml orange juice
+  1/4 cup / 60 ml fresh grapefruit juice, about 1 medium grapefruit  →  ¼ cup / 60 ml grapefruit juice
+  1/4 cup / 60 ml fresh lime juice, about 2 medium limes             →  ¼ cup / 60 ml lime juice
+                                                                      ↳  2 limes
+  2 tbsp / 30 ml avocado oil or olive oil                            →  2 tbsp / 30 ml avocado oil
+  2 heads of garlic, cloves peeled                                   →  2 heads garlic cloves
+  1 tbsp / 10 g coconut sugar, optional                              →  1 tbsp / 10 g coconut sugar
+  1 tbsp / 2 g Mexican oregano                                       →  1 tbsp / 2 g mexican oregano
+  2 tsp / 10 g coarse kosher salt                                    →  2 tsp / 10 g coarse kosher salt
+  2 tsp / 6 g ground cumin                                           →  2 tsp / 6 g ground cumin
+  2 bay leaves                                                       →  2 bay leaves
+  1 cup / 240 ml reserved, strained cooking liquid                   →  1 cup / 240 ml reserved strained cooking liquid
+  2 tbsp / 30 ml fresh grapefruit juice                              →  2 tbsp / 30 ml grapefruit juice
+  2 tbsp / 30 ml fresh orange juice                                  →  2 tbsp / 30 ml orange juice
+  2 tbsp / 30 ml fresh lime juice                                    →  2 tbsp / 30 ml lime juice
+  1 clove crushed or minced garlic, optional, to taste               →  1 garlic clove
+  1 tsp / 1 g Mexican oregano                                        →  1 tsp / 1 g mexican oregano
+  1/2 tsp ground cumin                                               →  ½ tsp ground cumin
+  salt, to taste                                                     →  salt
+  optional, but lovely: minced fresh oregano and / or cilantro       →  but lovely: fresh oregano
+                                                                      ↳  /
+  4 cups / 480 g frozen riced cauliflower, see notes                 →  4 cup / 480 g frozen riced cauliflower
+  2 tbsp / 30 ml avocado oil or light olive oil                      →  2 tbsp / 30 ml avocado oil olive oil
+  2 tsp / 8 g garlic powder                                          →  2 tsp / 8 g garlic powder
+  1 tsp / 3 g ground cumin                                           →  1 tsp / 3 g ground cumin
+  1 tsp / 2 g ground turmeric                                        →  1 tsp / 2 g ground turmeric
+  1 tsp / 1 g Mexican oregano                                        →  1 tsp / 1 g mexican oregano
+  1/2 tsp onion powder                                               →  ½ tsp onion powder
+  1/2 ts fine sea salt                                               →  ½ ts sea salt
+  1/2 tsp ground black pepper                                        →  black pepper
+  smashed or sliced avocado                                          →  smashed avocado
+  wavy plantain chips, I am obsessed with these!                     →  wavy plantain chips i am obsessed with these!
+  fresh cilantro                                                     →  fresh cilantro
+  lime wedges                                                        →  lime wedges
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Ginger-Braised Meatballs in Coconut Broth    [needs_review]    match rate: 84%
+    rAoYT1vNyH9BcD9DmWZu
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  2 pounds ground pork                                                    →  2 lb ground pork
+  2 large eggs                                                            →  2 eggs
+  3 tablespoons panko                                                     →  3 tbsp panko
+  3 tablespoons finely chopped peeled fresh ginger                        →  3 tbsp fresh ginger
+  2 garlic cloves, minced                                                 →  2 garlic cloves
+  1 tablespoon Asian fish sauce                                           →  1 tbsp asian fish sauce
+  2 teaspoons kosher salt                                                 →  salt
+  1 13 1/2-ounce can unsweetened coconut milk                             →  13 ½ oz coconut milk
+  2 cups chicken stock or low-sodium broth                                →  2 cup chicken broth
+  1/4 cup thinly sliced peeled fresh ginger                               →  ¼ cup thinly fresh ginger
+  2 garlic cloves, thinly sliced                                          →  2 garlic cloves
+  2 fresh red Thai chiles, slit but kept intact, plus thinly sliced chi…  →  2 red thai chiles but kept intact plus thinly chiles
+  1 stalk of fresh lemongrass, outer leaves removed and stalk cut into …  →  1 stalk lemongrass outer leaves removed stalk cut
+  Finely grated zest and juice of 1/2 lime                                →  grated zest juice of
+                                                                           ↳  ½ lime
+  1 tablespoon Asian fish sauce                                           →  1 tbsp asian fish sauce
+  1 teaspoon ground turmeric                                              →  1 tsp ground turmeric
+  Sugar                                                                   →  sugar
+  Kosher salt                                                             →  salt
+  Thinly sliced mint and cilantro leaves, lime wedges and steamed jasmi…  →  to serve | thinly mint
+                                                                           ↳  to serve | cilantro leaves lime wedges steamed jasmine rice
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Grilled Peach and Quinoa Salad    [needs_review]    match rate: 85%
+    XIKJfzB6KaInQPCwXDkJ
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1/2 cup extra virgin olive oil                            →  ½ cup olive oil
+  3 tablespoons lemon juice                                 →  3 tbsp lemon juice
+  1 tablespoon apple cider vinegar                          →  1 tbsp apple cider vinegar
+  2 teaspoons spicy or regular honey                        →  2 tsp spicy honey
+  1/2 cup fresh cilantro, chopped                           →  ½ cup fresh cilantro
+  1/4 cup fresh basil, chopped                              →  ¼ cup fresh basil
+  2 tablespoons chives, chopped                             →  2 tbsp chives
+  1  small shallot, chopped                                 →  1 shallot
+  1 clove garlic, grated                                    →  1 garlic clove
+  kosher salt and black pepper                              →  salt + pepper
+  chili flakes                                              →  chili flakes
+  3 cups cooked quinoa                                      →  3 cup quinoa
+  1-2 tablespoons Tajin or chili powder                     →  1 tbsp tajin powder
+  2 ears  grilled or roasted corn, kernels cut off the cob  →  2 or roasted corn kernels cut off the cob ears
+  2  ears raw corn, kernels cut off the cob                 →  2 corn kernels cut off the cob ears
+  1-2  peaches, chopped                                     →  1 peaches
+  1 cup cherry tomatoes, halved                             →  1 cup cherry tomato
+  1-2  avocados, chopped                                    →  1 avocados
+  2 tablespoons candied or pickled jalapeños                →  2 tbsp candied jalapeños
+  6 ounces feta cheese, crumbled                            →  6 oz feta cheese crumbled
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Crustless Quiche with Salmon    [needs_review]    match rate: 85%
+    crustless-quiche-with-smoked-salmon
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  8  eggs                                                                 →  8 eggs
+  1/2 cup heavy cream                                                     →  ½ cup heavy cream
+  1/2 cup whole milk                                                      →  ½ cup whole milk
+  2 TBSP chopped fresh dill                                               →  2 tbsp fresh dill
+  1/2 tsp sea salt                                                        →  salt
+  A few cranks of cracked black pepper                                    →  2 cranks of black pepper
+  1 TBSP avocado or olive oil                                             →  1 tbsp avocado
+  1/2 cup sliced grape tomatoes                                           →  ½ cup grape tomatoes
+  1/4 cup thinly sliced red onion (Preferably sliced with a mandolin)     →  ¼ cup thinly red onion
+  2 TBSP drained capers                                                   →  2 tbsp capers
+  1 cup shredded cheese of your choice (I like to use a blend of chedda…  →  1 cup shredded cheese of your choice
+  4 oz smoked salmon, torn into bite-sized pieces (Preferably cold smok…  →  4 oz smoked salmon into pieces
+  Extra chopped fresh dill, for garnish                                   →  to garnish | fresh dill
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  One Pan Coconut Chicken    [needs_review]    match rate: 85%
+    ewas7jlYdB9nlvnSXsTm
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  2 medium chicken breasts, roughly 150g each.                     →  2 chicken breasts 150g each
+  1/2 tbsp of curry powder.                                        →  ½ tbsp curry powder
+  2 limes.                                                         →  2 limes
+  1/2 tbsp of groundnut oil.                                       →  ½ tbsp groundnut oil
+  1 shallot - finely chopped.                                      →  1 shallot
+  2 clove of garlic - finely chopped.                              →  2 garlic cloves
+  10g of ginger - finely chopped.                                  →  ⅜ oz ginger
+  1 tin or 160ml of coconut cream                                  →  5 ½ oz canned coconut cream
+  1/2 a stock cube, mixed with 200ml of boiling water.             →  ½ stock cube mixed with 200ml of boiling water
+  A handful of fresh coriander - finely chopped.                   →  2 oz leaves coriander
+  Tbsp of crunchy peanut butter.                                   →  tbsp | crunchy peanut butter
+  300g of cooked basmati rice, to serve.                           →  1 ½ cup basmati rice
+  Coconut yoghurt, to serve (not incl. in nutritional breakdown).  →  to serve | coconut yoghurt
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Fish Chowder    [needs_review]    match rate: 85%
+    fish-chowder-recipe
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  3 pounds meaty firm fish or white fish ((cut into 1-inch cubes))        →  3 lb meaty firm fish
+  2 pounds potatoes ((such as Yukon or red potatoes) cut into ¾-inch cu…  →  2 lb potatoes
+  3  thick bacon slices                                                   →  3 thick bacon slices
+  3 tablespoons unsalted butter                                           →  3 tbsp butter
+  2 cups diced onion                                                      →  2 cup onion
+  ¾ cup small diced celery                                                →  ¾ cup celery
+  ½ cup dry white wine                                                    →  ½ cup dry white wine
+  1  bay leaf                                                             →  1 bay
+  6  small thyme sprigs                                                   →  6 thyme sprigs
+  24 oz clam juice                                                        →  24 oz clam juice
+  2 cups chicken broth ((low-sodium or regular according to your liking…  →  2 cup chicken broth
+  2½ teaspoons Old Bay seasoning ((I used OLD BAY® Seafood Seasoning by…  →  2 ½ tsp old bay seasoning
+  2 cups heavy cream  ((preheat in the microwave) - add more according …  →  2 cup heavy cream
+  black pepper  ((to taste))                                              →  black pepper
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Italian Stuffed Peppers    [needs_review]    match rate: 85%
+    gUX7P0ecbBoCZMj94Sds
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 pound  90% lean ground beef                                           →  1 lb 90% lean ground beef
+  1¼ teaspoons  salt, divided                                             →  salt
+  Heaping ¼ teaspoon  baking soda                                         →  ¼ tsp baking soda
+  3 large red, yellow, or orange bell peppers, cut in half from the ste…  →  3 red yellow
+  3 tablespoons  extra-virgin oil                                         →  3 tbsp extra-virgin oil
+  1  medium yellow onion, finely chopped                                  →  1 yellow onion
+  3 cloves garlic, minced                                                 →  3 garlic cloves
+  1½ teaspoons  chili powder                                              →  1 ½ tsp chili powder
+  ½ teaspoon  ground cumin                                                →  ½ tsp ground cumin
+  ¼ teaspoon  dried oregano                                               →  ¼ tsp oregano
+  1  (8-oz) can tomato sauce                                              →  8 oz canned tomato sauce
+  1 cup  cooked rice, quinoa, or any grain                                →  1 cup rice
+                                                                           ↳  quinoa
+  1½ cups  shredded Monterey Jack or Cheddar Jack cheese                  →  1 ½ cup shredded monterey jack
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Honey-Chipotle Salmon Tacos    [needs_review]    match rate: 85%
+    honey-chipotle-salmon-tacos
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  3 cups thinly sliced or shaved red cabbage                              →  3 cup shredded red cabbage
+  1/2 cup fresh cilantro leaves and tender stems, coarsely chopped        →  ½ cup fresh cilantro
+  3 Tbsp. fresh lime juice, divided ((from 2 limes))                      →  3 tbsp lime juice
+  1 tsp. kosher salt, divided                                             →  salt
+  1 lb. salmon, skin removed                                              →  1 lb salmon
+  1 Tbsp. avocado oil (or extra-virgin olive oil)                         →  1 tbsp avocado oil
+  1 to 2  chipotles from a can of chipotles in adobo, finely chopped, p…  →  1 chipotles in adobo plus 1 tbsp. adobo sauce
+  1 Tbsp. honey                                                           →  1 tbsp honey
+  1 tsp. lower-sodium tamari (or soy sauce)                               →  1 tsp lower-sodium tamari
+  1/2 cup sour cream (or plain full-fat Greek yogurt)                     →  ½ cup sour cream
+  1  garlic clove, grated                                                 →  1 garlic clove
+  6 to 8 small tortillas, warmed                                          →  6 tortillas
+  1 medium ripe avocado, thinly sliced                                    →  1 avocado
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Mediterranean Grilled Lamb Leg with Mint Pesto    [needs_review]    match rate: 85%
+    mediterranean-grilled-lamb-leg-mint-pesto
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 cup packed fresh parsley                                             →  1 cup fresh parsley
+  1/2 cup packed fresh mint leaves                                       →  ½ cup fresh mint
+  1 small red onion, chopped                                             →  1 red onion
+  4 garlic cloves, chopped                                               →  4 garlic cloves
+  1 1/2 tsp ground allspice                                              →  1 ½ tsp ground allspice
+  1 tsp ground coriander                                                 →  1 tsp ground coriander
+  1 tsp sumac spice                                                      →  1 tsp sumac spice
+  1/2 tsp ground cardamom                                                →  ½ tsp ground cardamom
+  Juice of 1 lemon                                                       →  1 lemon
+  1/4 cup Private Reserve extra virgin olive oil                         →  ¼ cup private reserve extra virgin olive oil
+  1 boneless and butterflied leg of lamb (weighing about 3 to 4 pounds)  →  1 boneless butterflied leg of lamb (weighing
+  Salt                                                                   →  salt
+  2 tbsp toasted pine nuts                                               →  2 tbsp pine nuts
+  1 cup packed mint leaves                                               →  1 cup mint
+  1/4 cup Private Reserve extra virgin olive oil                         →  ¼ cup private reserve extra virgin olive oil
+  Juice of 1 lemon                                                       →  1 lemon
+  1 small garlic clove, peeled                                           →  1 garlic clove
+  1 small shallot, chopped                                               →  1 shallot
+  1/2 tsp honey                                                          →  ½ tsp honey
+  1/8 tsp salt, more if needed                                           →  salt
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Mediterranean Tuna Salad    [needs_review]    match rate: 85%
+    mediterranean-tuna-salad
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  2 5 oz cans white albacore tuna packed in olive oil                  →  10 oz white albacore tuna in olive oil
+  ¼ cup sliced olives (, (green, Kalamata, or your favorite variety))  →  ¼ cup olives
+  ¼ cup roasted red peppers (, drained and chopped)                    →  ¼ cup roasted red peppers
+  ¼ cup finely chopped red onion                                       →  ¼ cup red onion
+  ¼ cup  English cucumber (, seeded and chopped)                       →  ¼ cup english cucumber
+  2 tablespoons capers (, drained)                                     →  2 tbsp capers
+  3 tablespoons fresh dill (, roughly chopped)                         →  3 tbsp fresh dill
+  3 tablespoons fresh parsley (, roughly chopped)                      →  3 tbsp fresh parsley
+  1 tablespoon plus 1 teaspoon fresh lemon juice                       →  1 tbsp plus 1 teaspoon lemon juice
+  ¼ teaspoon kosher salt                                               →  salt
+  1-2 cloves garlic (, minced )                                        →  1 garlic clove
+  1/4  teaspoon kosher salt                                            →  salt
+  1/4 teaspoon  freshly ground black pepper                            →  black pepper
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Green Vegan Salad    [needs_review]    match rate: 85%
+    ozVt3p57NKBOJdKKtYQz
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  100 g / ½ cup quinoa*                                     →  ½ cup quinoa
+  250 g / 8¾ oz broccoli (½ medium)                         →  8 ¾ oz broccoli
+  100 g / 3½ oz asparagus                                   →  3 ½ oz asparagus
+  1 medium courgette / zucchini                             →  1 courgette / zucchini
+  65 g / ½ cup frozen peas or petit pois                    →  ½ cup frozen peas
+  100 g / 3½ oz mixed salad leaves                          →  3 ½ oz mixed salad
+  75 g / ½ cup almonds                                      →  ½ cup almonds
+  1 small avocado, sliced                                   →  1 avocado
+  green part of 2 spring onions / scallions, sliced thinly  →  green part of
+                                                             ↳  2 spring onions / scallions
+  80 ml / 1/3 cup olive oil                                 →  ⅓ cup olive oil
+  flesh and zest half a lemon                               →  flesh zest half a lemon
+  15 g / ½ oz basil, mint or both                           →  ½ oz basil
+  1 garlic clove                                            →  1 garlic clove
+  salt + pepper, to taste                                   →  to taste | salt + pepper
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Turkey Feta Meatball Soup    [needs_review]    match rate: 85%
+    recipes-1021943-lemony-chicken-feta-meatball-soup-with-spinach
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 pound ground chicken or turkey, preferably dark meat                  →  1 lb ground chicken
+  1/2 cup crumbled feta                                                   →  ½ cup crumbled feta cheese
+  3/4 cup old-fashioned rolled oats                                       →  ¾ cup old-fashioned rolled oats
+  1 small red onion, halved (1/2 diced, and 1/2 grated, then squeezed w…  →  1 red onion
+  1/3 packed cup fresh dill leaves and fine stems, finely chopped         →  ⅓ cup fresh dill
+  1 tablespoon ground cumin                                               →  1 tbsp ground cumin
+  1/2 teaspoon plus 1 tablespoon ground turmeric                          →  ½ tsp plus 1 tablespoon ground turmeric
+  Kosher salt and black pepper                                            →  salt + pepper
+  3 tablespoons olive oil                                                 →  3 tbsp olive oil
+  1/2 teaspoon red-pepper flakes, plus more for serving                   →  ½ tsp red pepper flakes
+  4 cups low-sodium chicken broth or water                                →  4 cup chicken broth
+  4 packed cups baby spinach (about 5 ounces)                             →  4 cup baby spinach
+  2 lemons (1 juiced and 1 cut into wedges for serving)                   →  2 lemons
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Turkey Meatballs    [needs_review]    match rate: 85%
+    recipes-turkey-meatballshtml
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1  large egg                                                          →  1 egg
+  ¼ cup  finely chopped fresh basil (plus more for serving)             →  ¼ cup fresh basil
+  Heaping ½ teaspoon  salt                                              →  salt
+  ¼ teaspoon  freshly ground black pepper                               →  black pepper
+  ½ teaspoon  dried oregano                                             →  ½ tsp oregano
+  2  cloves garlic, minced                                              →  2 garlic cloves
+  2 tablespoons  water                                                  →  2 tbsp water
+  3 tablespoons  minced yellow onion, from 1 small onion                →  3 tbsp yellow onion from
+                                                                         ↳  1 onion
+  1⅓ pounds  93% lean ground turkey (see note)                          →  1 ⅓ lb 93% lean ground turkey
+  ⅔ cup  dried Italian style bread crumbs (such as Progresso)           →  ⅔ cup italian style bread crumbs
+  ⅓ cup  freshly grated pecorino Romano cheese (plus more for serving)  →  ⅓ cup pecorino romano cheese
+  2 tablespoons olive oil, for cooking                                  →  2 tbsp olive oil
+  Large jar (24 oz) good quality Marinara sauce (such as Rao's)         →  24 oz jarred marinara sauce
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Turkey Stuffed Peppers    [needs_review]    match rate: 85%
+    turkey-stuffed-peppers-45-pts
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 lb 93% lean ground turkey                   →  1 lb 93% lean ground turkey
+  1 clove garlic (minced)                       →  1 garlic clove
+  1/4 medium onion (minced)                     →  ¼ onion
+  1 tbsp chopped fresh cilantro or parsley      →  1 tbsp fresh cilantro
+  1 tsp garlic powder                           →  1 tsp garlic powder
+  1 tsp cumin powder                            →  1 tsp cumin powder
+  1 tsp kosher salt                             →  salt
+  3 large sweet red bell peppers (washed)       →  3 sweet red bell peppers
+  1 cup reduced sodium chicken broth (divided)  →  1 cup reduced sodium chicken broth
+  1/4 cup tomato sauce                          →  ¼ cup tomato sauce
+  1 1/2 cups cooked brown rice                  →  1 ½ cup brown rice
+  Olive oil spray                               →  olive oil spray
+  6 tbsp  part skim shredded cheddar cheese*    →  ⅜ cup part skim shredded cheddar cheese
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  1-Pot Golden Curry Lentil Soup    [approved]    match rate: 86%
+    1-pot-golden-curry-lentil-soup
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1/4 cup thinly sliced shallot ((or onion))                              →  ¼ cup thinly shallot
+  3  cloves garlic, minced                                                →  3 garlic cloves
+  1 Tbsp ginger, minced                                                   →  1 tbsp ginger
+  1  small serrano pepper  ((seeds removed, minced))                      →  1 serrano pepper
+  2 cups thinly sliced carrots ((or sub other sturdy seasonal vegetable…  →  2 cup thinly carrots
+  1 healthy pinch sea salt                                                →  1 healthy pinch sea salt
+  3 cups Vegetable Broth ((or store-bought - we like Imagine brand))      →  3 cup vegetable broth
+  3/4 cup canned light coconut milk                                       →  ¾ cup canned light coconut milk
+  1 cup uncooked rinsed red or golden lentils ((if using green or brown…  →  1 cup red lentils
+  2 Tbsp coconut aminos                                                   →  2 tbsp coconut aminos
+  1 Tbsp DIY Curry Powder ((or store-bought))                             →  1 tbsp diy curry powder
+  Fresh lemon or lime juice                                               →  lemon
+  Cilantro                                                                →  cilantro
+  Coconut cream                                                           →  coconut cream
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Lemony Shaved Fennel Asparagus Salad    [needs_review]    match rate: 86%
+    2023-04-05-lemony-shaved-fennel-asparagus-salad
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 small shallot, finely minced                      →  1 shallot
+  2 tablespoons lemon juice                           →  2 tbsp lemon juice
+  1 tablespoon white wine vinegar                     →  1 tbsp white wine vinegar
+  2 small fennel bulbs                                →  2 fennel bulbs
+  12 thick asparagus spears                           →  12 thick asparagus spears
+  5 ounces baby arugula                               →  5 oz baby arugula
+  1 ½ cups cooked navy beans, drained and rinsed      →  1 ½ cup navy beans
+  1 ½ cups cooked farro                               →  1 ½ cup farro
+  ¼ cup chopped chives                                →  ¼ cup chives
+  ⅓ cup shelled and salted pistachios, finely ground  →  ⅓ cup shelled salted pistachios ground
+  sea salt and ground black pepper, to taste          →  to taste | salt + pepper
+  ½ teaspoon Dijon mustard                            →  ½ tsp dijon mustard
+  2 teaspoons maple syrup                             →  2 tsp maple syrup
+  6 tablespoons olive oil                             →  ⅜ cup olive oil
+  fresh lemon zest, optional                          →  lemon zest
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Black Rice Pilaf    [needs_review]    match rate: 86%
+    DAo8R5SqWWX5HcWQdYbJ
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 cup forbidden black rice                                         →  1 cup forbidden black rice
+  6 cups water                                                       →  6 cup water
+  1 cup forbidden black rice, rinsed                                 →  1 cup forbidden black rice
+  1 cup water                                                        →  1 cup water
+  2 tablespoons olive oil ( or butter)                               →  2 tbsp olive oil
+  1 shallot &#8211; chopped                                          →  1 shallot
+  1 1/2 cups forbidden black rice                                    →  1 ½ cup forbidden black rice
+  1 Tablespoon fresh thyme ( or 1 teaspoon dry)                      →  1 tbsp fresh thyme
+  2  1/2 cups plus 1 tablespoon broth or stock ( veggie or chicken)  →  2 ⅝ cup broth
+  1 teaspoon granulated garlic powder                                →  1 tsp granulated garlic powder
+  1 bay leaf                                                         →  1 bay
+  salt + pepper                                                      →  salt + pepper
+  1/3 cup slivered almonds ( save 2 tablespoons for garnish)         →  ⅓ cup slivered almonds
+  Garnish: 1-2 tablespoons Italian parsley                           →  garnish: 1-2 tablespoons italian parsley
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Cod Bake with Coriander and Lime    [needs_review]    match rate: 86%
+    HHwPnSAEY8MbSwwZY6p4
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  4  skinless cod fillets (about 600g or 1.3lbs altogether)               →  4 skinless cod fillets
+  ¼ tsp salt                                                              →  salt
+  ¼ tsp black pepper                                                      →  black pepper
+  ¼ tsp ground coriander                                                  →  ¼ tsp ground coriander
+  ¼ tsp smoked paprika                                                    →  ¼ tsp smoked paprika
+  1 tsp mixed black and white sesame seeds                                →  1 tsp mixed black white sesame seeds
+  ½ tsp chilli flakes                                                     →  ½ tsp chilli flakes
+  1  lime (sliced)                                                        →  1 lime
+  2 tbsp olive oil                                                        →  2 tbsp olive oil
+  50 g (1 1/4 packed cups) fresh coriander (cilantro) (roughly torn or …  →  1 ¾ oz cilantro
+  3 cloves minced garlic                                                  →  3 garlic cloves
+  1 tbsp olive oil                                                        →  1 tbsp olive oil
+  juice of 1 lime (about 2 tbsp)                                          →  1 lime
+  small bunch of fresh coriander (cilantro)                               →  bunch of coriander
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Pan Seared Salmon    [needs_review]    match rate: 86%
+    MzExZKdJYhsKKUguJfMq
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  2 (6-ounce) center-cut salmon filets (about 2-inches thick)  →  2 (6-ounce) center-cut salmon filets
+  2 tablespoons olive oil                                      →  2 tbsp olive oil
+  3 tablespoons unsalted butter ((⅜ stick))                    →  3 tbsp butter
+  4 sprigs fresh thyme                                         →  4 fresh thyme sprigs
+  3 cloves garlic (smashed)                                    →  3 garlic cloves
+  1 tablespoon capers (drained)                                →  1 tbsp capers
+  ½  lemon (juiced)                                            →  ½ lemon
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  New Mexico Sopapillas    [needs_review]    match rate: 86%
+    b9CcGHFK4QBKTeWBZmvr
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  2 cups all-purpose flour                     →  2 cup all-purpose flour
+  1 tablespoon baking powder                   →  1 tbsp baking powder
+  1 tablespoon granulated sugar                →  1 tbsp granulated sugar
+  2 teaspoons kosher salt                      →  salt
+  1 tablespoon honey                           →  1 tbsp honey
+  3/4 cup whole milk                           →  ¾ cup whole milk
+  Canola oil, peanut oil or lard (for frying)  →  canola oil peanut oil
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Baked Sweet Potato    [needs_review]    match rate: 86%
+    baked-sweet-potato
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  Sweet Potatoes                         →  sweet potatoes
+  Butter or vegan butter                 →  butter
+  Sea salt                               →  salt
+  Chives                                 →  chives
+  Greek yogurt or tzatziki               →  plain greek yogurt
+  Guacamole                              →  guacamole
+  Creamy avocado cilantro lime dressing  →  creamy avocado cilantro lime dressing
+  Any of these stuffing ideas!           →  (skipped)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Beef Tagine    [needs_review]    match rate: 86%
+    beef-tajine-with-prunes
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1-2 lb. beef or lamb bone in – cut into 3-4’” chunks                    →  1 lb beef
+  1/2 lb. onions finely chopped                                           →  ½ lb onions
+  3 cloves garlic, finely chopped                                         →  3 garlic cloves
+  1 teaspoon salt                                                         →  salt
+  1 teaspoon pepper                                                       →  pepper
+  2 teaspoon ginger                                                       →  2 tsp ginger
+  5-10 saffron threads (optional)                                         →  5 saffron threads
+  1 tsp cinnamon                                                          →  1 tsp cinnamon
+  1/4 cup vegetable or olive oil (if the meat you are using has more fa…  →  ¼ cup neutral oil
+  palmful of chopped cilantro                                             →  palmful of cilantro
+  1/2 lb. prunes                                                          →  ½ lb prunes
+  1-2 tablespoon honey                                                    →  1 tbsp honey
+  1 1/2 teaspoons ground cinnamon                                         →  1 ½ tsp ground cinnamon
+  1/2 cup blanched, fried almonds                                         →  ½ cup fried almonds
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Feel Better Chicken Soup    [needs_review]    match rate: 86%
+    chicken-soup
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1-2 tablespoons olive oil                                               →  1 tbsp olive oil
+  one large onion, diced (or sub 2 fat shallots, or two leeks)            →  1 onion
+  one cup celery, chopped                                                 →  1 cup celery
+  2 tablespoons fresh ginger, chopped                                     →  2 tbsp fresh ginger
+  4-8 garlic cloves, rough chopped (I like 8)                             →  4 garlic cloves
+  4 cups chicken stock                                                    →  4 cup chicken broth
+  2 cups water (or more chicken stock)                                    →  2 cup water
+  1 teaspoon salt                                                         →  salt
+  2 bay leaves                                                            →  2 bay leaves
+  1/4 teaspoon white pepper (or use black pepper)                         →  white pepper
+  1 1/2 lbs chicken thighs, boneless, skinless ( or use breasts-if very…  →  1 ½ lb chicken thighs boneless skinless
+  lemon juice to taste                                                    →  to taste | lemon juice
+  pinch chili flakes                                                      →  chili flakes
+  garnishes: scallions, cilantro, or Italian parsley, and crispy shallo…  →  to garnish | scallion
+                                                                           ↳  to garnish | cilantro
+                                                                           ↳  to garnish | parsley
+                                                                           ↳  to garnish | crispy shallots
+  a drizzle of toasted sesame oil (optional, tasty)                       →  drizzle of sesame oil
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📖  Sheet Pan Chicken Fajitas    [needs_review]    match rate: 86%
+    fCyCGC9OGNd4Gf7k0TRr
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  1 1/2 lb boneless, skinless chicken breasts, cut into 1/2"-thick stri…  →  1 ½ lb boneless skinless chicken breasts
+  3 bell peppers, mix red, yellow, orange, or green, cored and cut into…  →  3 bell peppers mix red yellow
+                                                                           ↳  orange
+  1 medium onion, peeled and cut into 1/2"-thick slices                   →  1 onion
+  2 Tbsp olive oil                                                        →  2 tbsp olive oil
+  2 tsp chili powder                                                      →  2 tsp chili powder
+  1 tsp ground cumin                                                      →  1 tsp ground cumin
+  1 tsp smoked paprika                                                    →  1 tsp smoked paprika
+  1 tsp garlic powder                                                     →  1 tsp garlic powder
+  1 tsp onion powder                                                      →  1 tsp onion powder
+  1 tsp fine sea salt, plus extra to taste                                →  salt
+  1/2 tsp freshly ground black pepper                                     →  black pepper
+  8 small flour or corn tortillas, warmed                                 →  8 flour
+  lime wedges, to squeeze over finished fajitas                           →  to serve | lime wedges
+  fresh cilantro leaves                                                   →  fresh cilantro
+  optional: sour cream, pico de gallo, guacamole, shredded cheese         →  sour cream pico de gallo guacamole shredded cheese

@@ -10,6 +10,7 @@
  * JSON fields (all optional — only provided fields are written):
  *   chefNotes        — string
  *   menuDescription  — string
+ *   ingredients      — array of strings
  *   dietTags         — object with protocol keys (GF, DF, V, Vg, K, AIP, LF, LH)
  *
  * Exit codes:
@@ -44,7 +45,7 @@ async function main() {
     process.exit(1);
   }
 
-  const allowed = ['chefNotes', 'dietTags', 'prep_time'];
+  const allowed = ['chefNotes', 'dietTags', 'prep_time', 'ingredients'];
   const update  = {};
 
   for (const key of allowed) {

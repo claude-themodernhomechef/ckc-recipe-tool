@@ -57,6 +57,7 @@ node scripts/update_recipe_enrichment.js '<json>'
 Fields:
 - `docId` — required
 - `chefNotes` — pipe-separated string
+- `ingredients` — array of strings, every ingredient exactly as scraped or as provided (ALWAYS include this)
 - `prep_time` — integer minutes (omit if unknown)
 - `dietTags` — full 8-protocol object (omit if skipped)
 

@@ -33,16 +33,22 @@ fi
 
 NODE_BIN=/usr/local/bin/node
 
-# Optional --limit N flag
+# Optional flags
 LIMIT=0
-if [ "$1" = "--limit" ] && [ -n "$2" ]; then
-  LIMIT="$2"
-fi
+QUEUE_SCRIPT="scripts/get_enrichment_queue.js"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --limit) LIMIT="$2"; shift 2 ;;
+    --queue) QUEUE_SCRIPT="$2"; shift 2 ;;
+    *) shift ;;
+  esac
+done
 
 echo "CKC Recipe Enrichment (batch size: $BATCH_SIZE)"
-echo "Loading queue..."
+echo "Loading queue from $QUEUE_SCRIPT..."
 
-QUEUE=$("$NODE_BIN" scripts/get_enrichment_queue.js 2>/dev/null)
+QUEUE=$("$NODE_BIN" "$QUEUE_SCRIPT" 2>/dev/null)
 TOTAL=$(echo "$QUEUE" | grep -c . || true)
 
 if [ -z "$QUEUE" ] || [ "$TOTAL" -eq 0 ]; then

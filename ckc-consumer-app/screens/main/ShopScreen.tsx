@@ -44,8 +44,8 @@ const PROTOCOL_META: Record<string, { label: string; color: string }> = {
   K:   { label: 'Keto',        color: Colors.diet.K   },
   GF:  { label: 'Gluten-Free', color: Colors.diet.GF  },
   DF:  { label: 'Dairy-Free',  color: Colors.diet.DF  },
-  V:   { label: 'Vegetarian',  color: Colors.diet.V   },
-  Vg:  { label: 'Vegan',       color: Colors.diet.Vg  },
+  V:   { label: 'Vegan',        color: Colors.diet.V   },
+  Vg:  { label: 'Vegetarian',  color: Colors.diet.Vg  },
   LH:  { label: 'Low-Histamine', color: Colors.diet.LH },
 };
 

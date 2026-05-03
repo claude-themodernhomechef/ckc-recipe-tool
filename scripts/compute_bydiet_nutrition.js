@@ -17,12 +17,24 @@ const admin = require('firebase-admin');
 const fs    = require('fs');
 const path  = require('path');
 
-const SA_PATH  = path.join(__dirname, '../service-account.json');
-const ING_DB   = path.join(__dirname, '../data/ingredientNutrition_v2.json');
+const SA_PATH   = path.join(__dirname, '../service-account.json');
+const ING_DB    = path.join(__dirname, '../data/ingredientNutrition_v2.json');
+const SWAP_PATH = path.join(__dirname, '../data/masterSwapTable.json');
 
-const sa = require(SA_PATH);
+const sa       = require(SA_PATH);
+const swapTable = JSON.parse(fs.readFileSync(SWAP_PATH, 'utf8'));
 if (!admin.apps.length) admin.initializeApp({ credential: admin.credential.cert(sa) });
 const db = admin.firestore();
+
+// Returns the nutrition DB key to use for a swap target.
+// Checks masterSwapTable for an explicit nutritionKey first, then falls back to the to field.
+function resolveNutritionKey(ingredientName, dietCode) {
+  const entry = swapTable[ingredientName.toLowerCase().trim()];
+  if (!entry || !entry[dietCode]) return null;
+  const swap = entry[dietCode];
+  if (swap.type === 'remove') return null;
+  return swap.nutritionKey || swap.to || null;
+}
 
 // ── Swap note parser (mirrors ReviewQueueScreen parseSwapPairs) ───────────────
 
@@ -271,6 +283,12 @@ async function main() {
         for (const variant of toVariants) {
           swapEntry = lookupIngredient(variant.trim(), ingDB);
           if (swapEntry) break;
+        }
+
+        // Fallback: check masterSwapTable for an explicit nutritionKey
+        if (!swapEntry) {
+          const fallbackKey = resolveNutritionKey(from, dietCode);
+          if (fallbackKey) swapEntry = lookupIngredient(fallbackKey, ingDB);
         }
 
         if (!swapEntry) {

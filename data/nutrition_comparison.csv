@@ -1,0 +1,95 @@
+name,meal_type,protein_type,cuisine,usda_cal,edamam_cal,delta_cal_%,usda_protein,edamam_protein,delta_protein_%,usda_fat,edamam_fat,delta_fat_%,usda_carbs,edamam_carbs,delta_carbs_%
+"Stewed Lentils",entree,,American,2278,2193,4,91.9,82.2,12,119.3,118.9,0,229.3,214.4,7
+"Chicken Tagine Bowl",entree,,Moroccan,2969,3549,-16,272.3,318.8,-15,87.8,331.2,-73,265.2,116.1,128
+"Ground Beef Stir Fry",entree,,Asian,1892,1583,20,90.5,97.7,-7,135.5,105.2,29,81.5,55.6,47
+"Blackened Chicken with Caramel",entree,,Middle Eastern,2347,2136,10,188.1,150.8,25,66.4,169.9,-61,164.8,155.1,6
+"Cacio E Peppe White Bean Soup",entree,,Italian,3327,4235,-21,194.7,419.8,-54,122.7,128.7,-5,384.9,374.1,3
+"Vegan Creamy Beany Cavolo Nero Pasta",entree,,American,13596,3082,341,687.5,122.5,461,185.7,72,158,2387.3,500.2,377
+"Yakisoba with Veggies and Tiger Prawns",entree,,Asian,1762,1671,5,108.2,81.9,32,55.3,58.7,-6,212.4,210.1,1
+"Baked Feta with Cherry Tomatoes",entree,,Mediterranean,1109,1350,-18,33.2,41.7,-20,97.6,104.5,-7,30.7,68.4,-55
+"Filet Mignon Kabobs",entree,,American,3576,3333,7,192.3,204.5,-6,257.1,219.9,17,132.5,136.4,-3
+"Green Minestrone Soup",entree,,Italian,1391,1405,-1,59.3,53.1,12,63.4,58.9,8,176.4,179,-1
+"Marry Me Salmon",entree,,American,3672,3714,-1,233.1,188.4,24,267.9,238.9,12,33.3,222.7,-85
+"Pomegranate Chicken",entree,,Asian,2419,4534,-47,235.7,258.1,-9,76.5,284.5,-73,182.5,233.4,-22
+"Halibut Florentine",entree,,Italian,1741,1407,24,166,124.1,34,104.3,90,16,33.4,28.6,17
+"Smoky Grilled Mushroom Doner",entree,,Middle Eastern,1208,1182,2,58,55.6,4,69.5,64.4,8,117,133.9,-13
+"Sweet and Spicy Grilled Tofu with Pineapple and Herbed Cauliflower Rice",entree,,American,2542,1241,105,113.5,79,44,45.4,60.6,-25,505.5,128.6,293
+"Hot Honey Salmon Bowl",entree,,Asian,3796,4593,-17,189.5,165.9,14,261.2,286.6,-9,194.8,366.5,-47
+"Honey Garlic Shrimp",entree,,Asian,1314,2270,-42,106.5,130,-18,38.4,40.9,-6,149.8,356.4,-58
+"Greek Chicken Meatball Bowl",entree,,Mediterranean,1995,2112,-6,122.4,107.4,14,113.7,141,-19,133.4,118.9,12
+"Vegan Burritos",entree,,Mexican,5137,4663,10,173.8,114.4,52,370.3,237.9,56,371.8,556.4,-33
+"Italian Wedding Soup",entree,,Italian,2561,2890,-11,169.8,171,-1,134,149,-10,188.5,209.1,-10
+"Ginger Miso Brothy Soup with Crispy Shredded Sesame Tofu",entree,,Asian,2031,1563,30,73.5,98.4,-25,111.7,86.8,29,204.5,119.7,71
+"Creamy Wild Rice Chicken Soup with Roasted Mushrooms",entree,Chicken,American,4460,4209,6,256.5,248.3,3,211.9,212.2,0,434.9,357.6,22
+"Sheet Pan Sun-Dried Tomato Chicken Bowls",entree,Chicken,Mediterranean,2722,4295,-37,400.3,239.4,67,83.3,251.8,-67,73,270.2,-73
+"Dump and Bake Chicken Alfredo Noodle Casserole",entree,Chicken,Italian,4250,5365,-21,268.7,260,3,256.9,308.2,-17,222.5,391.9,-43
+"Chicken Shawarma Sheet Pan Dinner",entree,Chicken,Middle Eastern,2738,1678,63,227.5,168.9,35,71.4,55.3,29,306.6,129.3,137
+"Simple Crispy Chicken Thighs",entree,Chicken,American,849,2752,-69,117.5,191.6,-39,38.1,212.6,-82,2.7,7.5,-64
+"Crockpot Creamy Broccoli Cheddar Chicken",entree,Chicken,American,3181,3754,-15,262.2,289.2,-9,201.8,253.8,-20,85.7,81.6,5
+"One-Pan Roast Chicken with Shallots, Mustard and White Wine",entree,Chicken,French,1979,4621,-57,238.2,277.8,-14,72.6,281.6,-74,28.4,158.4,-82
+"One Pot Mustard Chicken and Orzo",entree,Chicken,American,2719,2456,11,250.7,236.7,6,84.5,77.7,9,217.2,177.8,22
+"Bruschetta Chicken Pasta",entree,Chicken,Italian,4846,3080,57,627.8,218.6,187,96.8,66.3,46,372.3,386.2,-4
+"Chicken with Preserved Lemons and Green Olives",entree,Chicken,Mediterranean,922,1452,-37,105.7,76.4,38,50.9,99,-49,17.6,68.5,-74
+"Crispy Chicken Katsu Bowls",entree,Chicken,American,2357,4552,-48,188.5,304.8,-38,85,78.8,8,234.9,625.2,-62
+"Sheet Pan Mediterranean Chicken",entree,Chicken,Mediterranean,3088,4274,-28,228,218.1,5,110.5,240.8,-54,307.8,352.6,-13
+"Sticky Ginger Sesame Chicken and Crispy Brussels Sprouts",entree,Chicken,Fusion,2571,2615,-2,196.6,199.8,-2,115.7,122.7,-6,191.8,192.6,0
+"Sheet Pan Lemon Chicken and Potatoes",entree,Chicken,American,1386,2591,-47,122.1,276.3,-56,77,93.7,-18,48.1,150.4,-68
+"Rasta Pasta with Caribbean Jerk Chicken",entree,Chicken,Latin/South American,2788,3603,-23,160.5,248.2,-35,74.2,116.4,-36,364.1,381,-4
+"Avocado Corn Chicken Salad",entree,Chicken,,4599,3697,24,190,275.7,-31,187.9,249.1,-25,592.9,124.3,377
+"Lemon Chicken Pasta",entree,Chicken,Italian,4154,4165,0,272.9,275.6,-1,170.1,150.2,13,370,423.1,-13
+"Indonesian Grilled Sambal Chicken",entree,Chicken,Asian,1057,948,11,66.9,63.1,6,40.1,39.6,1,110.2,83.5,32
+"Chicken Taco Bowls",entree,Chicken,Latin/South American,2776,3382,-18,232.8,182.9,27,61,55.5,10,345.4,596.8,-42
+"Chipotle Chicken Tortilla Soup",entree,Chicken,Mexican,957,1636,-42,115.3,144.4,-20,41.9,63.1,-34,38.1,145.5,-74
+"Colcannon",side,,American,4046,5194,-22,172.2,127.6,35,249.2,305.5,-18,318,511.6,-38
+"House Favorite Roasted Brussels Sprouts",side,,American,346,634,-45,0.2,14,-99,27.2,37.9,-28,27.1,72.1,-62
+"Edamame",side,,Asian,494,494,0,50.9,50.8,0,21.5,21.5,0,34.5,34.5,0
+"Greek Yogurt Mashed Potatoes",side,,American,948,1235,-23,40,36.3,10,26.2,32.2,-19,147.9,210,-30
+"Honey Glazed Carrots",side,,American,1047,1024,2,11.2,10.3,9,44,43.4,1,169.7,165,3
+"Pan Seared Bok Choy",side,,Asian,285,279,2,8.5,6.3,35,22,22,0,18.8,20.3,-7
+"Potatoes Au Gratin",side,,American,7350,3342,120,187.7,80.6,133,478.1,242.5,97,630,225.7,179
+"Pan con Tomate",side,,Mediterranean,122,1220,-90,5,44.7,-89,1.2,28.6,-96,24.2,199.1,-88
+"Fluffy Creamy Mashed Potatoes",side,,American,2015,2723,-26,45.1,42.2,7,126.3,174.8,-28,189.8,266,-29
+"Mexican Roasted Zucchini",side,,Mexican,733,807,-9,28.3,32.2,-12,62.6,63.7,-2,19.1,36.6,-48
+"Air Fryer Sweet Potatoes",side,,American,955,1006,-5,12.3,12.4,-1,33.5,29.3,14,157.9,184.2,-14
+"Cilantro Lime Baked Salmon",entree,Salmon,Mediterranean,2692,2941,-8,186.1,189.3,-2,203.4,230.5,-12,28.3,25.5,11
+"Creamy Smoked Salmon Pasta",entree,Salmon,Mediterranean,2406,2202,9,109,109.4,0,93.7,75.3,24,278.3,279.6,0
+"Parmesan Crusted Salmon",entree,Salmon,Italian,2947,2567,15,239.1,243.1,-2,157.3,144,9,133.3,61.4,117
+"Herb Crusted Roasted Salmon",entree,Salmon,American,785,2323,-66,42.1,187.6,-78,67.3,168.1,-60,3.8,6.8,-44
+"Baked Salmon Poke Bowls",entree,Salmon,Asian,3337,4959,-33,192,348.9,-45,134.4,273.5,-51,341.8,264.2,29
+"Honey-Harissa Baked Salmon",entree,Salmon,Mediterranean,2031,2549,-20,66.6,145.7,-54,99.3,136.5,-27,219.6,180.5,22
+"Mediterranean Salmon Skillet",entree,Salmon,Mediterranean,3324,3175,5,197.5,175.7,12,174.7,189.2,-8,237.6,194.5,22
+"Honey-Chipotle Salmon Tacos",entree,Salmon,Mexican,1679,2174,-23,117,115.1,2,90.2,132.1,-32,107.6,146,-26
+"Baked One Pan Garlic Butter Coconut Salmon",entree,Salmon,Asian,3495,3651,-4,179.6,163,10,270,293.1,-8,112.4,120.8,-7
+"Pan Seared Salmon with Lemon Garlic Butter Sauce",entree,Salmon,American,1820,2039,-11,161.7,164.8,-2,120.1,143.4,-16,19,16.5,15
+"Mexcian Meatball Soup",entree,Beef,Mexican,5635,6142,-8,405.3,321.4,26,314.6,392.6,-20,299.5,345,-13
+"Middle Eastern Steak Bowl",entree,Beef,Middle Eastern,1831,1802,2,70.1,68.7,2,132.6,132.1,0,97.3,93.9,4
+"Steak Salad with Dijon Balsamic Dressing",entree,Beef,American,2924,2161,35,222,76.8,189,202.5,179.8,13,68.9,74.8,-8
+"Steak and Caramelized Onion Salad",entree,Beef,American,2465,4319,-43,78,186.2,-58,206.9,337.4,-39,96.3,154.1,-38
+"Beef and Cabbage Stir Fry",entree,Beef,Asian,1951,1450,35,94.7,93.4,1,100.3,99.6,1,164.4,45.5,261
+"Quick Lamb Ragù",entree,Beef,Italian,2152,3313,-35,95.9,152.2,-37,143.3,159.6,-10,117.7,326.8,-64
+"How To Make Caesar Salad",salad,,American,2872,2183,32,112.8,67.6,67,248.2,173.4,43,46.6,100.7,-54
+"Persian Chopped Salad",salad,,Middle Eastern,3186,2306,38,119.5,67.3,78,140.4,128.7,9,403,246.4,64
+"Quinoa Southwest Salad",salad,,Mexican,2921,2230,31,105.4,81.2,30,81.4,115.3,-29,465.8,240.6,94
+"Best Healthy Coleslaw Ever No Mayo",salad,,American,1084,1257,-14,33.4,36.4,-8,85.5,91.6,-7,61.5,92.6,-34
+"Chili Mango Zesty Quinoa Salad",salad,,Mexican,1558,1287,21,64.3,42,53,39.4,40.9,-4,268.9,215.5,25
+"Broccoli Crunch Salad",salad,,American,1850,1604,15,61,54.8,11,115.5,103.7,11,172.9,142.3,22
+"Tofu Pad Thai",entree,Vegetable,Thai,1438,1337,8,79.4,69.8,14,46.8,47.8,-2,188.3,159.7,18
+"Carrot Ginger Soup",entree,Vegetable,,463,378,22,8.2,6,37,15.3,15.1,1,78.6,59.9,31
+"The Best Fried Rice",entree,Vegetable,,3949,3478,14,73.3,76.4,-4,42.9,52.1,-18,795,659.2,21
+"Weeknight Gochujang Shrimp Tacos",entree,Seafood,Korean,2058,2947,-30,116.7,190.2,-39,53.9,148,-64,295.6,241.8,22
+"Healthy Shrimp Fajita Bowls",entree,Seafood,Mexican,1689,1490,13,118,111.5,6,42.5,33.6,26,215.6,189.5,14
+"Ultimate Garlic Shrimp Scampi",entree,Seafood,Italian,1587,2326,-32,29.9,196.1,-85,66.5,70.1,-5,189,210.5,-10
+"Easy Refrigerator Pickles Recipe",sauce,,American,225,120,88,9.3,4,133,4,1.4,186,39.5,20.3,95
+"Spinach Artichoke Dip",sauce,,American,2738,2314,18,143.3,93.7,53,201.6,168.5,20,99.8,118.7,-16
+"Soy Sauce Eggs",side,Vegetable,Asian,476,914,-48,14.9,64.8,-77,4.9,41.8,-88,107,72.6,47
+"Sauteed Spinach",side,Vegetable,American,616,366,68,18.7,15.7,19,52.9,27.4,93,27.9,23.6,18
+"Mapo Tofu",entree,Pork,Asian,1324,1113,19,26.5,82.9,-68,69.5,78,-11,150.4,30.9,387
+"Cuban Mojo Pork",entree,Pork,Cuban,5052,4836,4,249.8,239.6,4,412.2,408.8,1,89.7,45.4,98
+"Chickpea Tuna Salad",entree,Fish,,1239,1004,23,43.9,61,-28,60.5,42.4,43,138,101.7,36
+"Corn Tomato Avocado Salad",salad,Vegetable,American,1443,537,169,29.4,10.9,170,60.9,32.5,87,212.7,65.5,225
+"Turkey Meatballs",entree,Turkey,Italian,3774,2037,85,382.9,153.5,149,192.4,108.9,77,125,110,14
+"Tomato Basil Pasta",entree,Pasta,Italian,1582,2479,-36,62.6,172.6,-64,48.8,63.6,-23,70.7,299.4,-76
+"Lamb Tagine",entree,Lamb,Moroccan,3626,4244,-15,203.7,217.5,-6,229.3,240.5,-5,190.6,303.2,-37
+"Marry Me Pasta (Vegan)",entree,Vegetarian,Italian,2172,4430,-51,88.6,105.7,-16,68.2,302.9,-77,315,345.2,-9
+"Blistered Green Bean Casserole with Parmesan and Rosemary",side,Legumes,American,28307,1636,1630,3932.2,45.3,8580,1352.8,117.7,1049,187.2,126.6,48
+"Lemony Shaved Fennel Asparagus Salad",entree,Salad,Mediterranean,3606,2659,36,141.3,108.9,30,100.2,109.2,-8,555.6,344.4,61

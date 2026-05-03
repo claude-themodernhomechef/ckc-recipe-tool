@@ -1,0 +1,967 @@
+{
+  "aged cheese": {
+    "LH": {
+      "type": "replace",
+      "to": "fresh ricotta salata",
+      "note": "use fresh ricotta salata for Italian dishes; use fresh mozzarella for pasta and pizza applications; use nutritional yeast plus salt for finishing where sharpness is needed"
+    }
+  },
+  "all-purpose flour": {
+    "GF": {
+      "type": "replace",
+      "to": "GF 1:1 AP FLour"
+    }
+  },
+  "almond milk": {
+    "AIP": {
+      "type": "replace",
+      "to": "Coconut milk",
+      "note": "No gums or additives"
+    }
+  },
+  "anchovy paste": {
+    "Vg": {
+      "type": "replace",
+      "to": "1 tbsp tamari and 1 tbsp capers with juice",
+      "nutritionKey": "tamari soy sauce"
+    },
+    "V": {
+      "type": "replace",
+      "to": "1 tbsp tamari and 1 tbsp capers with juice",
+      "nutritionKey": "tamari soy sauce"
+    }
+  },
+  "ap flour": {
+    "GF": {
+      "type": "replace",
+      "to": "GF 1:1 AP FLour"
+    }
+  },
+  "apple cider vinegar": {
+    "AIP": {
+      "type": "replace",
+      "to": "fresh citrus juice (lime or lemon)",
+      "nutritionKey": "lime juice"
+    },
+    "LH": {
+      "type": "replace",
+      "to": "fresh citrus juice (lime or lemon)",
+      "nutritionKey": "lime juice"
+    }
+  },
+  "avocado": {
+    "LH": {
+      "type": "replace",
+      "to": "cucumber"
+    }
+  },
+  "balsamic vinegar": {
+    "AIP": {
+      "type": "replace",
+      "to": "fresh citrus juice (lime or lemon)",
+      "nutritionKey": "lime juice"
+    },
+    "LF": {
+      "type": "note",
+      "note": "Reduce amount to 1 tbsp per serving"
+    },
+    "LH": {
+      "type": "replace",
+      "to": "fresh citrus juice (lime or lemon)",
+      "nutritionKey": "lime juice"
+    }
+  },
+  "beans": {
+    "LF": {
+      "type": "remove",
+      "note": "only when supporting role, not the star of the dish"
+    }
+  },
+  "beef": {
+    "Vg": {
+      "type": "replace",
+      "to": "extra firm tofu or Impossible Beef",
+      "note": "use extra firm tofu for Asian dishes; use Impossible Beef for American or Mexican dishes with bold spice profiles; use seitan for European braises and stews"
+    },
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu or Impossible Beef",
+      "note": "use extra firm tofu for Asian dishes; use Impossible Beef for American or Mexican dishes with bold spice profiles; use seitan for European braises and stews"
+    }
+  },
+  "beef broth": {
+    "Vg": {
+      "type": "replace",
+      "to": "vegetable broth"
+    },
+    "V": {
+      "type": "replace",
+      "to": "vegetable broth"
+    }
+  },
+  "beer": {
+    "AIP": {
+      "type": "replace",
+      "to": "matching broth",
+      "nutritionKey": "chicken broth"
+    },
+    "LH": {
+      "type": "replace",
+      "to": "matching broth",
+      "nutritionKey": "chicken broth"
+    }
+  },
+  "bell peppers": {
+    "AIP": {
+      "type": "replace",
+      "to": "diced zucchini, summer squash, or roasted carrot",
+      "note": "Use carrots when you are replacing the bell peppers for the sweetness; use diced zucchini or summer squash when you need it for bulk in fajitas, sauces, or stuffed peppers",
+      "nutritionKey": "zucchini"
+    }
+  },
+  "black pepper": {
+    "AIP": {
+      "type": "remove"
+    },
+    "LH": {
+      "type": "replace",
+      "to": "White pepper"
+    }
+  },
+  "breadcrumbs": {
+    "GF": {
+      "type": "replace",
+      "to": "GF Panko"
+    }
+  },
+  "brown sugar": {
+    "K": {
+      "type": "replace",
+      "to": "allulose sweetener"
+    },
+    "AIP": {
+      "type": "replace",
+      "to": "agave"
+    }
+  },
+  "burger buns": {
+    "K": {
+      "type": "replace",
+      "to": "butter lettuce or iceberg lettuce wraps"
+    }
+  },
+  "butter": {
+    "DF": {
+      "type": "replace",
+      "to": "olive oil",
+      "note": "use olive oil for cooking/sauteing; use DF butter for finishing applications"
+    },
+    "Vg": {
+      "type": "keep"
+    },
+    "AIP": {
+      "type": "replace",
+      "to": "olive oil"
+    }
+  },
+  "buttermilk": {
+    "Vg": {
+      "type": "keep"
+    }
+  },
+  "canola oil": {
+    "LH": {
+      "type": "replace",
+      "to": "olive oil"
+    }
+  },
+  "chicken": {
+    "Vg": {
+      "type": "replace",
+      "to": "extra firm tofu cut to match protein shape",
+      "note": "use extra firm tofu for Asian dishes; use seitan for European and American applications; use cauliflower or king oyster mushrooms for braised or roasted preparations",
+      "nutritionKey": "extra firm tofu"
+    },
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu cut to match protein shape",
+      "note": "use extra firm tofu for Asian dishes; use seitan for European and American applications; use cauliflower or king oyster mushrooms for braised or roasted preparations",
+      "nutritionKey": "extra firm tofu"
+    }
+  },
+  "chicken broth": {
+    "Vg": {
+      "type": "replace",
+      "to": "vegetable broth"
+    },
+    "V": {
+      "type": "replace",
+      "to": "vegetable broth"
+    }
+  },
+  "chili crisp": {
+    "AIP": {
+      "type": "replace",
+      "to": "AIP chili crisp (crispy garlic, scallion greens, olive oil, coconut aminos)",
+      "note": "use AIP chili crisp for Asian dishes; use extra fresh garlic and ginger for non-Asian applications; skip entirely when chili crisp is a finishing condiment",
+      "nutritionKey": "coconut aminos"
+    },
+    "LH": {
+      "type": "remove",
+      "to": "fresh ginger and fresh garlic in olive oil",
+      "note": "use fresh ginger and garlic in olive oil for Asian dishes; skip entirely when chili crisp is a finishing condiment",
+      "nutritionKey": "coconut aminos"
+    }
+  },
+  "chili flakes": {
+    "AIP": {
+      "type": "remove",
+      "to": "fresh ginger or grated horseradish",
+      "note": "use fresh ginger for Asian dishes; use grated horseradish for European and Mediterranean dishes; skip when chili flakes are a finishing garnish"
+    }
+  },
+  "chipotle": {
+    "AIP": {
+      "type": "remove",
+      "to": "pinch of mace plus garlic-infused oil and a few drops of liquid smoke",
+      "note": "use this swap for Mexican dishes (verify clean liquid smoke label); skip entirely when chipotle is the dish identity"
+    },
+    "LH": {
+      "type": "remove",
+      "to": "a few drops of liquid smoke into fresh broth",
+      "note": "use for Mexican BBQ-style dishes (verify clean liquid smoke label); skip entirely when chipotle is the dish identity"
+    }
+  },
+  "commercial sauce mixes": {
+    "LF": {
+      "type": "replace",
+      "to": "LF-safe brand or bouillon"
+    }
+  },
+  "condensed milk": {
+    "Vg": {
+      "type": "keep"
+    }
+  },
+  "corn": {
+    "LF": {
+      "type": "remove"
+    }
+  },
+  "cornstarch": {
+    "AIP": {
+      "type": "replace",
+      "to": "arrowroot powder"
+    }
+  },
+  "cotija": {
+    "DF": {
+      "type": "remove"
+    },
+    "Vg": {
+      "type": "keep"
+    }
+  },
+  "couscous": {
+    "GF": {
+      "type": "replace",
+      "to": "cassava couscous",
+      "note": "use cassava couscous for Moroccan and Mediterranean dishes; use GF orzo for soups and salads; use cauliflower rice for pilaf-style applications or when reducing carbs"
+    },
+    "K": {
+      "type": "replace",
+      "to": "cauliflower rice",
+      "note": "use cauliflower rice for Mediterranean and Moroccan dishes; rice it finer for couscous-style texture in pilaf applications"
+    }
+  },
+  "cumin": {
+    "AIP": {
+      "type": "replace",
+      "to": "cinnamon or mace",
+      "note": "Cinnamon only for Moroccan or tagine- sweet applications, mace for all other applications"
+    }
+  },
+  "curry powder": {
+    "AIP": {
+      "type": "replace",
+      "to": "turmeric"
+    }
+  },
+  "dijon mustard": {
+    "AIP": {
+      "type": "replace",
+      "to": "horseradish thinned with coconut aminos and lemon",
+      "nutritionKey": "horseradish"
+    },
+    "LH": {
+      "type": "remove"
+    }
+  },
+  "eggs": {
+    "Vg": {
+      "type": "keep"
+    }
+  },
+  "fennel": {
+    "LF": {
+      "type": "replace",
+      "to": "Fresh fennel bulb"
+    }
+  },
+  "fennel seeds": {
+    "AIP": {
+      "type": "replace",
+      "to": "fresh fennel bulb finely chopped"
+    },
+    "LH": {
+      "type": "replace",
+      "to": "Finely chopped fresh fennel bulb"
+    }
+  },
+  "feta": {
+    "DF": {
+      "type": "remove",
+      "note": "remove if garnish only; replace with DF feta if feta is a core ingredient"
+    }
+  },
+  "fish sauce": {
+    "Vg": {
+      "type": "replace",
+      "to": "Vegan Fish Sauce"
+    },
+    "AIP": {
+      "type": "replace",
+      "to": "coconut aminos"
+    }
+  },
+  "flour": {
+    "GF": {
+      "type": "replace",
+      "to": "GF 1:1 AP FLour"
+    },
+    "AIP": {
+      "type": "replace",
+      "to": "arrowroot powder"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "arrowroot powder or GF 1:1 flour",
+      "note": "use arrowroot powder for thickening sauces and gravies; use GF 1:1 flour for baking and dredging applications"
+    }
+  },
+  "flour tortillas": {
+    "GF": {
+      "type": "replace",
+      "to": "GF tortillas",
+      "note": "use GF flour tortillas for burritos and wraps; use corn tortillas for tacos and enchiladas where corn flavor is welcome"
+    },
+    "K": {
+      "type": "replace",
+      "to": "keto wraps",
+      "note": "use keto wraps for burritos; use cheese-based or egg-based wraps when a sturdier vehicle is needed for tacos",
+      "nutritionKey": "keto wraps"
+    }
+  },
+  "garlic": {
+    "LF": {
+      "type": "replace",
+      "to": "garlic-infused oil",
+      "note": "quantify based on recipe oil amount"
+    }
+  },
+  "gnocchi": {
+    "K": {
+      "type": "replace",
+      "to": "cauliflower gnocchi"
+    }
+  },
+  "gochujang": {
+    "AIP": {
+      "type": "remove",
+      "to": "coconut aminos plus extra fresh ginger and garlic",
+      "note": "use this for Korean dishes where gochujang is a sauce component; skip entirely when gochujang is the dish identity"
+    },
+    "LH": {
+      "type": "remove"
+    }
+  },
+  "greek yogurt": {
+    "DF": {
+      "type": "replace",
+      "to": "plain unsweetened coconut yogurt",
+      "note": "use coconut yogurt for Mediterranean and Indian dishes; use cashew yogurt or Kite Hill almond yogurt for dips and sauces where coconut flavor competes"
+    },
+    "Vg": {
+      "type": "keep"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "lactose-free greek yogurt or coconut yogurt",
+      "note": "use lactose-free greek yogurt for Mediterranean and Middle Eastern dishes; use coconut yogurt for Indian and Asian dishes where coconut flavor complements"
+    }
+  },
+  "ground beef": {
+    "Vg": {
+      "type": "replace",
+      "to": "pinto or red beans for Mexican dishes; 1 lb mushrooms finely chopped for pies and pulled dishes; Impossible beef or crumpled tofu",
+      "nutritionKey": "pinto beans"
+    },
+    "V": {
+      "type": "replace",
+      "to": "pinto or red beans for Mexican dishes; 1 lb mushrooms finely chopped for pies and pulled dishes; Impossible beef or crumpled tofu",
+      "nutritionKey": "pinto beans"
+    }
+  },
+  "ground meat": {
+    "Vg": {
+      "type": "replace",
+      "to": "pinto or red beans for Mexican dishes; 1 lb mushrooms finely chopped for pies and pulled dishes; Impossible beef or crumpled tofu",
+      "nutritionKey": "pinto beans"
+    },
+    "V": {
+      "type": "replace",
+      "to": "pinto or red beans for Mexican dishes; 1 lb mushrooms finely chopped for pies and pulled dishes; Impossible beef or crumpled tofu",
+      "nutritionKey": "pinto beans"
+    }
+  },
+  "half-and-half": {
+    "DF": {
+      "type": "replace",
+      "to": "coconut milk",
+      "note": "use coconut milk for sweet applications and curries; use cashew cream or oat cream for coffee, pan sauces, and savory dishes where coconut flavor is wrong"
+    }
+  },
+  "heavy cream": {
+    "DF": {
+      "type": "replace",
+      "to": "full-fat canned coconut milk",
+      "note": "use coconut milk for curries and Asian dishes; use cashew cream (1 cup soaked cashews blended with 3/4 cup water) for Italian and French dishes where coconut flavor would intrude; use oat cream for neutral applications like pan sauces",
+      "nutritionKey": "full-fat canned coconut milk"
+    },
+    "Vg": {
+      "type": "keep"
+    }
+  },
+  "high-sugar fruit": {
+    "K": {
+      "type": "replace",
+      "to": "double avocado or reduce by half",
+      "nutritionKey": "avocado"
+    }
+  },
+  "hoisin sauce": {
+    "GF": {
+      "type": "replace",
+      "to": "GF Hoisin Sauce"
+    }
+  },
+  "honey": {
+    "Vg": {
+      "type": "keep"
+    },
+    "K": {
+      "type": "replace",
+      "to": "allulose liquid sweetener",
+      "note": "use allulose liquid sweetener for baking and dressings; use sugar-free maple syrup (Lakanto) for breakfast and pancake applications"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "maple syrup",
+      "note": "limit honey to 1 tbsp or replace with maple syrup"
+    }
+  },
+  "hot sauce": {
+    "AIP": {
+      "type": "remove",
+      "to": "fresh ginger and grated horseradish",
+      "note": "use for general applications where heat is part of the flavor base; skip when hot sauce is a finishing condiment"
+    },
+    "LH": {
+      "type": "remove",
+      "to": "fresh ginger and fresh garlic",
+      "note": "use for general applications where heat is part of the flavor base; skip when hot sauce is a finishing condiment"
+    }
+  },
+  "jalapeno": {
+    "AIP": {
+      "type": "remove",
+      "to": "fresh ginger or grated horseradish",
+      "note": "use for Mexican dishes where heat is part of the flavor base; skip entirely when jalapeno is a garnish"
+    }
+  },
+  "juice": {
+    "K": {
+      "type": "replace",
+      "to": "replace half with matching broth",
+      "note": "when used as a cooking liquid",
+      "nutritionKey": "chicken broth"
+    }
+  },
+  "leeks": {
+    "LF": {
+      "type": "replace",
+      "to": "green tops of leeks only"
+    }
+  },
+  "legumes": {
+    "LF": {
+      "type": "remove",
+      "note": "only when supporting role, not the star of the dish"
+    }
+  },
+  "lemon": {
+    "LH": {
+      "type": "replace",
+      "to": "Fresh lime juice",
+      "note": "reduce or remove in large amounts; some LH protocols flag excess citrus"
+    }
+  },
+  "lo mein noodles": {
+    "K": {
+      "type": "replace",
+      "to": "shirataki noodles",
+      "note": "Asian dishes only where sauce is bold"
+    }
+  },
+  "mashed potatoes": {
+    "K": {
+      "type": "replace",
+      "to": "cauliflower mash",
+      "note": "use cauliflower mash for traditional applications; use celery root mash for European and French dishes where flavor depth matters"
+    }
+  },
+  "miso": {
+    "AIP": {
+      "type": "replace",
+      "to": "coconut aminos"
+    },
+    "LH": {
+      "type": "replace",
+      "to": "Coconut aminos"
+    }
+  },
+  "mozzarella": {
+    "DF": {
+      "type": "replace",
+      "to": "Kite Hill brand or DF mozzarella alternative",
+      "nutritionKey": "vegan mozzarella"
+    },
+    "Vg": {
+      "type": "keep"
+    }
+  },
+  "mushrooms": {
+    "LF": {
+      "type": "remove"
+    }
+  },
+  "mustard": {
+    "AIP": {
+      "type": "remove",
+      "to": "horseradish thinned with coconut aminos and lemon",
+      "note": "use for vinaigrettes and dressings; skip entirely when mustard is a sandwich condiment",
+      "nutritionKey": "horseradish"
+    },
+    "LH": {
+      "type": "remove"
+    }
+  },
+  "olives": {
+    "AIP": {
+      "type": "replace",
+      "to": "chopped artichoke hearts packed in olive oil",
+      "note": "use chopped artichoke hearts in olive oil for Mediterranean and Italian dishes; use capers in brine for vinaigrettes and finishing applications",
+      "nutritionKey": "artichoke hearts"
+    }
+  },
+  "onion": {
+    "LF": {
+      "type": "replace",
+      "to": "green parts of scallions only",
+      "nutritionKey": "green tops of scallions"
+    }
+  },
+  "orzo": {
+    "GF": {
+      "type": "replace",
+      "to": "GF Orzo"
+    }
+  },
+  "oyster sauce": {
+    "GF": {
+      "type": "replace",
+      "to": "GF Oyster Sauce"
+    },
+    "Vg": {
+      "type": "replace",
+      "to": "vegan oyster sauce"
+    },
+    "V": {
+      "type": "replace",
+      "to": "vegan oyster sauce"
+    }
+  },
+  "panko": {
+    "GF": {
+      "type": "replace",
+      "to": "GF Panko"
+    },
+    "K": {
+      "type": "replace",
+      "to": "cauliflower-based panko or almond flour"
+    }
+  },
+  "paprika": {
+    "AIP": {
+      "type": "remove",
+      "to": "turmeric",
+      "note": "use turmeric for color and warmth in Mediterranean and Spanish dishes; skip when paprika is purely a garnish or color"
+    }
+  },
+  "parmesan": {
+    "DF": {
+      "type": "replace",
+      "to": "Use DF parmesan alternative or nutritional yeast",
+      "note": "use Follow Your Heart vegan parmesan when a brand alternative is needed",
+      "nutritionKey": "nutritional yeast"
+    },
+    "Vg": {
+      "type": "keep"
+    }
+  },
+  "pasta": {
+    "GF": {
+      "type": "replace",
+      "to": "GF pasta",
+      "note": "use Jovial or Banza for Italian dishes; use rice noodles for Asian dishes; use shirataki only when sauce is bold enough to carry"
+    },
+    "K": {
+      "type": "replace",
+      "to": "spiralized zucchini, spaghetti squash, or keto pasta",
+      "note": "use shirataki noodles for Asian dishes with bold sauces, use keto pasta for Italian dishes",
+      "nutritionKey": "spiralized zucchini"
+    }
+  },
+  "peanut butter": {
+    "LF": {
+      "type": "note",
+      "note": "Reduce amount to 2tbsp or 32 g per serving"
+    }
+  },
+  "pecorino": {
+    "DF": {
+      "type": "replace",
+      "to": "Use DF parmesan alternative or nutritional yeast",
+      "note": "use Follow Your Heart vegan parmesan when a brand alternative is needed",
+      "nutritionKey": "nutritional yeast"
+    },
+    "Vg": {
+      "type": "keep"
+    },
+    "LH": {
+      "type": "replace",
+      "to": "fresh ricotta salata",
+      "note": "use fresh ricotta salata for Italian dishes; use nutritional yeast plus salt for finishing applications where sharpness is needed"
+    }
+  },
+  "pepitas": {
+    "AIP": {
+      "type": "remove",
+      "to": "toasted coconut flakes",
+      "note": "use toasted coconut flakes for Mexican dishes; use tigernut slices for Mediterranean and salad applications; use chopped plantain chips for crunch in any application",
+      "nutritionKey": "coconut flakes"
+    }
+  },
+  "pickled items": {
+    "LH": {
+      "type": "remove"
+    }
+  },
+  "poblano": {
+    "AIP": {
+      "type": "remove",
+      "to": "roasted carrot or diced zucchini",
+      "note": "use roasted carrot for sweetness in Mexican dishes; use diced zucchini for bulk in stuffed and rajas-style applications"
+    }
+  },
+  "potatoes": {
+    "K": {
+      "type": "replace",
+      "to": "roasted cauliflower florets or roasted radishes",
+      "note": "in salads or side dishes, use radishes: other applications use potatoes; in stews remove or add 1 tbsp arrowroot to compensate"
+    }
+  },
+  "prawns": {
+    "Vg": {
+      "type": "replace",
+      "to": "1 lb firm tofu",
+      "note": "use firm tofu for Asian dishes; use hearts of palm for Mediterranean preparations; use king oyster mushrooms for grilled applications",
+      "nutritionKey": "extra firm tofu"
+    },
+    "V": {
+      "type": "replace",
+      "to": "1 lb firm tofu",
+      "note": "use firm tofu for Asian dishes; use hearts of palm for Mediterranean preparations; use king oyster mushrooms for grilled applications",
+      "nutritionKey": "extra firm tofu"
+    }
+  },
+  "ramen noodles": {
+    "K": {
+      "type": "replace",
+      "to": "shirataki noodles",
+      "note": "Asian dishes only where sauce is bold"
+    }
+  },
+  "red pepper flakes": {
+    "AIP": {
+      "type": "remove",
+      "to": "fresh ginger or grated horseradish",
+      "note": "use fresh ginger for Asian and Mediterranean dishes; use grated horseradish for Italian dishes; skip when flakes are a finishing garnish"
+    }
+  },
+  "red wine": {
+    "AIP": {
+      "type": "replace",
+      "to": "beef broth",
+      "nutritionKey": "beef broth"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "beef broth",
+      "nutritionKey": "beef broth"
+    },
+    "LH": {
+      "type": "replace",
+      "to": "beef broth",
+      "nutritionKey": "beef broth"
+    }
+  },
+  "serrano": {
+    "AIP": {
+      "type": "remove",
+      "to": "fresh ginger or grated horseradish",
+      "note": "use for Mexican dishes where heat is part of the flavor base; skip entirely when serrano is a garnish"
+    }
+  },
+  "sesame oil": {
+    "AIP": {
+      "type": "remove",
+      "to": "avocado oil with coconut aminos plus toasted coconut chips",
+      "note": "use this combination for Asian dishes where toasted sesame depth matters; skip entirely for non-Asian applications",
+      "nutritionKey": "avocado oil"
+    }
+  },
+  "sesame seeds": {
+    "AIP": {
+      "type": "remove",
+      "to": "toasted coconut flakes",
+      "note": "use toasted coconut flakes for Asian dishes; skip when sesame is a garnish in non-Asian applications",
+      "nutritionKey": "coconut flakes"
+    }
+  },
+  "shallots": {
+    "LF": {
+      "type": "replace",
+      "to": "green tops of scallions and garlic-infused oil",
+      "nutritionKey": "green tops of scallions"
+    }
+  },
+  "shrimp": {
+    "Vg": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1 inch blocks",
+      "note": "use extra firm tofu for Asian dishes; use hearts of palm for Mediterranean and ceviche-style preparations; use king oyster mushrooms cut into rounds for grilled or sauteed applications",
+      "nutritionKey": "extra firm tofu"
+    },
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1 inch blocks",
+      "note": "use extra firm tofu for Asian dishes; use hearts of palm for Mediterranean and ceviche-style preparations; use king oyster mushrooms cut into rounds for grilled or sauteed applications",
+      "nutritionKey": "extra firm tofu"
+    }
+  },
+  "smoked paprika": {
+    "AIP": {
+      "type": "remove",
+      "to": "turmeric plus a few drops of liquid smoke",
+      "note": "use this for Spanish and BBQ dishes (verify clean liquid smoke label); use turmeric alone for Mediterranean dishes where smoke is not essential"
+    },
+    "LH": {
+      "type": "replace",
+      "to": "sweet paprika",
+      "note": "use sweet paprika alone for Spanish and Mediterranean dishes where color matters; add a few drops of liquid smoke when smoke flavor is essential (verify clean label)"
+    }
+  },
+  "sour cream": {
+    "DF": {
+      "type": "replace",
+      "to": "Use DF alternative or plain unsweetened coconut yogurt",
+      "nutritionKey": "coconut yogurt"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "lactose-free sour cream"
+    },
+    "LH": {
+      "type": "replace",
+      "to": "coconut cream with a squeeze of lime",
+      "note": "use coconut cream with lime for Mexican and Asian dishes; use fresh whipped ricotta loosened with milk for European dishes where coconut flavor is wrong"
+    }
+  },
+  "soy sauce": {
+    "GF": {
+      "type": "replace",
+      "to": "Tamari"
+    },
+    "AIP": {
+      "type": "replace",
+      "to": "coconut aminos"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "tamari"
+    },
+    "LH": {
+      "type": "replace",
+      "to": "Coconut aminos"
+    }
+  },
+  "sriracha": {
+    "AIP": {
+      "type": "remove",
+      "to": "coconut aminos plus extra fresh ginger and garlic",
+      "note": "use this for Asian dishes where sriracha is a sauce component; skip entirely when sriracha is a finishing condiment"
+    },
+    "LH": {
+      "type": "remove",
+      "to": "fresh ginger and fresh garlic with coconut aminos",
+      "note": "use this for Asian dishes where sriracha is a sauce component; skip when sriracha is a finishing condiment"
+    }
+  },
+  "steak": {
+    "Vg": {
+      "type": "replace",
+      "to": "thick-cut portobello caps or extra firm tofu",
+      "note": "use thick-cut portobello caps for European applications; use extra firm tofu cut to match shape for Asian dishes; use seitan steaks for American grilled preparations",
+      "nutritionKey": "portobello mushroom"
+    },
+    "V": {
+      "type": "replace",
+      "to": "thick-cut portobello caps or extra firm tofu",
+      "note": "use thick-cut portobello caps for European applications; use extra firm tofu cut to match shape for Asian dishes; use seitan steaks for American grilled preparations",
+      "nutritionKey": "portobello mushroom"
+    }
+  },
+  "sugar": {
+    "K": {
+      "type": "replace",
+      "to": "allulose sweetener"
+    }
+  },
+  "sumac": {
+    "LH": {
+      "type": "replace",
+      "to": "Fresh lemon zest"
+    }
+  },
+  "sunflower seeds": {
+    "AIP": {
+      "type": "remove",
+      "to": "toasted coconut flakes",
+      "note": "use toasted coconut flakes for European and salad applications; use tigernut slices for Mediterranean dishes; use chopped plantain chips for any application needing crunch",
+      "nutritionKey": "coconut flakes"
+    }
+  },
+  "sweet potatoes": {
+    "K": {
+      "type": "replace",
+      "to": "cauliflower mash",
+      "note": "when used mashed; for roasted applications reduce portion"
+    }
+  },
+  "tomatoes": {
+    "LH": {
+      "type": "remove",
+      "note": "remove when used in large/concentrated amounts"
+    }
+  },
+  "tortillas": {
+    "K": {
+      "type": "replace",
+      "to": "keto wraps",
+      "nutritionKey": "keto wraps"
+    }
+  },
+  "vinegar": {
+    "AIP": {
+      "type": "replace",
+      "to": "fresh citrus juice (lime or lemon)",
+      "nutritionKey": "lime juice"
+    },
+    "LH": {
+      "type": "replace",
+      "to": "fresh citrus juice (lime or lemon)",
+      "nutritionKey": "lime juice"
+    }
+  },
+  "white rice": {
+    "K": {
+      "type": "replace",
+      "to": "cauliflower rice"
+    }
+  },
+  "white sugar": {
+    "K": {
+      "type": "replace",
+      "to": "allulose sweetener"
+    }
+  },
+  "white wine": {
+    "AIP": {
+      "type": "replace",
+      "to": "chicken broth",
+      "nutritionKey": "chicken broth"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "chicken broth",
+      "nutritionKey": "chicken broth"
+    },
+    "LH": {
+      "type": "replace",
+      "to": "chicken broth",
+      "nutritionKey": "chicken broth"
+    }
+  },
+  "wine": {
+    "AIP": {
+      "type": "replace",
+      "to": "matching broth",
+      "nutritionKey": "chicken broth"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "matching broth (chicken broth for white wine, beef broth for red)",
+      "nutritionKey": "chicken broth"
+    },
+    "LH": {
+      "type": "replace",
+      "to": "matching broth",
+      "nutritionKey": "chicken broth"
+    }
+  },
+  "worcestershire sauce": {
+    "GF": {
+      "type": "replace",
+      "to": "GF Worcestershire"
+    },
+    "Vg": {
+      "type": "replace",
+      "to": "vegan Worcestershire sauce"
+    },
+    "V": {
+      "type": "replace",
+      "to": "vegan Worcestershire sauce"
+    }
+  }
+}

@@ -28,10 +28,11 @@ async function main() {
   const ids = snap.docs
     .filter(doc => {
       const d = doc.data();
-      const missingChefNotes  = !d.chefNotes || !d.chefNotes.trim();
-      const existingProtocols = d.dietTags ? Object.keys(d.dietTags) : [];
+      const missingChefNotes   = !d.chefNotes || !d.chefNotes.trim();
+      const missingIngredients = !d.ingredients || d.ingredients.length === 0;
+      const existingProtocols  = d.dietTags ? Object.keys(d.dietTags) : [];
       const incompleteDietTags = !ALL_PROTOCOLS.every(p => existingProtocols.includes(p));
-      return missingChefNotes || incompleteDietTags;
+      return missingChefNotes || missingIngredients || incompleteDietTags;
     })
     .map(doc => doc.id);
 
