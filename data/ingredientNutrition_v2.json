@@ -39038,25 +39038,47 @@
   },
   "bouillon cube": {
     "source": "usda",
-    "foodId": "fdc_2703440",
-    "label": "MAGGI Bouillon Chicken Flavor",
+    "foodId": "fdc_171613",
+    "label": "Soup, Bouillon Cubes and Granules, Low Sodium (Dry)",
     "category": "Soups & Stocks",
     "per100g": {
-      "calories": { "value": 225, "unit": "kcal" },
-      "protein": { "value": 10, "unit": "g" },
-      "fat": { "value": 7.5, "unit": "g" },
-      "saturatedFat": { "value": 2.5, "unit": "g" },
-      "cholesterol": { "value": 0, "unit": "mg" },
-      "sodium": { "value": 21250, "unit": "mg" },
-      "carbs": { "value": 25, "unit": "g" },
-      "fiber": { "value": 0, "unit": "g" },
-      "sugars": { "value": 10, "unit": "g" }
+      "calories": { "value": 438, "unit": "kcal" },
+      "protein": { "value": 16.7, "unit": "g" },
+      "fat": { "value": 13.89, "unit": "g" },
+      "saturatedFat": { "value": 3.43, "unit": "g" },
+      "cholesterol": { "value": 13, "unit": "mg" },
+      "sodium": { "value": 1067, "unit": "mg" },
+      "carbs": { "value": 64.88, "unit": "g" },
+      "fiber": { "value": 0.2, "unit": "g" },
+      "sugars": { "value": 14.47, "unit": "g" }
     },
     "measures": [
       { "label": "Cube", "gramWeight": 4 },
       { "label": "Gram", "gramWeight": 1 },
       { "label": "Teaspoon", "gramWeight": 4 },
       { "label": "Tablespoon", "gramWeight": 12 }
+    ]
+  },
+  "full-fat greek yogurt": {
+    "source": "usda",
+    "foodId": "fdc_2259794",
+    "label": "Yogurt, Greek, plain, whole milk",
+    "category": "Dairy",
+    "per100g": {
+      "calories": { "value": 94.5, "unit": "kcal" },
+      "protein": { "value": 8.78, "unit": "g" },
+      "fat": { "value": 4.39, "unit": "g" },
+      "carbs": { "value": 4.75, "unit": "g" },
+      "sodium": { "value": 33.76, "unit": "mg" },
+      "sugars": { "value": 3.25, "unit": "g" }
+    },
+    "measures": [
+      { "label": "Serving", "gramWeight": 245 },
+      { "label": "Gram", "gramWeight": 1 },
+      { "label": "Ounce", "gramWeight": 28.349523125 },
+      { "label": "Cup", "gramWeight": 245 },
+      { "label": "Tablespoon", "gramWeight": 15 },
+      { "label": "Teaspoon", "gramWeight": 5 }
     ]
   },
   "full-fat coconut milk": {
@@ -74775,31 +74797,20 @@
     ]
   },
   "boneless skinless chicken thighs": {
-    "source": "edamam",
-    "foodId": "food_aop3mn0aizq8j5a5tyyxxafsdigk",
-    "label": "Skinless Chicken Thigh",
-    "category": "Generic foods",
+    "source": "usda",
+    "foodId": "fdc_2646171",
+    "label": "Chicken, thigh, boneless, skinless, raw",
+    "category": "Poultry",
     "per100g": {
-      "calories": {
-        "value": 121,
-        "unit": "kcal"
-      },
-      "protein": {
-        "value": 19.7,
-        "unit": "g"
-      },
-      "fat": {
-        "value": 4.12,
-        "unit": "g"
-      },
-      "carbs": {
-        "value": 0,
-        "unit": "g"
-      },
-      "fiber": {
-        "value": 0,
-        "unit": "g"
-      }
+      "calories": { "value": 144, "unit": "kcal" },
+      "protein": { "value": 18.6, "unit": "g" },
+      "fat": { "value": 7.9, "unit": "g" },
+      "saturatedFat": { "value": 1.7, "unit": "g" },
+      "cholesterol": { "value": 91.7, "unit": "mg" },
+      "sodium": { "value": 62.3, "unit": "mg" },
+      "carbs": { "value": 0, "unit": "g" },
+      "fiber": { "value": 0, "unit": "g" },
+      "sugars": { "value": 0, "unit": "g" }
     },
     "measures": [
       {
