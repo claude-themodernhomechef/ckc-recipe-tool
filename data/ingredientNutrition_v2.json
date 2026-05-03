@@ -38963,6 +38963,77 @@
       }
     ]
   },
+  "herb flatbread": {
+    "source": "usda",
+    "foodId": "fdc_2605626",
+    "label": "Italian Herb Flatbread (Favorite Day, Target)",
+    "category": "Bread",
+    "per100g": {
+      "calories": { "value": 321, "unit": "kcal" },
+      "protein": { "value": 9.4, "unit": "g" },
+      "fat": { "value": 5.3, "unit": "g" },
+      "saturatedFat": { "value": 0.5, "unit": "g" },
+      "cholesterol": { "value": 0, "unit": "mg" },
+      "sodium": { "value": 819, "unit": "mg" },
+      "carbs": { "value": 52.8, "unit": "g" },
+      "fiber": { "value": 13.5, "unit": "g" },
+      "sugars": { "value": 0, "unit": "g" }
+    },
+    "measures": [
+      { "label": "Serving", "gramWeight": 53 },
+      { "label": "Gram", "gramWeight": 1 },
+      { "label": "Ounce", "gramWeight": 28.349523125 },
+      { "label": "Slice", "gramWeight": 53 }
+    ]
+  },
+  "honey roasted peanuts": {
+    "source": "usda",
+    "foodId": "fdc_2285319",
+    "label": "Honey Roasted Peanuts",
+    "category": "Snacks",
+    "per100g": {
+      "calories": { "value": 575, "unit": "kcal" },
+      "protein": { "value": 24, "unit": "g" },
+      "fat": { "value": 46, "unit": "g" },
+      "saturatedFat": { "value": 6, "unit": "g" },
+      "cholesterol": { "value": 0, "unit": "mg" },
+      "sodium": { "value": 273, "unit": "mg" },
+      "carbs": { "value": 21, "unit": "g" },
+      "fiber": { "value": 7, "unit": "g" },
+      "sugars": { "value": 13, "unit": "g" }
+    },
+    "measures": [
+      { "label": "Serving", "gramWeight": 28 },
+      { "label": "Gram", "gramWeight": 1 },
+      { "label": "Ounce", "gramWeight": 28.349523125 },
+      { "label": "Cup", "gramWeight": 146 },
+      { "label": "Tablespoon", "gramWeight": 9 }
+    ]
+  },
+  "corn kernels": {
+    "source": "usda",
+    "foodId": "fdc_2710826",
+    "label": "Corn, sweet, yellow and white kernels, fresh, raw",
+    "category": "Vegetables",
+    "per100g": {
+      "calories": { "value": 84.55, "unit": "kcal" },
+      "protein": { "value": 2.79, "unit": "g" },
+      "fat": { "value": 1.63, "unit": "g" },
+      "saturatedFat": { "value": 0.25, "unit": "g" },
+      "cholesterol": { "value": 0, "unit": "mg" },
+      "sodium": { "value": 0, "unit": "mg" },
+      "carbs": { "value": 14.69, "unit": "g" },
+      "fiber": { "value": 2.43, "unit": "g" },
+      "sugars": { "value": 7.37, "unit": "g" }
+    },
+    "measures": [
+      { "label": "Serving", "gramWeight": 82 },
+      { "label": "Gram", "gramWeight": 1 },
+      { "label": "Ounce", "gramWeight": 28.349523125 },
+      { "label": "Cup", "gramWeight": 154 },
+      { "label": "Ear", "gramWeight": 102 }
+    ]
+  },
   "anchovy fillets in oil": {
     "source": "usda",
     "foodId": "fdc_2285272",
