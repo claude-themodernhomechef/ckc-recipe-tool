@@ -2929,7 +2929,7 @@
       },
       "vitaminA": {
         "value": 411,
-        "unit": "µg"
+        "unit": "\u00b5g"
       },
       "vitaminC": {
         "value": 0.6,
@@ -2937,7 +2937,7 @@
       },
       "vitaminD": {
         "value": 1.6,
-        "unit": "µg"
+        "unit": "\u00b5g"
       },
       "vitaminE": {
         "value": 0.92,
@@ -2945,7 +2945,7 @@
       },
       "vitaminK": {
         "value": 3.2,
-        "unit": "µg"
+        "unit": "\u00b5g"
       },
       "vitaminB1": {
         "value": 0.02,
@@ -2965,11 +2965,11 @@
       },
       "folate": {
         "value": 4,
-        "unit": "µg"
+        "unit": "\u00b5g"
       },
       "vitaminB12": {
         "value": 0.16,
-        "unit": "µg"
+        "unit": "\u00b5g"
       },
       "water": {
         "value": 57.71,
@@ -24506,10 +24506,10 @@
       }
     ]
   },
-  "pickled jalapeños": {
+  "pickled jalape\u00f1os": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalapeño Chilie",
+    "label": "Jalape\u00f1o Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -27636,10 +27636,10 @@
       }
     ]
   },
-  "jalapeño": {
+  "jalape\u00f1o": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalapeño Chilie",
+    "label": "Jalape\u00f1o Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -27792,10 +27792,10 @@
       }
     ]
   },
-  "jalapeños": {
+  "jalape\u00f1os": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalapeño Chilie",
+    "label": "Jalape\u00f1o Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -29575,10 +29575,10 @@
       }
     ]
   },
-  "crème fraîche": {
+  "cr\u00e8me fra\u00eeche": {
     "source": "edamam",
     "foodId": "food_bjgvk4sayn3fc3b9arribb0rryfm",
-    "label": "Crème de Framboise",
+    "label": "Cr\u00e8me de Framboise",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -49263,10 +49263,10 @@
       }
     ]
   },
-  "gruyère": {
+  "gruy\u00e8re": {
     "source": "edamam",
     "foodId": "food_auncbujb52rsfrbby2cvmbwc8y6b",
-    "label": "Gruyère Soufflé",
+    "label": "Gruy\u00e8re Souffl\u00e9",
     "category": "Generic meals",
     "per100g": {
       "calories": {
@@ -49517,7 +49517,7 @@
       }
     ]
   },
-  "gruyère cheese": {
+  "gruy\u00e8re cheese": {
     "source": "edamam",
     "foodId": "food_al44s0sajaffq4afc73dlayimtt9",
     "label": "Gruyere Cheese",
@@ -53056,10 +53056,10 @@
       }
     ]
   },
-  "jalapeño pepper": {
+  "jalape\u00f1o pepper": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalapeño Chilie",
+    "label": "Jalape\u00f1o Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -77950,7 +77950,7 @@
       }
     ]
   },
-  "chiles de árbol": {
+  "chiles de \u00e1rbol": {
     "source": "edamam",
     "foodId": "food_a6g98mqatzj7vca6ms3bnbzqxf3s",
     "label": "Chile",
@@ -78158,7 +78158,7 @@
       }
     ]
   },
-  "monterey jack with jalapeño peppers cheese": {
+  "monterey jack with jalape\u00f1o peppers cheese": {
     "source": "edamam",
     "foodId": "food_atp17pta7d5it2a80ct13ard6aj3",
     "label": "Monterey Pepper Jack",
@@ -78728,7 +78728,7 @@
       }
     ]
   },
-  "ají amarillo paste": {
+  "aj\u00ed amarillo paste": {
     "source": "edamam",
     "foodId": "food_buc6u4gbtc39gkbjc5hxdbc2a2pm",
     "label": "Aji Amarillo Ketchup, Aji Amarillo",
@@ -82131,7 +82131,7 @@
       }
     ]
   },
-  "canned pumpkin purée": {
+  "canned pumpkin pur\u00e9e": {
     "source": "edamam",
     "foodId": "food_afk6bzsbbbg1j8ai1hi17bptbfq5",
     "label": "Pumpkin",
@@ -82341,10 +82341,10 @@
       }
     ]
   },
-  "fresh jalapeño": {
+  "fresh jalape\u00f1o": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalapeño Chilie",
+    "label": "Jalape\u00f1o Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -83410,7 +83410,7 @@
       }
     ]
   },
-  "butternut squash purée": {
+  "butternut squash pur\u00e9e": {
     "source": "edamam",
     "foodId": "food_baga212bywb6n2as0ylgkaf8fcok",
     "label": "Butternut Squash",
@@ -89449,7 +89449,7 @@
       },
       "vitaminB12": {
         "value": 0.59,
-        "unit": "µg"
+        "unit": "\u00b5g"
       }
     },
     "measures": [
@@ -89819,7 +89819,7 @@
       }
     ]
   },
-  "niçoise olives": {
+  "ni\u00e7oise olives": {
     "source": "edamam",
     "foodId": "food_bt7u5w5a064gusa46msxfb38ag06",
     "label": "Olive",
@@ -98629,7 +98629,7 @@
       }
     ]
   },
-  "preserved lemon purée": {
+  "preserved lemon pur\u00e9e": {
     "source": "edamam",
     "foodId": "food_a6uzc62astrxcgbtzyq59b6fncrr",
     "label": "Lemon",
@@ -140830,7 +140830,7 @@
       }
     ]
   },
-  "rosé wine": {
+  "ros\u00e9 wine": {
     "source": "edamam",
     "foodId": "food_a656mk2a5dmqb2adiamu6beihduu",
     "label": "Sparkling Wine",
@@ -143917,10 +143917,10 @@
       }
     ]
   },
-  "pickled jalapeño brine": {
+  "pickled jalape\u00f1o brine": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalapeño Chilie",
+    "label": "Jalape\u00f1o Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -150018,10 +150018,10 @@
       }
     ]
   },
-  "pickled jalapeño juice": {
+  "pickled jalape\u00f1o juice": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalapeño Chilie",
+    "label": "Jalape\u00f1o Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -150599,7 +150599,7 @@
       }
     ]
   },
-  "sautéed mushrooms": {
+  "saut\u00e9ed mushrooms": {
     "source": "edamam",
     "foodId": "food_bvlose6arfl26ra396sjrb7hetqh",
     "label": "Mushroom",
@@ -153592,7 +153592,7 @@
       }
     ]
   },
-  "ají amarillo chiles": {
+  "aj\u00ed amarillo chiles": {
     "source": "edamam",
     "foodId": "food_a6g98mqatzj7vca6ms3bnbzqxf3s",
     "label": "Chile",
@@ -159468,7 +159468,7 @@
   "fresh jalapeno": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalapeño Chilie",
+    "label": "Jalape\u00f1o Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -159538,7 +159538,7 @@
         "gramWeight": 90
       }
     ],
-    "_proxy_for": "jalapeño"
+    "_proxy_for": "jalape\u00f1o"
   },
   "pepperoncinis": {
     "source": "edamam",
@@ -163625,7 +163625,7 @@
     ],
     "_proxy_for": "garlic herb spreadable cheese"
   },
-  "pumpkin purée": {
+  "pumpkin pur\u00e9e": {
     "source": "edamam",
     "foodId": "food_afk6bzsbbbg1j8ai1hi17bptbfq5",
     "label": "Pumpkin",
@@ -163698,7 +163698,7 @@
         "gramWeight": 116
       }
     ],
-    "_proxy_for": "canned pumpkin purée"
+    "_proxy_for": "canned pumpkin pur\u00e9e"
   },
   "petite potato": {
     "source": "edamam",
@@ -175932,10 +175932,10 @@
     ],
     "_proxy_for": "chicken fillets"
   },
-  "brine from pickled jalapeños": {
+  "brine from pickled jalape\u00f1os": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalapeño Chilie",
+    "label": "Jalape\u00f1o Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -176005,7 +176005,7 @@
         "gramWeight": 90
       }
     ],
-    "_proxy_for": "pickled jalapeño brine"
+    "_proxy_for": "pickled jalape\u00f1o brine"
   },
   "raw veggies": {
     "source": "edamam",
@@ -180585,5 +180585,1522 @@
         "gramWeight": 15
       }
     ]
+  },
+  "gf panko": {
+    "source": "ckc-alias",
+    "label": "GF Panko",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 350,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 9.5,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 3.2,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 70,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 3.2,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 10
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 200
+      },
+      {
+        "label": "Box",
+        "gramWeight": 200
+      },
+      {
+        "label": "Container",
+        "gramWeight": 200
+      },
+      {
+        "label": "Package",
+        "gramWeight": 200
+      },
+      {
+        "label": "Packet",
+        "gramWeight": 200
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Teaspoon",
+        "gramWeight": 1.25
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 3.75
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 60
+      }
+    ]
+  },
+  "gf pasta": {
+    "source": "ckc-alias",
+    "label": "GF Pasta",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 368,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 7,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 3.5,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 79,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 5.3,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 86.6
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 86.6
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 342
+      },
+      {
+        "label": "Box",
+        "gramWeight": 342
+      },
+      {
+        "label": "Container",
+        "gramWeight": 342
+      },
+      {
+        "label": "Package",
+        "gramWeight": 342
+      },
+      {
+        "label": "Packet",
+        "gramWeight": 342
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      }
+    ]
+  },
+  "gf tortillas": {
+    "source": "ckc-alias",
+    "label": "GF Tortillas",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 218,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 5.7,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 2.85,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 44.6,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 6.3,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Whole",
+        "gramWeight": 24
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 24
+      },
+      {
+        "label": "Tortilla",
+        "gramWeight": 24
+      },
+      {
+        "label": "Enchilada",
+        "gramWeight": 19
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      }
+    ]
+  },
+  "gf orzo": {
+    "source": "ckc-alias",
+    "label": "GF Orzo",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 371,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 13,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 1.51,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 74.7,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 3.2,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 300
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 16.8
+      },
+      {
+        "label": "Noodle",
+        "gramWeight": 25
+      },
+      {
+        "label": "Sheet",
+        "gramWeight": 25
+      },
+      {
+        "label": "Strip",
+        "gramWeight": 25
+      },
+      {
+        "label": "Shell",
+        "gramWeight": 16.8
+      },
+      {
+        "label": "Tube",
+        "gramWeight": 16.8
+      },
+      {
+        "label": "Box",
+        "gramWeight": 453
+      },
+      {
+        "label": "Package",
+        "gramWeight": 453
+      },
+      {
+        "label": "Packet",
+        "gramWeight": 255.15
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 105
+      }
+    ]
+  },
+  "gf worcestershire": {
+    "source": "ckc-alias",
+    "label": "GF Worcestershire Sauce",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 77,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 19.2,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 5
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 17
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 275
+      }
+    ]
+  },
+  "lactose-free sour cream": {
+    "source": "ckc-alias",
+    "label": "Lactose-Free Sour Cream",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 198,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 2.44,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 19.4,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 4.63,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 15
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 12
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 230
+      }
+    ]
+  },
+  "cauliflower mash": {
+    "source": "ckc-alias",
+    "label": "Cauliflower Mash",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 25,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 1.92,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.28,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 4.97,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 2,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 54
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 13
+      },
+      {
+        "label": "Head",
+        "gramWeight": 537.7777777777777
+      },
+      {
+        "label": "Floweret",
+        "gramWeight": 13
+      },
+      {
+        "label": "Piece",
+        "gramWeight": 13
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 107
+      }
+    ]
+  },
+  "cauliflower gnocchi": {
+    "source": "ckc-alias",
+    "label": "Cauliflower Gnocchi",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 25,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 1.92,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.28,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 4.97,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 2,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 54
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 13
+      },
+      {
+        "label": "Head",
+        "gramWeight": 537.7777777777777
+      },
+      {
+        "label": "Floweret",
+        "gramWeight": 13
+      },
+      {
+        "label": "Piece",
+        "gramWeight": 13
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 107
+      }
+    ]
+  },
+  "roasted cauliflower florets": {
+    "source": "ckc-alias",
+    "label": "Roasted Cauliflower",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 25,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 1.92,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.28,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 4.97,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 2,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 54
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 13
+      },
+      {
+        "label": "Head",
+        "gramWeight": 537.7777777777777
+      },
+      {
+        "label": "Floweret",
+        "gramWeight": 13
+      },
+      {
+        "label": "Piece",
+        "gramWeight": 13
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 107
+      }
+    ]
+  },
+  "cassava couscous": {
+    "source": "ckc-alias",
+    "label": "Cassava Couscous",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 376,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 12.8,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.64,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 77.4,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 5,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 17.3
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 216.25
+      },
+      {
+        "label": "Box",
+        "gramWeight": 216.25
+      },
+      {
+        "label": "Package",
+        "gramWeight": 216.25
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 173
+      }
+    ]
+  },
+  "fresh ricotta salata": {
+    "source": "ckc-alias",
+    "label": "Fresh Ricotta Salata",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 150,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 7.54,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 10.2,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 7.27,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 124
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15.375
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 248
+      }
+    ]
+  },
+  "fresh fennel bulb": {
+    "source": "ckc-alias",
+    "label": "Fresh Fennel Bulb",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 31,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 1.24,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.2,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 7.3,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 3.1,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 43
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 87
+      },
+      {
+        "label": "Bulb",
+        "gramWeight": 234
+      },
+      {
+        "label": "Bunch",
+        "gramWeight": 180
+      },
+      {
+        "label": "Head",
+        "gramWeight": 234
+      },
+      {
+        "label": "Stalk",
+        "gramWeight": 22
+      },
+      {
+        "label": "Stem",
+        "gramWeight": 22
+      },
+      {
+        "label": "Stick",
+        "gramWeight": 22
+      },
+      {
+        "label": "Sprig",
+        "gramWeight": 6
+      },
+      {
+        "label": "Slice",
+        "gramWeight": 3
+      },
+      {
+        "label": "Leaf",
+        "gramWeight": 2
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 87
+      },
+      {
+        "gramWeight": 0.03
+      }
+    ]
+  },
+  "finely chopped fresh fennel bulb": {
+    "source": "ckc-alias",
+    "label": "Fresh Fennel Bulb",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 31,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 1.24,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.2,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 7.3,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 3.1,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 43
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 87
+      },
+      {
+        "label": "Bulb",
+        "gramWeight": 234
+      },
+      {
+        "label": "Bunch",
+        "gramWeight": 180
+      },
+      {
+        "label": "Head",
+        "gramWeight": 234
+      },
+      {
+        "label": "Stalk",
+        "gramWeight": 22
+      },
+      {
+        "label": "Stem",
+        "gramWeight": 22
+      },
+      {
+        "label": "Stick",
+        "gramWeight": 22
+      },
+      {
+        "label": "Sprig",
+        "gramWeight": 6
+      },
+      {
+        "label": "Slice",
+        "gramWeight": 3
+      },
+      {
+        "label": "Leaf",
+        "gramWeight": 2
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 87
+      },
+      {
+        "gramWeight": 0.03
+      }
+    ]
+  },
+  "spiralized zucchini": {
+    "source": "ckc-alias",
+    "label": "Spiralized Zucchini",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 17,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 1.21,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.32,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 3.11,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 1,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 112
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 196
+      },
+      {
+        "label": "Slice",
+        "gramWeight": 9.9
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 124
+      }
+    ]
+  },
+  "full-fat canned coconut milk": {
+    "source": "ckc-alias",
+    "label": "Full-Fat Coconut Milk",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 197,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 2.02,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 21.3,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 2.81,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 57
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 423.75
+      },
+      {
+        "label": "Can",
+        "gramWeight": 423.75
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 226
+      }
+    ],
+    "_proxy_for": "canned coconut milk"
+  },
+  "vegan fish sauce": {
+    "source": "ckc-alias",
+    "label": "Vegan Fish Sauce",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 53,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 8.14,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.57,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 4.93,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0.8,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 16
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 16
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Teaspoon",
+        "gramWeight": 5.3
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 255
+      },
+      {
+        "gramWeight": 0.03
+      }
+    ]
+  },
+  "vegan mozzarella": {
+    "source": "ckc-alias",
+    "label": "Vegan Mozzarella",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 144,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 17.3,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 8.72,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 2.78,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 2.3,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 126
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 324
+      },
+      {
+        "label": "Block",
+        "gramWeight": 324
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 252
+      }
+    ]
+  },
+  "fresh lemon zest": {
+    "source": "ckc-alias",
+    "label": "Fresh Lemon Zest",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 47,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 1.5,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.3,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 16,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 10.6,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Whole",
+        "gramWeight": 2
+      },
+      {
+        "label": "Piece",
+        "gramWeight": 2
+      },
+      {
+        "label": "Segment",
+        "gramWeight": 2
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 2
+      },
+      {
+        "label": "Slice",
+        "gramWeight": 2
+      },
+      {
+        "label": "Sliver",
+        "gramWeight": 2
+      },
+      {
+        "label": "Strip",
+        "gramWeight": 2
+      },
+      {
+        "label": "Twist",
+        "gramWeight": 2
+      },
+      {
+        "label": "Teaspoon",
+        "gramWeight": 2
+      },
+      {
+        "label": "Peel",
+        "gramWeight": 6
+      },
+      {
+        "label": "Rind",
+        "gramWeight": 6
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 6
+      },
+      {
+        "gramWeight": 0.03
+      }
+    ]
+  },
+  "green parts of scallions only": {
+    "source": "ckc-alias",
+    "label": "Scallion Greens",
+    "category": "Vegetables",
+    "per100g": {
+      "calories": {
+        "value": 27,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 0.97,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.47,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 5.74,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 1.8,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup, chopped",
+        "gramWeight": 100
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 6
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      }
+    ]
+  },
+  "shirataki noodles": {
+    "source": "ckc-manual",
+    "label": "Shirataki Noodles",
+    "category": "pasta/grains",
+    "per100g": {
+      "calories": {
+        "value": 10,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 0.2,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.1,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 3.0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 2.9,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      }
+    ]
+  },
+  "allulose sweetener": {
+    "source": "ckc-manual",
+    "label": "Allulose Sweetener",
+    "category": "baking",
+    "per100g": {
+      "calories": {
+        "value": 40,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 0.0,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.0,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 100.0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0.0,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      }
+    ]
+  },
+  "keto wraps": {
+    "source": "ckc-manual",
+    "label": "Keto Wraps",
+    "category": "bread/wraps",
+    "per100g": {
+      "calories": {
+        "value": 220,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 8.0,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 9.0,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 33.0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 27.0,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      }
+    ]
+  },
+  "portobello mushroom": {
+    "source": "ckc-manual",
+    "label": "Portobello Mushroom",
+    "category": "produce",
+    "per100g": {
+      "calories": {
+        "value": 22,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 2.1,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.3,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 3.9,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 1.3,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      }
+    ]
+  },
+  "candied walnuts": {
+    "category": "Generic foods",
+    "label": "Candied Walnuts",
+    "measures": [
+      {
+        "gramWeight": 30,
+        "label": "Serving"
+      },
+      {
+        "gramWeight": 28.349523125,
+        "label": "Ounce"
+      },
+      {
+        "gramWeight": 453.59237,
+        "label": "Pound"
+      },
+      {
+        "gramWeight": 1,
+        "label": "Gram"
+      },
+      {
+        "gramWeight": 1000,
+        "label": "Kilogram"
+      },
+      {
+        "gramWeight": 7.5,
+        "label": "Tablespoon"
+      },
+      {
+        "gramWeight": 120,
+        "label": "Cup"
+      },
+      {
+        "gramWeight": 4,
+        "label": "Nut"
+      }
+    ],
+    "per100g": {
+      "calories": {
+        "unit": "kcal",
+        "value": 510
+      },
+      "carbs": {
+        "unit": "g",
+        "value": 38
+      },
+      "fat": {
+        "unit": "g",
+        "value": 38
+      },
+      "fiber": {
+        "unit": "g",
+        "value": 4
+      },
+      "protein": {
+        "unit": "g",
+        "value": 8
+      }
+    },
+    "source": "manual-USDA-FDC-2116330"
   }
 }
