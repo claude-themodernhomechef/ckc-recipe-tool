@@ -224,6 +224,7 @@ const BASELINE_DB: Record<string, string> = {
   'red boat fish sauce':'pantry-staples',
   'pickled cucumbers':'produce','pickled onions':'produce',
   'pearl onions':'produce','mini cucumbers':'produce','baby cucumbers':'produce',
+  'sweet peppers':'produce','mini sweet peppers':'produce','hot peppers':'produce',
   'red chillies':'produce','red chilli':'produce','red chili':'produce','red chilies':'produce',
   'rainbow chard':'produce','swiss chard':'produce',
   'queso oaxaca':'dairy',
@@ -839,6 +840,43 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'center-cut salmon filets':'salmon filets', 'center cut salmon filets':'salmon filets',
   'center-cut salmon filet':'salmon filet', 'center cut salmon filet':'salmon filet',
   'center-cut, skin-on salmon fillets':'salmon fillets',
+  // Round 35 — long-tail cleanup
+  'sweet and hot peppers':'sweet peppers', 'sweet hot peppers':'sweet peppers',
+  'roma tomatoes sweet peppers':'roma tomatoes',
+  'healthy pinch sea salt':'salt', 'pinch sea salt':'salt',
+  'bone-in skin-on dark meat chicken pieces':'bone-in skin-on chicken thigh',
+  'bone-in skin-on dark meat chicken':'bone-in skin-on chicken thigh',
+  'dark meat chicken':'chicken thigh',
+  '6-ounce cod fish fillets 1 to 1 1/2 inches thick':'cod fillet',
+  'cod fillets':'cod fillet','cod filets':'cod fillet','cod filet':'cod fillet',
+  '-sized lemon':'lemon', 'small to medium-sized lemon':'lemon', 'medium-sized lemon':'lemon',
+  'delallo castelvetrano olives':'castelvetrano olives',
+  'pitted castelvetrano olives':'castelvetrano olives',
+  '(1 3/4 lb) butternut squash 1/4':'butternut squash',
+  'bunch rainbow chard stemmed':'rainbow chard', 'rainbow chard stemmed':'rainbow chard',
+  'plus 1 teaspoon arrowroot powder':'arrowroot powder',
+  'havarti dill cheese slices':'havarti dill cheese',
+  '(1-inch) pieces of italian':'italian bread', '(1-inch) pieces italian':'italian bread',
+  'pieces of italian':'italian bread',
+  'red capsicum / bell pepper':'red bell pepper',
+  'creamy polenta':'polenta',
+  'plus 1-2 teaspoons cajun seasoning':'cajun seasoning',
+  'cajun seasoning':'cajun seasoning',
+  'shredded low-moisture shredded mozzarella cheese':'shredded mozzarella cheese',
+  'shredded low-moisture mozzarella':'shredded mozzarella cheese',
+  'low-moisture mozzarella':'shredded mozzarella cheese',
+  'coriander/cilantro leaves':'fresh cilantro', 'coriander cilantro leaves':'fresh cilantro',
+  '2" piece ginger':'fresh ginger', '2-inch piece ginger':'fresh ginger',
+  '2 inch fresh ginger':'fresh ginger',
+  'hanger flatiron':'hanger steak', 'hanger thick skirt':'hanger steak',
+  'flatiron':'flat iron steak',
+  'creamy almond butter':'almond butter', 'creamy almonds butter':'almond butter',
+  'loaf of bread':'bread', 'bread loaf':'bread',
+  'frozen/thawed fire-roasted corn':'fire-roasted corn',
+  'frozen fire-roasted corn kernels':'fire-roasted corn',
+  'frozen fire-roasted corn':'fire-roasted corn',
+  'roasted salted pumpkin seeds':'pumpkin seeds', 'roasted pumpkin seeds':'pumpkin seeds',
+  'loaf ciabatta bread':'ciabatta bread', 'ciabatta bread loaf':'ciabatta bread',
   // Round 34 — clean-up of high-frequency 80-99% tier issues
   'dried poultry blend':'poultry seasoning',
   'steamed broccoli':'broccoli',
@@ -1234,6 +1272,10 @@ export function parseIngredient(raw: string): {
     .replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ')
     .replace(/\bhandfull\b/gi, 'handful')        // common typo
     .replace(/\bhandfulls\b/gi, 'handfuls')
+    // "finely-chopped" / "coarsely-chopped" / "thinly-sliced" → un-hyphenate so
+    // the prep-word strip loop catches "chopped"/"sliced" and the orphan-thinly
+    // strip catches "finely"/"thinly".
+    .replace(/\b(finely|coarsely|roughly|thinly|thickly|freshly)-(chopped|sliced|grated|diced|minced|crushed|cut|cracked|ground)\b/gi, '$1 $2')
     // "<N> thin slices of <X>" → "<N> slices <X>" (drop "thin", keep slice count)
     .replace(/\b(\d+)\s+thin\s+slices?\s+(?:of\s+)?/gi, '$1 slices ')
     // "<N>-Ingredient X" recipe-title prefix — strip leading "<N>-Ingredient "
