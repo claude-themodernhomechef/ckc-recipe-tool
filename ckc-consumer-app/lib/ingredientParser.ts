@@ -194,6 +194,12 @@ const BASELINE_DB: Record<string, string> = {
   'center cut bacon':'protein','center-cut bacon':'protein',
   'center-cut salmon':'protein','center cut salmon':'protein',
   'salmon filets':'protein','center-cut salmon filets':'protein',
+  // Round 39 DB additions
+  'asafoetida':'pantry-staples','hing':'pantry-staples',
+  'frozen shelled edamame':'produce','shelled edamame':'produce',
+  'andouille sausage':'protein','ancho chilies':'pantry-staples','ancho chiles':'pantry-staples',
+  'artichoke hearts':'pantry-staples','aleppo pepper':'pantry-staples',
+  'baby bok choy':'produce','bok choy':'produce',
   // Round 29 DB additions
   'green chiles':'pantry-staples','green chile':'pantry-staples',
   'castelvetrano olives':'pantry-staples','frescatrano olives':'pantry-staples',
@@ -852,6 +858,17 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'center-cut salmon filets':'salmon filets', 'center cut salmon filets':'salmon filets',
   'center-cut salmon filet':'salmon filet', 'center cut salmon filet':'salmon filet',
   'center-cut, skin-on salmon fillets':'salmon fillets',
+  // Round 39 — long-tail
+  'asofetida':'asafoetida','asafetida':'asafoetida','hing':'asafoetida',
+  'frozen shelled edamame':'frozen shelled edamame','bag frozen shelled edamame':'frozen shelled edamame',
+  'shelled edamame':'frozen shelled edamame',
+  'back pepper':'black pepper',
+  'asian fish sauce':'fish sauce',
+  'andouille sausage links':'andouille sausage','andouille sausage link':'andouille sausage',
+  'ancho chilies-rehydrated':'ancho chilies','ancho chiles-rehydrated':'ancho chilies',
+  'dried ancho chilies':'ancho chilies','dried ancho chiles':'ancho chiles',
+  'artichoke hearts in water':'artichoke hearts','artichoke hearts packed in water':'artichoke hearts',
+  '+2 tsp milk':'milk','+ 2 tsp milk':'milk',
   // Round 38 — additional aliases
   'chipotle chiles in adobo':'chipotle peppers in adobo',
   'chipotle chile in adobo':'chipotle peppers in adobo',
@@ -860,8 +877,10 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'aji amarillo paste chile paste':'aji amarillo paste',
   'aleppo pepper':'aleppo pepper','aleppo pepper pepper flakes':'aleppo pepper',
   'all-natural garlic powder':'garlic powder','natural garlic powder':'garlic powder',
-  'all purpose flour':'flour','all-purpose flour':'flour',
-  'all purpose flour 1 tbsp':'flour',
+  // 'all purpose flour' / 'all-purpose flour' kept as-is (DB has them)
+  'all purpose flour 1 tbsp':'all purpose flour',
+  'all-purpose unbleached flour':'all purpose flour',
+  'unbleached all purpose flour':'all purpose flour',
   '750-milliliter bottle of red wine':'red wine','bottle of red wine':'red wine',
   '1/3 less fat cream cheese':'reduced-fat cream cheese',
   'fresh baby spinach':'baby spinach',
@@ -1343,6 +1362,8 @@ export function parseIngredient(raw: string): {
     // "1 + 1/2" / "1+1/2" / "1 + ½" mixed-number with + → "1 1/2"
     .replace(/(\d)\s*\+\s*(\d+\/\d+)/g, '$1 $2')
     .replace(/(\d)\s*\+\s*([¼½¾⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞])/g, '$1 $2')
+    // Leading "+" (e.g. "+2 tsp milk" — recipe author's continuation marker) — strip
+    .replace(/^\s*\+\s*/, '')
     // "X to Y" leading range — convert to "X-Y" so range-parser handles it
     //   "1 to 1.25 lbs" → "1-1.25 lbs"
     //   "1 to 2 cups" → "1-2 cups"
