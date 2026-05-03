@@ -434,6 +434,9 @@ function cleanForDbLookup(s: string): string {
 // and "steamed rice and naan for serving" → ["steamed rice", "naan for serving"]
 // but keeps "boneless, skinless chicken thighs" as one item.
 export function splitIngredientLine(raw: string): string[] {
+  // Pre-strip leading qualifier words ("scant 1 tsp X" / "heaping 1 cup Y") so the
+  // mega-paragraph splitter doesn't treat them as a bare ingredient before the qty.
+  raw = raw.replace(/^\s*(?:scant|heaping|lightly|generous|generously|rounded|level|packed)\s+(?=\d)/i, '').trim();
   // Pre-strip "(or any X like Y, Z)" parenthetical alternatives BEFORE splitting.
   // Otherwise the splitter sees the "or"/commas inside parens and splits incorrectly.
   raw = raw.replace(/\s*\(\s*or\s+(?:any\s+)?[^)]+\)/gi, '').trim();
@@ -941,6 +944,12 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'center-cut salmon filets':'salmon filets', 'center cut salmon filets':'salmon filets',
   'center-cut salmon filet':'salmon filet', 'center cut salmon filet':'salmon filet',
   'center-cut, skin-on salmon fillets':'salmon fillets',
+  // Round 57 — fix the 2 sub-80% recipes (BBQ Chicken Bowls + Pan-Fried Salmon)
+  'additional bbq sauce':'bbq sauce',
+  'pwwb bbq dry rub':'','pwwb bbq dry rub, below':'',
+  'pinch of saffron threads mixed with':'saffron threads',
+  'then juice to get':'',
+  '1 tsp':'','1 teaspoon':'',
   // Round 56 — batch from round 55 audit (post empty-fallback fix)
   '---':'','--':'',
   'roasted corn kernels':'roasted corn kernels',
