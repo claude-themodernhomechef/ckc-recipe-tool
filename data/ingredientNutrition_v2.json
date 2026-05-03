@@ -38963,6 +38963,30 @@
       }
     ]
   },
+  "'nduja paste": {
+    "source": "label",
+    "foodId": "label_nduja_paste",
+    "label": "'Nduja Paste",
+    "category": "Condiments",
+    "per100g": {
+      "calories": { "value": 607, "unit": "kcal" },
+      "protein": { "value": 3.6, "unit": "g" },
+      "fat": { "value": 60.7, "unit": "g" },
+      "saturatedFat": { "value": 25.0, "unit": "g" },
+      "cholesterol": { "value": 53.6, "unit": "mg" },
+      "sodium": { "value": 1321, "unit": "mg" },
+      "carbs": { "value": 7.1, "unit": "g" },
+      "fiber": { "value": 0, "unit": "g" },
+      "sugars": { "value": 0, "unit": "g" }
+    },
+    "measures": [
+      { "label": "Serving", "gramWeight": 28 },
+      { "label": "Gram", "gramWeight": 1 },
+      { "label": "Ounce", "gramWeight": 28.349523125 },
+      { "label": "Tablespoon", "gramWeight": 15 },
+      { "label": "Teaspoon", "gramWeight": 5 }
+    ]
+  },
   "peanut": {
     "source": "edamam",
     "foodId": "food_aft8y4gab0fvs5bcgjac6boztho3",
@@ -84189,30 +84213,34 @@
     ]
   },
   "wasabi peas": {
-    "source": "edamam",
-    "foodId": "food_b18ctxdbw2ktnpbejotkwbnalyrj",
-    "label": "Wasabi",
-    "category": "Generic foods",
+    "source": "usda",
+    "foodId": "fdc_173157",
+    "label": "Snacks, peas, roasted, wasabi-flavored",
+    "category": "Snacks",
     "per100g": {
       "calories": {
-        "value": 109,
+        "value": 432,
         "unit": "kcal"
       },
       "protein": {
-        "value": 4.8,
+        "value": 15.3,
         "unit": "g"
       },
       "fat": {
-        "value": 0.63,
+        "value": 16.1,
         "unit": "g"
       },
       "carbs": {
-        "value": 23.5,
+        "value": 60.1,
         "unit": "g"
       },
       "fiber": {
-        "value": 7.8,
+        "value": 5.8,
         "unit": "g"
+      },
+      "sodium": {
+        "value": 700,
+        "unit": "mg"
       }
     },
     "measures": [
