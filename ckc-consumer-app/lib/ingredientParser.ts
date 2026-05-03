@@ -194,6 +194,11 @@ const BASELINE_DB: Record<string, string> = {
   'center cut bacon':'protein','center-cut bacon':'protein',
   'center-cut salmon':'protein','center cut salmon':'protein',
   'salmon filets':'protein','center-cut salmon filets':'protein',
+  // Round 46 DB additions
+  'key limes':'produce','key lime':'produce',
+  'kalamata olives':'pantry-staples','kalamata olive':'pantry-staples',
+  'sun-dried tomatoes':'pantry-staples','sun dried tomatoes':'pantry-staples',
+  'turkey sausage':'protein','marinara sauce':'pantry-staples',
   // Round 45 DB additions
   'hard boiled eggs':'protein','hard boiled egg':'protein',
   'habanero pepper':'produce','habanero':'produce',
@@ -419,6 +424,9 @@ export function splitIngredientLine(raw: string): string[] {
   // an extra portion that isn't a separate ingredient.
   raw = raw.replace(/,\s*plus\s+(?:more|extra|\w+(?:\s+\w+)?)\s+(?:for\s+\w+|as\s+needed|to\s+taste|if\s+needed|to\s+\w+).*$/i, '').trim();
   raw = raw.replace(/,\s*plus\s+more\b.*$/i, '').trim();
+  // ", plus N <unit>" mid-line → " + N <unit>" so plus-split rule fires
+  // ("4 tablespoons, plus 1/3 cup olive oil" → "4 tablespoons + 1/3 cup olive oil")
+  raw = raw.replace(/,\s*plus\s+(\d+(?:\s+\d+\/\d+)?(?:\.\d+)?|\d+\/\d+|[¼-¾⅐-⅞])\s+(cups?|tbsps?|tablespoons?|tsps?|teaspoons?|oz|ounces?|lbs?|pounds?)/gi, ' + $1 $2');
   // Pre-insert a space between letter+digit (recipe authors sometimes paste
   // "2 eggs2-3 garlic" with no space) so qty boundaries are visible.
   // Decode HTML entities first so &frac14;/&#39; etc. don't get mangled.
@@ -896,6 +904,20 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'center-cut salmon filets':'salmon filets', 'center cut salmon filets':'salmon filets',
   'center-cut salmon filet':'salmon filet', 'center cut salmon filet':'salmon filet',
   'center-cut, skin-on salmon fillets':'salmon fillets',
+  // Round 46 — long-tail
+  'heavy cream/whipping cream':'heavy cream','heavy cream whipping cream':'heavy cream',
+  'high olive oil':'olive oil','high quality olive oil':'olive oil',
+  'hulled pumpkin seeds':'pumpkin seeds','raw hulled pumpkin seeds':'pumpkin seeds',
+  'hungarian paprika sweet':'paprika','hungarian paprika':'paprika',
+  'hunk of parmesan cheese':'parmesan cheese','hunk parmesan cheese':'parmesan cheese',
+  'japanese sweet potatoes/sweet potatoes':'sweet potatoes','japanese sweet potatoes':'sweet potatoes',
+  'jarred 24- marinara':'marinara sauce','jar marinara':'marinara sauce',
+  'jarred oil-packed sun-dried tomatoes':'sun-dried tomatoes',
+  'oil-packed sun-dried tomatoes':'sun-dried tomatoes',
+  'jones dairy farm antibiotic free turkey sausage':'turkey sausage',
+  'antibiotic free turkey sausage':'turkey sausage',
+  'juicy tomatoes':'tomatoes','medium juicy tomatoes':'tomatoes',
+  'kalmata olives':'kalamata olives','kalmata olive':'kalamata olives',
   // Round 45 — long-tail
   'green onion mostly green parts':'green onion',
   'green part of 2 spring onions / scallions':'scallions',
@@ -1586,6 +1608,10 @@ export function parseIngredient(raw: string): {
     if (/^(?:large\s+|small\s+|medium\s+)?(?:freezer\s+bag|mortar\s+and\s+pestle|spice\s+mill|skewers?)\b/i.test(trimmed)) {
       return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
     }
+    // Skip vague placeholders that point to other recipes
+    if (/^(?:house\s+salad|side\s+salad|simple\s+salad)\b/i.test(trimmed) && trimmed.length < 40) {
+      return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
+    }
     // Skip lone "Boiling water" / "Hot water" / "Cold water" — instructions, not ingredients
     if (/^(?:boiling|hot|cold|warm)\s+water\s*\.?\s*$/i.test(trimmed) && trimmed.length < 30) {
       return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw, note };
@@ -1607,6 +1633,9 @@ export function parseIngredient(raw: string): {
     .replace(/\bhandfulls\b/gi, 'handfuls')
     // "&quot;" → '"' (more entities)
     .replace(/&quot;?/g, '"')
+    // ", plus N <unit>" → " + N <unit>" so the plus-split rule fires later
+    // ("4 tablespoons, plus 1/3 cup extra virgin olive oil" → "4 tablespoons + 1/3 cup ...")
+    .replace(/,\s*plus\s+(\d+(?:\s+\d+\/\d+)?(?:\.\d+)?|\d+\/\d+|[¼-¾⅐-⅞])\s+(cups?|tbsps?|tablespoons?|tsps?|teaspoons?|oz|ounces?|lbs?|pounds?)/gi, ' + $1 $2')
     // "1 + 1/2" / "1+1/2" / "1 + ½" mixed-number with + → "1 1/2"
     .replace(/(\d)\s*\+\s*(\d+\/\d+)/g, '$1 $2')
     .replace(/(\d)\s*\+\s*([¼½¾⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞])/g, '$1 $2')
