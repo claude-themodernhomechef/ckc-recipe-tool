@@ -487,6 +487,18 @@ export function splitIngredientLine(raw: string): string[] {
       return [`${minusM[1]} ${minusM[2]} ${minusM[5]}`, `${minusM[3]} ${minusM[4]} ${minusM[5]}`];
     }
   }
+  // "<X> <unit1> + <Y> <unit2> <noun>" — split into two lines, each with noun
+  // (nutrition layer sums them; shopping list shows both):
+  //   "1 tablespoon + 1 teaspoon cornstarch"  → ["1 tbsp cornstarch", "1 tsp cornstarch"]
+  //   "2 TBSP + 1 TBSP olive oil"             → ["2 tbsp olive oil", "1 tbsp olive oil"]
+  //   "1/4 cup+2 tsp milk"                    → ["1/4 cup milk", "2 tsp milk"]
+  // NOTE: '+' followed by a fraction "1 + 1/2 lbs" was rewritten to "1 1/2" earlier (mixed number).
+  {
+    const plusM = raw.match(/^(\d+(?:\s+\d+\/\d+)?(?:\.\d+)?|\d+\/\d+|[¼-¾⅐-⅞])\s+(cups?|tbsps?|tablespoons?|tsps?|teaspoons?|oz|ounces?|lbs?|pounds?)\s*\+\s*(\d+(?:\s+\d+\/\d+)?(?:\.\d+)?|\d+\/\d+|[¼-¾⅐-⅞])\s+(cups?|tbsps?|tablespoons?|tsps?|teaspoons?|oz|ounces?|lbs?|pounds?)\s+(.+)$/i);
+    if (plusM) {
+      return [`${plusM[1]} ${plusM[2]} ${plusM[5]}`, `${plusM[3]} ${plusM[4]} ${plusM[5]}`];
+    }
+  }
 
   // "<qty> <unit> each: <A>, <B>, <C>" — split into individual ingredients
   // each carrying the same qty/unit:
@@ -1272,6 +1284,27 @@ export function parseIngredient(raw: string): {
     .replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ')
     .replace(/\bhandfull\b/gi, 'handful')        // common typo
     .replace(/\bhandfulls\b/gi, 'handfuls')
+    // "&quot;" → '"' (more entities)
+    .replace(/&quot;?/g, '"')
+    // "1 + 1/2" / "1+1/2" / "1 + ½" mixed-number with + → "1 1/2"
+    .replace(/(\d)\s*\+\s*(\d+\/\d+)/g, '$1 $2')
+    .replace(/(\d)\s*\+\s*([¼½¾⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞])/g, '$1 $2')
+    // "X to Y" leading range — convert to "X-Y" so range-parser handles it
+    //   "1 to 1.25 lbs" → "1-1.25 lbs"
+    //   "1 to 2 cups" → "1-2 cups"
+    .replace(/^(\d+(?:\.\d+)?)\s+to\s+(\d+(?:\.\d+)?)(\s)/i, '$1-$2$3')
+    // Leading ".25" or "1/4." (stray dot after fraction) — normalize
+    .replace(/^\.(\d)/, '0.$1')
+    .replace(/(\d+\/\d+)\./g, '$1')
+    // "(N-inch) piece <noun>" / "<N>-inch piece <noun>" → set up for inch-as-unit
+    // Pre-rewrites to "<N> inch <noun>" so qty extraction grabs N inches.
+    //   "1 (2-inch) piece ginger" → "1 2 inch ginger" → qty=2 unit=inch name=ginger
+    //   "1 (4-inch) piece fresh ginger" → similar
+    .replace(/^\s*\d+\s*\(\s*(\d+(?:\.\d+)?)\s*-?\s*inch\s*\)\s*(?:piece|knob)\s+/i, '$1 inch ')
+    .replace(/^\s*\d+\s*[-–]\s*inch\s+(?:piece|knob)\s+/i, (m) => {
+      const num = m.match(/^\s*(\d+)/)?.[1] || '1';
+      return `${num} inch `;
+    })
     // "finely-chopped" / "coarsely-chopped" / "thinly-sliced" → un-hyphenate so
     // the prep-word strip loop catches "chopped"/"sliced" and the orphan-thinly
     // strip catches "finely"/"thinly".
@@ -1330,6 +1363,12 @@ export function parseIngredient(raw: string): {
     .replace(/(\d+(?:\.\d+)?\s*(?:oz|ounce|lb|pound)s?)\s*\/\s*\d+(?:\.\d+)?\s*(?:g|gram|kg)s?\b/gi, '$1')
     // Same in reverse: "200g/7oz" → drop the gram form, keep oz
     .replace(/\d+(?:\.\d+)?\s*(?:g|gram|kg)s?\s*\/\s*(\d+(?:\.\d+)?\s*(?:oz|ounce|lb|pound)s?)\b/gi, '$1')
+    // "X cup/tbsp/tsp / Y g/ml" — keep imperial, drop metric half
+    //   "1 1/4 cups / 180g bacon" → "1 1/4 cups bacon"
+    //   "2 tbsp / 30 ml avocado oil" → "2 tbsp avocado oil"
+    //   "4 cups / 480 g frozen riced cauliflower" → "4 cups frozen riced cauliflower"
+    //   "1/4 cup/1 ounce crumbled feta cheese" → "1/4 cup crumbled feta cheese"
+    .replace(/((?:\d+(?:\s+\d+\/\d+)?|\d+\/\d+|\d+(?:\.\d+)?)\s*(?:cups?|tbsps?|tablespoons?|tsps?|teaspoons?))\s*\/\s*\d+(?:\.\d+)?\s*(?:g|grams?|kg|ml|l|oz|ounces?)\.?\s+/gi, '$1 ')
     // Multiple consecutive spaces → single space
     .replace(/\s{2,}/g, ' ');
   // "((About N-M lbs.))" — extract the lbs value as canonical qty (use lower bound)
@@ -2536,13 +2575,19 @@ export function parseIngredient(raw: string): {
   // The shopping list then shows the actual size and form the consumer needs.
   {
     const isCanContext = unit === 'can' || unit === 'jar' || unit === 'tin' ||
-      /\b(?:can|jar|tin|block|blocks|box|package|pkg)s?\b/i.test(name);
+      /\b(?:can|jar|tin|block|blocks|box|package|pkg|bag|pack|bottle|bunch|head)s?\b/i.test(name) ||
+      // No container word but has (N-oz/lb) paren prefix immediately before a piece-word noun
+      // (fillet/breast/thigh/etc.) — recipe author's per-piece weight spec. Allow 0-3 intermediate words.
+      /^\s*\(\s*\d+(?:\.\d+)?(?:\s*[-–]\s*(?:to\s+)?\d+(?:\.\d+)?)?\s*[-\s]?(?:oz|ounce|lb|pound|ounces|pounds)s?\.?\s*\)\s*(?:[\w-]+\s+){0,3}(?:fillet|fillets|filet|filets|breast|breasts|thigh|thighs|chop|chops|steak|steaks|piece|pieces|slice|slices|tail|tails)\b/i.test(name);
     if (isCanContext) {
       // Track the original count before we replace qty (e.g. "2 jars" of 28oz each → ×2)
       const originalCount = qty || 1;
 
       // Try paren-oz first: "(15-oz.)", "(28-ounce)", "(7 ounce)", "(10-12 oz)" / "(16- to 17-ounce)" (use UPPER bound)
-      const ozM = name.match(/\(\s*(\d+(?:\.\d+)?)(?:\s*[-–]\s*(?:to\s+)?(\d+(?:\.\d+)?))?[\s.\-]*(oz|ounce|fl\s*oz|fluid\s+ounce)s?\.?[^)]*\)/i);
+      const ozM = name.match(/\(\s*(\d+(?:\.\d+)?)(?:\s*(?:[-–]|to)\s*(\d+(?:\.\d+)?))?[\s.\-]*(oz|ounce|fl\s*oz|fluid\s+ounce|lb|pound)s?\.?[^)]*\)/i);
+      // Convert lb to oz at extraction time so downstream is consistent
+      let _lbToOz = false;
+      if (ozM && /lb|pound/i.test(ozM[3])) _lbToOz = true;
       // Try paren-ml: "(160ml)", "(160 ml)" — convert to oz (1ml ≈ 0.0338 oz)
       const mlM = !ozM && name.match(/\(?\s*(\d+(?:\.\d+)?)\s*ml\b/i);
       // Try inline-oz: "19 oz tin", "15 ounce can"
@@ -2552,7 +2597,8 @@ export function parseIngredient(raw: string): {
         // Use UPPER bound when range present (group 2), else single value (group 1).
         // Per Rafi: paren-oz ranges represent the larger packaging size more often
         // than the smaller, so 12 oz from "(10-12 ounces)" is more accurate.
-        const ozValue = ozM[2] ? parseFloat(ozM[2]) : parseFloat(ozM[1]);
+        let ozValue = ozM[2] ? parseFloat(ozM[2]) : parseFloat(ozM[1]);
+        if (_lbToOz) ozValue *= 16;  // convert lb → oz
         qty = Math.round(ozValue * originalCount * 10) / 10;
         unit = 'oz';
         name = name.replace(ozM[0], '').replace(/\s+/g, ' ').trim();
@@ -2572,8 +2618,9 @@ export function parseIngredient(raw: string): {
         const isJar     = unit === 'jar' || /\bjars?\b/i.test(name);
         const isBlock   = /\bblocks?\b/i.test(name);
         const isPackage = /\b(?:package|pkg|box|bag|pack)\b/i.test(name);
-        name = name.replace(/^(?:can|jar|tin|block|box|package|pkg)s?\s+/i, '').trim();
-        name = name.replace(/\b(?:can|jar|tin|block|box|package|pkg)s?\s+(?:or\s+)?(?:of\s+)?/gi, '').trim();
+        const isBunch   = /\b(?:bunch|head)\b/i.test(name);
+        name = name.replace(/^(?:can|jar|tin|block|box|package|pkg|bag|pack|bottle|bunch|head)s?\s+/i, '').trim();
+        name = name.replace(/\b(?:can|jar|tin|block|box|package|pkg|bag|pack|bottle|bunch|head)s?\s+(?:or\s+)?(?:of\s+)?/gi, '').trim();
         name = name.replace(/^or\s+/i, '').trim();
         name = name.replace(/^of\s+/i, '').trim();
         name = name.replace(/^,\s*/, '').trim();
@@ -2582,7 +2629,10 @@ export function parseIngredient(raw: string): {
         // olives in brine, capers in brine, etc.).
         // Add canned/jarred prefix unless coconut milk (always canned), block,
         // or package/box (the form is implied by being shelf-stable in pantry).
-        if (!/coconut\s+milk\b/i.test(name) && !isBlock && !isPackage) {
+        // SKIP when name contains a piece-word noun (fillet/breast/thigh/chop/etc.) —
+        // those are protein/seafood per-piece weights, not canned goods.
+        const isPieceProtein = /\b(?:fillet|fillets|filet|filets|breast|breasts|thigh|thighs|chop|chops|steak|steaks|tail|tails)\b/i.test(name);
+        if (!/coconut\s+milk\b/i.test(name) && !isBlock && !isPackage && !isPieceProtein && !isBunch) {
           const prefix = isJar ? 'jarred ' : 'canned ';
           if (!/^(?:canned|jarred)\b/i.test(name)) name = prefix + name;
         }
@@ -2693,6 +2743,13 @@ export function parseIngredient(raw: string): {
       'leek','onion','shallot','carrot','tomato','potato','sweet potato','cucumber',
       'lemon','lime','orange','apple','pear','peach','plum','avocado','pepper',
       'bell pepper','jalapeno','jalapeño','poblano','serrano','egg','beet',
+      // Protein cuts (singular when qty=1 lb/oz/each)
+      'chicken breast','chicken thigh','chicken leg','chicken wing','chicken drumstick',
+      'turkey breast','turkey thigh','boneless skinless chicken breast',
+      'boneless skinless chicken thigh','bone-in skin-on chicken breast',
+      'bone-in skin-on chicken thigh','salmon fillet','salmon filet',
+      'cod fillet','cod filet','halibut fillet','tilapia fillet',
+      'pork chop','lamb chop','steak','beef patty',
     ];
     for (const sing of SINGULARIZE_AT_ONE) {
       // Match ending with the plural form (sing + 's' or sing.replace('o','oes'))
