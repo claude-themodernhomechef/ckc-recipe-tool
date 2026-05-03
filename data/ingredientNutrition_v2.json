@@ -96361,66 +96361,53 @@
     ]
   },
   "grill mates brazilian steak house marinade": {
-    "source": "edamam",
-    "foodId": "food_aregbrwb5q7z2db1h14uxaizfd9f",
-    "label": "Steak",
     "category": "Generic foods",
-    "per100g": {
-      "calories": {
-        "value": 228,
-        "unit": "kcal"
-      },
-      "protein": {
-        "value": 20,
-        "unit": "g"
-      },
-      "fat": {
-        "value": 15.8,
-        "unit": "g"
-      },
-      "carbs": {
-        "value": 0,
-        "unit": "g"
-      },
-      "fiber": {
-        "value": 0,
-        "unit": "g"
-      }
-    },
+    "label": "McCormick Grill Mates Brazilian Steakhouse Marinade",
     "measures": [
       {
-        "label": "Serving",
-        "gramWeight": 85
+        "gramWeight": 3,
+        "label": "Serving"
       },
       {
-        "label": "Whole",
-        "gramWeight": 461
+        "gramWeight": 3,
+        "label": "Teaspoon"
       },
       {
-        "label": "Roast",
-        "gramWeight": 1359
+        "gramWeight": 30,
+        "label": "Packet"
       },
       {
-        "label": "Steak",
-        "gramWeight": 461
+        "gramWeight": 1,
+        "label": "Gram"
       },
       {
-        "label": "Gram",
-        "gramWeight": 1
-      },
-      {
-        "label": "Ounce",
-        "gramWeight": 28.349523125
-      },
-      {
-        "label": "Pound",
-        "gramWeight": 453.59237
-      },
-      {
-        "label": "Kilogram",
-        "gramWeight": 1000
+        "gramWeight": 28.349523125,
+        "label": "Ounce"
       }
-    ]
+    ],
+    "per100g": {
+      "calories": {
+        "unit": "kcal",
+        "value": 167
+      },
+      "carbs": {
+        "unit": "g",
+        "value": 33
+      },
+      "fat": {
+        "unit": "g",
+        "value": 0
+      },
+      "fiber": {
+        "unit": "g",
+        "value": 0
+      },
+      "protein": {
+        "unit": "g",
+        "value": 0
+      }
+    },
+    "source": "manual-McCormick-label"
   },
   "pineapple rings": {
     "source": "edamam",
@@ -145467,89 +145454,49 @@
     ]
   },
   "fried garlic chicken ramen soup": {
-    "source": "edamam",
-    "foodId": "food_avtcmx6bgjv1jvay6s6stan8dnyp",
-    "label": "Garlic",
     "category": "Generic foods",
-    "per100g": {
-      "calories": {
-        "value": 149,
-        "unit": "kcal"
-      },
-      "protein": {
-        "value": 6.36,
-        "unit": "g"
-      },
-      "fat": {
-        "value": 0.5,
-        "unit": "g"
-      },
-      "carbs": {
-        "value": 33.1,
-        "unit": "g"
-      },
-      "fiber": {
-        "value": 2.1,
-        "unit": "g"
-      }
-    },
+    "label": "Mike's Mighty Good Fried Garlic Chicken Ramen",
     "measures": [
       {
-        "label": "Clove",
-        "gramWeight": 3
+        "gramWeight": 63,
+        "label": "Serving"
       },
       {
-        "label": "Serving",
-        "gramWeight": 3
+        "gramWeight": 63,
+        "label": "Packet"
       },
       {
-        "label": "Whole",
-        "gramWeight": 24
+        "gramWeight": 1,
+        "label": "Gram"
       },
       {
-        "label": "Bulb",
-        "gramWeight": 50
-      },
-      {
-        "label": "Head",
-        "gramWeight": 50
-      },
-      {
-        "label": "Scape",
-        "gramWeight": 24
-      },
-      {
-        "label": "Sliver",
-        "gramWeight": 1
-      },
-      {
-        "label": "Gram",
-        "gramWeight": 1
-      },
-      {
-        "label": "Ounce",
-        "gramWeight": 28.349523125
-      },
-      {
-        "label": "Pound",
-        "gramWeight": 453.59237
-      },
-      {
-        "label": "Kilogram",
-        "gramWeight": 1000
-      },
-      {
-        "label": "Teaspoon",
-        "gramWeight": 2.8
-      },
-      {
-        "label": "Cup",
-        "gramWeight": 136
-      },
-      {
-        "gramWeight": 0.003
+        "gramWeight": 28.349523125,
+        "label": "Ounce"
       }
-    ]
+    ],
+    "per100g": {
+      "calories": {
+        "unit": "kcal",
+        "value": 413
+      },
+      "carbs": {
+        "unit": "g",
+        "value": 60.3
+      },
+      "fat": {
+        "unit": "g",
+        "value": 12.7
+      },
+      "fiber": {
+        "unit": "g",
+        "value": 1.6
+      },
+      "protein": {
+        "unit": "g",
+        "value": 15.9
+      }
+    },
+    "source": "manual-mikesmightygood-label"
   },
   "holy basil leaves": {
     "source": "edamam",
@@ -168041,67 +167988,53 @@
     "_proxy_for": "chestnut"
   },
   "mccormick grill mates brazilian steak house marinade": {
-    "source": "edamam",
-    "foodId": "food_aregbrwb5q7z2db1h14uxaizfd9f",
-    "label": "Steak",
     "category": "Generic foods",
-    "per100g": {
-      "calories": {
-        "value": 228,
-        "unit": "kcal"
-      },
-      "protein": {
-        "value": 20,
-        "unit": "g"
-      },
-      "fat": {
-        "value": 15.8,
-        "unit": "g"
-      },
-      "carbs": {
-        "value": 0,
-        "unit": "g"
-      },
-      "fiber": {
-        "value": 0,
-        "unit": "g"
-      }
-    },
+    "label": "McCormick Grill Mates Brazilian Steakhouse Marinade",
     "measures": [
       {
-        "label": "Serving",
-        "gramWeight": 85
+        "gramWeight": 3,
+        "label": "Serving"
       },
       {
-        "label": "Whole",
-        "gramWeight": 461
+        "gramWeight": 3,
+        "label": "Teaspoon"
       },
       {
-        "label": "Roast",
-        "gramWeight": 1359
+        "gramWeight": 30,
+        "label": "Packet"
       },
       {
-        "label": "Steak",
-        "gramWeight": 461
+        "gramWeight": 1,
+        "label": "Gram"
       },
       {
-        "label": "Gram",
-        "gramWeight": 1
-      },
-      {
-        "label": "Ounce",
-        "gramWeight": 28.349523125
-      },
-      {
-        "label": "Pound",
-        "gramWeight": 453.59237
-      },
-      {
-        "label": "Kilogram",
-        "gramWeight": 1000
+        "gramWeight": 28.349523125,
+        "label": "Ounce"
       }
     ],
-    "_proxy_for": "grill mates brazilian steak house marinade"
+    "per100g": {
+      "calories": {
+        "unit": "kcal",
+        "value": 167
+      },
+      "carbs": {
+        "unit": "g",
+        "value": 33
+      },
+      "fat": {
+        "unit": "g",
+        "value": 0
+      },
+      "fiber": {
+        "unit": "g",
+        "value": 0
+      },
+      "protein": {
+        "unit": "g",
+        "value": 0
+      }
+    },
+    "source": "manual-McCormick-label"
   },
   "salted pistachios": {
     "source": "edamam",
@@ -182833,5 +182766,238 @@
         "gramWeight": 226
       }
     ]
+  },
+  "brazilian steak house marinade": {
+    "category": "Generic foods",
+    "label": "McCormick Grill Mates Brazilian Steakhouse Marinade",
+    "measures": [
+      {
+        "gramWeight": 3,
+        "label": "Serving"
+      },
+      {
+        "gramWeight": 3,
+        "label": "Teaspoon"
+      },
+      {
+        "gramWeight": 30,
+        "label": "Packet"
+      },
+      {
+        "gramWeight": 1,
+        "label": "Gram"
+      },
+      {
+        "gramWeight": 28.349523125,
+        "label": "Ounce"
+      }
+    ],
+    "per100g": {
+      "calories": {
+        "unit": "kcal",
+        "value": 167
+      },
+      "carbs": {
+        "unit": "g",
+        "value": 33
+      },
+      "fat": {
+        "unit": "g",
+        "value": 0
+      },
+      "fiber": {
+        "unit": "g",
+        "value": 0
+      },
+      "protein": {
+        "unit": "g",
+        "value": 0
+      }
+    },
+    "source": "manual-McCormick-label"
+  },
+  "steak marinade": {
+    "category": "Generic foods",
+    "label": "McCormick Grill Mates Brazilian Steakhouse Marinade",
+    "measures": [
+      {
+        "gramWeight": 3,
+        "label": "Serving"
+      },
+      {
+        "gramWeight": 3,
+        "label": "Teaspoon"
+      },
+      {
+        "gramWeight": 30,
+        "label": "Packet"
+      },
+      {
+        "gramWeight": 1,
+        "label": "Gram"
+      },
+      {
+        "gramWeight": 28.349523125,
+        "label": "Ounce"
+      }
+    ],
+    "per100g": {
+      "calories": {
+        "unit": "kcal",
+        "value": 167
+      },
+      "carbs": {
+        "unit": "g",
+        "value": 33
+      },
+      "fat": {
+        "unit": "g",
+        "value": 0
+      },
+      "fiber": {
+        "unit": "g",
+        "value": 0
+      },
+      "protein": {
+        "unit": "g",
+        "value": 0
+      }
+    },
+    "source": "manual-McCormick-label"
+  },
+  "mike's mighty fried garlic chicken ramen soup": {
+    "category": "Generic foods",
+    "label": "Mike's Mighty Good Fried Garlic Chicken Ramen",
+    "measures": [
+      {
+        "gramWeight": 63,
+        "label": "Serving"
+      },
+      {
+        "gramWeight": 63,
+        "label": "Packet"
+      },
+      {
+        "gramWeight": 1,
+        "label": "Gram"
+      },
+      {
+        "gramWeight": 28.349523125,
+        "label": "Ounce"
+      }
+    ],
+    "per100g": {
+      "calories": {
+        "unit": "kcal",
+        "value": 413
+      },
+      "carbs": {
+        "unit": "g",
+        "value": 60.3
+      },
+      "fat": {
+        "unit": "g",
+        "value": 12.7
+      },
+      "fiber": {
+        "unit": "g",
+        "value": 1.6
+      },
+      "protein": {
+        "unit": "g",
+        "value": 15.9
+      }
+    },
+    "source": "manual-mikesmightygood-label"
+  },
+  "fried garlic chicken ramen": {
+    "category": "Generic foods",
+    "label": "Mike's Mighty Good Fried Garlic Chicken Ramen",
+    "measures": [
+      {
+        "gramWeight": 63,
+        "label": "Serving"
+      },
+      {
+        "gramWeight": 63,
+        "label": "Packet"
+      },
+      {
+        "gramWeight": 1,
+        "label": "Gram"
+      },
+      {
+        "gramWeight": 28.349523125,
+        "label": "Ounce"
+      }
+    ],
+    "per100g": {
+      "calories": {
+        "unit": "kcal",
+        "value": 413
+      },
+      "carbs": {
+        "unit": "g",
+        "value": 60.3
+      },
+      "fat": {
+        "unit": "g",
+        "value": 12.7
+      },
+      "fiber": {
+        "unit": "g",
+        "value": 1.6
+      },
+      "protein": {
+        "unit": "g",
+        "value": 15.9
+      }
+    },
+    "source": "manual-mikesmightygood-label"
+  },
+  "ramen": {
+    "category": "Generic foods",
+    "label": "Mike's Mighty Good Fried Garlic Chicken Ramen",
+    "measures": [
+      {
+        "gramWeight": 63,
+        "label": "Serving"
+      },
+      {
+        "gramWeight": 63,
+        "label": "Packet"
+      },
+      {
+        "gramWeight": 1,
+        "label": "Gram"
+      },
+      {
+        "gramWeight": 28.349523125,
+        "label": "Ounce"
+      }
+    ],
+    "per100g": {
+      "calories": {
+        "unit": "kcal",
+        "value": 413
+      },
+      "carbs": {
+        "unit": "g",
+        "value": 60.3
+      },
+      "fat": {
+        "unit": "g",
+        "value": 12.7
+      },
+      "fiber": {
+        "unit": "g",
+        "value": 1.6
+      },
+      "protein": {
+        "unit": "g",
+        "value": 15.9
+      }
+    },
+    "source": "manual-mikesmightygood-label"
   }
 }
