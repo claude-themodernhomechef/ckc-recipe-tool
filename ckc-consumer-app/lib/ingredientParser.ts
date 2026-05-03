@@ -437,6 +437,20 @@ export function splitIngredientLine(raw: string): string[] {
   // Pre-strip leading qualifier words ("scant 1 tsp X" / "heaping 1 cup Y") so the
   // mega-paragraph splitter doesn't treat them as a bare ingredient before the qty.
   raw = raw.replace(/^\s*(?:scant|heaping|lightly|generous|generously|rounded|level|packed)\s+(?=\d)/i, '').trim();
+  // "X & Y, for serving/garnish/topping" / "X + Y, for serving" — split into 2
+  // when the line has no qty/unit and ends with a serving suffix.
+  // Example: "Extra cranberries & cilantro" / "avocado wedges + sesame seeds, for serving"
+  {
+    const ampPlusM = raw.match(/^\s*(?:extra\s+|fresh\s+|optional[:,\s]+)?([\w\s-]+?)\s*[&+]\s*([\w\s-]+?)(\s*,?\s*(?:for\s+(?:serving|garnish(?:ing)?|topping)|to\s+(?:serve|garnish|top))\b.*)?$/i);
+    if (ampPlusM && !/\d/.test(ampPlusM[1] + ampPlusM[2])) {
+      const left = ampPlusM[1].trim();
+      const right = ampPlusM[2].trim();
+      const suffix = ampPlusM[3] || '';
+      if (left.length > 1 && right.length > 1 && left.split(/\s+/).length <= 4 && right.split(/\s+/).length <= 4) {
+        return [`${left}${suffix}`, `${right}${suffix}`];
+      }
+    }
+  }
   // Pre-strip "(or any X like Y, Z)" parenthetical alternatives BEFORE splitting.
   // Otherwise the splitter sees the "or"/commas inside parens and splits incorrectly.
   raw = raw.replace(/\s*\(\s*or\s+(?:any\s+)?[^)]+\)/gi, '').trim();
@@ -958,6 +972,55 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'center-cut salmon filets':'salmon filets', 'center cut salmon filets':'salmon filets',
   'center-cut salmon filet':'salmon filet', 'center cut salmon filet':'salmon filet',
   'center-cut, skin-on salmon fillets':'salmon fillets',
+  // Round 62 — fuzzy-match conversion to exact (batch 3)
+  't flour':'all-purpose flour','t  flour':'all-purpose flour',
+  't dill':'fresh dill','t fresh chopped dill':'fresh dill',
+  'mozzarella cheese slices':'mozzarella cheese','slices mozzarella cheese':'mozzarella cheese',
+  'garlic bread':'',
+  'havarti':'havarti cheese','havarti dill cheese':'havarti cheese',
+  'bone-in skin-on chicken legs thighs':'bone-in skin-on chicken thighs','bone-in skin-on chicken legs, thighs, drumsticks':'bone-in skin-on chicken thighs',
+  'cucumbers tossed in rice wine vinegar':'cucumbers',
+  'anchovy fillets packet in oil':'anchovy fillets in oil','anchovy fillets in oil':'anchovy fillets in oil',
+  'lemon juice (from':'lemon juice',
+  'head of romaine lettuce':'romaine lettuce','large head of romaine lettuce':'romaine lettuce',
+  'quinoa dry':'quinoa',
+  'corn canned':'canned corn',
+  'cranberries & cilantro':'cranberries','extra cranberries & cilantro':'cranberries',
+  'flat- leaf parsley':'fresh italian parsley','flat-leaf parsley':'fresh italian parsley',
+  'kale tough stems removed':'kale','finely-chopped kale tough stems removed':'kale',
+  'leaves iceberg lettuce':'iceberg lettuce',
+  'peruvian black olives olives':'black olives','peruvian black olives or kalamata olives':'black olives',
+  'boneless skinless chicken breast 2-inch':'boneless skinless chicken breast','boneless skinless chicken breast 2-inch cubed':'boneless skinless chicken breast',
+  'dehydrated onion':'dehydrated onion','dehydrated minced onion':'dehydrated onion',
+  'uncured bacon':'bacon','raw uncured bacon':'bacon',
+  'avocado wedges + sesame seeds':'avocado',
+  'cauliflower rice frozen':'cauliflower rice',
+  'heart of romaine':'romaine lettuce','hearts of romaine lettuce':'romaine lettuce','heart of romaine lettuce':'romaine lettuce',
+  'mushrooms stemmed':'mushrooms',
+  'grated parmesan cheese-reggiano':'parmesan cheese','grated parmesan-reggiano':'parmesan cheese',
+  'lemongrass stalks bottom third only tough outer layers removed':'lemongrass',
+  'serrano chiles with seeds if you want some heat':'serrano pepper','serrano chiles':'serrano pepper',
+  'crowns broccoli':'broccoli',
+  'water the thin':'water',
+  'frozen mixed peas & carrot':'frozen mixed peas and carrots','frozen mixed peas and carrots':'frozen mixed peas and carrots',
+  'russet potatoes (-':'russet potatoes',
+  'bacon pieces':'bacon','pieces bacon':'bacon',
+  'radicchio head':'radicchio',
+  'or panko breadcrumbs':'panko breadcrumbs','fresh or panko breadcrumbs':'panko breadcrumbs',
+  'cayenne more':'cayenne pepper',
+  'lime wedges for spritzing':'lime',
+  'chicken breast fillets':'chicken breast','small chicken breast fillets':'chicken breast',
+  'grass fed ground beef':'grass-fed ground beef',
+  'zucchini grated on a box grater':'zucchini',
+  'super firm tofu':'extra firm tofu','super firm high-protein tofu':'extra firm tofu',
+  'fresh ginger root slices':'fresh ginger','thin slices of fresh ginger root':'fresh ginger',
+  '(950-1070 ml) vegetable':'vegetable broth',
+  'sprouts basil leaves':'sprouts',
+  'boneless skinless chicken breast halves':'boneless skinless chicken breast',
+  'salsa sour cream':'salsa','salsa and sour cream':'salsa',
+  'skin-on salmon portions':'salmon',
+  'kale de-stemmed +':'kale','organic kale de-stemmed':'kale',
+  'herbs (like cilantro':'fresh herbs',
   // Round 61 — fuzzy-match conversion to exact (batch 2 of fuzzy CSV)
   'rib celery':'celery','rib  celery':'celery',
   'full-fat plain greek yogurt':'full-fat greek yogurt','plain full-fat greek yogurt':'full-fat greek yogurt',
