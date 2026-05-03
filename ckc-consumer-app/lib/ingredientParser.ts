@@ -830,6 +830,17 @@ export function splitIngredientLine(raw: string): string[] {
     return 'XPRN' + (passParens.length - 1) + 'X';
   });
   const restorePass = (s: string) => s.replace(/XPRN(\d+)X/g, (_, i) => passParens[parseInt(i, 10)] || '');
+  // Serving-list ALTERNATIVES: if line has trailing serving suffix AND uses " or "
+  // somewhere, treat the entire comma+or list as alternatives. Pick the FIRST item.
+  //   "pita, naan or some sort of flatbread or couscous or rice, for serving" → "pita"
+  // (Recipe authors put the most appropriate option first.)
+  if (trailingSuffix && /\bor\b/i.test(passMasked)) {
+    const firstAlt = passMasked.split(/,\s*|\s+\bor\b\s+/i)[0].trim();
+    if (firstAlt) {
+      const restored = restorePass(firstAlt);
+      return [restored + trailingSuffix];
+    }
+  }
   const commaParts = passMasked.split(/,\s*/).map(restorePass);
   let working: string[];
   if (commaParts.length > 1) {
@@ -910,31 +921,27 @@ export function splitIngredientLine(raw: string): string[] {
         break;
       }
       if (isServingOr) {
+        // " or " in a serving/garnish list = ALTERNATIVES (recipe author offering
+        // a choice). Pick the FIRST option only — recipe authors put the
+        // most-appropriate option first (e.g. "pita, naan or rice" in a
+        // Mediterranean recipe → pita; "naan or rice" in an Indian recipe → naan).
         const beforeLastWord = before.split(/\s+/).pop()?.toLowerCase() || '';
         const afterLastWord  = after.split(/\s+/).pop()?.toLowerCase() || '';
-        // Variety alternative: same noun on both sides ("white rice or brown rice")
-        // OR before is missing a noun ("Steamed white or brown rice" — before="Steamed
-        // white" has no DB ingredient, after="brown rice" does). Keep first only;
-        // parser's OR collapse will append the noun to single-word firsts.
         const beforeHasNoun = endsWithKnownIngredient(before);
         const afterHasNoun  = endsWithKnownIngredient(after);
-        const sameNoun = beforeLastWord && beforeLastWord === afterLastWord;
-        if (sameNoun) {
-          final.push(before);
-          didSplit = true;
-          break;
-        }
         if (!beforeHasNoun && afterHasNoun) {
           // Before is just an adjective ("Steamed white"); append the noun
           // from after ("brown rice" → "rice") so the result is complete.
           //   "Steamed white or brown rice" → "Steamed white rice"
-          //   "2 tbsp vegetable or coconut oil" → "2 tbsp vegetable oil"
           final.push(`${before} ${afterLastWord}`);
-          didSplit = true;
-          break;
+        } else {
+          // Alternatives — keep first only (drop the rest).
+          final.push(before);
         }
+        didSplit = true;
+        break;
       }
-      if ((endsWithKnownIngredient(before) && endsWithKnownIngredient(after)) || isServingOr) {
+      if (endsWithKnownIngredient(before) && endsWithKnownIngredient(after)) {
         final.push(before, after);
         didSplit = true;
         break;

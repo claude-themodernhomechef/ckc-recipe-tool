@@ -142,20 +142,24 @@ const FALLBACK_GRAMS: Record<string, number> = {
 
 // Standard gram weights for count-based items (no unit).
 // User standard: 1 chicken breast = 4 oz (raw), no cooking yield adjustment.
+// IMPORTANT: For bone-in cuts, these weights represent EDIBLE PORTION (meat+skin,
+// without bone) — because the per-100g nutrition values in our DB are sourced
+// from Edamam/USDA edible-portion data. Using whole-piece weight × edible-portion
+// kcal would over-count by ~30% for bone-in cuts.
 const STANDARD_GRAMS: Record<string, number> = {
-  // Proteins — poultry
-  // Per-piece standards (raw weight):
-  //   bone-in chicken breast = 10 oz (283g) — most-restrictive default for bone-in
-  //   bone-in chicken thigh  =  6 oz (170g)
-  //   boneless skinless chicken breast = 8 oz (227g)
-  //   boneless skinless chicken thigh  = 4 oz (113g)
+  // Proteins — poultry (edible portion, raw)
+  // Per-piece standards:
+  //   bone-in chicken breast: whole ≈ 283g (10 oz), edible ≈ 225g (skin+meat, no bone)
+  //   bone-in chicken thigh:  whole ≈ 170g (6 oz),  edible ≈ 120g
+  //   boneless skinless chicken breast = 8 oz (227g) — already edible
+  //   boneless skinless chicken thigh  = 4 oz (113g) — already edible
   // The lookup uses partial-key matching, so longer keys win when present.
-  'bone-in chicken breast':         283,
-  'bone in chicken breast':         283,
-  'bone-in skin-on chicken breast': 283,
-  'bone-in chicken thigh':          170,
-  'bone in chicken thigh':          170,
-  'bone-in skin-on chicken thigh':  170,
+  'bone-in chicken breast':         225,
+  'bone in chicken breast':         225,
+  'bone-in skin-on chicken breast': 225,
+  'bone-in chicken thigh':          120,
+  'bone in chicken thigh':          120,
+  'bone-in skin-on chicken thigh':  120,
   'boneless skinless chicken breast': 227,
   'skinless boneless chicken breast': 227,
   'boneless chicken breast':          227,
@@ -165,9 +169,9 @@ const STANDARD_GRAMS: Record<string, number> = {
   // Generic fallbacks: assume boneless/skinless when not specified
   'chicken breast':        227,  // 8 oz raw (boneless/skinless default)
   'chicken thigh':         113,  // 4 oz raw (boneless/skinless default)
-  'chicken leg':           170,  // 6 oz (bone-in)
-  'chicken drumstick':      85,
-  'chicken wing':           30,
+  'chicken leg':           120,  // bone-in leg, edible portion (~6 oz whole, 30% bone)
+  'chicken drumstick':      55,  // edible (~85g whole, ~35% bone)
+  'chicken wing':           20,  // edible (~30g whole)
   'turkey breast':         227,
   // Proteins — seafood
   // Generic fish filet default = 6 oz (170g) per piece (raw, skin-on)
@@ -191,8 +195,8 @@ const STANDARD_GRAMS: Record<string, number> = {
   'tuna steak':            170,
   'shrimp':                  7,  // per piece (medium)
   'prawn':                   8,
-  // Proteins — meat (large cuts)
-  'pork chop':             170,   // 6 oz
+  // Proteins — meat (large cuts) — bone-in cuts use edible portion
+  'pork chop':             140,   // bone-in pork chop edible (~6 oz whole, ~20% bone)
   'pork tenderloin':       454,   // full tenderloin ≈ 1 lb
   'pork shoulder':         907,   // 2 lb for 1 count
   'pork shoulder roast':   907,
@@ -200,12 +204,12 @@ const STANDARD_GRAMS: Record<string, number> = {
   'baby back ribs':        900,   // full rack ≈ 2 lbs
   'spare ribs':            800,   // full rack
   'pork ribs':             900,
-  'short rib':             200,   // 1 bone-in short rib ≈ 7 oz
-  'beef short rib':        200,
+  'short rib':             140,   // bone-in short rib edible (~7 oz whole, 30% bone)
+  'beef short rib':        140,
   'brisket':              1000,   // 1 count = ~1 slab
-  'lamb chop':             170,
+  'lamb chop':             120,   // bone-in lamb chop edible (~6 oz whole)
   'leg of lamb':          1800,   // boneless leg ≈ 4 lbs
-  'lamb shank':            300,   // 1 shank ≈ 10 oz
+  'lamb shank':            210,   // bone-in lamb shank edible (~10 oz whole, ~30% bone)
   'steak':                 170,   // 6 oz default
   'beef patty':            113,
   'rack of lamb':          680,   // 1 rack ≈ 1.5 lbs
@@ -725,11 +729,14 @@ async function main() {
       }
 
       // Clean leftover weight/container prefixes in name (parser edge cases)
+      // NOTE: do NOT strip 'bone-in' / 'skin-on' / 'boneless' / 'skinless' here —
+      // these descriptors are critical for STANDARD_GRAMS lookup (bone-in chicken
+      // thigh = 170g, boneless = 113g — almost 50% difference in weight).
       const cleanedName = parsed.name
         .replace(/^\d+(?:\.\d+)?-?\s*(?:pound|lb|ounce|oz|gram|kg)s?\s*/i, '') // "4-pound …"
         .replace(/^-\s*(?:pound|lb|ounce|oz|gram|kg)s?\s*/i, '')               // "-pound …"
-        .replace(/^(?:package|bag|jar|can|loaf|rack|fillet|bundle)\s+/i, '')   // "package …"
-        .replace(/^(?:bone-?in|boneless|skinless|skin-?on|whole|full\s+racks?\s+(?:of\s+)?)\s*/i, '') // prep adjectives
+        .replace(/^(?:package|bag|jar|can|loaf|rack|bundle)\s+/i, '')          // "package …"
+        .replace(/^(?:whole|full\s+racks?\s+(?:of\s+)?)\s*/i, '')              // 'whole' / 'full rack of'
         .trim();
       const ingName = cleanedName || parsed.name;
 
@@ -766,6 +773,51 @@ async function main() {
         nutrition,
         ...(assumedDefault ? { assumed: true, assumedDefault } : {}),
       });
+    }
+
+    // Breadcrumb-as-coating cap: if recipe uses whole-piece protein (chicken
+    // pieces, fish fillets, pork chops) AND has breadcrumbs, AND no ground
+    // meat / pasta, treat the breadcrumbs as a coating. Cap the breadcrumb
+    // contribution at 2/3 cup per pound of protein (≈72g per pound of protein).
+    // Excess breadcrumbs in the recipe don't all stick to the protein, so
+    // shouldn't be counted in nutrition.
+    {
+      const isBreadcrumb = (n: string) =>
+        /\b(?:bread\s*crumb|breadcrumb|panko)/i.test(n);
+      const isWholePieceProtein = (n: string) =>
+        /\b(?:chicken\s+(?:thighs?|breasts?|legs?|wings?|drumsticks?|pieces?|fillets?|tenders?)|salmon\s+fillets?|cod\s+fillets?|tilapia|halibut|sea\s+bass|fish\s+fillets?|fish\s+filets?|pork\s+chops?|pork\s+tenderloins?|lamb\s+chops?|steak|tuna\s+steaks?)\b/i.test(n);
+      const isDisqualifier = (n: string) =>
+        /\b(?:ground\s+(?:beef|turkey|chicken|pork|lamb)|minced\s+(?:beef|turkey|chicken|pork)|meatball|meatloaf|pasta|noodles?|spaghetti|fettuccine|penne|rigatoni|lasagn|cavatelli|orzo|couscous)\b/i.test(n);
+
+      const breadcrumbItems = ingredientResults.filter(r =>
+        r.matched && r.name && isBreadcrumb(r.name));
+      const proteinItems = ingredientResults.filter(r =>
+        r.matched && r.name && isWholePieceProtein(r.name));
+      const disqualifies = ingredientResults.some(r =>
+        r.name && isDisqualifier(r.name));
+
+      if (breadcrumbItems.length > 0 && proteinItems.length > 0 && !disqualifies) {
+        // Sum up the protein grams (whole-recipe)
+        const proteinGrams = proteinItems.reduce((sum, r) => sum + (r.grams || 0), 0);
+        const proteinLbs = proteinGrams / 453.59;
+        const capGrams = proteinLbs * 72; // 2/3 cup × 108g/cup ≈ 72g per lb of protein
+        for (const bc of breadcrumbItems) {
+          if (bc.grams > capGrams && bc.dbLabel) {
+            const ratio = capGrams / bc.grams;
+            // Scale nutrition values proportionally
+            if (bc.nutrition) {
+              for (const k of Object.keys(bc.nutrition)) {
+                if (typeof bc.nutrition[k] === 'number') {
+                  bc.nutrition[k] = +(bc.nutrition[k] * ratio).toFixed(2);
+                }
+              }
+            }
+            bc.cappedFromGrams = bc.grams;
+            bc.grams = Math.round(capGrams * 10) / 10;
+            bc.coatingCap = true;
+          }
+        }
+      }
     }
 
     const mainItems    = ingredientResults.filter(r => r.nutrition && !r.garnish);
