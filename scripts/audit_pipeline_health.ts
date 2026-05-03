@@ -66,6 +66,8 @@ const FORM_MODIFIERS_NUTRITION: RegExp[] = [
   /\bskin[\s-]?on\b/g, /\bskinless\b/g,
   /\bfull[\s-]?fat\b/g, /\blow[\s-]?fat\b/g, /\bfat[\s-]?free\b/g, /\bnonfat\b/g,
   /\blow[\s-]?sodium\b/g, /\breduced[\s-]?sodium\b/g,
+  /\breduced[\s-]?fat\b/g,
+  /\b\d+%?\s*lean\b/g,
   /\bcrumbled\b/g, /\bshelled\b/g,
   /\bhead\b/g, /\bsticks?\b/g, /\bstrips?\b/g, /\bsprigs?\b/g, /\bstalks?\b/g,
 ];

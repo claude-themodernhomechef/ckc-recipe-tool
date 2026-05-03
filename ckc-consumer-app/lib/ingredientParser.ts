@@ -522,7 +522,7 @@ export function splitIngredientLine(raw: string): string[] {
   // The "add garnishes" toggle in the consumer app can then conditionally
   // include/exclude these from the shopping list and nutrition totals.
   {
-    const garnishM = raw.match(/^(?:optional\s+|suggested\s+|recommended\s+)?(?:garnishes?|toppings?|filling\s+additions?|add[\s-]?ins?)\s*[:.\-—]\s*(.+)$/i);
+    const garnishM = raw.match(/^(?:optional\s+|suggested\s+|recommended\s+)?(?:garnishes?|toppings?|filling\s+additions?|add[\s-]?ins?|additions?|add[\s-]?in\s+for\s+\w+)\s*[:.\-—]\s*(.+)$/i);
     if (garnishM) {
       const items = garnishM[1].split(/,\s*(?!and\b)|(?:,\s*)?\s+and\s+/i).map(s => s.trim()).filter(Boolean);
       return items.map(item => `${item}, for garnish`);
@@ -852,6 +852,22 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'center-cut salmon filets':'salmon filets', 'center cut salmon filets':'salmon filets',
   'center-cut salmon filet':'salmon filet', 'center cut salmon filet':'salmon filet',
   'center-cut, skin-on salmon fillets':'salmon fillets',
+  // Round 38 — additional aliases
+  'chipotle chiles in adobo':'chipotle peppers in adobo',
+  'chipotle chile in adobo':'chipotle peppers in adobo',
+  'aji amarillo paste':'aji amarillo paste','aji amarillo':'aji amarillo paste',
+  'aji amarillo chile paste':'aji amarillo paste',
+  'aji amarillo paste chile paste':'aji amarillo paste',
+  'aleppo pepper':'aleppo pepper','aleppo pepper pepper flakes':'aleppo pepper',
+  'all-natural garlic powder':'garlic powder','natural garlic powder':'garlic powder',
+  'all purpose flour':'flour','all-purpose flour':'flour',
+  'all purpose flour 1 tbsp':'flour',
+  '750-milliliter bottle of red wine':'red wine','bottle of red wine':'red wine',
+  '1/3 less fat cream cheese':'reduced-fat cream cheese',
+  'fresh baby spinach':'baby spinach',
+  '6-8 oz boneless pork chops':'boneless pork chops',
+  '6 salmon fillet portions':'salmon fillets',
+  '6 salmon fillet portions (skin on':'salmon fillets',
   // Round 36 — paren-prefix container forms (user wants 'canned' kept)
   'potato gnocchi':'potato gnocchi','gnocchi':'potato gnocchi',
   'beef chuck roast':'beef chuck roast','chuck roast':'beef chuck roast',
@@ -1029,8 +1045,8 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'natural yoghurt':'yogurt', 'natural yogurt':'yogurt', 'yoghurt':'yogurt',
   'greek yoghurt':'greek yogurt', 'plain greek yoghurt':'plain greek yogurt',
   '0% fat greek yoghurt':'fat free greek yogurt', '0% greek yoghurt':'fat free greek yogurt',
-  '90% lean ground beef':'ground beef', '93% lean ground beef':'ground beef',
-  '93% lean ground turkey':'ground turkey', '99% lean ground turkey':'ground turkey',
+  // Round 38: removed '90% lean ground beef' → 'ground beef' aliases
+  // (user prefers '<N>% lean ground X' form preserved; nutrition lookup falls back via FORM_MODIFIERS_NUTRITION strip)
   'mini cucumbers':'cucumber', 'mini cucumber':'cucumber',
   'baby cucumbers':'cucumber', 'baby cucumber':'cucumber',
   'persian cucumber':'cucumber', 'persian cucumbers':'cucumber',
@@ -1357,8 +1373,15 @@ export function parseIngredient(raw: string): {
     .replace(/,\s*washed(?:\s+and\s+\w+)?\s*$/i, '')
     // Semicolon list: drop everything from ";" onward (entities decoded above)
     .replace(/;[^]*$/, '')
-    // "<N>% lean ground X" → "ground X" (fat% irrelevant for shopping)
-    .replace(/\b\d+\s*%\s+lean\s+ground\s+/gi, 'ground ')
+    // Normalize fat-percent prefix forms (user prefers '85% lean ground X' form):
+    //   "85/15 ground turkey"  → "85% lean ground turkey"
+    //   "93% ground chicken"   → "93% lean ground chicken"
+    //   "85% lean ground beef" → unchanged (already canonical)
+    .replace(/\b(\d+)\/\d+\s+ground\s+/gi, '$1% lean ground ')
+    .replace(/\b(\d+)%\s+ground\s+/gi, (m, n) => `${n}% lean ground `)
+    .replace(/\b(\d+)%\s+lean\s+lean\s+/gi, '$1% lean ')
+    // "1/3 less fat" → "reduced-fat"
+    .replace(/\b1\/3\s+less\s+fat\b/gi, 'reduced-fat')
     // "a few" / "few" as a count → 2 (matches user spec for sprigs/etc.)
     .replace(/^a\s+few\s+/i, '2 ')
     .replace(/^few\s+/i, '2 ')
