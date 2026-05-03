@@ -194,6 +194,13 @@ const BASELINE_DB: Record<string, string> = {
   'center cut bacon':'protein','center-cut bacon':'protein',
   'center-cut salmon':'protein','center cut salmon':'protein',
   'salmon filets':'protein','center-cut salmon filets':'protein',
+  // Round 47 DB additions
+  "lawry's seasoning salt":'pantry-staples',"lawrys seasoning salt":'pantry-staples',
+  'seasoning salt':'pantry-staples',
+  '93% lean ground turkey':'protein','85% lean ground turkey':'protein','99% lean ground turkey':'protein',
+  '85% lean ground beef':'protein','90% lean ground beef':'protein','93% lean ground beef':'protein',
+  'fresh sage':'produce','fresh thyme':'produce','fresh rosemary':'produce',
+  'pickled ginger':'pantry-staples','lacinato kale':'produce','pork belly':'protein',
   // Round 46 DB additions
   'key limes':'produce','key lime':'produce',
   'kalamata olives':'pantry-staples','kalamata olive':'pantry-staples',
@@ -904,6 +911,18 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'center-cut salmon filets':'salmon filets', 'center cut salmon filets':'salmon filets',
   'center-cut salmon filet':'salmon filet', 'center cut salmon filet':'salmon filet',
   'center-cut, skin-on salmon fillets':'salmon fillets',
+  // Round 47 — long-tail
+  'jarred pickled ginger + 2 tablespoons juice':'pickled ginger',
+  'jarred pickled ginger':'pickled ginger',
+  'kosher salt to season':'salt',
+  'lacinto':'lacinato kale','dino kale':'lacinato kale',
+  'largely carrots':'carrots','largely chopped carrots':'carrots',
+  'lean ground turkey':'93% lean ground turkey',
+  'lean skin-on pork belly':'pork belly','lean pork belly':'pork belly',
+  'leaves fresh sage 6 leaves + 1 tbsp':'fresh sage',
+  'leaves fresh sage':'fresh sage','leaves of fresh sage':'fresh sage',
+  'leaves from 8 sprigs fresh thyme':'fresh thyme',
+  'leaves from sprigs fresh thyme':'fresh thyme','leaves of fresh thyme':'fresh thyme',
   // Round 46 — long-tail
   'heavy cream/whipping cream':'heavy cream','heavy cream whipping cream':'heavy cream',
   'high olive oil':'olive oil','high quality olive oil':'olive oil',
