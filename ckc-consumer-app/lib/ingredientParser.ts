@@ -1034,7 +1034,7 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'labneh plain greek yogurt':'labneh','labneh plain greek yogurt or tzatziki':'labneh',
   'cayenne pepper chile flakes':'cayenne pepper','cayenne pepper or aleppo chile flakes':'cayenne pepper',
   'skinless chicken breasts boneless & skinless':'boneless skinless chicken breast',
-  'whole milk greek yogurt':'whole milk greek yogurt','thick whole milk greek yogurt':'whole milk greek yogurt',
+  'thick whole milk greek yogurt':'plain whole milk greek yogurt',
   'carrots parsnips':'carrots','roughly chopped carrots and parsnips':'carrots',
   'smoked chicken sausage':'chicken sausage','smoked cooked chicken sausage':'chicken sausage',
   'garlic cloves pressed through a garlic press':'garlic',
@@ -1235,8 +1235,8 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'boneless beef chuck (well-marbled':'beef chuck','boneless beef chuck':'beef chuck',
   'white boiling potato':'white potato','white boiling potatoes':'white potato',
   // Round 65 — fuzzy-match conversion to exact (batch 6)
-  'roasted tomatoes':'roasted tomatoes','medium tomatoes roasted':'roasted tomatoes',
-  'dried chilies':'dried chilies',
+  'medium tomatoes roasted':'fire roasted tomatoes',
+  'dried chilies':'dried red chilies',
   'kidney beans beans':'kidney beans','kidney beans or black beans':'kidney beans',
   'cheddar cheese slices':'cheddar cheese','slices cheddar cheese':'cheddar cheese',
   'slaw mix with cabbage':'coleslaw mix','slaw mix':'coleslaw mix',
@@ -1281,7 +1281,7 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'dates raisins':'dates','dates or golden raisins':'dates',
   'chinese mustard':'mustard','chinese hot mustard':'mustard',
   // Round 64 — fuzzy-match conversion to exact (batch 5)
-  'roasted tomatoes':'roasted tomatoes',  // canonical, expects own DB entry or fallback
+  // (round 71 maps roasted tomatoes → fire roasted tomatoes)
   'water (30 ml)':'water',
   'salsa or pico de gallo (homemade or storebought, 240 ml)':'salsa','salsa or pico de gallo':'salsa',
   'guacamole (homemade or storebought, 240 ml)':'guacamole',
@@ -1366,7 +1366,7 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'red bell pepper roasted':'roasted red peppers','red bell pepper roasted and peeled':'roasted red peppers',
   'tomatoes roasted':'roasted tomatoes','medium tomatoes roasted and peeled':'roasted tomatoes',
   'or ranch seasoning powder':'ranch seasoning','store-bought or homemade ranch seasoning powder':'ranch seasoning',
-  'plantain':'plantain','salted plantain or tortilla chips':'plantain chips',
+  'salted plantain or tortilla chips':'plantain chips',
   'capers in brine':'capers',
   'frozen veg':'frozen vegetables','frozen diced veg':'frozen vegetables','frozen mixed vegetables':'frozen vegetables',
   'bone':'',  // ambiguous splitter byproduct
@@ -1383,7 +1383,7 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   't dill':'fresh dill','t fresh chopped dill':'fresh dill',
   'mozzarella cheese slices':'mozzarella cheese','slices mozzarella cheese':'mozzarella cheese',
   'garlic bread':'',
-  'havarti':'havarti cheese','havarti dill cheese':'havarti cheese',
+  // (round 71 maps havarti → havarti dill cheese, the actual DB key)
   'bone-in skin-on chicken legs thighs':'bone-in skin-on chicken thighs','bone-in skin-on chicken legs, thighs, drumsticks':'bone-in skin-on chicken thighs',
   'cucumbers tossed in rice wine vinegar':'cucumbers',
   'anchovy fillets packet in oil':'anchovy fillets in oil','anchovy fillets in oil':'anchovy fillets in oil',
@@ -1397,7 +1397,7 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'leaves iceberg lettuce':'iceberg lettuce',
   'peruvian black olives olives':'black olives','peruvian black olives or kalamata olives':'black olives',
   'boneless skinless chicken breast 2-inch':'boneless skinless chicken breast','boneless skinless chicken breast 2-inch cubed':'boneless skinless chicken breast',
-  'dehydrated onion':'dehydrated onion','dehydrated minced onion':'dehydrated onion',
+  'dehydrated minced onion':'dehydrated minced onion',
   'uncured bacon':'bacon','raw uncured bacon':'bacon',
   'avocado wedges + sesame seeds':'avocado',
   'cauliflower rice frozen':'cauliflower rice',
