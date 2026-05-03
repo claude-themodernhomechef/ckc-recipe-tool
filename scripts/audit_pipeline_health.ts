@@ -128,31 +128,31 @@ const HARDCODED_ALIASES: Record<string, string> = {
   'bbq sauce': 'barbecue sauce',
 };
 
-function lookupIngredient(name: string, ingDB: any, learnedAliases: Record<string, string>, _retry = false): { entry: any; via: string } {
-  if (!name) return { entry: null, via: 'no-name' };
+function lookupIngredient(name: string, ingDB: any, learnedAliases: Record<string, string>, _retry = false): { entry: any; via: string; key: string } {
+  if (!name) return { entry: null, via: 'no-name', key: '' };
   const lower = name.toLowerCase().trim();
 
   // Learned aliases (from Review Queue corrections) take priority
   if (learnedAliases[lower]) {
     const target = learnedAliases[lower];
-    if (ingDB[target]) return { entry: ingDB[target], via: 'learned-alias' };
+    if (ingDB[target]) return { entry: ingDB[target], via: 'learned-alias', key: target };
   }
 
-  if (ingDB[lower]) return { entry: ingDB[lower], via: 'exact' };
-  if (lower.endsWith('s') && ingDB[lower.slice(0, -1)]) return { entry: ingDB[lower.slice(0, -1)], via: 'plural-s' };
-  if (lower.endsWith('es') && ingDB[lower.slice(0, -2)]) return { entry: ingDB[lower.slice(0, -2)], via: 'plural-es' };
+  if (ingDB[lower]) return { entry: ingDB[lower], via: 'exact', key: lower };
+  if (lower.endsWith('s') && ingDB[lower.slice(0, -1)]) return { entry: ingDB[lower.slice(0, -1)], via: 'plural-s', key: lower.slice(0, -1) };
+  if (lower.endsWith('es') && ingDB[lower.slice(0, -2)]) return { entry: ingDB[lower.slice(0, -2)], via: 'plural-es', key: lower.slice(0, -2) };
 
   if (HARDCODED_ALIASES[lower] && ingDB[HARDCODED_ALIASES[lower]]) {
-    return { entry: ingDB[HARDCODED_ALIASES[lower]], via: 'hardcoded-alias' };
+    return { entry: ingDB[HARDCODED_ALIASES[lower]], via: 'hardcoded-alias', key: HARDCODED_ALIASES[lower] };
   }
 
   const firstWord = lower.split(' ')[0];
-  if (firstWord.length > 3 && ingDB[firstWord]) return { entry: ingDB[firstWord], via: 'first-word' };
+  if (firstWord.length > 3 && ingDB[firstWord]) return { entry: ingDB[firstWord], via: 'first-word', key: firstWord };
 
   const words = lower.split(' ').filter(w => w.length > 2);
   if (words.length > 0) {
     const match = Object.keys(ingDB).find(k => words.every(w => k.includes(w)));
-    if (match) return { entry: ingDB[match], via: 'partial' };
+    if (match) return { entry: ingDB[match], via: 'partial', key: match };
   }
 
   // Final fallback: strip prep words + form modifiers, retry once
@@ -160,11 +160,11 @@ function lookupIngredient(name: string, ingDB: any, learnedAliases: Record<strin
     const stripped = stripFormModifiers(stripPrepWords(lower));
     if (stripped && stripped !== lower) {
       const result = lookupIngredient(stripped, ingDB, learnedAliases, true);
-      if (result.entry) return { entry: result.entry, via: `prep-stripped:${result.via}` };
+      if (result.entry) return { entry: result.entry, via: `prep-stripped:${result.via}`, key: result.key };
     }
   }
 
-  return { entry: null, via: 'none' };
+  return { entry: null, via: 'none', key: '' };
 }
 
 // Same preprocessor as build_recipe_nutrition_v2.ts (handles "4-pound chicken" etc.)
@@ -323,6 +323,9 @@ async function main() {
   let totalIngredients = 0;
   let totalMatched     = 0;
   let totalSkipped     = 0;
+  const matchPathTally: Record<string, number> = {};
+  // Track fuzzy matches so we can convert them to exact aliases
+  const fuzzyMatches = new Map<string, { parsedName: string; matchedKey: string; via: string; recipes: Set<string>; examples: Set<string>; count: number }>();
 
   for (const recipe of recipes) {
     let matched = 0;
@@ -344,11 +347,20 @@ async function main() {
       totalIngredients++;
 
       const ingName = parsed.name.toLowerCase().trim();
-      const { entry } = lookupIngredient(ingName, ingDB, learnedAliases);
+      const { entry, via, key } = lookupIngredient(ingName, ingDB, learnedAliases);
 
       if (entry) {
         matched++;
         totalMatched++;
+        matchPathTally[via] = (matchPathTally[via] || 0) + 1;
+        // Track fuzzy matches so they can be reviewed
+        if (via === 'first-word' || via === 'partial' || via.startsWith('prep-stripped:first-word') || via.startsWith('prep-stripped:partial')) {
+          let f = fuzzyMatches.get(ingName);
+          if (!f) { f = { parsedName: ingName, matchedKey: key, via, recipes: new Set(), examples: new Set(), count: 0 }; fuzzyMatches.set(ingName, f); }
+          f.count++;
+          f.recipes.add(recipe.id);
+          if (f.examples.size < 3) f.examples.add(raw);
+        }
       } else {
         // Tally unmatched
         let t = unmatched.get(ingName);
@@ -497,14 +509,29 @@ async function main() {
   console.log('TOP 10 UNMATCHED INGREDIENTS (by recipes affected):');
   top10Unmatched.forEach((u, i) => console.log(`  ${String(i + 1).padStart(2)}. ${u.name.padEnd(40)} ${u.recipes} recipes`));
   console.log('');
+  console.log('MATCH-PATH BREAKDOWN (how matches were resolved):');
+  const sortedPaths = Object.entries(matchPathTally).sort((a, b) => b[1] - a[1]);
+  for (const [path, n] of sortedPaths) {
+    const pct = ((n / totalMatched) * 100).toFixed(1);
+    console.log(`  ${path.padEnd(35)} ${String(n).padStart(6)}  (${pct}%)`);
+  }
+  console.log('');
   console.log('TOP 10 SHOPPING-CATEGORY MISSES:');
   top10CatMisses.forEach((c, i) => console.log(`  ${String(i + 1).padStart(2)}. ${c.name.padEnd(40)} ${c.recipes} recipes`));
   console.log('');
   console.log('TOP 10 DIET UNCERTAINTIES:');
   top10Diet.forEach((d, i) => console.log(`  ${String(i + 1).padStart(2)}. ${`${d.ingredient} (${d.protocol})`.padEnd(40)} ${d.recipes} recipes`));
   console.log('');
+  // Write fuzzy-match CSV for manual review
+  const fuzzyRows = Array.from(fuzzyMatches.values())
+    .sort((a, b) => b.recipes.size - a.recipes.size || b.count - a.count)
+    .map(f => [f.parsedName, f.matchedKey, f.via, f.recipes.size, f.count, Array.from(f.examples).join(' | ')]);
+  writeCSV('data/audit_fuzzy_matches.csv', fuzzyRows,
+    ['parsed_name', 'matched_to_db_key', 'via', 'recipes_affected', 'total_occurrences', 'example_raw_strings']);
+
   console.log('Files written to data/:');
   console.log('  • audit_unmatched_ingredients.csv');
+  console.log('  • audit_fuzzy_matches.csv  (NEW: review fuzzy matches → add as exact aliases)');
   console.log('  • audit_category_misses.csv');
   console.log('  • audit_diet_uncertainties.csv');
   console.log('  • audit_low_matchrate_recipes.csv');
