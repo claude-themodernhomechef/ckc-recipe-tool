@@ -3381,8 +3381,8 @@ export function parseIngredient(raw: string): {
   // actual purchase quantity.
   //   "2 cups Shredded Chicken (10-12 ounces)" → strip "(10-12 ounces)" as note,
   //   keep "2 cups" as the actual qty.
-  if (/^\d[\d\s.\/-]*\s*(?:cups?|tbsp|tablespoons?|tsp|teaspoons?|lbs?|pounds?)\b/i.test(str)) {
-    str = str.replace(/\s*\(\s*\d+(?:\.\d+)?(?:\s*[-–]\s*(?:to\s+)?\d+(?:\.\d+)?)?\s*(?:oz|ounce|g|gram|lb|pound)s?\.?\s*\)/gi, '').trim();
+  if (/^\d[\d\s.\/-]*\s*(?:cups?|tbsp|tablespoons?|tsp|teaspoons?|lbs?|pounds?|g|grams?|kg|oz|ounces?)\b/i.test(str)) {
+    str = str.replace(/\s*\(\s*\d+(?:\.\d+)?(?:\s*[-–]\s*(?:to\s+)?\d+(?:\.\d+)?)?\s*(?:oz|ounce|g|gram|lb|pound|ml|milliliter)s?\.?\s*\)/gi, '').trim();
   }
   // Strip "Use leftover X" / "Use X" / similar trailing recipe-author notes:
   //   "2 cups Shredded Chicken (10-12 ounces) Use leftover chicken, or use rotisserie chicken"
