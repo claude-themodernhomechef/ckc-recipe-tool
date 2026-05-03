@@ -194,6 +194,10 @@ const BASELINE_DB: Record<string, string> = {
   'center cut bacon':'protein','center-cut bacon':'protein',
   'center-cut salmon':'protein','center cut salmon':'protein',
   'salmon filets':'protein','center-cut salmon filets':'protein',
+  // Round 44 DB additions
+  'candied walnuts':'pantry-staples','candied pecans':'pantry-staples',
+  'gluten-free pasta':'pantry-staples',
+  'garam masala':'pantry-staples','grapefruit':'produce','grapefruit zest':'produce',
   // Round 43 DB additions
   'fried almonds':'pantry-staples',
   'fingerling potatoes':'produce','baby back pork ribs':'protein','chicken sausage':'protein',
@@ -887,6 +891,22 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'center-cut salmon filets':'salmon filets', 'center cut salmon filets':'salmon filets',
   'center-cut salmon filet':'salmon filet', 'center cut salmon filet':'salmon filet',
   'center-cut, skin-on salmon fillets':'salmon fillets',
+  // Round 44 — long-tail (garnish lists already resolve via splitter; remaining aliases here)
+  'garam masala + 1/4 tsp':'garam masala',
+  'garnish: 1-2 tablespoons italian parsley':'fresh italian parsley',
+  'garnish: fresh cilantro lime':'fresh cilantro',
+  'garnish: fresh parsley':'fresh parsley',
+  'generous handfuls baby spinach':'baby spinach','generous handful baby spinach':'baby spinach',
+  'ginger- cut across the grain slices':'fresh ginger','ginger cut across the grain':'fresh ginger',
+  'glazed walnuts':'candied walnuts',
+  'gluten-free pasta of choice':'gluten-free pasta','gluten-free fusilli':'gluten-free pasta',
+  'goat cheese crumbles':'goat cheese',
+  'good-quality mayonnaise':'mayonnaise','good quality mayonnaise':'mayonnaise',
+  'good-quality olive oil':'olive oil','good quality olive oil':'olive oil',
+  'granulated garlic powder':'garlic powder','granulated garlic':'garlic powder',
+  'grapefruit zest plus 1 tablespoon juice':'grapefruit',
+  'greek feta cheese in brine':'feta cheese','feta cheese in brine':'feta cheese',
+  'block greek feta cheese in brine':'feta cheese',
   // Round 43 — long-tail
   'egg-free garlic aioli regular mayo':'mayo','egg-free garlic aioli':'mayo',
   'elbow-style pasta':'pasta',
