@@ -9141,27 +9141,27 @@
   "white rice": {
     "source": "usda",
     "foodId": "food_bpumdjzb5rtqaeabb0kbgbcgr4t9",
-    "label": "white rice (cooked, USDA)",
+    "label": "white rice",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 130,
+        "value": 360,
         "unit": "kcal"
       },
       "protein": {
-        "value": 2.7,
+        "value": 6.61,
         "unit": "g"
       },
       "fat": {
-        "value": 0.3,
+        "value": 0.58,
         "unit": "g"
       },
       "carbs": {
-        "value": 28.2,
+        "value": 79.3,
         "unit": "g"
       },
       "fiber": {
-        "value": 0.4,
+        "value": 1.3,
         "unit": "g"
       }
     },
@@ -10679,27 +10679,27 @@
   "jasmine rice": {
     "source": "usda",
     "foodId": "food_a3g7g0kb4xvknbbdl91t8a19a6ci",
-    "label": "jasmine rice (cooked, USDA)",
+    "label": "jasmine rice",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 129,
+        "value": 365,
         "unit": "kcal"
       },
       "protein": {
-        "value": 2.7,
+        "value": 7.13,
         "unit": "g"
       },
       "fat": {
-        "value": 0.3,
+        "value": 0.66,
         "unit": "g"
       },
       "carbs": {
-        "value": 28,
+        "value": 78.6,
         "unit": "g"
       },
       "fiber": {
-        "value": 0.5,
+        "value": 1.4,
         "unit": "g"
       }
     },
@@ -11567,27 +11567,27 @@
   "quinoa": {
     "source": "usda",
     "foodId": "food_a0d1h1cbporq98adlzq8tadghm2a",
-    "label": "quinoa (cooked, USDA)",
+    "label": "quinoa",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 120,
+        "value": 368,
         "unit": "kcal"
       },
       "protein": {
-        "value": 4.4,
+        "value": 14.1,
         "unit": "g"
       },
       "fat": {
-        "value": 1.92,
+        "value": 6.07,
         "unit": "g"
       },
       "carbs": {
-        "value": 21.3,
+        "value": 64.2,
         "unit": "g"
       },
       "fiber": {
-        "value": 2.8,
+        "value": 7,
         "unit": "g"
       }
     },
@@ -11985,27 +11985,27 @@
   "basmati rice": {
     "source": "usda",
     "foodId": "food_a3g7g0kb4xvknbbdl91t8a19a6ci",
-    "label": "basmati rice (cooked, USDA)",
+    "label": "basmati rice",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 130,
+        "value": 365,
         "unit": "kcal"
       },
       "protein": {
-        "value": 2.7,
+        "value": 7.13,
         "unit": "g"
       },
       "fat": {
-        "value": 0.3,
+        "value": 0.66,
         "unit": "g"
       },
       "carbs": {
-        "value": 28.2,
+        "value": 78.6,
         "unit": "g"
       },
       "fiber": {
-        "value": 0.4,
+        "value": 1.4,
         "unit": "g"
       }
     },
@@ -16486,27 +16486,27 @@
   "brown rice": {
     "source": "usda",
     "foodId": "food_aro09r9avsklizbsberuoaegj0uh",
-    "label": "brown rice (cooked, USDA)",
+    "label": "brown rice",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 123,
+        "value": 362,
         "unit": "kcal"
       },
       "protein": {
-        "value": 2.7,
+        "value": 7.5,
         "unit": "g"
       },
       "fat": {
-        "value": 1,
+        "value": 2.68,
         "unit": "g"
       },
       "carbs": {
-        "value": 25.6,
+        "value": 76.2,
         "unit": "g"
       },
       "fiber": {
-        "value": 1.6,
+        "value": 3.4,
         "unit": "g"
       }
     },
@@ -37409,27 +37409,27 @@
   "sushi rice": {
     "source": "usda",
     "foodId": "food_bpumdjzb5rtqaeabb0kbgbcgr4t9",
-    "label": "sushi rice (cooked, USDA)",
+    "label": "sushi rice",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 130,
+        "value": 360,
         "unit": "kcal"
       },
       "protein": {
-        "value": 2.7,
+        "value": 6.61,
         "unit": "g"
       },
       "fat": {
-        "value": 0.3,
+        "value": 0.58,
         "unit": "g"
       },
       "carbs": {
-        "value": 28.2,
+        "value": 79.3,
         "unit": "g"
       },
       "fiber": {
-        "value": 0.4,
+        "value": 1.3,
         "unit": "g"
       }
     },
@@ -42717,27 +42717,27 @@
   "long grain white rice": {
     "source": "usda",
     "foodId": "food_bpumdjzb5rtqaeabb0kbgbcgr4t9",
-    "label": "long grain white rice (cooked, USDA)",
+    "label": "long grain white rice",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 130,
+        "value": 360,
         "unit": "kcal"
       },
       "protein": {
-        "value": 2.7,
+        "value": 6.61,
         "unit": "g"
       },
       "fat": {
-        "value": 0.3,
+        "value": 0.58,
         "unit": "g"
       },
       "carbs": {
-        "value": 28.2,
+        "value": 79.3,
         "unit": "g"
       },
       "fiber": {
-        "value": 0.4,
+        "value": 1.3,
         "unit": "g"
       }
     },
@@ -86654,27 +86654,27 @@
   "short-grain white rice": {
     "source": "usda",
     "foodId": "food_bpumdjzb5rtqaeabb0kbgbcgr4t9",
-    "label": "short-grain white rice (cooked, USDA)",
+    "label": "short-grain white rice",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 130,
+        "value": 360,
         "unit": "kcal"
       },
       "protein": {
-        "value": 2.7,
+        "value": 6.61,
         "unit": "g"
       },
       "fat": {
-        "value": 0.3,
+        "value": 0.58,
         "unit": "g"
       },
       "carbs": {
-        "value": 28.2,
+        "value": 79.3,
         "unit": "g"
       },
       "fiber": {
-        "value": 0.4,
+        "value": 1.3,
         "unit": "g"
       }
     },
