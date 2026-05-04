@@ -1089,6 +1089,11 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'center-cut salmon filets':'salmon filets', 'center cut salmon filets':'salmon filets',
   'center-cut salmon filet':'salmon filet', 'center cut salmon filet':'salmon filet',
   'center-cut, skin-on salmon fillets':'salmon fillets',
+  // Round 75 — cooked protein aliases (proteins don't shift kcal much when cooked,
+  // unlike grains/legumes which need separate cooked DB entries).
+  'cooked salmon':'salmon','flaked cooked salmon':'salmon',
+  'cooked shrimp':'shrimp','cooked prawns':'shrimp',
+  'cooked beef':'ground beef',
   // Round 74 — pasta water is essentially water for nutrition purposes
   'pasta water':'water','reserved pasta water':'water',
   // Round 71 — final 9 cleanup (aliasing to actual DB keys, not idealized names)
@@ -3989,14 +3994,18 @@ export function parseIngredient(raw: string): {
     // Detect "<adj> or <adj-or-noun> <NOUN>" pattern where the trailing word of
     // the last part is a DB ingredient (the actual noun) AND it's different
     // from parts[0]'s last word — recipe author offering adjectives for the same
-    // noun. Combine: parts[0] + trailing noun.
-    //   "flour or corn tortillas" → "flour tortillas"
-    //   "white corn or flour tortillas" → "white corn tortillas"
-    //   "olive or avocado oil" → "olive oil"
-    // (Skip when parts[0] already ends with the same noun to avoid duplicates.)
+    // noun. Combine ONLY IF the combined form is a known DB ingredient (avoids
+    // bogus combos like "macadamia nuts almonds").
+    //   "flour or corn tortillas" → "flour tortillas" (in DB ✓)
+    //   "white corn or flour tortillas" → "white corn tortillas" (in DB ✓)
+    //   "macadamia nuts or almonds" → keeps parts[0] (combo not in DB)
+    const candidateCombo = lastWords.length > 1
+      ? `${parts[0]} ${lastWordOfLast}`.toLowerCase().trim()
+      : '';
     const sharedNoun = lastWords.length > 1
       && !!INGREDIENT_DB[lastWordOfLast]
-      && lastWordOfFirst !== lastWordOfLast;
+      && lastWordOfFirst !== lastWordOfLast
+      && !!INGREDIENT_DB[candidateCombo];
     if (sharedNoun) {
       name = `${parts[0]} ${lastWordOfLast}`.trim();
     } else if (firstWords.length === 1 && lastWords.length > 1 && !INGREDIENT_DB[parts[0].toLowerCase()]) {
