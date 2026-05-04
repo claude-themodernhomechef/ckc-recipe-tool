@@ -35843,29 +35843,29 @@
     ]
   },
   "russet potato": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_afrwmzdasusk6xbrfmvwzbsivujl",
     "label": "Potatoes, Russet",
     "category": "Packaged foods",
     "per100g": {
       "calories": {
-        "value": 24.28,
+        "value": 79,
         "unit": "kcal"
       },
       "protein": {
-        "value": 0.66,
+        "value": 2.1,
         "unit": "g"
       },
       "fat": {
-        "value": 0,
+        "value": 0.1,
         "unit": "g"
       },
       "carbs": {
-        "value": 5.74,
+        "value": 18,
         "unit": "g"
       },
       "fiber": {
-        "value": 0.44,
+        "value": 1.3,
         "unit": "g"
       }
     },
@@ -116923,40 +116923,44 @@
     ]
   },
   "party wings": {
-    "source": "edamam",
-    "foodId": "food_bbdiaiuafh70cabligi47b0dcn4n",
-    "label": "Party Wings",
-    "category": "Generic meals",
+    "source": "usda",
+    "foodId": "fdc_2120007",
+    "label": "Foster Farms Party Wings",
+    "category": "Poultry",
     "per100g": {
       "calories": {
-        "value": 207.13,
+        "value": 152,
         "unit": "kcal"
       },
       "protein": {
-        "value": 15.38,
+        "value": 13.5,
         "unit": "g"
       },
       "fat": {
-        "value": 13.41,
+        "value": 12,
         "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 3.2,
+        "unit": "g"
+      },
+      "cholesterol": {
+        "value": 87.5,
+        "unit": "mg"
+      },
+      "sodium": {
+        "value": 215,
+        "unit": "mg"
       },
       "carbs": {
-        "value": 5.41,
-        "unit": "g"
-      },
-      "fiber": {
-        "value": 0.37,
+        "value": 0,
         "unit": "g"
       }
     },
     "measures": [
       {
-        "label": "Whole",
-        "gramWeight": 210.6151109308253
-      },
-      {
         "label": "Serving",
-        "gramWeight": 210.6151109308253
+        "gramWeight": 112
       },
       {
         "label": "Gram",
@@ -116971,12 +116975,8 @@
         "gramWeight": 453.59237
       },
       {
-        "label": "Kilogram",
-        "gramWeight": 1000
-      },
-      {
-        "label": "Milliliter",
-        "gramWeight": 1
+        "label": "Wing",
+        "gramWeight": 30
       }
     ]
   },
@@ -170452,10 +170452,10 @@
     "_proxy_for": "bread crumbs"
   },
   "mini corn tortillas": {
-    "source": "edamam",
-    "foodId": "food_bhw0b95agm97s0abfignnb8fsvb3",
-    "label": "Corn Tortilla",
-    "category": "Generic foods",
+    "source": "usda",
+    "foodId": "fdc_corn_tortilla_mini",
+    "label": "Corn tortilla (mini, ~23g each)",
+    "category": "Bread",
     "per100g": {
       "calories": {
         "value": 218,
@@ -170476,43 +170476,30 @@
       "fiber": {
         "value": 6.3,
         "unit": "g"
+      },
+      "sodium": {
+        "value": 45,
+        "unit": "mg"
       }
     },
     "measures": [
       {
-        "label": "Whole",
-        "gramWeight": 24
-      },
-      {
-        "label": "Serving",
-        "gramWeight": 24
-      },
-      {
         "label": "Tortilla",
-        "gramWeight": 24
+        "gramWeight": 23
       },
       {
-        "label": "Enchilada",
-        "gramWeight": 19
+        "label": "Whole",
+        "gramWeight": 23
       },
       {
         "label": "Gram",
         "gramWeight": 1
       },
       {
-        "label": "Ounce",
-        "gramWeight": 28.349523125
-      },
-      {
-        "label": "Pound",
-        "gramWeight": 453.59237
-      },
-      {
-        "label": "Kilogram",
-        "gramWeight": 1000
+        "label": "Serving",
+        "gramWeight": 23
       }
-    ],
-    "_proxy_for": "corn tortillas"
+    ]
   },
   "dry pasta": {
     "source": "edamam",
@@ -184211,6 +184198,56 @@
       {
         "label": "Cup",
         "gramWeight": 202
+      }
+    ]
+  },
+  "mini corn tortilla": {
+    "source": "usda",
+    "foodId": "fdc_corn_tortilla_mini",
+    "label": "Corn tortilla (mini, ~23g each)",
+    "category": "Bread",
+    "per100g": {
+      "calories": {
+        "value": 218,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 5.7,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 2.85,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 44.6,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 6.3,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 45,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Tortilla",
+        "gramWeight": 23
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 23
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 23
       }
     ]
   }

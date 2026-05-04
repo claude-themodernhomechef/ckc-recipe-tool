@@ -1094,6 +1094,10 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'cooked salmon':'salmon','flaked cooked salmon':'salmon',
   'cooked shrimp':'shrimp','cooked prawns':'shrimp',
   'cooked beef':'ground beef',
+  // Round 77 — pasta in a "package" isn't "canned" — dry pasta is just pasta
+  'canned pasta':'pasta','canned spaghetti':'pasta','canned fettuccine':'fettuccine',
+  'canned penne':'penne','canned rigatoni':'rigatoni','canned linguine':'linguine',
+  'canned silken tofu':'silken tofu',  // tofu in block isn't canned either
   // Round 76 — cooked beans/legumes — DB beans entries are already cooked values
   'cooked black beans':'black beans','cooked chickpeas':'chickpeas',
   'cooked kidney beans':'kidney beans','cooked pinto beans':'pinto beans',

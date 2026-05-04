@@ -234,6 +234,8 @@ const STANDARD_GRAMS: Record<string, number> = {
   'tomato':                123,  // medium
   'cherry tomato':           8,
   'potato':                150,  // medium
+  'russet potato':         160,  // 1 medium russet (per Rafi)
+  'russet potatoes':       160,
   'sweet potato':          130,
   'beet':                  130,
   'corn':                  100,  // 1 ear, kernels only
