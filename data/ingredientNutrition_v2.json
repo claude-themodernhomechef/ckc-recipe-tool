@@ -184238,5 +184238,299 @@
         "gramWeight": 23
       }
     ]
+  },
+  "skin-on salmon fillet": {
+    "source": "usda",
+    "foodId": "fdc_173686",
+    "label": "Salmon, atlantic, farmed, raw, with skin",
+    "category": "Seafood",
+    "per100g": {
+      "calories": {
+        "value": 208,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 20.4,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 13.4,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 200
+      },
+      {
+        "label": "Fillet",
+        "gramWeight": 200
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      }
+    ]
+  },
+  "skin-on salmon fillets": {
+    "source": "usda",
+    "foodId": "fdc_173686",
+    "label": "Salmon, atlantic, farmed, raw, with skin",
+    "category": "Seafood",
+    "per100g": {
+      "calories": {
+        "value": 208,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 20.4,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 13.4,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 200
+      },
+      {
+        "label": "Fillet",
+        "gramWeight": 200
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      }
+    ]
+  },
+  "skin on salmon fillet": {
+    "source": "usda",
+    "foodId": "fdc_173686",
+    "label": "Salmon, atlantic, farmed, raw, with skin",
+    "category": "Seafood",
+    "per100g": {
+      "calories": {
+        "value": 208,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 20.4,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 13.4,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 200
+      },
+      {
+        "label": "Fillet",
+        "gramWeight": 200
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      }
+    ]
+  },
+  "skin on salmon fillets": {
+    "source": "usda",
+    "foodId": "fdc_173686",
+    "label": "Salmon, atlantic, farmed, raw, with skin",
+    "category": "Seafood",
+    "per100g": {
+      "calories": {
+        "value": 208,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 20.4,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 13.4,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 200
+      },
+      {
+        "label": "Fillet",
+        "gramWeight": 200
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      }
+    ]
+  },
+  "skin-on salmon": {
+    "source": "usda",
+    "foodId": "fdc_173686",
+    "label": "Salmon, atlantic, farmed, raw, with skin",
+    "category": "Seafood",
+    "per100g": {
+      "calories": {
+        "value": 208,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 20.4,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 13.4,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 200
+      },
+      {
+        "label": "Fillet",
+        "gramWeight": 200
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      }
+    ]
+  },
+  "salmon with skin": {
+    "source": "usda",
+    "foodId": "fdc_173686",
+    "label": "Salmon, atlantic, farmed, raw, with skin",
+    "category": "Seafood",
+    "per100g": {
+      "calories": {
+        "value": 208,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 20.4,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 13.4,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 200
+      },
+      {
+        "label": "Fillet",
+        "gramWeight": 200
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      }
+    ]
+  },
+  "whole salmon fillet": {
+    "source": "usda",
+    "foodId": "fdc_173686",
+    "label": "Salmon, atlantic, farmed, raw, with skin",
+    "category": "Seafood",
+    "per100g": {
+      "calories": {
+        "value": 208,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 20.4,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 13.4,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 200
+      },
+      {
+        "label": "Fillet",
+        "gramWeight": 200
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      }
+    ]
   }
 }

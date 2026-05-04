@@ -2915,9 +2915,9 @@ export function parseIngredient(raw: string): {
     /^one\s+(\d+(?:\.\d+)?)(?:\s*-\s*\d+(?:\.\d+)?)?\s*-?\s*(pound|lb|ounce|oz|kg|gram|g)s?\.?\s+(?:package|pkg|bag|can|jar|box|bottle|bunch|loaf|head)s?\s+/i,
     (_, n, u) => `${n} ${u} `
   );
-  // "1 16-ounce can X" / "1 4-5-pound chicken" — leading count + weight (no "one")
+  // "1 16-ounce can X" / "1 4-5-pound chicken" / "2 14-ounce blocks tofu" — leading count + weight (no "one")
   str = str.replace(
-    /^(\d+)\s+(\d+(?:\.\d+)?)(?:\s*-\s*\d+(?:\.\d+)?)?\s*-?\s*(pound|lb|ounce|oz|kg|gram|g)s?\.?\s+(?:package|pkg|bag|can|jar|box|bottle|bunch|loaf|head)s?\s+/i,
+    /^(\d+)\s+(\d+(?:\.\d+)?)(?:\s*-\s*\d+(?:\.\d+)?)?\s*-?\s*(pound|lb|ounce|oz|kg|gram|g)s?\.?\s+(?:package|pkg|bag|can|jar|box|bottle|bunch|loaf|head|block|tin|tub|carton)s?\s+/i,
     (_, n, w, u) => `${parseInt(n) * parseFloat(w)} ${u} `
   );
   // "1 3.5-4 lb chicken" / "1 3½-4 lb. chicken" — count + range weight (no container word) + noun
