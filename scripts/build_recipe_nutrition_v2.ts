@@ -173,9 +173,9 @@ const STANDARD_GRAMS: Record<string, number> = {
   'fish fillet':           170,
   'white fish filet':      170,
   'white fish fillet':     170,
-  'salmon':                170,  // 6 oz fillet default
-  'salmon filet':          170,
-  'salmon fillet':         170,
+  'salmon':                200,  // ~7 oz fillet — typical recipe portion
+  'salmon filet':          200,
+  'salmon fillet':         200,
   'cod filet':             170,
   'cod fillet':            170,
   'tilapia filet':         170,

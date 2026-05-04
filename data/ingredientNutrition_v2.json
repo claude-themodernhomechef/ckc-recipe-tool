@@ -5386,7 +5386,7 @@
     ]
   },
   "salmon": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_bhncugnadgibupafbeeapbislbom",
     "label": "Salmon",
     "category": "Generic foods",
@@ -5400,14 +5400,10 @@
         "unit": "g"
       },
       "fat": {
-        "value": 13.4,
+        "value": 13.42,
         "unit": "g"
       },
       "carbs": {
-        "value": 0,
-        "unit": "g"
-      },
-      "fiber": {
         "value": 0,
         "unit": "g"
       }
@@ -6296,7 +6292,7 @@
     ]
   },
   "salmon fillet": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_bhncugnadgibupafbeeapbislbom",
     "label": "Salmon",
     "category": "Generic foods",
@@ -6310,14 +6306,10 @@
         "unit": "g"
       },
       "fat": {
-        "value": 13.4,
+        "value": 13.42,
         "unit": "g"
       },
       "carbs": {
-        "value": 0,
-        "unit": "g"
-      },
-      "fiber": {
         "value": 0,
         "unit": "g"
       }
@@ -7793,7 +7785,7 @@
     ]
   },
   "salmon fillets": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_bhncugnadgibupafbeeapbislbom",
     "label": "Salmon",
     "category": "Generic foods",
@@ -7807,14 +7799,10 @@
         "unit": "g"
       },
       "fat": {
-        "value": 13.4,
+        "value": 13.42,
         "unit": "g"
       },
       "carbs": {
-        "value": 0,
-        "unit": "g"
-      },
-      "fiber": {
         "value": 0,
         "unit": "g"
       }
@@ -14735,7 +14723,7 @@
     ]
   },
   "salmon filets": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_bhncugnadgibupafbeeapbislbom",
     "label": "Salmon",
     "category": "Generic foods",
@@ -14749,14 +14737,10 @@
         "unit": "g"
       },
       "fat": {
-        "value": 13.4,
+        "value": 13.42,
         "unit": "g"
       },
       "carbs": {
-        "value": 0,
-        "unit": "g"
-      },
-      "fiber": {
         "value": 0,
         "unit": "g"
       }
@@ -18908,7 +18892,7 @@
     ]
   },
   "salmon filet": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_bhncugnadgibupafbeeapbislbom",
     "label": "Salmon",
     "category": "Generic foods",
@@ -18922,14 +18906,10 @@
         "unit": "g"
       },
       "fat": {
-        "value": 13.4,
+        "value": 13.42,
         "unit": "g"
       },
       "carbs": {
-        "value": 0,
-        "unit": "g"
-      },
-      "fiber": {
         "value": 0,
         "unit": "g"
       }
