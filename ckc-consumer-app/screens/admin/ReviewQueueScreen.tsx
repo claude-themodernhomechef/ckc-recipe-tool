@@ -1924,14 +1924,46 @@ function NutritionPanel({
     : activeBase;
 
   // Build garnish ingredient list for the per-item breakdown.
-  // Keep the full ingredient object so we can show quantity + macros per garnish.
-  const garnishIngredients = (nutrition?.ingredients ?? [])
-    .filter((i: any) => i.garnish && !i.skip && i.raw?.trim() && i.nutrition);
+  // When a diet is active and byDiet[code].garnishItems exists, use that —
+  // it has diet-swapped names + adjusted nutrition (e.g. naan → GF naan,
+  // or naan → cauliflower flatbread for K).
+  // Otherwise fall back to base nutrition.ingredients (no diet active).
+  const garnishIngredients = (() => {
+    if (activeDiet) {
+      const items = (nutrition as any)?.byDiet?.[activeDiet]?.garnishItems;
+      if (Array.isArray(items) && items.length > 0) {
+        return items.filter((i: any) => !i.removed && i.nutrition);
+      }
+    }
+    return (nutrition?.ingredients ?? [])
+      .filter((i: any) => i.garnish && !i.skip && i.raw?.trim() && i.nutrition);
+  })();
 
-  // Build list of assumed-quantity ingredients for the assumptions note
-  const assumedIngredients = (nutrition?.ingredients ?? [])
-    .filter((i: any) => i.assumed && !i.skip && i.raw?.trim())
-    .map((i: any) => ({ raw: i.raw as string, name: i.name as string, assumedDefault: i.assumedDefault as string }));
+  // Build list of assumed-quantity ingredients for the assumptions note.
+  // When a diet is active, rename them based on byDiet garnishItems so the
+  // assumptions show "1/2 cup cauliflower rice" instead of "1/2 cup steamed rice".
+  const assumedIngredients = (() => {
+    const base = (nutrition?.ingredients ?? [])
+      .filter((i: any) => i.assumed && !i.skip && i.raw?.trim());
+    if (!activeDiet) {
+      return base.map((i: any) => ({ raw: i.raw as string, name: i.name as string, assumedDefault: i.assumedDefault as string }));
+    }
+    const items = (nutrition as any)?.byDiet?.[activeDiet]?.garnishItems;
+    const byOriginal = new Map<string, any>();
+    if (Array.isArray(items)) {
+      for (const it of items) byOriginal.set((it.originalName || '').toLowerCase(), it);
+    }
+    return base.map((i: any) => {
+      const swap = byOriginal.get((i.name || '').toLowerCase());
+      const swapped = swap && !swap.removed && swap.name !== swap.originalName;
+      return {
+        raw: i.raw as string,
+        name: swapped ? swap.name : (i.name as string),
+        assumedDefault: i.assumedDefault as string,
+        removed: !!swap?.removed,
+      };
+    }).filter(i => !i.removed);
+  })();
 
   // Convert a whole-recipe qty/unit into a per-serving display string.
   // Tries to keep "1 naan", "1/2 cup rice", "2 tbsp" readable.

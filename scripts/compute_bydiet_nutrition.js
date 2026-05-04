@@ -324,6 +324,11 @@ async function main() {
       const garnishSwapLog = [];   // garnish swap log
       const swappedIngIndices = new Set();
 
+      // Track per-garnish swap details so the UI can show diet-aware
+      // "How we calculated garnish nutrition" rows (e.g. naan → GF naan
+      // with adjusted kcal/protein/carbs/fat per serving).
+      const garnishOverrides = new Map(); // ingredient idx → { name, grams, qty, unit, nutrition, removed }
+
       for (const { from, to } of pairs) {
         // Match against ALL ingredients (main + garnish), then route adjustments
         // to the correct working total based on each match's garnish flag.
@@ -361,6 +366,14 @@ async function main() {
           };
           applyRemove(mainMatches,    workingMain,    swapLog);
           applyRemove(garnishMatches, workingGarnish, garnishSwapLog);
+          // Track per-garnish removal for the UI
+          for (const ing of garnishMatches) {
+            garnishOverrides.set(ings.indexOf(ing), {
+              name: ing.name, originalName: ing.name,
+              qty: ing.qty, unit: ing.unit, grams: ing.grams,
+              nutrition: null, removed: true,
+            });
+          }
           continue;
         }
 
@@ -409,6 +422,115 @@ async function main() {
         };
         applyReplace(mainMatches,    workingMain,    swapLog);
         applyReplace(garnishMatches, workingGarnish, garnishSwapLog);
+        // Track per-garnish replacement for the UI — name change + adjusted nutrition
+        for (const ing of garnishMatches) {
+          const swapNutr = swapEntry ? calcNutrition(ing.grams, swapEntry) : null;
+          garnishOverrides.set(ings.indexOf(ing), {
+            name: toName, originalName: ing.name,
+            qty: ing.qty, unit: ing.unit, grams: ing.grams,
+            nutrition: swapNutr, removed: false,
+          });
+        }
+      }
+
+      // ── Default-table fallback ────────────────────────────────────────────
+      // After applying chef notes, fill gaps for ingredients not yet swapped
+      // by consulting masterSwapTable. E.g. chef wrote "Rice: Use cauliflower
+      // rice" for K but didn't address naan — defaults catch naan automatically.
+      for (let idx = 0; idx < ings.length; idx++) {
+        if (swappedIngIndices.has(idx)) continue;
+        const ing = ings[idx];
+        if (!ing || ing.skip || !ing.matched || !ing.grams) continue;
+        const ingKey = (ing.name || '').toLowerCase().trim();
+        const defaultEntry = swapTable[ingKey];
+        const defaultSwap = defaultEntry?.[dietCode];
+        if (!defaultSwap) continue;
+
+        swappedIngIndices.add(idx);
+        const displayName = cleanIngName(ing.name);
+        const isGarnish = !!ing.garnish;
+        const working = isGarnish ? workingGarnish : workingMain;
+        const log = isGarnish ? garnishSwapLog : swapLog;
+
+        if (defaultSwap.type === 'remove') {
+          const entry = lookupIngredient(ing.name, ingDB);
+          if (entry) {
+            const nutr = calcNutrition(ing.grams, entry);
+            if (nutr) {
+              for (const [k, v] of Object.entries(nutr))
+                working[k] = Math.round(((working[k] ?? 0) - v) * 100) / 100;
+              log.push(`Removed ${displayName} (−${Math.round(nutr.calories ?? 0)} cal) [default]`);
+            } else {
+              log.push(`Removed ${displayName} (not in DB) [default]`);
+            }
+          }
+          if (isGarnish) {
+            garnishOverrides.set(idx, {
+              name: ing.name, originalName: ing.name,
+              qty: ing.qty, unit: ing.unit, grams: ing.grams,
+              nutrition: null, removed: true,
+            });
+          }
+          continue;
+        }
+
+        if (defaultSwap.type === 'replace' && defaultSwap.to) {
+          const toName = defaultSwap.to;
+          const toVariants = toName.split(/\s+or\s+|\s*\/\s*/);
+          let swapEntry = null;
+          for (const variant of toVariants) {
+            swapEntry = lookupIngredient(variant.trim(), ingDB);
+            if (swapEntry) break;
+          }
+          if (!swapEntry) {
+            log.push(`${displayName} → ${toName} (not in DB, kept original) [default]`);
+            continue;
+          }
+          const origEntry = lookupIngredient(ing.name, ingDB);
+          let totalDelta = 0;
+          if (origEntry) {
+            const origNutr = calcNutrition(ing.grams, origEntry);
+            if (origNutr) {
+              for (const [k, v] of Object.entries(origNutr))
+                working[k] = Math.round(((working[k] ?? 0) - v) * 100) / 100;
+              totalDelta -= origNutr.calories ?? 0;
+            }
+          }
+          const swapNutr = calcNutrition(ing.grams, swapEntry);
+          if (swapNutr) {
+            for (const [k, v] of Object.entries(swapNutr))
+              working[k] = Math.round(((working[k] ?? 0) + v) * 100) / 100;
+            totalDelta += swapNutr.calories ?? 0;
+          }
+          const delta = Math.round(totalDelta);
+          log.push(`${displayName} → ${toName} (${delta >= 0 ? '+' : ''}${delta} cal) [default]`);
+          if (isGarnish) {
+            garnishOverrides.set(idx, {
+              name: toName, originalName: ing.name,
+              qty: ing.qty, unit: ing.unit, grams: ing.grams,
+              nutrition: swapNutr, removed: false,
+            });
+          }
+        }
+      }
+
+      // Build per-garnish item list: includes both swapped and unchanged
+      // garnishes so the UI can render the full breakdown when this diet is active.
+      const garnishItems = [];
+      for (let idx = 0; idx < ings.length; idx++) {
+        const ing = ings[idx];
+        if (!ing || !ing.garnish || ing.skip) continue;
+        const override = garnishOverrides.get(idx);
+        if (override) {
+          garnishItems.push(override);
+        } else {
+          // Unchanged garnish — keep original
+          garnishItems.push({
+            name: ing.name, originalName: ing.name,
+            qty: ing.qty, unit: ing.unit, grams: ing.grams,
+            nutrition: ing.nutrition || null, removed: false,
+          });
+        }
       }
 
       byDiet[dietCode] = {
@@ -416,6 +538,7 @@ async function main() {
         garnishPerServing: divideByServings(workingGarnish, servings),
         swapLog,
         garnishSwapLog,
+        garnishItems,
       };
     }
 

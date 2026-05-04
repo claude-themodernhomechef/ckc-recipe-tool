@@ -12,7 +12,7 @@
 const admin    = require('firebase-admin');
 const fs       = require('fs');
 const path     = require('path');
-const dietRules = require('./functions/diet-rules.json');
+const dietRules = require(path.join(__dirname, '../functions/diet-rules.json'));
 
 const PROGRESS_FILE = path.join(__dirname, 'regen_diet_tags_progress.json');
 const BATCH_SIZE    = 20;
@@ -21,7 +21,7 @@ const args  = process.argv.slice(2);
 const RESET = args.includes('--reset');
 
 if (!admin.apps.length) {
-  admin.initializeApp({ credential: admin.credential.cert(require('./service-account.json')) });
+  admin.initializeApp({ credential: admin.credential.cert(require(path.join(__dirname, '../service-account.json'))) });
 }
 const db = admin.firestore();
 
@@ -62,9 +62,15 @@ function analyzeDiet(ingredients, name, description, url, blogger) {
           continue;
         }
       }
-      const modCandidates = (rules.mod_candidates || []).filter(c =>
+      let modCandidates = (rules.mod_candidates || []).filter(c =>
         ingredientText.includes(c.toLowerCase())
       );
+      // Dedupe overlapping candidates: drop a candidate if a longer matched
+      // candidate already covers it (e.g. drop "cream" when "sour cream" matched).
+      modCandidates = modCandidates
+        .sort((a, b) => b.length - a.length)
+        .filter((c, i, arr) =>
+          !arr.slice(0, i).some(longer => longer.toLowerCase().includes(c.toLowerCase())));
       if (modCandidates.length > 0) {
         const swapNotes = modCandidates
           .map(c => { const swap = rules.swaps?.[c]; return swap ? `${capitalise(c)}: ${swap}.` : null; })
