@@ -5388,24 +5388,28 @@
   "salmon": {
     "source": "usda",
     "foodId": "food_bhncugnadgibupafbeeapbislbom",
-    "label": "Salmon",
+    "label": "salmon (skinless, raw, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 208,
+        "value": 142,
         "unit": "kcal"
       },
       "protein": {
-        "value": 20.4,
+        "value": 19.8,
         "unit": "g"
       },
       "fat": {
-        "value": 13.42,
+        "value": 6.3,
         "unit": "g"
       },
-      "carbs": {
-        "value": 0,
+      "saturatedFat": {
+        "value": 1.5,
         "unit": "g"
+      },
+      "sodium": {
+        "value": 50,
+        "unit": "mg"
       }
     },
     "measures": [
@@ -6294,24 +6298,28 @@
   "salmon fillet": {
     "source": "usda",
     "foodId": "food_bhncugnadgibupafbeeapbislbom",
-    "label": "Salmon",
+    "label": "salmon fillet (skinless, raw, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 208,
+        "value": 142,
         "unit": "kcal"
       },
       "protein": {
-        "value": 20.4,
+        "value": 19.8,
         "unit": "g"
       },
       "fat": {
-        "value": 13.42,
+        "value": 6.3,
         "unit": "g"
       },
-      "carbs": {
-        "value": 0,
+      "saturatedFat": {
+        "value": 1.5,
         "unit": "g"
+      },
+      "sodium": {
+        "value": 50,
+        "unit": "mg"
       }
     },
     "measures": [
@@ -7787,24 +7795,28 @@
   "salmon fillets": {
     "source": "usda",
     "foodId": "food_bhncugnadgibupafbeeapbislbom",
-    "label": "Salmon",
+    "label": "salmon fillets (skinless, raw, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 208,
+        "value": 142,
         "unit": "kcal"
       },
       "protein": {
-        "value": 20.4,
+        "value": 19.8,
         "unit": "g"
       },
       "fat": {
-        "value": 13.42,
+        "value": 6.3,
         "unit": "g"
       },
-      "carbs": {
-        "value": 0,
+      "saturatedFat": {
+        "value": 1.5,
         "unit": "g"
+      },
+      "sodium": {
+        "value": 50,
+        "unit": "mg"
       }
     },
     "measures": [
@@ -14725,24 +14737,28 @@
   "salmon filets": {
     "source": "usda",
     "foodId": "food_bhncugnadgibupafbeeapbislbom",
-    "label": "Salmon",
+    "label": "salmon filets (skinless, raw, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 208,
+        "value": 142,
         "unit": "kcal"
       },
       "protein": {
-        "value": 20.4,
+        "value": 19.8,
         "unit": "g"
       },
       "fat": {
-        "value": 13.42,
+        "value": 6.3,
         "unit": "g"
       },
-      "carbs": {
-        "value": 0,
+      "saturatedFat": {
+        "value": 1.5,
         "unit": "g"
+      },
+      "sodium": {
+        "value": 50,
+        "unit": "mg"
       }
     },
     "measures": [
@@ -18894,24 +18910,28 @@
   "salmon filet": {
     "source": "usda",
     "foodId": "food_bhncugnadgibupafbeeapbislbom",
-    "label": "Salmon",
+    "label": "salmon filet (skinless, raw, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 208,
+        "value": 142,
         "unit": "kcal"
       },
       "protein": {
-        "value": 20.4,
+        "value": 19.8,
         "unit": "g"
       },
       "fat": {
-        "value": 13.42,
+        "value": 6.3,
         "unit": "g"
       },
-      "carbs": {
-        "value": 0,
+      "saturatedFat": {
+        "value": 1.5,
         "unit": "g"
+      },
+      "sodium": {
+        "value": 50,
+        "unit": "mg"
       }
     },
     "measures": [
@@ -38582,9 +38602,9 @@
     ]
   },
   "cod": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_a3z8tuub0gc30kaqthfuibcqz9os",
-    "label": "Cod",
+    "label": "cod (skinless, raw, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -38596,16 +38616,16 @@
         "unit": "g"
       },
       "fat": {
-        "value": 0.67,
+        "value": 0.7,
         "unit": "g"
       },
-      "carbs": {
-        "value": 0,
+      "saturatedFat": {
+        "value": 0.1,
         "unit": "g"
       },
-      "fiber": {
-        "value": 0,
-        "unit": "g"
+      "sodium": {
+        "value": 54,
+        "unit": "mg"
       }
     },
     "measures": [
@@ -41117,9 +41137,9 @@
     ]
   },
   "cod fillet": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_a3z8tuub0gc30kaqthfuibcqz9os",
-    "label": "Cod",
+    "label": "cod fillet (skinless, raw, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -41131,16 +41151,16 @@
         "unit": "g"
       },
       "fat": {
-        "value": 0.67,
+        "value": 0.7,
         "unit": "g"
       },
-      "carbs": {
-        "value": 0,
+      "saturatedFat": {
+        "value": 0.1,
         "unit": "g"
       },
-      "fiber": {
-        "value": 0,
-        "unit": "g"
+      "sodium": {
+        "value": 54,
+        "unit": "mg"
       }
     },
     "measures": [
@@ -48398,9 +48418,9 @@
     ]
   },
   "cod fillets": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_a3z8tuub0gc30kaqthfuibcqz9os",
-    "label": "Cod",
+    "label": "cod fillets (skinless, raw, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -48412,16 +48432,16 @@
         "unit": "g"
       },
       "fat": {
-        "value": 0.67,
+        "value": 0.7,
         "unit": "g"
       },
-      "carbs": {
-        "value": 0,
+      "saturatedFat": {
+        "value": 0.1,
         "unit": "g"
       },
-      "fiber": {
-        "value": 0,
-        "unit": "g"
+      "sodium": {
+        "value": 54,
+        "unit": "mg"
       }
     },
     "measures": [
@@ -64687,9 +64707,9 @@
     ]
   },
   "halibut fillet": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_ac67s7dbn8nrr4ackhixearqoe7p",
-    "label": "Halibut",
+    "label": "halibut fillet (skinless, raw, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -64701,16 +64721,16 @@
         "unit": "g"
       },
       "fat": {
-        "value": 1.33,
+        "value": 1.3,
         "unit": "g"
       },
-      "carbs": {
-        "value": 0,
+      "saturatedFat": {
+        "value": 0.2,
         "unit": "g"
       },
-      "fiber": {
-        "value": 0,
-        "unit": "g"
+      "sodium": {
+        "value": 54,
+        "unit": "mg"
       }
     },
     "measures": [
@@ -69497,9 +69517,9 @@
     ]
   },
   "sockeye salmon": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_ambb5r3bua8ufibtvq8bqab25z0m",
-    "label": "Sockeye Salmon",
+    "label": "sockeye salmon (skinless, raw, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -69507,16 +69527,20 @@
         "unit": "kcal"
       },
       "protein": {
-        "value": 22.56,
+        "value": 21.3,
         "unit": "g"
       },
       "fat": {
-        "value": 4.53,
+        "value": 4.4,
         "unit": "g"
       },
-      "carbs": {
-        "value": 0,
+      "saturatedFat": {
+        "value": 0.8,
         "unit": "g"
+      },
+      "sodium": {
+        "value": 47,
+        "unit": "mg"
       }
     },
     "measures": [
@@ -90352,62 +90376,30 @@
     ]
   },
   "sea bass": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_al3s05wang1th2af87twla0jk24v",
-    "label": "Sea Bass",
+    "label": "sea bass (skinless, raw, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 209,
+        "value": 97,
         "unit": "kcal"
       },
       "protein": {
-        "value": 14.93,
+        "value": 18.4,
         "unit": "g"
       },
       "fat": {
-        "value": 16.57,
-        "unit": "g"
-      },
-      "carbs": {
-        "value": 0.14,
-        "unit": "g"
-      },
-      "fiber": {
-        "value": 0,
+        "value": 2,
         "unit": "g"
       },
       "saturatedFat": {
-        "value": 0,
+        "value": 0.5,
         "unit": "g"
       },
-      "cholesterol": {
-        "value": 0,
-        "unit": "mg"
-      },
       "sodium": {
-        "value": 109,
+        "value": 68,
         "unit": "mg"
-      },
-      "potassium": {
-        "value": 236,
-        "unit": "mg"
-      },
-      "magnesium": {
-        "value": 17,
-        "unit": "mg"
-      },
-      "phosphorus": {
-        "value": 152,
-        "unit": "mg"
-      },
-      "zinc": {
-        "value": 0.29,
-        "unit": "mg"
-      },
-      "vitaminB12": {
-        "value": 0.59,
-        "unit": "µg"
       }
     },
     "measures": [
@@ -114945,30 +114937,30 @@
     ]
   },
   "white fish fillet": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_ar6pjbvaxqtlqia7jewa4brld7p9",
-    "label": "White Fish Meat",
+    "label": "white fish fillet (skinless, raw, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 96,
+        "value": 90,
         "unit": "kcal"
       },
       "protein": {
-        "value": 20.1,
+        "value": 18,
         "unit": "g"
       },
       "fat": {
-        "value": 1.7,
+        "value": 1.5,
         "unit": "g"
       },
-      "carbs": {
-        "value": 0,
+      "saturatedFat": {
+        "value": 0.3,
         "unit": "g"
       },
-      "fiber": {
-        "value": 0,
-        "unit": "g"
+      "sodium": {
+        "value": 60,
+        "unit": "mg"
       }
     },
     "measures": [
@@ -127757,9 +127749,9 @@
     ]
   },
   "halibut": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_ac67s7dbn8nrr4ackhixearqoe7p",
-    "label": "Halibut",
+    "label": "halibut (skinless, raw, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -127771,16 +127763,16 @@
         "unit": "g"
       },
       "fat": {
-        "value": 1.33,
+        "value": 1.3,
         "unit": "g"
       },
-      "carbs": {
-        "value": 0,
+      "saturatedFat": {
+        "value": 0.2,
         "unit": "g"
       },
-      "fiber": {
-        "value": 0,
-        "unit": "g"
+      "sodium": {
+        "value": 54,
+        "unit": "mg"
       }
     },
     "measures": [
@@ -134730,9 +134722,9 @@
     ]
   },
   "sea bass fillet": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_al3s05wang1th2af87twla0jk24v",
-    "label": "Sea Bass",
+    "label": "sea bass fillet (skinless, raw, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -134747,13 +134739,13 @@
         "value": 2,
         "unit": "g"
       },
-      "carbs": {
-        "value": 0,
+      "saturatedFat": {
+        "value": 0.5,
         "unit": "g"
       },
-      "fiber": {
-        "value": 0,
-        "unit": "g"
+      "sodium": {
+        "value": 68,
+        "unit": "mg"
       }
     },
     "measures": [
@@ -139442,9 +139434,9 @@
     ]
   },
   "tilapia": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_ar6pjbvaxqtlqia7jewa4brld7p9",
-    "label": "Tilapia",
+    "label": "tilapia (skinless, raw, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -139459,13 +139451,13 @@
         "value": 1.7,
         "unit": "g"
       },
-      "carbs": {
-        "value": 0,
+      "saturatedFat": {
+        "value": 0.6,
         "unit": "g"
       },
-      "fiber": {
-        "value": 0,
-        "unit": "g"
+      "sodium": {
+        "value": 52,
+        "unit": "mg"
       }
     },
     "measures": [
@@ -159108,30 +159100,30 @@
     "_proxy_for": "cornmeal"
   },
   "white fish": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_ar6pjbvaxqtlqia7jewa4brld7p9",
-    "label": "White Fish Meat",
+    "label": "white fish (skinless, raw, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 96,
+        "value": 90,
         "unit": "kcal"
       },
       "protein": {
-        "value": 20.1,
+        "value": 18,
         "unit": "g"
       },
       "fat": {
-        "value": 1.7,
+        "value": 1.5,
         "unit": "g"
       },
-      "carbs": {
-        "value": 0,
+      "saturatedFat": {
+        "value": 0.3,
         "unit": "g"
       },
-      "fiber": {
-        "value": 0,
-        "unit": "g"
+      "sodium": {
+        "value": 60,
+        "unit": "mg"
       }
     },
     "measures": [
