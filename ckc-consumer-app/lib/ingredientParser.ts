@@ -1021,7 +1021,10 @@ const STOP_WORDS = [
   'fine','finely','coarsely','bite-sized','bite-size',
   'warm','hot','cold','chilled','thawed',
   'good','quality','best','organic','store-bought','homemade','low-sodium',
-  'unsweetened','reduced-fat','full-fat','raw','uncooked','cooked',
+  'unsweetened','reduced-fat','full-fat','raw','uncooked',
+  // 'cooked' intentionally NOT stripped — recipes specify "cooked rice/lentils/quinoa/chicken"
+  // and our DB has separate entries for "cooked X" with cooked nutrition values that differ
+  // significantly from raw (cooked rice 130 kcal/100g vs raw 360).
   'leftover','day-old','for garnish','for serving','for topping','as needed','to coat',
   'plus more','garnish','serving','and',
   // NOTE: 'roasted','diced','chopped','smoked','pickled','dried','frozen','marinated','cured'
@@ -2871,6 +2874,26 @@ export function parseIngredient(raw: string): {
     .replace(/((?:\d+(?:\s+\d+\/\d+)?|\d+\/\d+|\d+(?:\.\d+)?)\s*(?:cups?|tbsps?|tablespoons?|tsps?|teaspoons?))\s*\/\s*\d+(?:\.\d+)?\s*(?:g|grams?|kg|ml|l|oz|ounces?)\.?\s+/gi, '$1 ')
     // Multiple consecutive spaces → single space
     .replace(/\s{2,}/g, ' ');
+  // "<N> <noun>, each weighing about <W> g/oz" — recipe author gives explicit
+  // per-piece weight. Multiply N × W to get total weight directly.
+  //   "4 salmon fillets, each weighing about 100g (4oz)" → "400 g salmon fillets"
+  str = str.replace(
+    /^(\d+)(?:\s+\d+\/\d+)?\s+([^,]+?),\s*each\s+weighing\s+(?:about\s+)?(\d+(?:\.\d+)?)\s*(g|gram|oz|ounce|lb|pound)s?\b[^,]*/i,
+    (_, n, noun, w, u) => {
+      const total = parseInt(n) * parseFloat(w);
+      const unit = u.toLowerCase().startsWith('g') ? 'g' : (u.toLowerCase().startsWith('o') ? 'oz' : 'lb');
+      return `${total} ${unit} ${noun}`;
+    }
+  );
+  // Generic protein with specific paren clarifier: "Chicken (boneless, skinless
+  // chicken thighs)" / "Beef (sirloin, cut into 1-inch cubes)" — recipe author
+  // specifies a category then clarifies in parens. Use the paren content as the
+  // canonical noun (more specific = correct nutrition).
+  //   "2 lbs Chicken (boneless, skinless chicken thighs)" → "2 lbs boneless skinless chicken thighs"
+  str = str.replace(
+    /\b(chicken|beef|pork|lamb|turkey|fish|salmon|seafood)\s*\(\s*([^)]*\b(?:chicken|beef|pork|lamb|turkey|salmon|tilapia|cod|halibut|breast|thigh|drumstick|wing|fillet|filet|chop|tenderloin|loin|shoulder|sirloin|ribeye|chuck|brisket|rib|leg)s?\b[^)]*)\)/gi,
+    (_, _generic, specific) => specific.trim()
+  );
   // "((About N-M lbs.))" — extract the lbs value as canonical qty (use lower bound)
   // BEFORE the generic double-paren strip eats it.
   //   "Organic whole chicken ((About 5-10 lbs. is perfect; See Notes))"
@@ -3961,11 +3984,22 @@ export function parseIngredient(raw: string): {
     const lastWords  = parts[parts.length - 1].split(/\s+/);
     const PREP_WORDS_FOR_OR = ['shredded','chopped','sliced','grated','minced','cubed','crushed','diced','smashed','julienned'];
     const lastWordOfFirst = (firstWords[firstWords.length - 1] || '').toLowerCase();
+    const lastWordOfLast = (lastWords[lastWords.length - 1] || '').toLowerCase();
     const firstEndsInPrep = PREP_WORDS_FOR_OR.includes(lastWordOfFirst);
-    // If parts[0] is already a complete known ingredient, use it as-is.
-    // (Prevents "butter or vegan butter" → "butter butter" and
-    //  "butter or 1 1/2 teaspoons olive oil" → "butter oil".)
-    if (firstWords.length === 1 && lastWords.length > 1 && !INGREDIENT_DB[parts[0].toLowerCase()]) {
+    // Detect "<adj> or <adj-or-noun> <NOUN>" pattern where the trailing word of
+    // the last part is a DB ingredient (the actual noun) AND it's different
+    // from parts[0]'s last word — recipe author offering adjectives for the same
+    // noun. Combine: parts[0] + trailing noun.
+    //   "flour or corn tortillas" → "flour tortillas"
+    //   "white corn or flour tortillas" → "white corn tortillas"
+    //   "olive or avocado oil" → "olive oil"
+    // (Skip when parts[0] already ends with the same noun to avoid duplicates.)
+    const sharedNoun = lastWords.length > 1
+      && !!INGREDIENT_DB[lastWordOfLast]
+      && lastWordOfFirst !== lastWordOfLast;
+    if (sharedNoun) {
+      name = `${parts[0]} ${lastWordOfLast}`.trim();
+    } else if (firstWords.length === 1 && lastWords.length > 1 && !INGREDIENT_DB[parts[0].toLowerCase()]) {
       const tail = lastWords[lastWords.length - 1];
       name = (tail.toLowerCase() === parts[0].toLowerCase())
         ? parts[0]
