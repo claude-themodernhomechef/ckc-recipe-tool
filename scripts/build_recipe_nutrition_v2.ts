@@ -498,8 +498,16 @@ function toGrams(qty: number, unit: string, ingEntry: any, ingName?: string): nu
       );
       if (matchKey) return qty * STANDARD_GRAMS[matchKey];
     }
-    // Fall back to DB Serving measure, then first measure, then 100g
+    // Fall back to DB measures. CRITICAL: for count-based items (no unit), prefer
+    // per-piece measures (Whole, Noodle, Sheet, Slice, Piece, etc.) over "Serving"
+    // — Serving is meal-sized (e.g. 300g for lasagna noodles!), but a count of 9
+    // means 9 individual noodles (25g each), not 9 servings.
     if (ingEntry?.measures) {
+      const piecePreference = ['Whole', 'Noodle', 'Sheet', 'Slice', 'Piece', 'Stick', 'Egg', 'Clove', 'Head', 'Bulb', 'Leaf', 'Fillet', 'Filet', 'Breast', 'Thigh', 'Drumstick', 'Wing', 'Strip', 'Sprig', 'Stalk', 'Stem', 'Tail', 'Pod', 'Ear', 'Wedge', 'Half', 'Bunch'];
+      for (const label of piecePreference) {
+        const m = ingEntry.measures.find((m: any) => m.label === label);
+        if (m && m.gramWeight > 0) return qty * m.gramWeight;
+      }
       const serving = ingEntry.measures.find((m: any) => m.label === 'Serving');
       if (serving && serving.gramWeight > 0) return qty * serving.gramWeight;
       const first = ingEntry.measures.find((m: any) => m.label && m.gramWeight > 0);
