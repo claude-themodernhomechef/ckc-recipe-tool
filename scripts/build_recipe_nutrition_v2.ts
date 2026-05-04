@@ -167,7 +167,6 @@ const STANDARD_GRAMS: Record<string, number> = {
   'chicken drumstick':      55,  // edible (~85g whole, ~35% bone)
   'chicken wing':           20,  // edible (~30g whole)
   'turkey breast':         227,
-  'whole chicken':        2268,  // 5 lbs (USDA standard whole-chicken purchase weight)
   // Proteins — seafood
   // Generic fish filet default = 6 oz (170g) per piece (raw, skin-on)
   'fish filet':            170,
