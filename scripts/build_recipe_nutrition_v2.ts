@@ -497,8 +497,11 @@ function toGrams(qty: number, unit: string, ingEntry: any, ingName?: string): nu
       const lower = ingName.toLowerCase().trim();
       // Direct match
       if (STANDARD_GRAMS[lower] !== undefined) return qty * STANDARD_GRAMS[lower];
-      // Partial match: find first key that the name contains or that contains the name
-      const matchKey = Object.keys(STANDARD_GRAMS).find(k =>
+      // Partial match — LONGEST KEY FIRST so "corn tortillas" beats "corn" for
+      // names like "mini corn tortillas". Without sort, shorter keys win and
+      // produce wildly wrong defaults.
+      const keys = Object.keys(STANDARD_GRAMS).sort((a, b) => b.length - a.length);
+      const matchKey = keys.find(k =>
         lower.includes(k) || k.includes(lower)
       );
       if (matchKey) return qty * STANDARD_GRAMS[matchKey];
