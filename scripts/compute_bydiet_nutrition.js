@@ -484,6 +484,15 @@ async function main() {
           }
           if (!swapEntry) {
             log.push(`${displayName} → ${toName} (not in DB, kept original) [default]`);
+            // Still record the rename so the UI shows the swap name even if
+            // we can't compute exact macros for the substitute.
+            if (isGarnish) {
+              garnishOverrides.set(idx, {
+                name: toName, originalName: ing.name,
+                qty: ing.qty, unit: ing.unit, grams: ing.grams,
+                nutrition: ing.nutrition || null, removed: false,
+              });
+            }
             continue;
           }
           const origEntry = lookupIngredient(ing.name, ingDB);
