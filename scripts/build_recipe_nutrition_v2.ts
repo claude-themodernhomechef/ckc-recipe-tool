@@ -267,6 +267,22 @@ const STANDARD_GRAMS: Record<string, number> = {
   'slice bread':            28,
   'bread slice':            28,
   // Spices / small-count items
+  'cashew':                 1.5,   // per cashew nut
+  'cashewnut':              1.5,
+  'cashews':                1.5,
+  'cashewnuts':             1.5,
+  'cashew nut':             1.5,
+  'cashew nuts':            1.5,
+  'almond':                 1.2,   // per whole almond
+  'almonds':                1.2,
+  'walnut':                 4,     // per walnut half
+  'walnuts':                4,
+  'pecan':                  2,
+  'pecans':                 2,
+  'macadamia nut':          2.5,
+  'macadamia nuts':         2.5,
+  'pistachio':              0.7,   // per kernel
+  'pistachios':             0.7,
   'peppercorn':              0.05,  // per peppercorn
   'black peppercorn':        0.05,
   'cardamom pod':            0.5,

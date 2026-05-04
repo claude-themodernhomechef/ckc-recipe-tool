@@ -2909,6 +2909,25 @@ export function parseIngredient(raw: string): {
     .replace(/((?:\d+(?:\s+\d+\/\d+)?|\d+\/\d+|\d+(?:\.\d+)?)\s*(?:cups?|tbsps?|tablespoons?|tsps?|teaspoons?))\s*\/\s*\d+(?:\.\d+)?\s*(?:g|grams?|kg|ml|l|oz|ounces?)\.?\s+/gi, '$1 ')
     // Multiple consecutive spaces → single space
     .replace(/\s{2,}/g, ' ');
+  // "one 4-5-pound package X" / "one 2-pound bag Y" — text "one" + range/single weight
+  // + container word + noun. Convert to "<lower> <unit> X" using the lower bound.
+  str = str.replace(
+    /^one\s+(\d+(?:\.\d+)?)(?:\s*-\s*\d+(?:\.\d+)?)?\s*-?\s*(pound|lb|ounce|oz|kg|gram|g)s?\.?\s+(?:package|pkg|bag|can|jar|box|bottle|bunch|loaf|head)s?\s+/i,
+    (_, n, u) => `${n} ${u} `
+  );
+  // "1 16-ounce can X" / "1 4-5-pound chicken" — leading count + weight (no "one")
+  str = str.replace(
+    /^(\d+)\s+(\d+(?:\.\d+)?)(?:\s*-\s*\d+(?:\.\d+)?)?\s*-?\s*(pound|lb|ounce|oz|kg|gram|g)s?\.?\s+(?:package|pkg|bag|can|jar|box|bottle|bunch|loaf|head)s?\s+/i,
+    (_, n, w, u) => `${parseInt(n) * parseFloat(w)} ${u} `
+  );
+  // "4 6-ounce portions/pieces/fillets X" — leading count + per-piece weight + portion-word + noun
+  // Multiply N × W to get total weight.
+  //   "4 6-ounce portions salmon fillet" → "24 ounce salmon fillet"
+  //   "4 5-oz pieces chicken breast" → "20 oz chicken breast"
+  str = str.replace(
+    /^(\d+)\s+(\d+(?:\.\d+)?)\s*-?\s*(pound|lb|ounce|oz|kg|gram|g)s?\.?\s+(?:portions?|pieces?|fillets?|filets?|servings?)\s+/i,
+    (_, n, w, u) => `${parseInt(n) * parseFloat(w)} ${u} `
+  );
   // Bare "15 ounce can X" / "15-oz can X" / "15- ounce can X" with no leading
   // count → "1 (15 oz) can X" so the existing paren-weight handler picks it up.
   // (Same logic as build_recipe_nutrition_v2.ts preprocessor; needs to be here
@@ -2933,6 +2952,16 @@ export function parseIngredient(raw: string): {
   // "<N> <noun>, each weighing about <W> g/oz" — recipe author gives explicit
   // per-piece weight. Multiply N × W to get total weight directly.
   //   "4 salmon fillets, each weighing about 100g (4oz)" → "400 g salmon fillets"
+  //   "2 fillets salmon (, about 4 oz (113 g) each)" → "8 oz salmon fillets"
+  str = str.replace(
+    /^(\d+)(?:\s+\d+\/\d+)?\s+([^,(]+?)(?:\s*,)?\s*\(?\s*,?\s*about\s+(\d+(?:\.\d+)?)\s*(g|gram|oz|ounce|lb|pound)s?\b[\s\S]*?(?:each|apiece)\b/i,
+    (_, n, noun, w, u) => {
+      const total = parseInt(n) * parseFloat(w);
+      const unit = u.toLowerCase().startsWith('g') ? 'g' : (u.toLowerCase().startsWith('o') ? 'oz' : 'lb');
+      return `${total} ${unit} ${noun.trim()}`;
+    }
+  );
+  // Same form but with "each weighing" phrase
   str = str.replace(
     /^(\d+)(?:\s+\d+\/\d+)?\s+([^,]+?),\s*each\s+weighing\s+(?:about\s+)?(\d+(?:\.\d+)?)\s*(g|gram|oz|ounce|lb|pound)s?\b[^,]*/i,
     (_, n, noun, w, u) => {
