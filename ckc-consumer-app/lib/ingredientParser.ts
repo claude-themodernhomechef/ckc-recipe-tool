@@ -2415,9 +2415,9 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'canned tomatoes':'whole peeled tomatoes',
   'canned whole peeled tomatoes':'whole peeled tomatoes',
   'shredded cotija cheese':'cotija cheese', 'shredded cotija':'cotija cheese',
-  'canned black beans':'black beans',
-  'canned chickpeas':'chickpeas','canned kidney beans':'kidney beans','canned pinto beans':'pinto beans',
-  'canned cannellini beans':'cannellini beans','canned navy beans':'navy beans',
+  // (Removed reverse-aliases that mapped 'canned X' → 'X' — canned beans/chickpeas
+  //  use COOKED nutrition values which differ ~3x from raw. Keep canned form so DB
+  //  lookup hits the proper 'canned X' entry with cooked values.)
   'whole milk full-fat ricotta cheese':'ricotta cheese',
   'whole milk ricotta cheese':'ricotta cheese',
   'full-fat ricotta cheese':'ricotta cheese',

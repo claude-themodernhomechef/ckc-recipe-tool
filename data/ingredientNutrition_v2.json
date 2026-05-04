@@ -2929,7 +2929,7 @@
       },
       "vitaminA": {
         "value": 411,
-        "unit": "\u00b5g"
+        "unit": "µg"
       },
       "vitaminC": {
         "value": 0.6,
@@ -2937,7 +2937,7 @@
       },
       "vitaminD": {
         "value": 1.6,
-        "unit": "\u00b5g"
+        "unit": "µg"
       },
       "vitaminE": {
         "value": 0.92,
@@ -2945,7 +2945,7 @@
       },
       "vitaminK": {
         "value": 3.2,
-        "unit": "\u00b5g"
+        "unit": "µg"
       },
       "vitaminB1": {
         "value": 0.02,
@@ -2965,11 +2965,11 @@
       },
       "folate": {
         "value": 4,
-        "unit": "\u00b5g"
+        "unit": "µg"
       },
       "vitaminB12": {
         "value": 0.16,
-        "unit": "\u00b5g"
+        "unit": "µg"
       },
       "water": {
         "value": 57.71,
@@ -7353,29 +7353,29 @@
     ]
   },
   "chickpeas": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_baux5rqbkto336asd7w3lbbi1koo",
-    "label": "Chickpea",
+    "label": "Chickpea (cooked, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 378,
+        "value": 164,
         "unit": "kcal"
       },
       "protein": {
-        "value": 20.5,
+        "value": 8.86,
         "unit": "g"
       },
       "fat": {
-        "value": 6.04,
+        "value": 2.59,
         "unit": "g"
       },
       "carbs": {
-        "value": 63,
+        "value": 27.4,
         "unit": "g"
       },
       "fiber": {
-        "value": 12.2,
+        "value": 7.6,
         "unit": "g"
       }
     },
@@ -7941,29 +7941,29 @@
     ]
   },
   "black beans": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_bb53m3oaj7ee3fagvj9lka0r56t4",
-    "label": "Black Beans",
+    "label": "Black Beans (cooked, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 341,
+        "value": 132,
         "unit": "kcal"
       },
       "protein": {
-        "value": 21.6,
+        "value": 8.86,
         "unit": "g"
       },
       "fat": {
-        "value": 1.42,
+        "value": 0.54,
         "unit": "g"
       },
       "carbs": {
-        "value": 62.4,
+        "value": 23.7,
         "unit": "g"
       },
       "fiber": {
-        "value": 15.5,
+        "value": 8.7,
         "unit": "g"
       }
     },
@@ -21725,44 +21725,52 @@
     ]
   },
   "corn kernels": {
-    "source": "edamam",
-    "foodId": "food_bljsxw8akb9zr5aj5dahpay2gxsb",
-    "label": "Corn Kernel",
-    "category": "Generic foods",
+    "source": "usda",
+    "foodId": "fdc_2710826",
+    "label": "Corn, sweet, yellow and white kernels, fresh, raw",
+    "category": "Vegetables",
     "per100g": {
       "calories": {
-        "value": 113,
+        "value": 84.55,
         "unit": "kcal"
       },
       "protein": {
-        "value": 3.62,
+        "value": 2.79,
         "unit": "g"
       },
       "fat": {
-        "value": 1.42,
+        "value": 1.63,
         "unit": "g"
       },
+      "saturatedFat": {
+        "value": 0.25,
+        "unit": "g"
+      },
+      "cholesterol": {
+        "value": 0,
+        "unit": "mg"
+      },
+      "sodium": {
+        "value": 0,
+        "unit": "mg"
+      },
       "carbs": {
-        "value": 25.9,
+        "value": 14.69,
         "unit": "g"
       },
       "fiber": {
-        "value": 2.6,
+        "value": 2.43,
+        "unit": "g"
+      },
+      "sugars": {
+        "value": 7.37,
         "unit": "g"
       }
     },
     "measures": [
       {
         "label": "Serving",
-        "gramWeight": 70
-      },
-      {
-        "label": "Whole",
-        "gramWeight": 165
-      },
-      {
-        "label": "Ear",
-        "gramWeight": 165
+        "gramWeight": 82
       },
       {
         "label": "Gram",
@@ -21773,16 +21781,12 @@
         "gramWeight": 28.349523125
       },
       {
-        "label": "Pound",
-        "gramWeight": 453.59237
-      },
-      {
-        "label": "Kilogram",
-        "gramWeight": 1000
-      },
-      {
         "label": "Cup",
-        "gramWeight": 141
+        "gramWeight": 154
+      },
+      {
+        "label": "Ear",
+        "gramWeight": 102
       }
     ]
   },
@@ -23630,29 +23634,29 @@
     ]
   },
   "white beans": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_bf8uz1aamavv8ebjkliwfai0ezuv",
-    "label": "White Bean",
+    "label": "White Bean (cooked, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 333,
+        "value": 139,
         "unit": "kcal"
       },
       "protein": {
-        "value": 23.4,
+        "value": 9.7,
         "unit": "g"
       },
       "fat": {
-        "value": 0.85,
+        "value": 0.35,
         "unit": "g"
       },
       "carbs": {
-        "value": 60.3,
+        "value": 25,
         "unit": "g"
       },
       "fiber": {
-        "value": 15.2,
+        "value": 6.3,
         "unit": "g"
       }
     },
@@ -24506,10 +24510,10 @@
       }
     ]
   },
-  "pickled jalape\u00f1os": {
+  "pickled jalapeños": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalape\u00f1o Chilie",
+    "label": "Jalapeño Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -27567,29 +27571,29 @@
     ]
   },
   "cannellini beans": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_bf8uz1aamavv8ebjkliwfai0ezuv",
-    "label": "Cannellini Bean",
+    "label": "Cannellini Bean (cooked, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 333,
+        "value": 124,
         "unit": "kcal"
       },
       "protein": {
-        "value": 23.4,
+        "value": 8.5,
         "unit": "g"
       },
       "fat": {
-        "value": 0.85,
+        "value": 0.5,
         "unit": "g"
       },
       "carbs": {
-        "value": 60.3,
+        "value": 22,
         "unit": "g"
       },
       "fiber": {
-        "value": 15.2,
+        "value": 6,
         "unit": "g"
       }
     },
@@ -27636,10 +27640,10 @@
       }
     ]
   },
-  "jalape\u00f1o": {
+  "jalapeño": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalape\u00f1o Chilie",
+    "label": "Jalapeño Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -27792,10 +27796,10 @@
       }
     ]
   },
-  "jalape\u00f1os": {
+  "jalapeños": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalape\u00f1o Chilie",
+    "label": "Jalapeño Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -29575,10 +29579,10 @@
       }
     ]
   },
-  "cr\u00e8me fra\u00eeche": {
+  "crème fraîche": {
     "source": "edamam",
     "foodId": "food_bjgvk4sayn3fc3b9arribb0rryfm",
-    "label": "Cr\u00e8me de Framboise",
+    "label": "Crème de Framboise",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -32075,29 +32079,29 @@
     ]
   },
   "pinto beans": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_a93v0cyaa5izjtaek97hlaq4ref9",
-    "label": "Pinto Bean",
+    "label": "Pinto Bean (cooked, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 347,
+        "value": 143,
         "unit": "kcal"
       },
       "protein": {
-        "value": 21.4,
+        "value": 9.01,
         "unit": "g"
       },
       "fat": {
-        "value": 1.23,
+        "value": 0.65,
         "unit": "g"
       },
       "carbs": {
-        "value": 62.6,
+        "value": 26.2,
         "unit": "g"
       },
       "fiber": {
-        "value": 15.5,
+        "value": 9,
         "unit": "g"
       }
     },
@@ -38969,22 +38973,64 @@
     "label": "Lentils, cooked, boiled, no salt",
     "category": "Beans & Legumes",
     "per100g": {
-      "calories": { "value": 116, "unit": "kcal" },
-      "protein": { "value": 9.02, "unit": "g" },
-      "fat": { "value": 0.38, "unit": "g" },
-      "saturatedFat": { "value": 0.05, "unit": "g" },
-      "cholesterol": { "value": 0, "unit": "mg" },
-      "sodium": { "value": 2, "unit": "mg" },
-      "carbs": { "value": 20.1, "unit": "g" },
-      "fiber": { "value": 7.9, "unit": "g" },
-      "sugars": { "value": 1.8, "unit": "g" }
+      "calories": {
+        "value": 116,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 9.02,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.38,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0.05,
+        "unit": "g"
+      },
+      "cholesterol": {
+        "value": 0,
+        "unit": "mg"
+      },
+      "sodium": {
+        "value": 2,
+        "unit": "mg"
+      },
+      "carbs": {
+        "value": 20.1,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 7.9,
+        "unit": "g"
+      },
+      "sugars": {
+        "value": 1.8,
+        "unit": "g"
+      }
     },
     "measures": [
-      { "label": "Serving", "gramWeight": 198 },
-      { "label": "Gram", "gramWeight": 1 },
-      { "label": "Ounce", "gramWeight": 28.349523125 },
-      { "label": "Cup", "gramWeight": 198 },
-      { "label": "Can", "gramWeight": 425 }
+      {
+        "label": "Serving",
+        "gramWeight": 198
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 198
+      },
+      {
+        "label": "Can",
+        "gramWeight": 425
+      }
     ]
   },
   "cooked lentils": {
@@ -38993,21 +39039,60 @@
     "label": "Lentils, cooked, boiled, no salt",
     "category": "Beans & Legumes",
     "per100g": {
-      "calories": { "value": 116, "unit": "kcal" },
-      "protein": { "value": 9.02, "unit": "g" },
-      "fat": { "value": 0.38, "unit": "g" },
-      "saturatedFat": { "value": 0.05, "unit": "g" },
-      "cholesterol": { "value": 0, "unit": "mg" },
-      "sodium": { "value": 2, "unit": "mg" },
-      "carbs": { "value": 20.1, "unit": "g" },
-      "fiber": { "value": 7.9, "unit": "g" },
-      "sugars": { "value": 1.8, "unit": "g" }
+      "calories": {
+        "value": 116,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 9.02,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.38,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0.05,
+        "unit": "g"
+      },
+      "cholesterol": {
+        "value": 0,
+        "unit": "mg"
+      },
+      "sodium": {
+        "value": 2,
+        "unit": "mg"
+      },
+      "carbs": {
+        "value": 20.1,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 7.9,
+        "unit": "g"
+      },
+      "sugars": {
+        "value": 1.8,
+        "unit": "g"
+      }
     },
     "measures": [
-      { "label": "Serving", "gramWeight": 198 },
-      { "label": "Gram", "gramWeight": 1 },
-      { "label": "Ounce", "gramWeight": 28.349523125 },
-      { "label": "Cup", "gramWeight": 198 }
+      {
+        "label": "Serving",
+        "gramWeight": 198
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 198
+      }
     ]
   },
   "boneless pork chop": {
@@ -39016,22 +39101,64 @@
     "label": "Pork, fresh, loin, top loin (chops), boneless, raw",
     "category": "Pork",
     "per100g": {
-      "calories": { "value": 155, "unit": "kcal" },
-      "protein": { "value": 21.55, "unit": "g" },
-      "fat": { "value": 6.94, "unit": "g" },
-      "saturatedFat": { "value": 2.45, "unit": "g" },
-      "cholesterol": { "value": 67, "unit": "mg" },
-      "sodium": { "value": 48, "unit": "mg" },
-      "carbs": { "value": 0, "unit": "g" },
-      "fiber": { "value": 0, "unit": "g" },
-      "sugars": { "value": 0, "unit": "g" }
+      "calories": {
+        "value": 155,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 21.55,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 6.94,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 2.45,
+        "unit": "g"
+      },
+      "cholesterol": {
+        "value": 67,
+        "unit": "mg"
+      },
+      "sodium": {
+        "value": 48,
+        "unit": "mg"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "sugars": {
+        "value": 0,
+        "unit": "g"
+      }
     },
     "measures": [
-      { "label": "Serving", "gramWeight": 113 },
-      { "label": "Gram", "gramWeight": 1 },
-      { "label": "Ounce", "gramWeight": 28.349523125 },
-      { "label": "Pound", "gramWeight": 453.59237 },
-      { "label": "Chop", "gramWeight": 113 }
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Chop",
+        "gramWeight": 113
+      }
     ]
   },
   "grapefruit": {
@@ -39040,23 +39167,68 @@
     "label": "Grapefruit, raw",
     "category": "Fruit",
     "per100g": {
-      "calories": { "value": 32, "unit": "kcal" },
-      "protein": { "value": 0.6, "unit": "g" },
-      "fat": { "value": 0.1, "unit": "g" },
-      "saturatedFat": { "value": 0, "unit": "g" },
-      "cholesterol": { "value": 0, "unit": "mg" },
-      "sodium": { "value": 0, "unit": "mg" },
-      "carbs": { "value": 8, "unit": "g" },
-      "fiber": { "value": 1.1, "unit": "g" },
-      "sugars": { "value": 7, "unit": "g" }
+      "calories": {
+        "value": 32,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 0.6,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.1,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "cholesterol": {
+        "value": 0,
+        "unit": "mg"
+      },
+      "sodium": {
+        "value": 0,
+        "unit": "mg"
+      },
+      "carbs": {
+        "value": 8,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 1.1,
+        "unit": "g"
+      },
+      "sugars": {
+        "value": 7,
+        "unit": "g"
+      }
     },
     "measures": [
-      { "label": "Serving", "gramWeight": 230 },
-      { "label": "Gram", "gramWeight": 1 },
-      { "label": "Ounce", "gramWeight": 28.349523125 },
-      { "label": "Whole", "gramWeight": 230 },
-      { "label": "Half", "gramWeight": 115 },
-      { "label": "Cup", "gramWeight": 230 }
+      {
+        "label": "Serving",
+        "gramWeight": 230
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 230
+      },
+      {
+        "label": "Half",
+        "gramWeight": 115
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 230
+      }
     ]
   },
   "herb flatbread": {
@@ -39065,21 +39237,60 @@
     "label": "Italian Herb Flatbread (Favorite Day, Target)",
     "category": "Bread",
     "per100g": {
-      "calories": { "value": 321, "unit": "kcal" },
-      "protein": { "value": 9.4, "unit": "g" },
-      "fat": { "value": 5.3, "unit": "g" },
-      "saturatedFat": { "value": 0.5, "unit": "g" },
-      "cholesterol": { "value": 0, "unit": "mg" },
-      "sodium": { "value": 819, "unit": "mg" },
-      "carbs": { "value": 52.8, "unit": "g" },
-      "fiber": { "value": 13.5, "unit": "g" },
-      "sugars": { "value": 0, "unit": "g" }
+      "calories": {
+        "value": 321,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 9.4,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 5.3,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0.5,
+        "unit": "g"
+      },
+      "cholesterol": {
+        "value": 0,
+        "unit": "mg"
+      },
+      "sodium": {
+        "value": 819,
+        "unit": "mg"
+      },
+      "carbs": {
+        "value": 52.8,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 13.5,
+        "unit": "g"
+      },
+      "sugars": {
+        "value": 0,
+        "unit": "g"
+      }
     },
     "measures": [
-      { "label": "Serving", "gramWeight": 53 },
-      { "label": "Gram", "gramWeight": 1 },
-      { "label": "Ounce", "gramWeight": 28.349523125 },
-      { "label": "Slice", "gramWeight": 53 }
+      {
+        "label": "Serving",
+        "gramWeight": 53
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Slice",
+        "gramWeight": 53
+      }
     ]
   },
   "honey roasted peanuts": {
@@ -39088,46 +39299,64 @@
     "label": "Honey Roasted Peanuts",
     "category": "Snacks",
     "per100g": {
-      "calories": { "value": 575, "unit": "kcal" },
-      "protein": { "value": 24, "unit": "g" },
-      "fat": { "value": 46, "unit": "g" },
-      "saturatedFat": { "value": 6, "unit": "g" },
-      "cholesterol": { "value": 0, "unit": "mg" },
-      "sodium": { "value": 273, "unit": "mg" },
-      "carbs": { "value": 21, "unit": "g" },
-      "fiber": { "value": 7, "unit": "g" },
-      "sugars": { "value": 13, "unit": "g" }
+      "calories": {
+        "value": 575,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 24,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 46,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 6,
+        "unit": "g"
+      },
+      "cholesterol": {
+        "value": 0,
+        "unit": "mg"
+      },
+      "sodium": {
+        "value": 273,
+        "unit": "mg"
+      },
+      "carbs": {
+        "value": 21,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 7,
+        "unit": "g"
+      },
+      "sugars": {
+        "value": 13,
+        "unit": "g"
+      }
     },
     "measures": [
-      { "label": "Serving", "gramWeight": 28 },
-      { "label": "Gram", "gramWeight": 1 },
-      { "label": "Ounce", "gramWeight": 28.349523125 },
-      { "label": "Cup", "gramWeight": 146 },
-      { "label": "Tablespoon", "gramWeight": 9 }
-    ]
-  },
-  "corn kernels": {
-    "source": "usda",
-    "foodId": "fdc_2710826",
-    "label": "Corn, sweet, yellow and white kernels, fresh, raw",
-    "category": "Vegetables",
-    "per100g": {
-      "calories": { "value": 84.55, "unit": "kcal" },
-      "protein": { "value": 2.79, "unit": "g" },
-      "fat": { "value": 1.63, "unit": "g" },
-      "saturatedFat": { "value": 0.25, "unit": "g" },
-      "cholesterol": { "value": 0, "unit": "mg" },
-      "sodium": { "value": 0, "unit": "mg" },
-      "carbs": { "value": 14.69, "unit": "g" },
-      "fiber": { "value": 2.43, "unit": "g" },
-      "sugars": { "value": 7.37, "unit": "g" }
-    },
-    "measures": [
-      { "label": "Serving", "gramWeight": 82 },
-      { "label": "Gram", "gramWeight": 1 },
-      { "label": "Ounce", "gramWeight": 28.349523125 },
-      { "label": "Cup", "gramWeight": 154 },
-      { "label": "Ear", "gramWeight": 102 }
+      {
+        "label": "Serving",
+        "gramWeight": 28
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 146
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 9
+      }
     ]
   },
   "anchovy fillets in oil": {
@@ -39136,46 +39365,134 @@
     "label": "Anchovy Fillets in Olive Oil (DeLallo)",
     "category": "Seafood",
     "per100g": {
-      "calories": { "value": 210, "unit": "kcal" },
-      "protein": { "value": 28.9, "unit": "g" },
-      "fat": { "value": 9.7, "unit": "g" },
-      "saturatedFat": { "value": 2.2, "unit": "g" },
-      "cholesterol": { "value": 85, "unit": "mg" },
-      "sodium": { "value": 3668, "unit": "mg" },
-      "carbs": { "value": 0, "unit": "g" },
-      "fiber": { "value": 0, "unit": "g" },
-      "sugars": { "value": 0, "unit": "g" }
+      "calories": {
+        "value": 210,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 28.9,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 9.7,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 2.2,
+        "unit": "g"
+      },
+      "cholesterol": {
+        "value": 85,
+        "unit": "mg"
+      },
+      "sodium": {
+        "value": 3668,
+        "unit": "mg"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "sugars": {
+        "value": 0,
+        "unit": "g"
+      }
     },
     "measures": [
-      { "label": "Serving", "gramWeight": 15 },
-      { "label": "Gram", "gramWeight": 1 },
-      { "label": "Ounce", "gramWeight": 28.349523125 },
-      { "label": "Fillet", "gramWeight": 4 },
-      { "label": "Can", "gramWeight": 50 },
-      { "label": "Tin", "gramWeight": 50 }
+      {
+        "label": "Serving",
+        "gramWeight": 15
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Fillet",
+        "gramWeight": 4
+      },
+      {
+        "label": "Can",
+        "gramWeight": 50
+      },
+      {
+        "label": "Tin",
+        "gramWeight": 50
+      }
     ]
   },
   "frozen mixed peas and carrots": {
-    "source": "usda",
-    "foodId": "fdc_475598",
-    "label": "Frozen Peas with Carrot",
-    "category": "Vegetables",
+    "source": "edamam",
+    "foodId": "food_bbi35jtbjt7un9bsa2m7eazlsk91",
+    "label": "Pea",
+    "category": "Generic foods",
     "per100g": {
-      "calories": { "value": 52, "unit": "kcal" },
-      "protein": { "value": 3, "unit": "g" },
-      "fat": { "value": 0, "unit": "g" },
-      "saturatedFat": { "value": 0, "unit": "g" },
-      "cholesterol": { "value": 0, "unit": "mg" },
-      "sodium": { "value": 47, "unit": "mg" },
-      "carbs": { "value": 10, "unit": "g" },
-      "fiber": { "value": 4, "unit": "g" },
-      "sugars": { "value": 0, "unit": "g" }
+      "calories": {
+        "value": 81,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 5.42,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.4,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 14.4,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 5.7,
+        "unit": "g"
+      }
     },
     "measures": [
-      { "label": "Serving", "gramWeight": 85 },
-      { "label": "Gram", "gramWeight": 1 },
-      { "label": "Ounce", "gramWeight": 28.349523125 },
-      { "label": "Cup", "gramWeight": 134 }
+      {
+        "label": "Serving",
+        "gramWeight": 200
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 284
+      },
+      {
+        "label": "Shoot",
+        "gramWeight": 5
+      },
+      {
+        "label": "Package",
+        "gramWeight": 284
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 145
+      }
     ]
   },
   "roasted corn kernels": {
@@ -39184,47 +39501,130 @@
     "label": "Corn, Yellow, Whole Kernel, Frozen, Microwaved",
     "category": "Vegetables",
     "per100g": {
-      "calories": { "value": 113, "unit": "kcal" },
-      "protein": { "value": 3.62, "unit": "g" },
-      "fat": { "value": 1.42, "unit": "g" },
-      "saturatedFat": { "value": 0.15, "unit": "g" },
-      "cholesterol": { "value": 0, "unit": "mg" },
-      "sodium": { "value": 4, "unit": "mg" },
-      "carbs": { "value": 25.87, "unit": "g" },
-      "fiber": { "value": 2.6, "unit": "g" },
-      "sugars": { "value": 3.36, "unit": "g" }
+      "calories": {
+        "value": 113,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 3.62,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 1.42,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0.15,
+        "unit": "g"
+      },
+      "cholesterol": {
+        "value": 0,
+        "unit": "mg"
+      },
+      "sodium": {
+        "value": 4,
+        "unit": "mg"
+      },
+      "carbs": {
+        "value": 25.87,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 2.6,
+        "unit": "g"
+      },
+      "sugars": {
+        "value": 3.36,
+        "unit": "g"
+      }
     },
     "measures": [
-      { "label": "Serving", "gramWeight": 82 },
-      { "label": "Gram", "gramWeight": 1 },
-      { "label": "Ounce", "gramWeight": 28.349523125 },
-      { "label": "Cup", "gramWeight": 164 },
-      { "label": "Ear", "gramWeight": 102 }
+      {
+        "label": "Serving",
+        "gramWeight": 82
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 164
+      },
+      {
+        "label": "Ear",
+        "gramWeight": 102
+      }
     ]
   },
   "chickpea liquid": {
-    "source": "label",
-    "foodId": "label_aquafaba",
-    "label": "Chickpea Liquid (Aquafaba)",
-    "category": "Pantry",
+    "source": "edamam",
+    "foodId": "food_baux5rqbkto336asd7w3lbbi1koo",
+    "label": "Chickpea",
+    "category": "Generic foods",
     "per100g": {
-      "calories": { "value": 17.84, "unit": "kcal" },
-      "protein": { "value": 1, "unit": "g" },
-      "fat": { "value": 0.21, "unit": "g" },
-      "saturatedFat": { "value": 0, "unit": "g" },
-      "cholesterol": { "value": 0, "unit": "mg" },
-      "sodium": { "value": 2.9, "unit": "mg" },
-      "carbs": { "value": 2.9, "unit": "g" },
-      "fiber": { "value": 0, "unit": "g" },
-      "sugars": { "value": 1.29, "unit": "g" }
+      "calories": {
+        "value": 378,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 20.5,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 6.04,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 63,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 12.2,
+        "unit": "g"
+      }
     },
     "measures": [
-      { "label": "Serving", "gramWeight": 241 },
-      { "label": "Gram", "gramWeight": 1 },
-      { "label": "Ounce", "gramWeight": 28.349523125 },
-      { "label": "Cup", "gramWeight": 241 },
-      { "label": "Tablespoon", "gramWeight": 15 },
-      { "label": "Milliliter", "gramWeight": 1 }
+      {
+        "label": "Serving",
+        "gramWeight": 112
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 448
+      },
+      {
+        "label": "Can",
+        "gramWeight": 448
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 12.5
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 200
+      }
     ]
   },
   "red snapper": {
@@ -39233,45 +39633,134 @@
     "label": "Whole Clean Snapper (Netuno)",
     "category": "Seafood",
     "per100g": {
-      "calories": { "value": 78, "unit": "kcal" },
-      "protein": { "value": 17.2, "unit": "g" },
-      "fat": { "value": 0.39, "unit": "g" },
-      "saturatedFat": { "value": 0, "unit": "g" },
-      "cholesterol": { "value": 63, "unit": "mg" },
-      "sodium": { "value": 51, "unit": "mg" },
-      "carbs": { "value": 0, "unit": "g" },
-      "fiber": { "value": 0, "unit": "g" },
-      "sugars": { "value": 0, "unit": "g" }
+      "calories": {
+        "value": 78,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 17.2,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.39,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "cholesterol": {
+        "value": 63,
+        "unit": "mg"
+      },
+      "sodium": {
+        "value": 51,
+        "unit": "mg"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "sugars": {
+        "value": 0,
+        "unit": "g"
+      }
     },
     "measures": [
-      { "label": "Serving", "gramWeight": 113 },
-      { "label": "Gram", "gramWeight": 1 },
-      { "label": "Ounce", "gramWeight": 28.349523125 },
-      { "label": "Pound", "gramWeight": 453.59237 },
-      { "label": "Fillet", "gramWeight": 170 }
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Fillet",
+        "gramWeight": 170
+      }
     ]
   },
   "bouillon cube": {
-    "source": "usda",
-    "foodId": "fdc_171613",
-    "label": "Soup, Bouillon Cubes and Granules, Low Sodium (Dry)",
-    "category": "Soups & Stocks",
+    "source": "edamam",
+    "foodId": "food_a4blma9bmbzb9aa6dt0qmbzeb1o1",
+    "label": "Bouillon",
+    "category": "Generic foods",
     "per100g": {
-      "calories": { "value": 438, "unit": "kcal" },
-      "protein": { "value": 16.7, "unit": "g" },
-      "fat": { "value": 13.89, "unit": "g" },
-      "saturatedFat": { "value": 3.43, "unit": "g" },
-      "cholesterol": { "value": 13, "unit": "mg" },
-      "sodium": { "value": 1067, "unit": "mg" },
-      "carbs": { "value": 64.88, "unit": "g" },
-      "fiber": { "value": 0.2, "unit": "g" },
-      "sugars": { "value": 14.47, "unit": "g" }
+      "calories": {
+        "value": 7,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 1.14,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.22,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0.04,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      }
     },
     "measures": [
-      { "label": "Cube", "gramWeight": 4 },
-      { "label": "Gram", "gramWeight": 1 },
-      { "label": "Teaspoon", "gramWeight": 4 },
-      { "label": "Tablespoon", "gramWeight": 12 }
+      {
+        "label": "Serving",
+        "gramWeight": 240
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 240
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 435
+      },
+      {
+        "label": "Cube",
+        "gramWeight": 5
+      },
+      {
+        "label": "Container",
+        "gramWeight": 960
+      },
+      {
+        "label": "Can",
+        "gramWeight": 450.00000000000006
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      }
     ]
   },
   "full-fat greek yogurt": {
@@ -39280,20 +39769,56 @@
     "label": "Yogurt, Greek, plain, whole milk",
     "category": "Dairy",
     "per100g": {
-      "calories": { "value": 94.5, "unit": "kcal" },
-      "protein": { "value": 8.78, "unit": "g" },
-      "fat": { "value": 4.39, "unit": "g" },
-      "carbs": { "value": 4.75, "unit": "g" },
-      "sodium": { "value": 33.76, "unit": "mg" },
-      "sugars": { "value": 3.25, "unit": "g" }
+      "calories": {
+        "value": 94.5,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 8.78,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 4.39,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 4.75,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 33.76,
+        "unit": "mg"
+      },
+      "sugars": {
+        "value": 3.25,
+        "unit": "g"
+      }
     },
     "measures": [
-      { "label": "Serving", "gramWeight": 245 },
-      { "label": "Gram", "gramWeight": 1 },
-      { "label": "Ounce", "gramWeight": 28.349523125 },
-      { "label": "Cup", "gramWeight": 245 },
-      { "label": "Tablespoon", "gramWeight": 15 },
-      { "label": "Teaspoon", "gramWeight": 5 }
+      {
+        "label": "Serving",
+        "gramWeight": 245
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 245
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      },
+      {
+        "label": "Teaspoon",
+        "gramWeight": 5
+      }
     ]
   },
   "full-fat coconut milk": {
@@ -39302,23 +39827,68 @@
     "label": "365 Whole Foods Market Organic Coconut Milk",
     "category": "Dairy Alternatives",
     "per100g": {
-      "calories": { "value": 219, "unit": "kcal" },
-      "protein": { "value": 1.56, "unit": "g" },
-      "fat": { "value": 21.88, "unit": "g" },
-      "saturatedFat": { "value": 20.31, "unit": "g" },
-      "cholesterol": { "value": 0, "unit": "mg" },
-      "sodium": { "value": 31.25, "unit": "mg" },
-      "carbs": { "value": 3.13, "unit": "g" },
-      "fiber": { "value": 0, "unit": "g" },
-      "sugars": { "value": 1.56, "unit": "g" }
+      "calories": {
+        "value": 219,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 1.56,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 21.88,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 20.31,
+        "unit": "g"
+      },
+      "cholesterol": {
+        "value": 0,
+        "unit": "mg"
+      },
+      "sodium": {
+        "value": 31.25,
+        "unit": "mg"
+      },
+      "carbs": {
+        "value": 3.13,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "sugars": {
+        "value": 1.56,
+        "unit": "g"
+      }
     },
     "measures": [
-      { "label": "Serving", "gramWeight": 80 },
-      { "label": "Gram", "gramWeight": 1 },
-      { "label": "Ounce", "gramWeight": 28.349523125 },
-      { "label": "Cup", "gramWeight": 240 },
-      { "label": "Tablespoon", "gramWeight": 15 },
-      { "label": "Can", "gramWeight": 400 }
+      {
+        "label": "Serving",
+        "gramWeight": 80
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 240
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      },
+      {
+        "label": "Can",
+        "gramWeight": 400
+      }
     ]
   },
   "albacore tuna in olive oil": {
@@ -39327,45 +39897,134 @@
     "label": "Sea Tales Solid White Albacore Tuna in Olive Oil",
     "category": "Seafood",
     "per100g": {
-      "calories": { "value": 149, "unit": "kcal" },
-      "protein": { "value": 23.5, "unit": "g" },
-      "fat": { "value": 5.5, "unit": "g" },
-      "saturatedFat": { "value": 0.78, "unit": "g" },
-      "cholesterol": { "value": 39, "unit": "mg" },
-      "sodium": { "value": 274, "unit": "mg" },
-      "carbs": { "value": 0.78, "unit": "g" },
-      "fiber": { "value": 0, "unit": "g" },
-      "sugars": { "value": 0, "unit": "g" }
+      "calories": {
+        "value": 149,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 23.5,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 5.5,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0.78,
+        "unit": "g"
+      },
+      "cholesterol": {
+        "value": 39,
+        "unit": "mg"
+      },
+      "sodium": {
+        "value": 274,
+        "unit": "mg"
+      },
+      "carbs": {
+        "value": 0.78,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "sugars": {
+        "value": 0,
+        "unit": "g"
+      }
     },
     "measures": [
-      { "label": "Serving", "gramWeight": 113 },
-      { "label": "Gram", "gramWeight": 1 },
-      { "label": "Ounce", "gramWeight": 28.349523125 },
-      { "label": "Can", "gramWeight": 142 }
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Can",
+        "gramWeight": 142
+      }
     ]
   },
   "'nduja paste": {
-    "source": "label",
-    "foodId": "label_nduja_paste",
-    "label": "'Nduja Paste",
-    "category": "Condiments",
+    "source": "edamam",
+    "foodId": "food_a6z51qra5sgreaa8hpu5datt7c52",
+    "label": "Nduja",
+    "category": "Generic foods",
     "per100g": {
-      "calories": { "value": 607, "unit": "kcal" },
-      "protein": { "value": 3.6, "unit": "g" },
-      "fat": { "value": 60.7, "unit": "g" },
-      "saturatedFat": { "value": 25.0, "unit": "g" },
-      "cholesterol": { "value": 53.6, "unit": "mg" },
-      "sodium": { "value": 1321, "unit": "mg" },
-      "carbs": { "value": 7.1, "unit": "g" },
-      "fiber": { "value": 0, "unit": "g" },
-      "sugars": { "value": 0, "unit": "g" }
+      "calories": {
+        "value": 290,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 13.9,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 24.3,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 2.97,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      }
     },
     "measures": [
-      { "label": "Serving", "gramWeight": 28 },
-      { "label": "Gram", "gramWeight": 1 },
-      { "label": "Ounce", "gramWeight": 28.349523125 },
-      { "label": "Tablespoon", "gramWeight": 15 },
-      { "label": "Teaspoon", "gramWeight": 5 }
+      {
+        "label": "Serving",
+        "gramWeight": 200
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 113
+      },
+      {
+        "label": "Sausage",
+        "gramWeight": 113
+      },
+      {
+        "label": "Link",
+        "gramWeight": 101
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Teaspoon",
+        "gramWeight": 4.725
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 14.175
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 226.8
+      }
     ]
   },
   "peanut": {
@@ -49668,10 +50327,10 @@
       }
     ]
   },
-  "gruy\u00e8re": {
+  "gruyère": {
     "source": "edamam",
     "foodId": "food_auncbujb52rsfrbby2cvmbwc8y6b",
-    "label": "Gruy\u00e8re Souffl\u00e9",
+    "label": "Gruyère Soufflé",
     "category": "Generic meals",
     "per100g": {
       "calories": {
@@ -49922,7 +50581,7 @@
       }
     ]
   },
-  "gruy\u00e8re cheese": {
+  "gruyère cheese": {
     "source": "edamam",
     "foodId": "food_al44s0sajaffq4afc73dlayimtt9",
     "label": "Gruyere Cheese",
@@ -52235,29 +52894,29 @@
     ]
   },
   "kidney beans": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_bh0xrcsbwy52d9a4ugv9bam51wnv",
-    "label": "Kidney Bean",
+    "label": "Kidney Bean (cooked, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 333,
+        "value": 127,
         "unit": "kcal"
       },
       "protein": {
-        "value": 23.6,
+        "value": 8.67,
         "unit": "g"
       },
       "fat": {
-        "value": 0.83,
+        "value": 0.5,
         "unit": "g"
       },
       "carbs": {
-        "value": 60,
+        "value": 22.8,
         "unit": "g"
       },
       "fiber": {
-        "value": 24.9,
+        "value": 6.4,
         "unit": "g"
       }
     },
@@ -53461,10 +54120,10 @@
       }
     ]
   },
-  "jalape\u00f1o pepper": {
+  "jalapeño pepper": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalape\u00f1o Chilie",
+    "label": "Jalapeño Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -72046,29 +72705,29 @@
     ]
   },
   "great northern beans": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_bf8uz1aamavv8ebjkliwfai0ezuv",
-    "label": "Bean",
+    "label": "Bean (cooked, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 333,
+        "value": 114,
         "unit": "kcal"
       },
       "protein": {
-        "value": 23.4,
+        "value": 7.5,
         "unit": "g"
       },
       "fat": {
-        "value": 0.85,
+        "value": 0.4,
         "unit": "g"
       },
       "carbs": {
-        "value": 60.3,
+        "value": 21.1,
         "unit": "g"
       },
       "fiber": {
-        "value": 15.2,
+        "value": 7,
         "unit": "g"
       }
     },
@@ -75017,15 +75676,42 @@
     "label": "Chicken, thigh, boneless, skinless, raw",
     "category": "Poultry",
     "per100g": {
-      "calories": { "value": 144, "unit": "kcal" },
-      "protein": { "value": 18.6, "unit": "g" },
-      "fat": { "value": 7.9, "unit": "g" },
-      "saturatedFat": { "value": 1.7, "unit": "g" },
-      "cholesterol": { "value": 91.7, "unit": "mg" },
-      "sodium": { "value": 62.3, "unit": "mg" },
-      "carbs": { "value": 0, "unit": "g" },
-      "fiber": { "value": 0, "unit": "g" },
-      "sugars": { "value": 0, "unit": "g" }
+      "calories": {
+        "value": 144,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 18.6,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 7.9,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 1.7,
+        "unit": "g"
+      },
+      "cholesterol": {
+        "value": 91.7,
+        "unit": "mg"
+      },
+      "sodium": {
+        "value": 62.3,
+        "unit": "mg"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "sugars": {
+        "value": 0,
+        "unit": "g"
+      }
     },
     "measures": [
       {
@@ -76905,29 +77591,29 @@
     ]
   },
   "navy beans": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_apfs238av0sa2daoupt50a3iid67",
-    "label": "Navy Bean",
+    "label": "Navy Bean (cooked, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 337,
+        "value": 140,
         "unit": "kcal"
       },
       "protein": {
-        "value": 22.3,
+        "value": 8.2,
         "unit": "g"
       },
       "fat": {
-        "value": 1.5,
+        "value": 0.62,
         "unit": "g"
       },
       "carbs": {
-        "value": 60.8,
+        "value": 26.1,
         "unit": "g"
       },
       "fiber": {
-        "value": 15.3,
+        "value": 10.5,
         "unit": "g"
       }
     },
@@ -78320,7 +79006,7 @@
       }
     ]
   },
-  "chiles de \u00e1rbol": {
+  "chiles de árbol": {
     "source": "edamam",
     "foodId": "food_a6g98mqatzj7vca6ms3bnbzqxf3s",
     "label": "Chile",
@@ -78528,7 +79214,7 @@
       }
     ]
   },
-  "monterey jack with jalape\u00f1o peppers cheese": {
+  "monterey jack with jalapeño peppers cheese": {
     "source": "edamam",
     "foodId": "food_atp17pta7d5it2a80ct13ard6aj3",
     "label": "Monterey Pepper Jack",
@@ -79098,7 +79784,7 @@
       }
     ]
   },
-  "aj\u00ed amarillo paste": {
+  "ají amarillo paste": {
     "source": "edamam",
     "foodId": "food_buc6u4gbtc39gkbjc5hxdbc2a2pm",
     "label": "Aji Amarillo Ketchup, Aji Amarillo",
@@ -81470,72 +82156,6 @@
       }
     ]
   },
-  "frozen mixed peas and carrots": {
-    "source": "edamam",
-    "foodId": "food_bbi35jtbjt7un9bsa2m7eazlsk91",
-    "label": "Pea",
-    "category": "Generic foods",
-    "per100g": {
-      "calories": {
-        "value": 81,
-        "unit": "kcal"
-      },
-      "protein": {
-        "value": 5.42,
-        "unit": "g"
-      },
-      "fat": {
-        "value": 0.4,
-        "unit": "g"
-      },
-      "carbs": {
-        "value": 14.4,
-        "unit": "g"
-      },
-      "fiber": {
-        "value": 5.7,
-        "unit": "g"
-      }
-    },
-    "measures": [
-      {
-        "label": "Serving",
-        "gramWeight": 200
-      },
-      {
-        "label": "Whole",
-        "gramWeight": 284
-      },
-      {
-        "label": "Shoot",
-        "gramWeight": 5
-      },
-      {
-        "label": "Package",
-        "gramWeight": 284
-      },
-      {
-        "label": "Gram",
-        "gramWeight": 1
-      },
-      {
-        "label": "Ounce",
-        "gramWeight": 28.349523125
-      },
-      {
-        "label": "Pound",
-        "gramWeight": 453.59237
-      },
-      {
-        "label": "Kilogram",
-        "gramWeight": 1000
-      },
-      {
-        "label": "Cup",
-        "gramWeight": 145
-      }
-    ]
-  },
   "grain-free tortillas": {
     "source": "edamam",
     "foodId": "food_bhw0b95agm97s0abfignnb8fsvb3",
@@ -82501,7 +83121,7 @@
       }
     ]
   },
-  "canned pumpkin pur\u00e9e": {
+  "canned pumpkin purée": {
     "source": "edamam",
     "foodId": "food_afk6bzsbbbg1j8ai1hi17bptbfq5",
     "label": "Pumpkin",
@@ -82711,10 +83331,10 @@
       }
     ]
   },
-  "fresh jalape\u00f1o": {
+  "fresh jalapeño": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalape\u00f1o Chilie",
+    "label": "Jalapeño Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -83780,7 +84400,7 @@
       }
     ]
   },
-  "butternut squash pur\u00e9e": {
+  "butternut squash purée": {
     "source": "edamam",
     "foodId": "food_baga212bywb6n2as0ylgkaf8fcok",
     "label": "Butternut Squash",
@@ -88095,80 +88715,6 @@
       }
     ]
   },
-  "'nduja paste": {
-    "source": "edamam",
-    "foodId": "food_a6z51qra5sgreaa8hpu5datt7c52",
-    "label": "Nduja",
-    "category": "Generic foods",
-    "per100g": {
-      "calories": {
-        "value": 290,
-        "unit": "kcal"
-      },
-      "protein": {
-        "value": 13.9,
-        "unit": "g"
-      },
-      "fat": {
-        "value": 24.3,
-        "unit": "g"
-      },
-      "carbs": {
-        "value": 2.97,
-        "unit": "g"
-      },
-      "fiber": {
-        "value": 0,
-        "unit": "g"
-      }
-    },
-    "measures": [
-      {
-        "label": "Serving",
-        "gramWeight": 200
-      },
-      {
-        "label": "Whole",
-        "gramWeight": 113
-      },
-      {
-        "label": "Sausage",
-        "gramWeight": 113
-      },
-      {
-        "label": "Link",
-        "gramWeight": 101
-      },
-      {
-        "label": "Gram",
-        "gramWeight": 1
-      },
-      {
-        "label": "Ounce",
-        "gramWeight": 28.349523125
-      },
-      {
-        "label": "Pound",
-        "gramWeight": 453.59237
-      },
-      {
-        "label": "Kilogram",
-        "gramWeight": 1000
-      },
-      {
-        "label": "Teaspoon",
-        "gramWeight": 4.725
-      },
-      {
-        "label": "Tablespoon",
-        "gramWeight": 14.175
-      },
-      {
-        "label": "Cup",
-        "gramWeight": 226.8
-      }
-    ]
-  },
   "gomasio": {
     "source": "edamam",
     "foodId": "food_arbsgv9abyexzlanhhgpma7pvt5c",
@@ -89823,7 +90369,7 @@
       },
       "vitaminB12": {
         "value": 0.59,
-        "unit": "\u00b5g"
+        "unit": "µg"
       }
     },
     "measures": [
@@ -90193,7 +90739,7 @@
       }
     ]
   },
-  "ni\u00e7oise olives": {
+  "niçoise olives": {
     "source": "edamam",
     "foodId": "food_bt7u5w5a064gusa46msxfb38ag06",
     "label": "Olive",
@@ -98990,7 +99536,7 @@
       }
     ]
   },
-  "preserved lemon pur\u00e9e": {
+  "preserved lemon purée": {
     "source": "edamam",
     "foodId": "food_a6uzc62astrxcgbtzyq59b6fncrr",
     "label": "Lemon",
@@ -107907,76 +108453,6 @@
       {
         "label": "Package",
         "gramWeight": 128
-      },
-      {
-        "label": "Gram",
-        "gramWeight": 1
-      },
-      {
-        "label": "Ounce",
-        "gramWeight": 28.349523125
-      },
-      {
-        "label": "Pound",
-        "gramWeight": 453.59237
-      },
-      {
-        "label": "Kilogram",
-        "gramWeight": 1000
-      }
-    ]
-  },
-  "bouillon cube": {
-    "source": "edamam",
-    "foodId": "food_a4blma9bmbzb9aa6dt0qmbzeb1o1",
-    "label": "Bouillon",
-    "category": "Generic foods",
-    "per100g": {
-      "calories": {
-        "value": 7,
-        "unit": "kcal"
-      },
-      "protein": {
-        "value": 1.14,
-        "unit": "g"
-      },
-      "fat": {
-        "value": 0.22,
-        "unit": "g"
-      },
-      "carbs": {
-        "value": 0.04,
-        "unit": "g"
-      },
-      "fiber": {
-        "value": 0,
-        "unit": "g"
-      }
-    },
-    "measures": [
-      {
-        "label": "Serving",
-        "gramWeight": 240
-      },
-      {
-        "label": "Cup",
-        "gramWeight": 240
-      },
-      {
-        "label": "Whole",
-        "gramWeight": 435
-      },
-      {
-        "label": "Cube",
-        "gramWeight": 5
-      },
-      {
-        "label": "Container",
-        "gramWeight": 960
-      },
-      {
-        "label": "Can",
-        "gramWeight": 450.00000000000006
       },
       {
         "label": "Gram",
@@ -128695,72 +129171,6 @@
       }
     ]
   },
-  "chickpea liquid": {
-    "source": "edamam",
-    "foodId": "food_baux5rqbkto336asd7w3lbbi1koo",
-    "label": "Chickpea",
-    "category": "Generic foods",
-    "per100g": {
-      "calories": {
-        "value": 378,
-        "unit": "kcal"
-      },
-      "protein": {
-        "value": 20.5,
-        "unit": "g"
-      },
-      "fat": {
-        "value": 6.04,
-        "unit": "g"
-      },
-      "carbs": {
-        "value": 63,
-        "unit": "g"
-      },
-      "fiber": {
-        "value": 12.2,
-        "unit": "g"
-      }
-    },
-    "measures": [
-      {
-        "label": "Serving",
-        "gramWeight": 112
-      },
-      {
-        "label": "Whole",
-        "gramWeight": 448
-      },
-      {
-        "label": "Can",
-        "gramWeight": 448
-      },
-      {
-        "label": "Gram",
-        "gramWeight": 1
-      },
-      {
-        "label": "Ounce",
-        "gramWeight": 28.349523125
-      },
-      {
-        "label": "Pound",
-        "gramWeight": 453.59237
-      },
-      {
-        "label": "Kilogram",
-        "gramWeight": 1000
-      },
-      {
-        "label": "Tablespoon",
-        "gramWeight": 12.5
-      },
-      {
-        "label": "Cup",
-        "gramWeight": 200
-      }
-    ]
-  },
   "green pesto": {
     "source": "edamam",
     "foodId": "food_amlzb2yam5vuysaaikhe3a68ojnn",
@@ -141191,7 +141601,7 @@
       }
     ]
   },
-  "ros\u00e9 wine": {
+  "rosé wine": {
     "source": "edamam",
     "foodId": "food_a656mk2a5dmqb2adiamu6beihduu",
     "label": "Sparkling Wine",
@@ -144278,10 +144688,10 @@
       }
     ]
   },
-  "pickled jalape\u00f1o brine": {
+  "pickled jalapeño brine": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalape\u00f1o Chilie",
+    "label": "Jalapeño Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -150339,10 +150749,10 @@
       }
     ]
   },
-  "pickled jalape\u00f1o juice": {
+  "pickled jalapeño juice": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalape\u00f1o Chilie",
+    "label": "Jalapeño Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -150920,7 +151330,7 @@
       }
     ]
   },
-  "saut\u00e9ed mushrooms": {
+  "sautéed mushrooms": {
     "source": "edamam",
     "foodId": "food_bvlose6arfl26ra396sjrb7hetqh",
     "label": "Mushroom",
@@ -153913,7 +154323,7 @@
       }
     ]
   },
-  "aj\u00ed amarillo chiles": {
+  "ají amarillo chiles": {
     "source": "edamam",
     "foodId": "food_a6g98mqatzj7vca6ms3bnbzqxf3s",
     "label": "Chile",
@@ -159793,7 +160203,7 @@
   "fresh jalapeno": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalape\u00f1o Chilie",
+    "label": "Jalapeño Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -159863,7 +160273,7 @@
         "gramWeight": 90
       }
     ],
-    "_proxy_for": "jalape\u00f1o"
+    "_proxy_for": "jalapeño"
   },
   "pepperoncinis": {
     "source": "edamam",
@@ -163950,7 +164360,7 @@
     ],
     "_proxy_for": "garlic herb spreadable cheese"
   },
-  "pumpkin pur\u00e9e": {
+  "pumpkin purée": {
     "source": "edamam",
     "foodId": "food_afk6bzsbbbg1j8ai1hi17bptbfq5",
     "label": "Pumpkin",
@@ -164023,7 +164433,7 @@
         "gramWeight": 116
       }
     ],
-    "_proxy_for": "canned pumpkin pur\u00e9e"
+    "_proxy_for": "canned pumpkin purée"
   },
   "petite potato": {
     "source": "edamam",
@@ -176247,10 +176657,10 @@
     ],
     "_proxy_for": "chicken fillets"
   },
-  "brine from pickled jalape\u00f1os": {
+  "brine from pickled jalapeños": {
     "source": "edamam",
     "foodId": "food_b7txsnbadj6plsbq27zvwah80r6y",
-    "label": "Jalape\u00f1o Chilie",
+    "label": "Jalapeño Chilie",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -176320,7 +176730,7 @@
         "gramWeight": 90
       }
     ],
-    "_proxy_for": "pickled jalape\u00f1o brine"
+    "_proxy_for": "pickled jalapeño brine"
   },
   "raw veggies": {
     "source": "edamam",
@@ -182243,7 +182653,7 @@
         "unit": "g"
       },
       "carbs": {
-        "value": 3.0,
+        "value": 3,
         "unit": "g"
       },
       "fiber": {
@@ -182268,19 +182678,19 @@
         "unit": "kcal"
       },
       "protein": {
-        "value": 0.0,
+        "value": 0,
         "unit": "g"
       },
       "fat": {
-        "value": 0.0,
+        "value": 0,
         "unit": "g"
       },
       "carbs": {
-        "value": 100.0,
+        "value": 100,
         "unit": "g"
       },
       "fiber": {
-        "value": 0.0,
+        "value": 0,
         "unit": "g"
       }
     },
@@ -182301,19 +182711,19 @@
         "unit": "kcal"
       },
       "protein": {
-        "value": 8.0,
+        "value": 8,
         "unit": "g"
       },
       "fat": {
-        "value": 9.0,
+        "value": 9,
         "unit": "g"
       },
       "carbs": {
-        "value": 33.0,
+        "value": 33,
         "unit": "g"
       },
       "fiber": {
-        "value": 27.0,
+        "value": 27,
         "unit": "g"
       }
     },
@@ -183405,5 +183815,369 @@
       }
     },
     "source": "manual-mikesmightygood-label"
+  },
+  "canned black beans": {
+    "source": "usda",
+    "foodId": "food_bb53m3oaj7ee3fagvj9lka0r56t4",
+    "label": "Canned black beans (cooked, drained)",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 132,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 8.86,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.54,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 23.7,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 8.7,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 48.5
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 12.1
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 194
+      }
+    ]
+  },
+  "canned kidney beans": {
+    "source": "usda",
+    "foodId": "food_bh0xrcsbwy52d9a4ugv9bam51wnv",
+    "label": "Canned kidney beans (cooked, drained)",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 127,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 8.67,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.5,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 22.8,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 6.4,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 46
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 184
+      }
+    ]
+  },
+  "canned pinto beans": {
+    "source": "usda",
+    "foodId": "food_a93v0cyaa5izjtaek97hlaq4ref9",
+    "label": "Canned pinto beans (cooked, drained)",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 143,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 9.01,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.65,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 26.2,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 9,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 48.25
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 12
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 193
+      }
+    ]
+  },
+  "canned white beans": {
+    "source": "usda",
+    "foodId": "food_bf8uz1aamavv8ebjkliwfai0ezuv",
+    "label": "Canned white beans (cooked, drained)",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 139,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 9.7,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.35,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 25,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 6.3,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 64
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 2
+      },
+      {
+        "label": "Bean",
+        "gramWeight": 2
+      },
+      {
+        "label": "Can",
+        "gramWeight": 256
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 12.6
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 202
+      }
+    ]
+  },
+  "canned navy beans": {
+    "source": "usda",
+    "foodId": "food_apfs238av0sa2daoupt50a3iid67",
+    "label": "Canned navy beans (cooked, drained)",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 140,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 8.2,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.62,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 26.1,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 10.5,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 52
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 208
+      }
+    ]
+  },
+  "canned cannellini beans": {
+    "source": "usda",
+    "foodId": "food_bf8uz1aamavv8ebjkliwfai0ezuv",
+    "label": "Canned cannellini beans (cooked, drained)",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 124,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 8.5,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.5,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 22,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 6,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 64
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 2
+      },
+      {
+        "label": "Bean",
+        "gramWeight": 2
+      },
+      {
+        "label": "Can",
+        "gramWeight": 256
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 12.6
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 202
+      }
+    ]
   }
 }
