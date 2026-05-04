@@ -590,18 +590,21 @@ function extractLeadingQty(s: string): string {
 }
 
 /**
- * buildSwapPairs — reads structured swap data from a DietTagData object.
+ * buildSwapPairs — reads swap data from a DietTagData object.
  *
- * New records (enriched after the structured-notes migration) store swaps as
- *   tag.notes = [{ type: 'replace' | 'remove' | 'note', from: string, to?: string, note?: string }]
+ * Format A (structured): tag.notes = [{ type, from, to?, note? }]
+ * Format B (legacy plain text): tag.notes = "Naan: Use GF naan."
  *
- * Legacy records (enriched before the migration) stored a free-text string in
- *   tag.notes or tag.notesText
- * For those we return an empty array — the legacy TextInput still shows the raw
- * string so the admin can read it, but we no longer try to regex-parse it.
+ * Both are now parsed. Format A uses the structured fields directly.
+ * Format B parses 5 phrasings:
+ *   - "Use X instead of Y"
+ *   - "Replace X with Y"
+ *   - "Skip/Omit X"
+ *   - "X: Use Y" (colon-prefix swap — most common chef-written form)
+ *   - "X: Remove [entirely]" (colon-prefix removal)
  */
 function buildSwapPairs(tag: DietTagData): Array<{ from: string; to: string | null }> {
-  // New structured format — notes is an array of swap objects
+  // Format A: structured array
   if (Array.isArray((tag as any).notes)) {
     return (tag as any).notes.map((s: any) => ({
       from: s.from ?? '',
@@ -610,8 +613,46 @@ function buildSwapPairs(tag: DietTagData): Array<{ from: string; to: string | nu
           : null,
     }));
   }
-  // Legacy string format — return empty; raw text is still visible in the notes TextInput
-  return [];
+
+  // Format B: legacy plain text
+  const notes = (tag as any).notes;
+  if (typeof notes !== 'string' || !notes.trim()) return [];
+  const result: Array<{ from: string; to: string | null }> = [];
+  const s = notes.toLowerCase();
+  let m: RegExpExecArray | null;
+
+  const insteadRe = /use\s+(.+?)\s+instead\s+of\s+(.+?)(?:[,.]|$)/gi;
+  while ((m = insteadRe.exec(s)) !== null) {
+    result.push({ from: stripLeadingQty(m[2].trim()), to: m[1].trim() });
+  }
+
+  const replaceRe = /replace\s+(.+?)\s+with\s+(.+?)(?:[,.]|$)/gi;
+  while ((m = replaceRe.exec(s)) !== null) {
+    const to = m[2].trim();
+    m[1].split(/\s+and\s+/i).forEach(f => result.push({ from: stripLeadingQty(f.trim()), to }));
+  }
+
+  const skipRe = /(?:skip|omit)\s+([^,.\n]+)/gi;
+  while ((m = skipRe.exec(s)) !== null) {
+    result.push({ from: stripLeadingQty(m[1].split(',')[0].trim()), to: null });
+  }
+
+  // "X: Use Y" — colon-prefix swap (e.g. "Naan: Use GF naan.")
+  const colonUseRe = /(?:^|[.;\n])\s*([^:\n.]+?):\s*use\s+([^.;\n]+?)(?=[.;\n]|$)/gi;
+  while ((m = colonUseRe.exec(s)) !== null) {
+    const from = stripLeadingQty(m[1].trim());
+    const to = m[2].trim();
+    if (from && to) result.push({ from, to });
+  }
+
+  // "X: Remove [entirely]" — colon-prefix removal
+  const colonRemoveRe = /(?:^|[.;\n])\s*([^:\n.]+?):\s*remove\b[^.;\n]*?(?=[.;\n]|$)/gi;
+  while ((m = colonRemoveRe.exec(s)) !== null) {
+    const from = stripLeadingQty(m[1].trim());
+    if (from) result.push({ from, to: null });
+  }
+
+  return result;
 }
 
 function fuzzyMatch(term: string, name: string): boolean {
