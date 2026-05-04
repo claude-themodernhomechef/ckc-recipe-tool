@@ -2898,6 +2898,9 @@ export function parseIngredient(raw: string): {
     .replace(/(\d+(?:\.\d+)?\s*(?:oz|ounce|lb|pound)s?)\s*\/\s*\d+(?:\.\d+)?\s*(?:g|gram|kg)s?\b/gi, '$1')
     // Same in reverse: "200g/7oz" → drop the gram form, keep oz
     .replace(/\d+(?:\.\d+)?\s*(?:g|gram|kg)s?\s*\/\s*(\d+(?:\.\d+)?\s*(?:oz|ounce|lb|pound)s?)\b/gi, '$1')
+    // Range + dual units: "1.6 - 2.2kg / 3.2 - 4.4lb" → "1.6 kg" (keep first form, drop second)
+    .replace(/(\d+(?:\.\d+)?(?:\s*-\s*\d+(?:\.\d+)?)?)\s*(kg|g|gram)s?\s*\/\s*\d+(?:\.\d+)?(?:\s*-\s*\d+(?:\.\d+)?)?\s*(?:lb|pound|oz|ounce)s?\b/gi, '$1 $2')
+    .replace(/(\d+(?:\.\d+)?(?:\s*-\s*\d+(?:\.\d+)?)?)\s*(lb|pound|oz|ounce)s?\s*\/\s*\d+(?:\.\d+)?(?:\s*-\s*\d+(?:\.\d+)?)?\s*(?:kg|g|gram)s?\b/gi, '$1 $2')
     // "X cup/tbsp/tsp / Y g/ml" — keep imperial, drop metric half
     //   "1 1/4 cups / 180g bacon" → "1 1/4 cups bacon"
     //   "2 tbsp / 30 ml avocado oil" → "2 tbsp avocado oil"
@@ -2906,6 +2909,14 @@ export function parseIngredient(raw: string): {
     .replace(/((?:\d+(?:\s+\d+\/\d+)?|\d+\/\d+|\d+(?:\.\d+)?)\s*(?:cups?|tbsps?|tablespoons?|tsps?|teaspoons?))\s*\/\s*\d+(?:\.\d+)?\s*(?:g|grams?|kg|ml|l|oz|ounces?)\.?\s+/gi, '$1 ')
     // Multiple consecutive spaces → single space
     .replace(/\s{2,}/g, ' ');
+  // Bare "15 ounce can X" / "15-oz can X" / "15- ounce can X" with no leading
+  // count → "1 (15 oz) can X" so the existing paren-weight handler picks it up.
+  // (Same logic as build_recipe_nutrition_v2.ts preprocessor; needs to be here
+  // too so write_parsed_ingredients.ts produces correct values.)
+  str = str.replace(
+    /^(\d+(?:\.\d+)?)\s*-?\s*(ounce|oz|pound|lb|gram|g|kg|ml)s?\.?\s+(can|cans|jar|jars|package|packages?|bag|bags?|block|blocks?|box|boxes?|bottle|bottles?)\b/i,
+    (_, n, u, container) => `1 (${n} ${u}) ${container}`
+  );
   // "<N> <unit/count-word> <noun> (about <W> oz/lb)" — recipe author gives
   // total weight in parens. Use that as the primary qty + unit.
   //   "1 loaf of bread (about 12 ounces)" → "12 ounces bread"
