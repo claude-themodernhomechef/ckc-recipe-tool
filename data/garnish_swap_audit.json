@@ -1,0 +1,498 @@
+[
+  {
+    "category": "small_seeds",
+    "matches": [
+      {
+        "name": "sesame seeds",
+        "diets": [
+          "AIP"
+        ]
+      }
+    ],
+    "misses": [
+      "hemp seeds",
+      "chia seeds",
+      "poppy seeds"
+    ]
+  },
+  {
+    "category": "grain_specific",
+    "matches": [
+      {
+        "name": "white rice",
+        "diets": [
+          "K"
+        ]
+      }
+    ],
+    "misses": [
+      "brown rice",
+      "jasmine rice",
+      "basmati rice",
+      "steamed rice",
+      "garlic rice"
+    ]
+  },
+  {
+    "category": "rice_pilaf",
+    "matches": [],
+    "misses": [
+      "rice pilaf"
+    ]
+  },
+  {
+    "category": "grain_other",
+    "matches": [],
+    "misses": [
+      "rice noodles",
+      "soba noodles",
+      "cooked pasta",
+      "cooked couscous",
+      "cauliflower rice"
+    ]
+  },
+  {
+    "category": "grain_bare",
+    "matches": [
+      {
+        "name": "couscous",
+        "diets": [
+          "GF",
+          "K"
+        ]
+      }
+    ],
+    "misses": [
+      "rice",
+      "quinoa",
+      "farro",
+      "bulgur"
+    ]
+  },
+  {
+    "category": "mashed_potato",
+    "matches": [
+      {
+        "name": "mashed potatoes",
+        "diets": [
+          "K"
+        ]
+      }
+    ],
+    "misses": []
+  },
+  {
+    "category": "beans",
+    "matches": [],
+    "misses": [
+      "frijoles",
+      "black beans",
+      "pinto beans",
+      "refried beans"
+    ]
+  },
+  {
+    "category": "chips",
+    "matches": [],
+    "misses": [
+      "tortilla chips",
+      "pita chips",
+      "potato chips"
+    ]
+  },
+  {
+    "category": "bread",
+    "matches": [],
+    "misses": [
+      "naan",
+      "pita",
+      "tortilla",
+      "flatbread",
+      "roti",
+      "bread",
+      "crusty bread"
+    ]
+  },
+  {
+    "category": "nori",
+    "matches": [],
+    "misses": [
+      "nori sheet",
+      "nori"
+    ]
+  },
+  {
+    "category": "sour_cream_tier",
+    "matches": [
+      {
+        "name": "sour cream",
+        "diets": [
+          "DF",
+          "LF",
+          "LH"
+        ]
+      },
+      {
+        "name": "greek yogurt",
+        "diets": [
+          "DF",
+          "LF",
+          "Vg"
+        ]
+      }
+    ],
+    "misses": [
+      "yogurt",
+      "tzatziki",
+      "crema",
+      "creamy ranch",
+      "spicy mayo",
+      "ranch"
+    ]
+  },
+  {
+    "category": "cheese",
+    "matches": [
+      {
+        "name": "feta",
+        "diets": [
+          "DF"
+        ]
+      },
+      {
+        "name": "parmesan",
+        "diets": [
+          "DF",
+          "Vg"
+        ]
+      },
+      {
+        "name": "mozzarella",
+        "diets": [
+          "DF",
+          "Vg"
+        ]
+      }
+    ],
+    "misses": [
+      "cotija cheese",
+      "goat cheese",
+      "pecorino romano",
+      "cheddar",
+      "blue cheese",
+      "gorgonzola",
+      "ricotta"
+    ]
+  },
+  {
+    "category": "woody_herb",
+    "matches": [],
+    "misses": [
+      "thyme",
+      "fresh thyme"
+    ]
+  },
+  {
+    "category": "herb",
+    "matches": [],
+    "misses": [
+      "cilantro",
+      "parsley",
+      "scallions",
+      "green onions",
+      "spring onions",
+      "chives",
+      "mint",
+      "basil",
+      "dill",
+      "tarragon",
+      "pea shoots"
+    ]
+  },
+  {
+    "category": "croutons",
+    "matches": [],
+    "misses": [
+      "croutons"
+    ]
+  },
+  {
+    "category": "avocado",
+    "matches": [
+      {
+        "name": "avocado",
+        "diets": [
+          "LH"
+        ]
+      }
+    ],
+    "misses": []
+  },
+  {
+    "category": "olives",
+    "matches": [
+      {
+        "name": "olives",
+        "diets": [
+          "AIP"
+        ]
+      }
+    ],
+    "misses": [
+      "kalamata olives",
+      "castelvetrano olives"
+    ]
+  },
+  {
+    "category": "pickled_jalapeno",
+    "matches": [],
+    "misses": [
+      "pickled jalapeno",
+      "pickled jalapeño",
+      "fermented jalapeno"
+    ]
+  },
+  {
+    "category": "pickled_onion",
+    "matches": [],
+    "misses": [
+      "pickled red onion",
+      "pickled onion"
+    ]
+  },
+  {
+    "category": "pepperoncini",
+    "matches": [],
+    "misses": [
+      "pepperoncini",
+      "peperoncini"
+    ]
+  },
+  {
+    "category": "kimchi",
+    "matches": [],
+    "misses": [
+      "kimchi"
+    ]
+  },
+  {
+    "category": "nuts",
+    "matches": [
+      {
+        "name": "pepitas",
+        "diets": [
+          "AIP"
+        ]
+      },
+      {
+        "name": "sunflower seeds",
+        "diets": [
+          "AIP"
+        ]
+      }
+    ],
+    "misses": [
+      "almonds",
+      "walnuts",
+      "pecans",
+      "pine nuts",
+      "cashews",
+      "pistachios",
+      "peanuts",
+      "pumpkin seeds"
+    ]
+  },
+  {
+    "category": "citrus",
+    "matches": [
+      {
+        "name": "lemon",
+        "diets": [
+          "LH"
+        ]
+      }
+    ],
+    "misses": [
+      "lime",
+      "lime wedges",
+      "lemon wedges",
+      "lime zest",
+      "lemon zest"
+    ]
+  },
+  {
+    "category": "hot_sauce",
+    "matches": [
+      {
+        "name": "hot sauce",
+        "diets": [
+          "AIP",
+          "LH"
+        ]
+      },
+      {
+        "name": "sriracha",
+        "diets": [
+          "AIP",
+          "LH"
+        ]
+      },
+      {
+        "name": "chili crisp",
+        "diets": [
+          "AIP",
+          "LH"
+        ]
+      },
+      {
+        "name": "sesame oil",
+        "diets": [
+          "AIP"
+        ]
+      },
+      {
+        "name": "hoisin sauce",
+        "diets": [
+          "GF"
+        ]
+      }
+    ],
+    "misses": [
+      "tabasco",
+      "chile crisp",
+      "chili oil",
+      "mango chutney"
+    ]
+  },
+  {
+    "category": "cucumber",
+    "matches": [],
+    "misses": [
+      "persian cucumber",
+      "cucumber"
+    ]
+  },
+  {
+    "category": "lettuce",
+    "matches": [],
+    "misses": [
+      "iceberg lettuce",
+      "romaine lettuce",
+      "shredded lettuce",
+      "lettuce"
+    ]
+  },
+  {
+    "category": "leafy_greens",
+    "matches": [],
+    "misses": [
+      "leafy greens",
+      "mixed greens",
+      "salad greens"
+    ]
+  },
+  {
+    "category": "radish",
+    "matches": [],
+    "misses": [
+      "radish"
+    ]
+  },
+  {
+    "category": "onion",
+    "matches": [
+      {
+        "name": "onion",
+        "diets": [
+          "LF"
+        ]
+      }
+    ],
+    "misses": [
+      "red onion",
+      "white onion",
+      "yellow onion"
+    ]
+  },
+  {
+    "category": "shallot",
+    "matches": [
+      {
+        "name": "shallots",
+        "diets": [
+          "LF"
+        ]
+      }
+    ],
+    "misses": [
+      "shallot"
+    ]
+  },
+  {
+    "category": "tomatoes",
+    "matches": [
+      {
+        "name": "tomatoes",
+        "diets": [
+          "LH"
+        ]
+      }
+    ],
+    "misses": [
+      "cherry tomatoes",
+      "grape tomatoes",
+      "tomato"
+    ]
+  },
+  {
+    "category": "fresh_jalapeno",
+    "matches": [
+      {
+        "name": "jalapeno",
+        "diets": [
+          "AIP"
+        ]
+      }
+    ],
+    "misses": [
+      "fresh jalapeño",
+      "jalapeño"
+    ]
+  },
+  {
+    "category": "bell_pepper",
+    "matches": [
+      {
+        "name": "bell peppers",
+        "diets": [
+          "AIP"
+        ]
+      }
+    ],
+    "misses": [
+      "bell pepper"
+    ]
+  },
+  {
+    "category": "zucchini",
+    "matches": [],
+    "misses": [
+      "zucchini",
+      "zucchini ribbons"
+    ]
+  },
+  {
+    "category": "guacamole",
+    "matches": [],
+    "misses": [
+      "guacamole"
+    ]
+  },
+  {
+    "category": "salsa",
+    "matches": [],
+    "misses": [
+      "salsa"
+    ]
+  }
+]
