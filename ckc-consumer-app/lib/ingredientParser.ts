@@ -2936,6 +2936,12 @@ export function parseIngredient(raw: string): {
     /^(\d+)\s+([a-z][a-z\s-]+?)\s*\(\s*(?:about\s+|approximately\s+|~\s*)?(\d+(?:\.\d+)?)\s*(pound|lb|ounce|oz|kg|gram|g)s?\.?\s*\)/i,
     (_, _n, noun, w, u) => `${w} ${u} ${noun.trim()}`
   );
+  // "1 (4-5 pound) beef tenderloin" / "1 (3-4 lb) chicken" — count IMMEDIATELY followed
+  // by paren weight (no noun before). Use lower bound. Drop the count.
+  str = str.replace(
+    /^(\d+)\s+\(\s*(?:about\s+|approximately\s+|~\s*)?(\d+(?:\.\d+)?)(?:\s*-\s*\d+(?:\.\d+)?)?\s*(pound|lb|ounce|oz|kg|gram|g)s?\.?\s*\)\s+/i,
+    (_, _n, w, u) => `${w} ${u} `
+  );
   // "4 6-ounce portions/pieces/fillets X" — leading count + per-piece weight + portion-word + noun
   // Multiply N × W to get total weight.
   //   "4 6-ounce portions salmon fillet" → "24 ounce salmon fillet"
