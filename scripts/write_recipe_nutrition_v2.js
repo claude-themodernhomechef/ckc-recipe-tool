@@ -65,15 +65,20 @@ async function main() {
       const ref   = db.collection('recipes').doc(id);
       const n     = entry.nutrition;
 
-      // Compress ingredients: keep raw + name + grams + matched + skip + garnish + assumed flags
+      // Compress ingredients: keep raw + name + qty + unit + grams + matched +
+      // skip + garnish + assumed flags. Garnish items also keep per-ingredient
+      // nutrition so the consumer app can display per-garnish macros.
       const compressedIngredients = (n.ingredients || []).map(ing => ({
         raw:            ing.raw,
         name:           ing.name,
+        qty:            ing.qty || 0,
+        unit:           ing.unit || '',
         grams:          ing.grams || 0,
         matched:        !!ing.matched,
         skip:           !!ing.skip,
         garnish:        !!ing.garnish,
         ...(ing.assumed ? { assumed: true, assumedDefault: ing.assumedDefault } : {}),
+        ...(ing.garnish && ing.nutrition ? { nutrition: ing.nutrition } : {}),
       }));
 
       const nutritionToWrite = {
