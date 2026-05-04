@@ -2687,6 +2687,9 @@ export function parseIngredient(raw: string): {
   if (!raw) return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw };
   let str = raw.trim();
 
+  // Mixed-number with hyphen range: "1 1/2-2 lbs" → "1 1/2 to 2 lbs" so the
+  // mixed-number parses correctly (otherwise "1 1/2-2" gets read as fraction 1/2).
+  str = str.replace(/^(\d+)\s+(\d+\/\d+)\s*-\s*(\d+(?:\.\d+)?|\d+\/\d+|\d+\s+\d+\/\d+)\b/, '$1 $2 to $3');
   // Case-sensitive abbreviations that disambiguate by capitalization:
   //   "T" = Tablespoon, "t" = teaspoon (must run BEFORE any lowercasing)
   //   Common in older recipes; e.g. "4 T butter", "2 t salt"

@@ -20250,7 +20250,7 @@
       },
       {
         "label": "Cup",
-        "gramWeight": 40
+        "gramWeight": 30
       }
     ]
   },
@@ -58185,6 +58185,10 @@
       {
         "label": "Kilogram",
         "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 30
       }
     ]
   },
@@ -65944,7 +65948,7 @@
       },
       {
         "label": "Cup",
-        "gramWeight": 35
+        "gramWeight": 30
       }
     ]
   },
@@ -93247,7 +93251,7 @@
       },
       {
         "label": "Cup",
-        "gramWeight": 35
+        "gramWeight": 30
       }
     ]
   },
@@ -95951,7 +95955,7 @@
       },
       {
         "label": "Cup",
-        "gramWeight": 56
+        "gramWeight": 30
       }
     ]
   },
@@ -178822,7 +178826,7 @@
       },
       {
         "label": "Cup",
-        "gramWeight": 50
+        "gramWeight": 30
       }
     ],
     "_proxy_for": "french baguette"
