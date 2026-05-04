@@ -275,6 +275,161 @@ html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var
   </div>
 
   <!-- ═══════════════════════════════════════════════════ -->
+  <!--  NUTRITION RULES                                    -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">Nutrition Rules</div>
+
+    <div class="item" onclick="toggle(this)">
+      <div class="item-header">
+        <div class="status-dot info"></div>
+        <div class="item-title">How we calculate calories — full reference</div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="item-body">
+        <p class="desc">Plain-English rules our pipeline uses when converting recipes into nutrition values. These reflect what people <strong>actually eat</strong>, not just the raw ingredients listed. They deliberately diverge from Edamam where Edamam is wrong about real-world consumption.</p>
+
+        <div class="steps-label">Fish &amp; Seafood</div>
+        <table class="pipe-table">
+          <thead><tr><th>If the recipe says...</th><th>Then we calculate it as...</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>"salmon" / "salmon fillet" / "cod" / "halibut" / "tilapia"</td><td>Skinless</td><td>Most home cooks remove or buy skinless</td></tr>
+            <tr><td>"skin-on salmon" / "whole fish"</td><td>Skin-on (208 kcal/100g for salmon)</td><td>Recipe explicitly includes skin</td></tr>
+            <tr><td>"fish fillet" (generic)</td><td>6 oz / 170g per piece</td><td>Standard portion</td></tr>
+          </tbody>
+        </table>
+
+        <div class="steps-label">Chicken</div>
+        <table class="pipe-table">
+          <thead><tr><th>If the recipe says...</th><th>Then we calculate it as...</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>"boneless skinless chicken breast"</td><td>8 oz / 227g per breast</td><td>Standard portion</td></tr>
+            <tr><td>"boneless skinless chicken thigh"</td><td>4 oz / 113g per thigh</td><td>Standard portion</td></tr>
+            <tr><td>"bone-in chicken thigh"</td><td>4.2 oz / 120g edible meat + skin (70% of whole-piece)</td><td>Bones aren't eaten</td></tr>
+            <tr><td>"chicken drumstick"</td><td>2 oz / 55g edible</td><td>Bones aren't eaten</td></tr>
+            <tr><td>"whole chicken"</td><td>Edible-portion only, 170 kcal/100g</td><td>Bones aren't eaten</td></tr>
+            <tr><td>"cooked chicken" / "rotisserie" / "shredded chicken"</td><td>140g per breast (cooked weight, 165 kcal/100g)</td><td>Already cooked, accounts for shrinkage</td></tr>
+          </tbody>
+        </table>
+
+        <div class="steps-label">Ground Meat</div>
+        <table class="pipe-table">
+          <thead><tr><th>If the recipe says...</th><th>Then we calculate it as...</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>"ground beef" (no %)</td><td>80/20 (254 kcal/100g)</td><td>Most common in stores</td></tr>
+            <tr><td>"lean ground beef"</td><td>90/10 (179 kcal/100g)</td><td>Standard "lean" assumption</td></tr>
+            <tr><td>"extra lean ground beef"</td><td>96/4 (134 kcal/100g)</td><td>USDA extra-lean classification</td></tr>
+            <tr><td>"ground sirloin"</td><td>90/10 (179 kcal/100g)</td><td>Sirloin is naturally leaner</td></tr>
+            <tr><td>"ground chuck"</td><td>80/20 (254 kcal/100g)</td><td>Chuck is standard 80/20</td></tr>
+            <tr><td>"ground turkey" (no %)</td><td>93% lean (143 kcal/100g)</td><td>Health-recipe convention</td></tr>
+            <tr><td>"ground turkey breast" / "extra lean"</td><td>99% lean (107 kcal/100g)</td><td>All-white-meat</td></tr>
+            <tr><td>"ground chicken" (no %)</td><td>93% lean (134 kcal/100g)</td><td>Health-recipe convention</td></tr>
+            <tr><td>"ground pork"</td><td>80/20 (259 kcal/100g)</td><td>Standard ratio</td></tr>
+          </tbody>
+        </table>
+
+        <div class="steps-label">Cooking-Loss Adjustments</div>
+        <table class="pipe-table">
+          <thead><tr><th>Trigger</th><th>Adjustment</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>Bacon, pancetta, chorizo, sausage in recipe</td><td>50% of calories</td><td>50% renders out as discarded fat</td></tr>
+            <tr><td>...AND recipe is soup/stew/chili/chowder</td><td>100% (no discount)</td><td>Rendered fat stays in the dish</td></tr>
+            <tr><td>Recipe name has "grilled," "broiled," "BBQ," "kebab," "skewer," "satay"</td><td>90% of meat calories</td><td>10% drips off as fat during cooking</td></tr>
+            <tr><td>Recipe is "braised," "stewed," "ragù," "coq au vin," "bourguignon" + has wine/beer/spirits</td><td>70% of alcohol calories</td><td>30% burns off in long cooking</td></tr>
+            <tr><td>Ingredient says "trimmed" or "fat removed"</td><td>95% of calories</td><td>5% gets discarded</td></tr>
+            <tr><td>"For frying" / "to deep fry" with ≥1/3 cup oil</td><td>10% of oil calories</td><td>90% stays in the pan</td></tr>
+          </tbody>
+        </table>
+
+        <div class="steps-label">Marinade</div>
+        <table class="pipe-table">
+          <thead><tr><th>If the recipe says...</th><th>Then we calculate it as...</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>Recipe has marinade ingredients (default)</td><td>100% of calories</td><td>Can't reliably tell discard vs reserve from ingredients alone</td></tr>
+            <tr><td>Recipe explicitly says "discard the marinade"</td><td>Manual override per recipe</td><td>Handled case-by-case</td></tr>
+          </tbody>
+        </table>
+
+        <div class="steps-label">Rice, Grains &amp; Pasta</div>
+        <table class="pipe-table">
+          <thead><tr><th>If the recipe says...</th><th>Then we calculate it as...</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>"rice" / "quinoa" / "basmati" / "brown rice"</td><td>Raw values</td><td>Recipes list raw measurements</td></tr>
+            <tr><td>"cooked rice" / "steamed rice" / "leftover rice"</td><td>Cooked values (130 kcal/100g, Cup=158g)</td><td>Recipe specifies cooked form</td></tr>
+            <tr><td>"pasta" / "noodles"</td><td>Raw / dry values</td><td>Recipes list dry weight</td></tr>
+          </tbody>
+        </table>
+
+        <div class="steps-label">Beans &amp; Legumes</div>
+        <table class="pipe-table">
+          <thead><tr><th>If the recipe says...</th><th>Then we calculate it as...</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>"black beans" / "kidney beans" / "chickpeas" / "lentils" (any bean)</td><td>Cooked values (~130 kcal/100g)</td><td>Most recipes use canned/pre-cooked</td></tr>
+            <tr><td>"dried chickpeas" / "dried beans"</td><td>Still cooked values</td><td>Recipe assumes you cook them before eating</td></tr>
+          </tbody>
+        </table>
+
+        <div class="steps-label">Garnishes &amp; Toppings</div>
+        <table class="pipe-table">
+          <thead><tr><th>If the recipe says...</th><th>Then we calculate it as...</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>"for serving" / "for garnish" / "to serve" / "on top" / "for spritzing" / "for drizzling"</td><td>Calculated separately, not in main total</td><td>Add-on, not part of the main meal</td></tr>
+            <tr><td>Ingredient line starts with "Optional"</td><td>Same — separate from main total</td><td>Optional add-on</td></tr>
+            <tr><td>Ingredient has no quantity (e.g., just "Avocado")</td><td>Treat as garnish or skip</td><td>Author didn't specify — likely garnish</td></tr>
+          </tbody>
+        </table>
+
+        <div class="steps-label">Breading &amp; Coatings</div>
+        <table class="pipe-table">
+          <thead><tr><th>Trigger</th><th>Adjustment</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>Breadcrumbs + whole-piece protein + no ground meat or pasta</td><td>Cap at 2/3 cup per pound of protein</td><td>Excess doesn't stick to the meat</td></tr>
+          </tbody>
+        </table>
+
+        <div class="steps-label">Broths, Stocks &amp; Herbs</div>
+        <table class="pipe-table">
+          <thead><tr><th>If the recipe says...</th><th>Then we calculate it as...</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>"chicken broth" / "beef broth" / "vegetable broth" / "bone broth"</td><td>~10 kcal per 100g</td><td>Mostly water with flavoring</td></tr>
+            <tr><td>"low sodium" / "reduced sodium" / "stock" variants</td><td>Same values as regular broth</td><td>Sodium is the only difference</td></tr>
+            <tr><td>"fresh basil," "fresh oregano," "fresh parsley," etc.</td><td>USDA fresh values (~25 kcal/100g for leafy)</td><td>Fresh herbs have ~10× fewer calories than dried</td></tr>
+          </tbody>
+        </table>
+
+        <div class="steps-label">Quantity Conventions</div>
+        <table class="pipe-table">
+          <thead><tr><th>If the recipe says...</th><th>Then we calculate it as...</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>"1 medium onion" (or "1 small" / "1 large")</td><td>150g (100g / 200g)</td><td>Standard sizes</td></tr>
+            <tr><td>"1 medium carrot"</td><td>60g</td><td>Standard size</td></tr>
+            <tr><td>"1 garlic clove"</td><td>3g</td><td>Standard size</td></tr>
+            <tr><td>"1 large egg"</td><td>50g</td><td>USDA standard</td></tr>
+            <tr><td>"1 medium tomato"</td><td>123g</td><td>USDA standard</td></tr>
+            <tr><td>"1 stick butter"</td><td>113g (½ cup)</td><td>US standard</td></tr>
+            <tr><td>"1 cup oil"</td><td>218g</td><td>Density-based</td></tr>
+            <tr><td>"1-2 lbs" (range)</td><td>Lower bound (1 lb)</td><td>Conservative estimate</td></tr>
+            <tr><td>"4 (6-oz) salmon fillets"</td><td>Multiply: 4 × 6 = 24 oz total</td><td>Honor per-piece weight</td></tr>
+          </tbody>
+        </table>
+
+        <div class="steps-label">What we DON'T adjust for</div>
+        <table class="pipe-table">
+          <thead><tr><th>Scenario</th><th>Why no adjustment</th></tr></thead>
+          <tbody>
+            <tr><td>Cooking shrinkage on meat (water loss)</td><td>Water has 0 calories — totals stay the same</td></tr>
+            <tr><td>Reduction sauces ("reduce by half," "simmer until thick")</td><td>Water evaporates; calories stay the same</td></tr>
+            <tr><td>Pasta water absorption</td><td>The added water has 0 calories</td></tr>
+            <tr><td>"Salt to taste" / "pepper as needed"</td><td>~0 calories</td></tr>
+          </tbody>
+        </table>
+
+        <p class="desc"><strong>Why our values diverge from Edamam:</strong> Edamam doesn't account for bacon fat rendering, grill drippings, alcohol burn-off, or skinless-fish defaults. Edamam also returns garbage for some entries (bone broth at 116 kcal/100g, dried-herb values for fresh herbs). Our numbers are typically 10-20% lower than Edamam for cooked meats, fried foods, and braises — this is correct, not a bug.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
   <!--  ADMIN SIDE                                         -->
   <!-- ═══════════════════════════════════════════════════ -->
   <div class="section">
