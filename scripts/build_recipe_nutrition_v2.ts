@@ -700,7 +700,7 @@ async function main() {
       if ((!parsed || parsed.qty === 0) && parsed?.name) {
         const lower = parsed.name.toLowerCase().trim();
         const matchKey = Object.keys(STANDARD_GRAMS).find(k =>
-          lower === k || lower.endsWith(' ' + k) || k.endsWith(' ' + lower)
+          lower === k || lower.endsWith(' ' + k)
         );
         if (matchKey) {
           parsed = { ...parsed, qty: 1, unit: '' };
