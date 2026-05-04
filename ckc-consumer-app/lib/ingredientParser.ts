@@ -2683,6 +2683,16 @@ export function parseIngredient(raw: string): {
   if (!raw) return { qty: 0, unit: '', name: '', category: 'pantry-staples', raw };
   let str = raw.trim();
 
+  // Case-sensitive abbreviations that disambiguate by capitalization:
+  //   "T" = Tablespoon, "t" = teaspoon (must run BEFORE any lowercasing)
+  //   Common in older recipes; e.g. "4 T butter", "2 t salt"
+  // Match digit+space+T/t followed by space or period.
+  str = str
+    .replace(/(\b\d(?:[.\/]\d+)?)\s+T(?=\s|\.)/g, '$1 tbsp')
+    .replace(/(\b\d(?:[.\/]\d+)?)\s+t(?=\s|\.)/g, '$1 tsp')
+    // "1/2 c finely minced red onion" — lowercase "c" as cup abbreviation
+    .replace(/(\b\d(?:[.\/]\d+)?)\s+c(?=\s|\.)/g, '$1 cup');
+
   // Extract serving note BEFORE stop-word stripping so it isn't lost
   const note = extractServingNote(str);
 

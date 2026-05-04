@@ -65,13 +65,14 @@ function isSkippable(raw: string): { skip: boolean; reason?: string } {
   let totalIngs = 0;
   let totalParsed = 0;
   let totalSkipped = 0;
+  let overridesPreserved = 0;
 
   const recipes: any[] = [];
   snap.forEach(d => {
     const data = d.data();
     if (!data.ingredients || !Array.isArray(data.ingredients)) return;
     if (onlyId && d.id !== onlyId) return;
-    recipes.push({ id: d.id, name: data.name, ingredients: data.ingredients });
+    recipes.push({ id: d.id, name: data.name, ingredients: data.ingredients, existingParsed: data.parsedIngredients });
   });
 
   console.log(`Processing ${recipes.length} recipes...\n`);
@@ -79,6 +80,16 @@ function isSkippable(raw: string): { skip: boolean; reason?: string } {
   for (let i = 0; i < recipes.length; i++) {
     const r = recipes[i];
     const parsed: ParsedIng[] = [];
+
+    // Build a lookup of existing manual overrides (by raw text → preserved entry).
+    // An override is preserved if the existing item has `override: true` set.
+    // This lets us re-run the auto-parser without clobbering manual edits.
+    const overrideMap = new Map<string, any>();
+    if (Array.isArray(r.existingParsed)) {
+      for (const e of r.existingParsed) {
+        if (e.override === true && e.raw) overrideMap.set(e.raw, e);
+      }
+    }
 
     for (const raw of r.ingredients as string[]) {
       if (!raw || !raw.trim()) continue;
@@ -90,6 +101,14 @@ function isSkippable(raw: string): { skip: boolean; reason?: string } {
 
       for (const segment of splits) {
         if (!segment || !segment.trim()) continue;
+
+        // If user manually overrode this segment, preserve it
+        if (overrideMap.has(segment)) {
+          parsed.push(overrideMap.get(segment)!);
+          overridesPreserved++;
+          totalParsed++;
+          continue;
+        }
 
         const skipCheck = isSkippable(segment);
         if (skipCheck.skip) {
@@ -133,6 +152,7 @@ function isSkippable(raw: string): { skip: boolean; reason?: string } {
   console.log(`  Recipes updated:     ${updated}${dryRun ? ' (dry run — nothing written)' : ''}`);
   console.log(`  Raw ingredient lines: ${totalIngs}`);
   console.log(`  Parsed ingredients:  ${totalParsed} (after splits)`);
+  console.log(`  Manual overrides preserved: ${overridesPreserved}`);
   console.log(`  Skipped fragments:   ${totalSkipped}`);
   console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
 
