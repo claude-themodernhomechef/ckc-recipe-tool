@@ -162,11 +162,22 @@ const STANDARD_GRAMS: Record<string, number> = {
   'boneless chicken thigh':           113,
   // Generic fallbacks: assume boneless/skinless when not specified
   'chicken breast':        227,  // 8 oz raw (boneless/skinless default)
+  // Cooked chicken (rotisserie/shredded): ~140g per breast after shrinkage.
+  // DB entry uses cooked kcal/100g (~165), so per-piece weight must be cooked too.
+  'cooked chicken breast':   140,
+  'cooked chicken breasts':  140,
+  'shredded chicken breast': 140,
+  'shredded chicken':        140,
+  'rotisserie chicken breast': 140,
   'chicken thigh':         113,  // 4 oz raw (boneless/skinless default)
   'chicken leg':           120,  // bone-in leg, edible portion (~6 oz whole, 30% bone)
   'chicken drumstick':      55,  // edible (~85g whole, ~35% bone)
   'chicken wing':           20,  // edible (~30g whole)
   'turkey breast':         227,
+  // Lamb shank: bone-in cut, edible portion (meat + some skin) ≈ 250g per shank
+  // (whole shank ~400g, ~38% bone). Use edible per Rafi's bone-in policy.
+  'lamb shank':            250,
+  'lamb shanks':           250,
   // Proteins — seafood
   // Generic fish filet default = 6 oz (170g) per piece (raw, skin-on)
   'fish filet':            170,
@@ -353,6 +364,9 @@ const FORM_MODIFIERS_NUTRITION = [
   /\bfull[\s-]?fat\b/g, /\blow[\s-]?fat\b/g, /\bfat[\s-]?free\b/g, /\bnonfat\b/g,
   /\blow[\s-]?sodium\b/g, /\breduced[\s-]?sodium\b/g,
   /\bcrumbled\b/g, /\bshelled\b/g,
+  // NOTE: "lean", "93%", "90/10" are NOT stripped here — ground-meat nutrition
+  // varies meaningfully by leanness (336 kcal/100g for 70/30 vs 134 for 96/4).
+  // DB has dedicated entries per leanness percentage with USDA values.
   // Unit-like words that the parser keeps in the name for shopping clarity
   // but the matcher should ignore for DB lookup
   /\bhead\b/g, /\bsticks?\b/g, /\bstrips?\b/g, /\bsprigs?\b/g, /\bstalks?\b/g,
@@ -461,7 +475,15 @@ function lookupIngredient(name: string, ingDB: any, _retry = false): any {
   if (!_retry) {
     const stripped = stripFormModifiers(stripPrepWords(lower));
     if (stripped && stripped !== lower) {
-      return lookupIngredient(stripped, ingDB, true);
+      const hit = lookupIngredient(stripped, ingDB, true);
+      if (hit) return hit;
+    }
+    // 7. Last-ditch: strip "fresh" prefix if present. "fresh" is normally kept
+    //    (DB distinguishes fresh vs dried for herbs) but falls back here when no
+    //    "fresh X" entry exists — e.g. "fresh scallions" → "scallions".
+    if (/\bfresh\b/.test(lower)) {
+      const noFresh = lower.replace(/\bfresh\b/g, '').replace(/\s+/g, ' ').trim();
+      if (noFresh && noFresh !== lower) return lookupIngredient(noFresh, ingDB, true);
     }
   }
 
@@ -581,6 +603,8 @@ function isGarnish(raw: string): boolean {
   if (!raw) return false;
   const lower = raw.toLowerCase().trim();
   return /\bfor\s+serving\b|\bfor\s+garnish\b|\bto\s+serve\b|\bto\s+garnish\b|\bto\s+top\b/.test(lower)
+    || /\bfor\s+(?:spritzing|drizzling|sprinkling|dipping|finishing|brushing)\b/.test(lower)
+    || /\bon\s+top\b/.test(lower)
     || /^optional[\s:]+garnish|^garnish\s*:/i.test(lower)
     || /^for\s+topping\b/i.test(lower)
     || /^optional\s+/i.test(lower);  // "Optional: avocado, lime"
@@ -618,6 +642,27 @@ function preprocessIngredient(raw: string): string {
   //    Count (1-4) followed by a weight spec  →  take the weight as qty
   s = s.replace(/^[1-4]\s+(\d+(?:\.\d+)?)\s*-\s*(pounds?|lbs?|ounces?|oz)\b/gi,
     (_, n, u) => `${n} ${u}`);
+
+  // 4b. "X inch [piece of] [fresh] ginger" → "X*15 g fresh ginger"
+  //     Recipe authors specify ginger by length. ~15g per inch (typical thumb-thick piece).
+  //     Handles: "1 inch fresh ginger", "2 inch piece of ginger", "3-inch piece ginger",
+  //              "1 (2-inch) piece ginger", "2 inches fresh ginger".
+  s = s.replace(/^(\d+(?:\.\d+)?)\s*[-]?\s*inch(?:es)?\s+(?:piece\s+(?:of\s+)?)?(?:fresh\s+)?ginger\b.*$/i,
+    (_, n) => `${parseFloat(n) * 15} g fresh ginger`);
+  s = s.replace(/^\d+\s*\(\s*(\d+(?:\.\d+)?)\s*[-]?\s*inch(?:es)?\s*\)\s*(?:piece\s+(?:of\s+)?)?(?:fresh\s+)?ginger\b.*$/i,
+    (_, n) => `${parseFloat(n) * 15} g fresh ginger`);
+
+  // 5a. "1 cup (200 grams) dried chickpeas" / "1 cup (370g) lentils"
+  //     Volume + paren metric weight + name → use the metric weight as authoritative.
+  //     Common in international/UK recipes.
+  s = s.replace(/^(\d+(?:\.\d+)?(?:\s+\d+\/\d+)?|\d+\/\d+)\s+cups?\s+\(\s*(\d+(?:\.\d+)?)\s*(?:grams?|g)\s*\)\s+(.+)$/i,
+    (_, _vol, w, rest) => `${w} g ${rest}`);
+
+  // 5b. "2 (6-8oz) filets center-cut salmon"  /  "2 (6 oz) fillets salmon"
+  //     Count + paren per-piece weight (range OK) + portion word + adj/noun
+  //     →  total weight (count × lower) + descriptor + noun
+  s = s.replace(/^(\d+)\s*\(\s*(\d+(?:\.\d+)?)(?:\s*[-–]\s*\d+(?:\.\d+)?)?\s*(oz|ounces?|lb|lbs?|pounds?|g|grams?|kg)\s*\)\s*(?:filets?|fillets?|breasts?|thighs?|legs?|wings?|drumsticks?|chops?|steaks?|cutlets?|portions?|pieces?|tenders?)\s+(.+)$/i,
+    (_, n, w, u, rest) => `${parseFloat(n) * parseFloat(w)} ${u} ${rest}`);
 
   // 6. "- 15-ounce can …" / "- ounce can …"  →  "1 can …"
   s = s.replace(/^[-–]\s*\d*\.?\d*\s*(ounce|oz|pound|lb)\s+(can|cans|jar|jars|package|packages?|bag|bags?)\b/gi,
@@ -895,6 +940,64 @@ async function main() {
             bc.coatingCap = true;
           }
         }
+      }
+    }
+
+    // ── Cooking-loss / consumption-aware adjustments ────────────────────────────
+    // These rules reflect what's actually eaten vs raw ingredient kcal:
+    //   1. Bacon/sausage render — 50% of weight is fat that drips off and is
+    //      typically discarded (unless recipe is soup/stew/braise that captures fat).
+    //   2. Grilled/broiled/BBQ protein — 10% kcal lost to drippings.
+    //   3. Alcohol burn-off in long-cooked dishes — 30% kcal lost in braise/stew/ragù.
+    //   4. Frying oil cap — when ≥1/3 cup oil "for frying", count only 10% absorbed.
+    //   5. Trimmed cuts — 5% kcal discount when recipe says "trimmed" / "fat removed".
+    const recipeName = (recipe.name || '').toLowerCase();
+    const isSoupStew = /\b(?:soup|stew|chowder|chili|gumbo|broth|bisque|braise|ragu|rag[uú]|stock|cassoulet)\b/.test(recipeName);
+    const isGrilled = /\b(?:grilled?|broiled?|bbq|barbecue|kebab|kabob|skewer|satay|yakitori|charred?)\b/.test(recipeName);
+    const isLongCooked = /\b(?:braised?|stewed?|ragu|rag[uú]|stew|coq\s+au\s+vin|bourguignon|osso\s+buco|cassoulet|long[\s-]?cook|simmer(?:ed)?)\b/.test(recipeName);
+
+    const scaleNutrition = (item: any, factor: number, tag: string) => {
+      if (!item.nutrition) return;
+      for (const k of Object.keys(item.nutrition)) {
+        if (typeof item.nutrition[k] === 'number') {
+          item.nutrition[k] = +(item.nutrition[k] * factor).toFixed(2);
+        }
+      }
+      item.adjustments = [...(item.adjustments || []), { tag, factor }];
+    };
+
+    for (const it of ingredientResults) {
+      if (!it.matched || !it.nutrition) continue;
+      const n = (it.name || '').toLowerCase();
+      const raw = (it.raw || '').toLowerCase();
+
+      // 1. Bacon/sausage render (skip when soup/stew captures drippings)
+      if (!isSoupStew && /\b(?:bacon|pancetta|chorizo|breakfast\s+sausage|italian\s+sausage|spicy\s+italian\s+sausage)\b/.test(n)) {
+        scaleNutrition(it, 0.5, 'bacon_render_loss');
+      }
+
+      // 2. Grilled/broiled protein drip loss
+      if (isGrilled && /\b(?:chicken|beef|steak|lamb|pork|salmon|tuna|halibut|cod|tilapia|fish|shrimp|prawn|fillets?|filets?|thighs?|breasts?|chops?|kebab|kabob|skewer)\b/.test(n)) {
+        scaleNutrition(it, 0.9, 'grill_drip_loss');
+      }
+
+      // 3. Alcohol burn-off in braise/stew
+      if (isLongCooked && /\b(?:wine|beer|ale|sake|vermouth|sherry|brandy|bourbon|vodka|rum|gin|champagne|whiskey|whisky|cognac|marsala|madeira|port)\b/.test(n) && !/vinegar/.test(n)) {
+        scaleNutrition(it, 0.7, 'alcohol_burnoff');
+      }
+
+      // 4. Frying oil cap — applies when raw text says "for frying" / "to fry" with
+      //    ≥1/3 cup oil. Recipes deep-fry in lots of oil; only ~10% is absorbed.
+      if (/\boil\b/.test(n) && /\bfor\s+(?:deep[\s-]?)?fry|to\s+(?:deep[\s-]?)?fry/.test(raw)) {
+        const cupEquivalent = it.unit === 'cup' ? it.qty : (it.grams || 0) / 218;
+        if (cupEquivalent >= 0.33) {
+          scaleNutrition(it, 0.1, 'fry_oil_absorption');
+        }
+      }
+
+      // 5. Trimmed cuts
+      if (/\b(?:trimmed|fat\s+removed|fat\s+trimmed|excess\s+fat\s+(?:removed|trimmed))\b/.test(raw)) {
+        scaleNutrition(it, 0.95, 'trimmed_fat');
       }
     }
 

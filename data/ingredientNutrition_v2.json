@@ -1895,7 +1895,7 @@
   "thyme": {
     "source": "edamam",
     "foodId": "food_b3o3cj7a5gskecb0ufphtadnbfqb",
-    "label": "Thyme",
+    "label": "Fresh Thyme",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -1903,11 +1903,11 @@
         "unit": "kcal"
       },
       "protein": {
-        "value": 5.56,
+        "value": 5.6,
         "unit": "g"
       },
       "fat": {
-        "value": 1.68,
+        "value": 1.7,
         "unit": "g"
       },
       "carbs": {
@@ -1974,6 +1974,10 @@
       },
       {
         "gramWeight": 0.01
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 25
       }
     ]
   },
@@ -3952,28 +3956,44 @@
   "chicken stock": {
     "source": "edamam",
     "foodId": "food_bptblvzambd16nbhewqmhaw1rnh5",
-    "label": "Chicken Stock",
+    "label": "chicken stock",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 36,
+        "value": 8,
         "unit": "kcal"
       },
       "protein": {
-        "value": 2.52,
+        "value": 1.67,
         "unit": "g"
       },
       "fat": {
-        "value": 1.2,
+        "value": 0,
         "unit": "g"
       },
       "carbs": {
-        "value": 3.53,
+        "value": 0.42,
         "unit": "g"
       },
       "fiber": {
         "value": 0,
         "unit": "g"
+      },
+      "sugar": {
+        "value": 0.42,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "cholesterol": {
+        "value": 0,
+        "unit": "mg"
+      },
+      "sodium": {
+        "value": 212,
+        "unit": "mg"
       }
     },
     "measures": [
@@ -5547,7 +5567,7 @@
   "rosemary": {
     "source": "edamam",
     "foodId": "food_b6tm2t2blxi7okaeiv91wb8bmygq",
-    "label": "Rosemary",
+    "label": "Fresh Rosemary",
     "category": "Generic foods",
     "per100g": {
       "calories": {
@@ -5555,11 +5575,11 @@
         "unit": "kcal"
       },
       "protein": {
-        "value": 3.31,
+        "value": 3.3,
         "unit": "g"
       },
       "fat": {
-        "value": 5.86,
+        "value": 5.9,
         "unit": "g"
       },
       "carbs": {
@@ -5622,6 +5642,10 @@
       },
       {
         "gramWeight": 0.03
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 25
       }
     ]
   },
@@ -5717,23 +5741,23 @@
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 265,
+        "value": 25,
         "unit": "kcal"
       },
       "protein": {
-        "value": 9,
+        "value": 1.1,
         "unit": "g"
       },
       "fat": {
-        "value": 4.28,
+        "value": 0.4,
         "unit": "g"
       },
       "carbs": {
-        "value": 68.9,
+        "value": 5,
         "unit": "g"
       },
       "fiber": {
-        "value": 42.5,
+        "value": 3,
         "unit": "g"
       }
     },
@@ -5784,6 +5808,10 @@
       },
       {
         "gramWeight": 0.01
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 25
       }
     ]
   },
@@ -6894,21 +6922,18 @@
     ]
   },
   "ground beef": {
-    "source": "edamam",
-    "foodId": "food_boq91pbbhklr6sb0d9sbybzgklkm",
-    "label": "Ground Beef",
-    "category": "Generic foods",
+    "label": "80/20 ground beef",
     "per100g": {
       "calories": {
         "value": 254,
         "unit": "kcal"
       },
       "protein": {
-        "value": 17.2,
+        "value": 17.5,
         "unit": "g"
       },
       "fat": {
-        "value": 20,
+        "value": 19.4,
         "unit": "g"
       },
       "carbs": {
@@ -6918,48 +6943,40 @@
       "fiber": {
         "value": 0,
         "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 6.84,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 55,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 68,
+        "unit": "mg"
       }
     },
     "measures": [
       {
-        "label": "Whole",
-        "gramWeight": 85
-      },
-      {
-        "label": "Ball",
-        "gramWeight": 85
-      },
-      {
-        "label": "Meatball",
-        "gramWeight": 85
+        "label": "Cup",
+        "gramWeight": 224
       },
       {
         "label": "Serving",
-        "gramWeight": 85
+        "gramWeight": 113
       },
       {
-        "label": "Burger",
-        "gramWeight": 142
+        "label": "Pound",
+        "gramWeight": 453.59
       },
       {
-        "label": "Hamburger",
-        "gramWeight": 142
-      },
-      {
-        "label": "Pattie",
-        "gramWeight": 142
+        "label": "Ounce",
+        "gramWeight": 28.35
       },
       {
         "label": "Gram",
         "gramWeight": 1
-      },
-      {
-        "label": "Ounce",
-        "gramWeight": 28.349523125
-      },
-      {
-        "label": "Pound",
-        "gramWeight": 453.59237
       },
       {
         "label": "Kilogram",
@@ -6967,13 +6984,10 @@
       },
       {
         "label": "Tablespoon",
-        "gramWeight": 14
-      },
-      {
-        "label": "Cup",
-        "gramWeight": 224
+        "gramWeight": 15
       }
-    ]
+    ],
+    "source": "USDA FoodData Central"
   },
   "parmesan": {
     "source": "edamam",
@@ -8260,11 +8274,11 @@
         "unit": "kcal"
       },
       "protein": {
-        "value": 5.56,
+        "value": 5.6,
         "unit": "g"
       },
       "fat": {
-        "value": 1.68,
+        "value": 1.7,
         "unit": "g"
       },
       "carbs": {
@@ -8331,68 +8345,69 @@
       },
       {
         "gramWeight": 0.01
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 25
       }
     ]
   },
   "ground chicken": {
-    "source": "edamam",
-    "foodId": "food_b4430z5avkliqsbzns6gpbhdn07c",
-    "label": "Ground Chicken",
-    "category": "Generic foods",
+    "label": "93% lean ground chicken",
     "per100g": {
       "calories": {
-        "value": 143,
+        "value": 134,
         "unit": "kcal"
       },
       "protein": {
-        "value": 17.4,
+        "value": 19.6,
         "unit": "g"
       },
       "fat": {
-        "value": 8.1,
+        "value": 6.25,
         "unit": "g"
       },
       "carbs": {
-        "value": 0.04,
+        "value": 0,
         "unit": "g"
       },
       "fiber": {
         "value": 0,
         "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 1.79,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 62,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 76,
+        "unit": "mg"
       }
     },
     "measures": [
       {
-        "label": "Whole",
-        "gramWeight": 114
-      },
-      {
-        "label": "Burger",
-        "gramWeight": 114
-      },
-      {
-        "label": "Hamburger",
-        "gramWeight": 114
-      },
-      {
-        "label": "Pattie",
-        "gramWeight": 114
+        "label": "Cup",
+        "gramWeight": 224
       },
       {
         "label": "Serving",
-        "gramWeight": 114
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
       },
       {
         "label": "Gram",
         "gramWeight": 1
-      },
-      {
-        "label": "Ounce",
-        "gramWeight": 28.349523125
-      },
-      {
-        "label": "Pound",
-        "gramWeight": 453.59237
       },
       {
         "label": "Kilogram",
@@ -8400,13 +8415,10 @@
       },
       {
         "label": "Tablespoon",
-        "gramWeight": 14.125
-      },
-      {
-        "label": "Cup",
-        "gramWeight": 226
+        "gramWeight": 15
       }
-    ]
+    ],
+    "source": "USDA FoodData Central"
   },
   "bay leaves": {
     "source": "edamam",
@@ -10463,21 +10475,18 @@
     ]
   },
   "ground turkey": {
-    "source": "edamam",
-    "foodId": "food_av7gav4bs6txmfb85t0ruapws8if",
-    "label": "Turkey Burger",
-    "category": "Generic foods",
+    "label": "93% lean ground turkey",
     "per100g": {
       "calories": {
-        "value": 148,
+        "value": 143,
         "unit": "kcal"
       },
       "protein": {
-        "value": 19.7,
+        "value": 19.6,
         "unit": "g"
       },
       "fat": {
-        "value": 7.66,
+        "value": 7.14,
         "unit": "g"
       },
       "carbs": {
@@ -10487,40 +10496,40 @@
       "fiber": {
         "value": 0,
         "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 2.23,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 76,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 71,
+        "unit": "mg"
       }
     },
     "measures": [
       {
-        "label": "Whole",
-        "gramWeight": 114
-      },
-      {
-        "label": "Burger",
-        "gramWeight": 114
-      },
-      {
-        "label": "Hamburger",
-        "gramWeight": 114
-      },
-      {
-        "label": "Pattie",
-        "gramWeight": 114
+        "label": "Cup",
+        "gramWeight": 224
       },
       {
         "label": "Serving",
-        "gramWeight": 114
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
       },
       {
         "label": "Gram",
         "gramWeight": 1
-      },
-      {
-        "label": "Ounce",
-        "gramWeight": 28.349523125
-      },
-      {
-        "label": "Pound",
-        "gramWeight": 453.59237
       },
       {
         "label": "Kilogram",
@@ -10528,13 +10537,10 @@
       },
       {
         "label": "Tablespoon",
-        "gramWeight": 14.125
-      },
-      {
-        "label": "Cup",
-        "gramWeight": 226
+        "gramWeight": 15
       }
-    ]
+    ],
+    "source": "USDA FoodData Central"
   },
   "kalamata olives": {
     "source": "edamam",
@@ -14807,27 +14813,27 @@
   "sage": {
     "source": "edamam",
     "foodId": "food_b00mwy0bne9gs4au15ja8ab10h0e",
-    "label": "Sage",
+    "label": "Fresh Sage",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 315,
+        "value": 119,
         "unit": "kcal"
       },
       "protein": {
-        "value": 10.6,
+        "value": 3.9,
         "unit": "g"
       },
       "fat": {
-        "value": 12.8,
+        "value": 4.6,
         "unit": "g"
       },
       "carbs": {
-        "value": 60.7,
+        "value": 18.5,
         "unit": "g"
       },
       "fiber": {
-        "value": 40.3,
+        "value": 11,
         "unit": "g"
       }
     },
@@ -14863,6 +14869,10 @@
       {
         "label": "Tablespoon",
         "gramWeight": 8
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 25
       }
     ]
   },
@@ -15490,21 +15500,18 @@
     ]
   },
   "ground pork": {
-    "source": "edamam",
-    "foodId": "food_a9ztr5sboipvteae9jcusblxo9ec",
-    "label": "Pork Mince",
-    "category": "Generic foods",
+    "label": "80/20 ground pork",
     "per100g": {
       "calories": {
-        "value": 263,
+        "value": 259,
         "unit": "kcal"
       },
       "protein": {
-        "value": 16.9,
+        "value": 17,
         "unit": "g"
       },
       "fat": {
-        "value": 21.2,
+        "value": 19.6,
         "unit": "g"
       },
       "carbs": {
@@ -15514,40 +15521,40 @@
       "fiber": {
         "value": 0,
         "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 7.14,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 62,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 62,
+        "unit": "mg"
       }
     },
     "measures": [
       {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
         "label": "Serving",
-        "gramWeight": 300
+        "gramWeight": 113
       },
       {
-        "label": "Whole",
-        "gramWeight": 142
+        "label": "Pound",
+        "gramWeight": 453.59
       },
       {
-        "label": "Burger",
-        "gramWeight": 142
-      },
-      {
-        "label": "Hamburger",
-        "gramWeight": 142
-      },
-      {
-        "label": "Pattie",
-        "gramWeight": 142
+        "label": "Ounce",
+        "gramWeight": 28.35
       },
       {
         "label": "Gram",
         "gramWeight": 1
-      },
-      {
-        "label": "Ounce",
-        "gramWeight": 28.349523125
-      },
-      {
-        "label": "Pound",
-        "gramWeight": 453.59237
       },
       {
         "label": "Kilogram",
@@ -15555,13 +15562,10 @@
       },
       {
         "label": "Tablespoon",
-        "gramWeight": 14
-      },
-      {
-        "label": "Cup",
-        "gramWeight": 224
+        "gramWeight": 15
       }
-    ]
+    ],
+    "source": "USDA FoodData Central"
   },
   "red cabbage": {
     "source": "edamam",
@@ -16796,11 +16800,11 @@
         "unit": "kcal"
       },
       "protein": {
-        "value": 3.31,
+        "value": 3.3,
         "unit": "g"
       },
       "fat": {
-        "value": 5.86,
+        "value": 5.9,
         "unit": "g"
       },
       "carbs": {
@@ -16863,6 +16867,10 @@
       },
       {
         "gramWeight": 0.03
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 25
       }
     ]
   },
@@ -17874,27 +17882,27 @@
   "tarragon": {
     "source": "edamam",
     "foodId": "food_bcae9pdaob9i69bo94oxramms336",
-    "label": "Tarragon",
+    "label": "Fresh Tarragon",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 295,
+        "value": 49,
         "unit": "kcal"
       },
       "protein": {
-        "value": 22.8,
+        "value": 4,
         "unit": "g"
       },
       "fat": {
-        "value": 7.24,
+        "value": 1,
         "unit": "g"
       },
       "carbs": {
-        "value": 50.2,
+        "value": 9,
         "unit": "g"
       },
       "fiber": {
-        "value": 7.4,
+        "value": 5,
         "unit": "g"
       }
     },
@@ -17949,7 +17957,7 @@
       },
       {
         "label": "Cup",
-        "gramWeight": 40
+        "gramWeight": 25
       }
     ]
   },
@@ -29416,15 +29424,15 @@
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 116,
+        "value": 10,
         "unit": "kcal"
       },
       "protein": {
-        "value": 11,
+        "value": 1,
         "unit": "g"
       },
       "fat": {
-        "value": 7,
+        "value": 0.5,
         "unit": "g"
       },
       "carbs": {
@@ -29438,28 +29446,28 @@
     },
     "measures": [
       {
+        "label": "Cup",
+        "gramWeight": 240
+      },
+      {
         "label": "Serving",
-        "gramWeight": 71
+        "gramWeight": 240
       },
       {
-        "label": "Whole",
-        "gramWeight": 142
+        "label": "Tablespoon",
+        "gramWeight": 15
       },
       {
-        "label": "Bone",
-        "gramWeight": 142
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
       },
       {
         "label": "Gram",
         "gramWeight": 1
-      },
-      {
-        "label": "Ounce",
-        "gramWeight": 28.349523125
-      },
-      {
-        "label": "Pound",
-        "gramWeight": 453.59237
       },
       {
         "label": "Kilogram",
@@ -38382,23 +38390,23 @@
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 378,
+        "value": 164,
         "unit": "kcal"
       },
       "protein": {
-        "value": 20.5,
+        "value": 8.86,
         "unit": "g"
       },
       "fat": {
-        "value": 6.04,
+        "value": 2.59,
         "unit": "g"
       },
       "carbs": {
-        "value": 63,
+        "value": 27.4,
         "unit": "g"
       },
       "fiber": {
-        "value": 12.2,
+        "value": 7.6,
         "unit": "g"
       }
     },
@@ -45728,21 +45736,18 @@
     ]
   },
   "lean ground beef": {
-    "source": "edamam",
-    "foodId": "food_boq91pbbhklr6sb0d9sbybzgklkm",
-    "label": "80% Lean Ground Beef",
-    "category": "Generic foods",
+    "label": "90/10 ground beef",
     "per100g": {
       "calories": {
-        "value": 254,
+        "value": 179,
         "unit": "kcal"
       },
       "protein": {
-        "value": 17.2,
+        "value": 19.6,
         "unit": "g"
       },
       "fat": {
-        "value": 20,
+        "value": 9.82,
         "unit": "g"
       },
       "carbs": {
@@ -45752,48 +45757,40 @@
       "fiber": {
         "value": 0,
         "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 4.02,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 67,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 67,
+        "unit": "mg"
       }
     },
     "measures": [
       {
-        "label": "Whole",
-        "gramWeight": 85
-      },
-      {
-        "label": "Ball",
-        "gramWeight": 85
-      },
-      {
-        "label": "Meatball",
-        "gramWeight": 85
+        "label": "Cup",
+        "gramWeight": 224
       },
       {
         "label": "Serving",
-        "gramWeight": 85
+        "gramWeight": 113
       },
       {
-        "label": "Burger",
-        "gramWeight": 142
+        "label": "Pound",
+        "gramWeight": 453.59
       },
       {
-        "label": "Hamburger",
-        "gramWeight": 142
-      },
-      {
-        "label": "Pattie",
-        "gramWeight": 142
+        "label": "Ounce",
+        "gramWeight": 28.35
       },
       {
         "label": "Gram",
         "gramWeight": 1
-      },
-      {
-        "label": "Ounce",
-        "gramWeight": 28.349523125
-      },
-      {
-        "label": "Pound",
-        "gramWeight": 453.59237
       },
       {
         "label": "Kilogram",
@@ -45801,13 +45798,10 @@
       },
       {
         "label": "Tablespoon",
-        "gramWeight": 14
-      },
-      {
-        "label": "Cup",
-        "gramWeight": 224
+        "gramWeight": 15
       }
-    ]
+    ],
+    "source": "USDA FoodData Central"
   },
   "ground flaxseed": {
     "source": "edamam",
@@ -49951,71 +49945,43 @@
   },
   "bavette steak": {
     "source": "edamam",
-    "foodId": "food_a8hs60uayl5icia1qe8qoba1kwp8",
-    "label": "Bavette",
+    "foodId": "food_abhe6ejbfw25i1a4u0iiwbi0aw6s",
+    "label": "Flank Steak",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 371,
+        "value": 165,
         "unit": "kcal"
       },
       "protein": {
-        "value": 13,
+        "value": 21.2,
         "unit": "g"
       },
       "fat": {
-        "value": 1.51,
+        "value": 8.29,
         "unit": "g"
       },
       "carbs": {
-        "value": 74.7,
+        "value": 0,
         "unit": "g"
       },
       "fiber": {
-        "value": 3.2,
+        "value": 0,
         "unit": "g"
       }
     },
     "measures": [
       {
         "label": "Serving",
-        "gramWeight": 300
+        "gramWeight": 113.4
       },
       {
         "label": "Whole",
-        "gramWeight": 16.8
+        "gramWeight": 202
       },
       {
-        "label": "Noodle",
-        "gramWeight": 25
-      },
-      {
-        "label": "Sheet",
-        "gramWeight": 25
-      },
-      {
-        "label": "Strip",
-        "gramWeight": 25
-      },
-      {
-        "label": "Shell",
-        "gramWeight": 16.8
-      },
-      {
-        "label": "Tube",
-        "gramWeight": 16.8
-      },
-      {
-        "label": "Box",
-        "gramWeight": 453
-      },
-      {
-        "label": "Package",
-        "gramWeight": 453
-      },
-      {
-        "label": "Packet",
-        "gramWeight": 255.15
+        "label": "Steak",
+        "gramWeight": 202
       },
       {
         "label": "Gram",
@@ -50032,10 +49998,6 @@
       {
         "label": "Kilogram",
         "gramWeight": 1000
-      },
-      {
-        "label": "Cup",
-        "gramWeight": 105
       }
     ]
   },
@@ -54014,42 +53976,58 @@
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 276,
+        "value": 30,
         "unit": "kcal"
       },
       "protein": {
-        "value": 9.11,
+        "value": 2.5,
         "unit": "g"
       },
       "fat": {
-        "value": 7.43,
+        "value": 0.5,
         "unit": "g"
       },
       "carbs": {
-        "value": 63.9,
+        "value": 4,
         "unit": "g"
       },
       "fiber": {
-        "value": 37,
+        "value": 2,
         "unit": "g"
       }
     },
     "measures": [
       {
-        "label": "Serving",
-        "gramWeight": 2.7
-      },
-      {
-        "label": "Tablespoon",
-        "gramWeight": 2.7
-      },
-      {
-        "label": "Whole",
-        "gramWeight": 7.2
+        "label": "Cup",
+        "gramWeight": 25
       },
       {
         "label": "Bunch",
-        "gramWeight": 7.2
+        "gramWeight": 60
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 4
+      },
+      {
+        "label": "Sprig",
+        "gramWeight": 1
+      },
+      {
+        "label": "Stalk",
+        "gramWeight": 2
+      },
+      {
+        "label": "Stem",
+        "gramWeight": 2
+      },
+      {
+        "label": "Handful",
+        "gramWeight": 12
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 6
       },
       {
         "label": "Gram",
@@ -54057,26 +54035,11 @@
       },
       {
         "label": "Ounce",
-        "gramWeight": 28.349523125
+        "gramWeight": 28.35
       },
       {
         "label": "Pound",
-        "gramWeight": 453.59237
-      },
-      {
-        "label": "Kilogram",
-        "gramWeight": 1000
-      },
-      {
-        "label": "Teaspoon",
-        "gramWeight": 1
-      },
-      {
-        "label": "Handful",
-        "gramWeight": 5.4
-      },
-      {
-        "gramWeight": 0.01
+        "gramWeight": 453.59
       }
     ]
   },
@@ -73523,15 +73486,15 @@
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 116,
+        "value": 10,
         "unit": "kcal"
       },
       "protein": {
-        "value": 11,
+        "value": 1,
         "unit": "g"
       },
       "fat": {
-        "value": 7,
+        "value": 0.5,
         "unit": "g"
       },
       "carbs": {
@@ -73545,28 +73508,28 @@
     },
     "measures": [
       {
+        "label": "Cup",
+        "gramWeight": 240
+      },
+      {
         "label": "Serving",
-        "gramWeight": 71
+        "gramWeight": 240
       },
       {
-        "label": "Whole",
-        "gramWeight": 142
+        "label": "Tablespoon",
+        "gramWeight": 15
       },
       {
-        "label": "Bone",
-        "gramWeight": 142
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
       },
       {
         "label": "Gram",
         "gramWeight": 1
-      },
-      {
-        "label": "Ounce",
-        "gramWeight": 28.349523125
-      },
-      {
-        "label": "Pound",
-        "gramWeight": 453.59237
       },
       {
         "label": "Kilogram",
@@ -85764,23 +85727,23 @@
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 337,
+        "value": 127,
         "unit": "kcal"
       },
       "protein": {
-        "value": 22.5,
+        "value": 8.7,
         "unit": "g"
       },
       "fat": {
-        "value": 1.06,
+        "value": 0.5,
         "unit": "g"
       },
       "carbs": {
-        "value": 61.3,
+        "value": 22.8,
         "unit": "g"
       },
       "fiber": {
-        "value": 15.2,
+        "value": 6.4,
         "unit": "g"
       }
     },
@@ -98402,23 +98365,23 @@
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 333,
+        "value": 124,
         "unit": "kcal"
       },
       "protein": {
-        "value": 23.4,
+        "value": 8.5,
         "unit": "g"
       },
       "fat": {
-        "value": 0.85,
+        "value": 0.3,
         "unit": "g"
       },
       "carbs": {
-        "value": 60.3,
+        "value": 22.5,
         "unit": "g"
       },
       "fiber": {
-        "value": 15.2,
+        "value": 5.5,
         "unit": "g"
       }
     },
@@ -98573,42 +98536,58 @@
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 276,
+        "value": 30,
         "unit": "kcal"
       },
       "protein": {
-        "value": 9.11,
+        "value": 2.5,
         "unit": "g"
       },
       "fat": {
-        "value": 7.43,
+        "value": 0.5,
         "unit": "g"
       },
       "carbs": {
-        "value": 63.9,
+        "value": 4,
         "unit": "g"
       },
       "fiber": {
-        "value": 37,
+        "value": 2,
         "unit": "g"
       }
     },
     "measures": [
       {
-        "label": "Serving",
-        "gramWeight": 2.7
-      },
-      {
-        "label": "Tablespoon",
-        "gramWeight": 2.7
-      },
-      {
-        "label": "Whole",
-        "gramWeight": 7.2
+        "label": "Cup",
+        "gramWeight": 25
       },
       {
         "label": "Bunch",
-        "gramWeight": 7.2
+        "gramWeight": 60
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 4
+      },
+      {
+        "label": "Sprig",
+        "gramWeight": 1
+      },
+      {
+        "label": "Stalk",
+        "gramWeight": 2
+      },
+      {
+        "label": "Stem",
+        "gramWeight": 2
+      },
+      {
+        "label": "Handful",
+        "gramWeight": 12
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 6
       },
       {
         "label": "Gram",
@@ -98616,26 +98595,11 @@
       },
       {
         "label": "Ounce",
-        "gramWeight": 28.349523125
+        "gramWeight": 28.35
       },
       {
         "label": "Pound",
-        "gramWeight": 453.59237
-      },
-      {
-        "label": "Kilogram",
-        "gramWeight": 1000
-      },
-      {
-        "label": "Teaspoon",
-        "gramWeight": 1
-      },
-      {
-        "label": "Handful",
-        "gramWeight": 5.4
-      },
-      {
-        "gramWeight": 0.01
+        "gramWeight": 453.59
       }
     ]
   },
@@ -108894,78 +108858,72 @@
     ]
   },
   "ground chuck": {
-    "source": "edamam",
-    "foodId": "food_bknby1la98smrsbwnthinbam42nj",
-    "label": "Ground Chuck",
-    "category": "Generic foods",
+    "label": "80/20 ground beef",
     "per100g": {
       "calories": {
-        "value": 130,
+        "value": 254,
         "unit": "kcal"
       },
       "protein": {
-        "value": 21.6,
+        "value": 17.5,
         "unit": "g"
       },
       "fat": {
-        "value": 4.81,
+        "value": 19.4,
         "unit": "g"
       },
       "carbs": {
-        "value": 0.12,
+        "value": 0,
         "unit": "g"
       },
       "fiber": {
         "value": 0,
         "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 6.84,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 55,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 68,
+        "unit": "mg"
       }
     },
     "measures": [
       {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
         "label": "Serving",
-        "gramWeight": 170
+        "gramWeight": 113
       },
       {
-        "label": "Whole",
-        "gramWeight": 340
+        "label": "Pound",
+        "gramWeight": 453.59
       },
       {
-        "label": "Roast",
-        "gramWeight": 1359
-      },
-      {
-        "label": "Fillet",
-        "gramWeight": 340
-      },
-      {
-        "label": "Piece",
-        "gramWeight": 85
-      },
-      {
-        "label": "Slice",
-        "gramWeight": 57
+        "label": "Ounce",
+        "gramWeight": 28.35
       },
       {
         "label": "Gram",
         "gramWeight": 1
       },
       {
-        "label": "Ounce",
-        "gramWeight": 28.349523125
-      },
-      {
-        "label": "Pound",
-        "gramWeight": 453.59237
-      },
-      {
         "label": "Kilogram",
         "gramWeight": 1000
       },
       {
-        "label": "Cup",
-        "gramWeight": 140
+        "label": "Tablespoon",
+        "gramWeight": 15
       }
-    ]
+    ],
+    "source": "USDA FoodData Central"
   },
   "breakfast sausage links": {
     "source": "edamam",
@@ -118771,21 +118729,18 @@
     ]
   },
   "ground sirloin": {
-    "source": "edamam",
-    "foodId": "food_aifm62daw1i6txalya881bcetyzn",
-    "label": "Sirloin",
-    "category": "Generic foods",
+    "label": "90/10 ground beef",
     "per100g": {
       "calories": {
-        "value": 214,
+        "value": 179,
         "unit": "kcal"
       },
       "protein": {
-        "value": 19.9,
+        "value": 19.6,
         "unit": "g"
       },
       "fat": {
-        "value": 14.3,
+        "value": 9.82,
         "unit": "g"
       },
       "carbs": {
@@ -118795,62 +118750,51 @@
       "fiber": {
         "value": 0,
         "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 4.02,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 67,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 67,
+        "unit": "mg"
       }
     },
     "measures": [
       {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
         "label": "Serving",
-        "gramWeight": 85.05000000000001
+        "gramWeight": 113
       },
       {
-        "label": "Whole",
-        "gramWeight": 340
+        "label": "Pound",
+        "gramWeight": 453.59
       },
       {
-        "label": "Roast",
-        "gramWeight": 1359
-      },
-      {
-        "label": "Sirloin",
-        "gramWeight": 453
-      },
-      {
-        "label": "Steak",
-        "gramWeight": 340
-      },
-      {
-        "label": "Burger",
-        "gramWeight": 142
-      },
-      {
-        "label": "Hamburger",
-        "gramWeight": 142
-      },
-      {
-        "label": "Pattie",
-        "gramWeight": 142
+        "label": "Ounce",
+        "gramWeight": 28.35
       },
       {
         "label": "Gram",
         "gramWeight": 1
       },
       {
-        "label": "Ounce",
-        "gramWeight": 28.349523125
-      },
-      {
-        "label": "Pound",
-        "gramWeight": 453.59237
-      },
-      {
         "label": "Kilogram",
         "gramWeight": 1000
       },
       {
-        "label": "Cup",
-        "gramWeight": 227
+        "label": "Tablespoon",
+        "gramWeight": 15
       }
-    ]
+    ],
+    "source": "USDA FoodData Central"
   },
   "tomato bouillon cube": {
     "source": "edamam",
@@ -131843,23 +131787,23 @@
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 352,
+        "value": 127,
         "unit": "kcal"
       },
       "protein": {
-        "value": 24.6,
+        "value": 8.7,
         "unit": "g"
       },
       "fat": {
-        "value": 1.06,
+        "value": 0.5,
         "unit": "g"
       },
       "carbs": {
-        "value": 63.4,
+        "value": 22.8,
         "unit": "g"
       },
       "fiber": {
-        "value": 10.7,
+        "value": 6.4,
         "unit": "g"
       }
     },
@@ -134059,16 +134003,16 @@
   },
   "reduced sodium chicken broth": {
     "source": "edamam",
-    "foodId": "food_ayzeplba2uirz7avuacubb7o4qwd",
-    "label": "Reduced Sodium Chicken Broth",
+    "foodId": "food_bptblvzambd16nbhewqmhaw1rnh5",
+    "label": "Chicken Broth",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 7,
+        "value": 8,
         "unit": "kcal"
       },
       "protein": {
-        "value": 1.36,
+        "value": 1.67,
         "unit": "g"
       },
       "fat": {
@@ -134076,22 +134020,38 @@
         "unit": "g"
       },
       "carbs": {
-        "value": 0.38,
+        "value": 0.42,
         "unit": "g"
       },
       "fiber": {
         "value": 0,
         "unit": "g"
+      },
+      "sugar": {
+        "value": 0.42,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "cholesterol": {
+        "value": 0,
+        "unit": "mg"
+      },
+      "sodium": {
+        "value": 212,
+        "unit": "mg"
       }
     },
     "measures": [
       {
         "label": "Serving",
-        "gramWeight": 240
+        "gramWeight": 200
       },
       {
-        "label": "Cup",
-        "gramWeight": 240
+        "label": "Carton",
+        "gramWeight": 1000
       },
       {
         "label": "Gram",
@@ -134108,6 +134068,17 @@
       {
         "label": "Kilogram",
         "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 240
+      },
+      {
+        "label": "Quart",
+        "gramWeight": 960
+      },
+      {
+        "gramWeight": 0.2
       }
     ]
   },
@@ -146436,23 +146407,23 @@
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 315,
+        "value": 119,
         "unit": "kcal"
       },
       "protein": {
-        "value": 10.6,
+        "value": 3.9,
         "unit": "g"
       },
       "fat": {
-        "value": 12.8,
+        "value": 4.6,
         "unit": "g"
       },
       "carbs": {
-        "value": 60.7,
+        "value": 18.5,
         "unit": "g"
       },
       "fiber": {
-        "value": 40.3,
+        "value": 11,
         "unit": "g"
       }
     },
@@ -146488,6 +146459,10 @@
       {
         "label": "Tablespoon",
         "gramWeight": 8
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 25
       }
     ]
   },
@@ -146707,23 +146682,23 @@
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 265,
+        "value": 25,
         "unit": "kcal"
       },
       "protein": {
-        "value": 9,
+        "value": 1.1,
         "unit": "g"
       },
       "fat": {
-        "value": 4.28,
+        "value": 0.4,
         "unit": "g"
       },
       "carbs": {
-        "value": 68.9,
+        "value": 5,
         "unit": "g"
       },
       "fiber": {
-        "value": 42.5,
+        "value": 3,
         "unit": "g"
       }
     },
@@ -146774,6 +146749,10 @@
       },
       {
         "gramWeight": 0.01
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 25
       }
     ]
   },
@@ -149224,42 +149203,58 @@
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 276,
+        "value": 30,
         "unit": "kcal"
       },
       "protein": {
-        "value": 9.11,
+        "value": 2.5,
         "unit": "g"
       },
       "fat": {
-        "value": 7.43,
+        "value": 0.5,
         "unit": "g"
       },
       "carbs": {
-        "value": 63.9,
+        "value": 4,
         "unit": "g"
       },
       "fiber": {
-        "value": 37,
+        "value": 2,
         "unit": "g"
       }
     },
     "measures": [
       {
-        "label": "Serving",
-        "gramWeight": 2.7
-      },
-      {
-        "label": "Tablespoon",
-        "gramWeight": 2.7
-      },
-      {
-        "label": "Whole",
-        "gramWeight": 7.2
+        "label": "Cup",
+        "gramWeight": 25
       },
       {
         "label": "Bunch",
-        "gramWeight": 7.2
+        "gramWeight": 60
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 4
+      },
+      {
+        "label": "Sprig",
+        "gramWeight": 1
+      },
+      {
+        "label": "Stalk",
+        "gramWeight": 2
+      },
+      {
+        "label": "Stem",
+        "gramWeight": 2
+      },
+      {
+        "label": "Handful",
+        "gramWeight": 12
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 6
       },
       {
         "label": "Gram",
@@ -149267,26 +149262,11 @@
       },
       {
         "label": "Ounce",
-        "gramWeight": 28.349523125
+        "gramWeight": 28.35
       },
       {
         "label": "Pound",
-        "gramWeight": 453.59237
-      },
-      {
-        "label": "Kilogram",
-        "gramWeight": 1000
-      },
-      {
-        "label": "Teaspoon",
-        "gramWeight": 1
-      },
-      {
-        "label": "Handful",
-        "gramWeight": 5.4
-      },
-      {
-        "gramWeight": 0.01
+        "gramWeight": 453.59
       }
     ]
   },
@@ -150415,42 +150395,58 @@
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 276,
+        "value": 30,
         "unit": "kcal"
       },
       "protein": {
-        "value": 9.11,
+        "value": 2.5,
         "unit": "g"
       },
       "fat": {
-        "value": 7.43,
+        "value": 0.5,
         "unit": "g"
       },
       "carbs": {
-        "value": 63.9,
+        "value": 4,
         "unit": "g"
       },
       "fiber": {
-        "value": 37,
+        "value": 2,
         "unit": "g"
       }
     },
     "measures": [
       {
-        "label": "Serving",
-        "gramWeight": 2.7
-      },
-      {
-        "label": "Tablespoon",
-        "gramWeight": 2.7
-      },
-      {
-        "label": "Whole",
-        "gramWeight": 7.2
+        "label": "Cup",
+        "gramWeight": 25
       },
       {
         "label": "Bunch",
-        "gramWeight": 7.2
+        "gramWeight": 60
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 4
+      },
+      {
+        "label": "Sprig",
+        "gramWeight": 1
+      },
+      {
+        "label": "Stalk",
+        "gramWeight": 2
+      },
+      {
+        "label": "Stem",
+        "gramWeight": 2
+      },
+      {
+        "label": "Handful",
+        "gramWeight": 12
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 6
       },
       {
         "label": "Gram",
@@ -150458,26 +150454,11 @@
       },
       {
         "label": "Ounce",
-        "gramWeight": 28.349523125
+        "gramWeight": 28.35
       },
       {
         "label": "Pound",
-        "gramWeight": 453.59237
-      },
-      {
-        "label": "Kilogram",
-        "gramWeight": 1000
-      },
-      {
-        "label": "Teaspoon",
-        "gramWeight": 1
-      },
-      {
-        "label": "Handful",
-        "gramWeight": 5.4
-      },
-      {
-        "gramWeight": 0.01
+        "gramWeight": 453.59
       }
     ]
   },
@@ -150992,42 +150973,58 @@
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 276,
+        "value": 30,
         "unit": "kcal"
       },
       "protein": {
-        "value": 9.11,
+        "value": 2.5,
         "unit": "g"
       },
       "fat": {
-        "value": 7.43,
+        "value": 0.5,
         "unit": "g"
       },
       "carbs": {
-        "value": 63.9,
+        "value": 4,
         "unit": "g"
       },
       "fiber": {
-        "value": 37,
+        "value": 2,
         "unit": "g"
       }
     },
     "measures": [
       {
-        "label": "Serving",
-        "gramWeight": 2.7
-      },
-      {
-        "label": "Tablespoon",
-        "gramWeight": 2.7
-      },
-      {
-        "label": "Whole",
-        "gramWeight": 7.2
+        "label": "Cup",
+        "gramWeight": 25
       },
       {
         "label": "Bunch",
-        "gramWeight": 7.2
+        "gramWeight": 60
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 4
+      },
+      {
+        "label": "Sprig",
+        "gramWeight": 1
+      },
+      {
+        "label": "Stalk",
+        "gramWeight": 2
+      },
+      {
+        "label": "Stem",
+        "gramWeight": 2
+      },
+      {
+        "label": "Handful",
+        "gramWeight": 12
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 6
       },
       {
         "label": "Gram",
@@ -151035,26 +151032,11 @@
       },
       {
         "label": "Ounce",
-        "gramWeight": 28.349523125
+        "gramWeight": 28.35
       },
       {
         "label": "Pound",
-        "gramWeight": 453.59237
-      },
-      {
-        "label": "Kilogram",
-        "gramWeight": 1000
-      },
-      {
-        "label": "Teaspoon",
-        "gramWeight": 1
-      },
-      {
-        "label": "Handful",
-        "gramWeight": 5.4
-      },
-      {
-        "gramWeight": 0.01
+        "gramWeight": 453.59
       }
     ]
   },
@@ -155733,23 +155715,23 @@
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 295,
+        "value": 49,
         "unit": "kcal"
       },
       "protein": {
-        "value": 22.8,
+        "value": 4,
         "unit": "g"
       },
       "fat": {
-        "value": 7.24,
+        "value": 1,
         "unit": "g"
       },
       "carbs": {
-        "value": 50.2,
+        "value": 9,
         "unit": "g"
       },
       "fiber": {
-        "value": 7.4,
+        "value": 5,
         "unit": "g"
       }
     },
@@ -155804,7 +155786,7 @@
       },
       {
         "label": "Cup",
-        "gramWeight": 40
+        "gramWeight": 25
       }
     ]
   },
@@ -158809,10 +158791,6 @@
     "_proxy_for": "vegetable broth"
   },
   "cooked rice": {
-    "source": "usda",
-    "foodId": "fdc_169756",
-    "label": "Rice, white, long-grain, regular, cooked",
-    "category": "Grains",
     "per100g": {
       "calories": {
         "value": 130,
@@ -158827,7 +158805,7 @@
         "unit": "g"
       },
       "carbs": {
-        "value": 28.2,
+        "value": 28,
         "unit": "g"
       },
       "fiber": {
@@ -158837,43 +158815,39 @@
     },
     "measures": [
       {
+        "label": "Cup",
+        "gramWeight": 158
+      },
+      {
         "label": "Serving",
-        "gramWeight": 97.5
+        "gramWeight": 158
       },
       {
-        "label": "Whole",
-        "gramWeight": 24.375
+        "label": "Bowl",
+        "gramWeight": 158
       },
       {
-        "label": "Grain",
-        "gramWeight": 0.2
+        "label": "Tablespoon",
+        "gramWeight": 10
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
       },
       {
         "label": "Gram",
         "gramWeight": 1
       },
       {
-        "label": "Ounce",
-        "gramWeight": 28.349523125
-      },
-      {
-        "label": "Pound",
-        "gramWeight": 453.59237
-      },
-      {
         "label": "Kilogram",
         "gramWeight": 1000
-      },
-      {
-        "label": "Handful",
-        "gramWeight": 24.375
-      },
-      {
-        "label": "Cup",
-        "gramWeight": 195
       }
     ],
-    "_proxy_for": "white rice"
+    "label": "Cooked rice"
   },
   "cooking oil": {
     "source": "edamam",
@@ -159529,15 +159503,15 @@
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 116,
+        "value": 10,
         "unit": "kcal"
       },
       "protein": {
-        "value": 11,
+        "value": 1,
         "unit": "g"
       },
       "fat": {
-        "value": 7,
+        "value": 0.5,
         "unit": "g"
       },
       "carbs": {
@@ -159551,28 +159525,28 @@
     },
     "measures": [
       {
+        "label": "Cup",
+        "gramWeight": 240
+      },
+      {
         "label": "Serving",
-        "gramWeight": 71
+        "gramWeight": 240
       },
       {
-        "label": "Whole",
-        "gramWeight": 142
+        "label": "Tablespoon",
+        "gramWeight": 15
       },
       {
-        "label": "Bone",
-        "gramWeight": 142
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
       },
       {
         "label": "Gram",
         "gramWeight": 1
-      },
-      {
-        "label": "Ounce",
-        "gramWeight": 28.349523125
-      },
-      {
-        "label": "Pound",
-        "gramWeight": 453.59237
       },
       {
         "label": "Kilogram",
@@ -160990,28 +160964,44 @@
   "low-sodium chicken stock": {
     "source": "edamam",
     "foodId": "food_bptblvzambd16nbhewqmhaw1rnh5",
-    "label": "Chicken Stock",
+    "label": "Chicken Broth",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 36,
+        "value": 8,
         "unit": "kcal"
       },
       "protein": {
-        "value": 2.52,
+        "value": 1.67,
         "unit": "g"
       },
       "fat": {
-        "value": 1.2,
+        "value": 0,
         "unit": "g"
       },
       "carbs": {
-        "value": 3.53,
+        "value": 0.42,
         "unit": "g"
       },
       "fiber": {
         "value": 0,
         "unit": "g"
+      },
+      "sugar": {
+        "value": 0.42,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "cholesterol": {
+        "value": 0,
+        "unit": "mg"
+      },
+      "sodium": {
+        "value": 212,
+        "unit": "mg"
       }
     },
     "measures": [
@@ -161050,8 +161040,7 @@
       {
         "gramWeight": 0.2
       }
-    ],
-    "_proxy_for": "chicken stock"
+    ]
   },
   "bone-in skin-on chicken thighs": {
     "source": "edamam",
@@ -166067,10 +166056,6 @@
     "_proxy_for": "unsalted pistachios"
   },
   "cooked white rice": {
-    "source": "usda",
-    "foodId": "fdc_169756",
-    "label": "Rice, white, long-grain, regular, cooked",
-    "category": "Grains",
     "per100g": {
       "calories": {
         "value": 130,
@@ -166085,7 +166070,7 @@
         "unit": "g"
       },
       "carbs": {
-        "value": 28.2,
+        "value": 28,
         "unit": "g"
       },
       "fiber": {
@@ -166095,43 +166080,39 @@
     },
     "measures": [
       {
+        "label": "Cup",
+        "gramWeight": 158
+      },
+      {
         "label": "Serving",
-        "gramWeight": 97.5
+        "gramWeight": 158
       },
       {
-        "label": "Whole",
-        "gramWeight": 24.375
+        "label": "Bowl",
+        "gramWeight": 158
       },
       {
-        "label": "Grain",
-        "gramWeight": 0.2
+        "label": "Tablespoon",
+        "gramWeight": 10
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
       },
       {
         "label": "Gram",
         "gramWeight": 1
       },
       {
-        "label": "Ounce",
-        "gramWeight": 28.349523125
-      },
-      {
-        "label": "Pound",
-        "gramWeight": 453.59237
-      },
-      {
         "label": "Kilogram",
         "gramWeight": 1000
-      },
-      {
-        "label": "Handful",
-        "gramWeight": 24.375
-      },
-      {
-        "label": "Cup",
-        "gramWeight": 195
       }
     ],
-    "_proxy_for": "white rice, long-grain, cooked"
+    "label": "Cooked white rice"
   },
   "chile poblano": {
     "source": "edamam",
@@ -174210,42 +174191,58 @@
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 276,
+        "value": 30,
         "unit": "kcal"
       },
       "protein": {
-        "value": 9.11,
+        "value": 2.5,
         "unit": "g"
       },
       "fat": {
-        "value": 7.43,
+        "value": 0.5,
         "unit": "g"
       },
       "carbs": {
-        "value": 63.9,
+        "value": 4,
         "unit": "g"
       },
       "fiber": {
-        "value": 37,
+        "value": 2,
         "unit": "g"
       }
     },
     "measures": [
       {
-        "label": "Serving",
-        "gramWeight": 2.7
-      },
-      {
-        "label": "Tablespoon",
-        "gramWeight": 2.7
-      },
-      {
-        "label": "Whole",
-        "gramWeight": 7.2
+        "label": "Cup",
+        "gramWeight": 25
       },
       {
         "label": "Bunch",
-        "gramWeight": 7.2
+        "gramWeight": 60
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 4
+      },
+      {
+        "label": "Sprig",
+        "gramWeight": 1
+      },
+      {
+        "label": "Stalk",
+        "gramWeight": 2
+      },
+      {
+        "label": "Stem",
+        "gramWeight": 2
+      },
+      {
+        "label": "Handful",
+        "gramWeight": 12
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 6
       },
       {
         "label": "Gram",
@@ -174253,26 +174250,11 @@
       },
       {
         "label": "Ounce",
-        "gramWeight": 28.349523125
+        "gramWeight": 28.35
       },
       {
         "label": "Pound",
-        "gramWeight": 453.59237
-      },
-      {
-        "label": "Kilogram",
-        "gramWeight": 1000
-      },
-      {
-        "label": "Teaspoon",
-        "gramWeight": 1
-      },
-      {
-        "label": "Handful",
-        "gramWeight": 5.4
-      },
-      {
-        "gramWeight": 0.01
+        "gramWeight": 453.59
       }
     ],
     "_proxy_for": "mixed herbs"
@@ -179503,13 +179485,9 @@
     "_proxy_for": "avocado"
   },
   "cooked brown rice": {
-    "source": "usda",
-    "foodId": "fdc_169704",
-    "label": "Rice, brown, long-grain, cooked",
-    "category": "Grains",
     "per100g": {
       "calories": {
-        "value": 123,
+        "value": 130,
         "unit": "kcal"
       },
       "protein": {
@@ -179517,45 +179495,53 @@
         "unit": "g"
       },
       "fat": {
-        "value": 1,
+        "value": 0.3,
         "unit": "g"
       },
       "carbs": {
-        "value": 25.6,
+        "value": 28,
         "unit": "g"
       },
       "fiber": {
-        "value": 3.4,
+        "value": 0.4,
         "unit": "g"
       }
     },
     "measures": [
       {
+        "label": "Cup",
+        "gramWeight": 158
+      },
+      {
         "label": "Serving",
-        "gramWeight": 19
+        "gramWeight": 158
+      },
+      {
+        "label": "Bowl",
+        "gramWeight": 158
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 10
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
       },
       {
         "label": "Gram",
         "gramWeight": 1
       },
       {
-        "label": "Ounce",
-        "gramWeight": 28.349523125
-      },
-      {
-        "label": "Pound",
-        "gramWeight": 453.59237
-      },
-      {
         "label": "Kilogram",
         "gramWeight": 1000
-      },
-      {
-        "label": "Cup",
-        "gramWeight": 190
       }
     ],
-    "_proxy_for": "brown rice"
+    "label": "Cooked brown rice"
   },
   "wraps": {
     "source": "edamam",
@@ -184542,6 +184528,3728 @@
       {
         "label": "Pound",
         "gramWeight": 453.59237
+      }
+    ]
+  },
+  "cooked jasmine rice": {
+    "per100g": {
+      "calories": {
+        "value": 130,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 2.7,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.3,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 28,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0.4,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 158
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 158
+      },
+      {
+        "label": "Bowl",
+        "gramWeight": 158
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 10
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      }
+    ],
+    "label": "Cooked jasmine rice"
+  },
+  "cooked basmati rice": {
+    "per100g": {
+      "calories": {
+        "value": 130,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 2.7,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.3,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 28,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0.4,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 158
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 158
+      },
+      {
+        "label": "Bowl",
+        "gramWeight": 158
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 10
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      }
+    ],
+    "label": "Cooked basmati rice"
+  },
+  "cooked long grain rice": {
+    "per100g": {
+      "calories": {
+        "value": 130,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 2.7,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.3,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 28,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0.4,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 158
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 158
+      },
+      {
+        "label": "Bowl",
+        "gramWeight": 158
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 10
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      }
+    ],
+    "label": "Cooked long grain rice"
+  },
+  "cooked long grain white rice": {
+    "per100g": {
+      "calories": {
+        "value": 130,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 2.7,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.3,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 28,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0.4,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 158
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 158
+      },
+      {
+        "label": "Bowl",
+        "gramWeight": 158
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 10
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      }
+    ],
+    "label": "Cooked long grain white rice"
+  },
+  "70/30 ground beef": {
+    "label": "70/30 ground beef",
+    "per100g": {
+      "calories": {
+        "value": 336,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 14.2,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 30.1,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 11.5,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 66,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 80,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "80/20 ground beef": {
+    "label": "80/20 ground beef",
+    "per100g": {
+      "calories": {
+        "value": 254,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 17.5,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 19.4,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 6.84,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 55,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 68,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "85/15 ground beef": {
+    "label": "85/15 ground beef",
+    "per100g": {
+      "calories": {
+        "value": 214,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 19.6,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 15.2,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 6.25,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 49,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 62,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "90/10 ground beef": {
+    "label": "90/10 ground beef",
+    "per100g": {
+      "calories": {
+        "value": 179,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 19.6,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 9.82,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 4.02,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 67,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 67,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "93/7 ground beef": {
+    "label": "93/7 ground beef",
+    "per100g": {
+      "calories": {
+        "value": 152,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 20.5,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 7.14,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 2.68,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 67,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 62,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "96/4 ground beef": {
+    "label": "96/4 ground beef",
+    "per100g": {
+      "calories": {
+        "value": 134,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 21.4,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 4.02,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 1.34,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 58,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 54,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "85% lean ground turkey": {
+    "label": "85% lean ground turkey",
+    "per100g": {
+      "calories": {
+        "value": 214,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 18.8,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 15.2,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 4.46,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 103,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 89,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "93% lean ground turkey": {
+    "label": "93% lean ground turkey",
+    "per100g": {
+      "calories": {
+        "value": 143,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 19.6,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 7.14,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 2.23,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 76,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 71,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "99% lean ground turkey": {
+    "label": "99% lean ground turkey",
+    "per100g": {
+      "calories": {
+        "value": 107,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 25,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.89,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 49,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 62,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "93% lean ground chicken": {
+    "label": "93% lean ground chicken",
+    "per100g": {
+      "calories": {
+        "value": 134,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 19.6,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 6.25,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 1.79,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 62,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 76,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "99% lean ground chicken": {
+    "label": "99% lean ground chicken",
+    "per100g": {
+      "calories": {
+        "value": 98,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 23.2,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.89,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0.89,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 33,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 54,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "80/20 ground pork": {
+    "label": "80/20 ground pork",
+    "per100g": {
+      "calories": {
+        "value": 259,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 17,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 19.6,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 7.14,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 62,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 62,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "95% lean ground pork": {
+    "label": "95% lean ground pork",
+    "per100g": {
+      "calories": {
+        "value": 123,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 21,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 4.39,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0.88,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 1.75,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 70,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 53,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "70% lean ground beef": {
+    "label": "70/30 ground beef",
+    "per100g": {
+      "calories": {
+        "value": 336,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 14.2,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 30.1,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 11.5,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 66,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 80,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "80% lean ground beef": {
+    "label": "80/20 ground beef",
+    "per100g": {
+      "calories": {
+        "value": 254,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 17.5,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 19.4,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 6.84,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 55,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 68,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "85% lean ground beef": {
+    "label": "85/15 ground beef",
+    "per100g": {
+      "calories": {
+        "value": 214,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 19.6,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 15.2,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 6.25,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 49,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 62,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "90% lean ground beef": {
+    "label": "90/10 ground beef",
+    "per100g": {
+      "calories": {
+        "value": 179,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 19.6,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 9.82,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 4.02,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 67,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 67,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "93% lean ground beef": {
+    "label": "93/7 ground beef",
+    "per100g": {
+      "calories": {
+        "value": 152,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 20.5,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 7.14,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 2.68,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 67,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 62,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "96% lean ground beef": {
+    "label": "96/4 ground beef",
+    "per100g": {
+      "calories": {
+        "value": 134,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 21.4,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 4.02,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 1.34,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 58,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 54,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "extra lean ground beef": {
+    "label": "96/4 ground beef",
+    "per100g": {
+      "calories": {
+        "value": 134,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 21.4,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 4.02,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 1.34,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 58,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 54,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "ground round": {
+    "label": "85/15 ground beef",
+    "per100g": {
+      "calories": {
+        "value": 214,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 19.6,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 15.2,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 6.25,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 49,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 62,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "lean ground turkey": {
+    "label": "93% lean ground turkey",
+    "per100g": {
+      "calories": {
+        "value": 143,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 19.6,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 7.14,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 2.23,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 76,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 71,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "extra lean ground turkey": {
+    "label": "99% lean ground turkey",
+    "per100g": {
+      "calories": {
+        "value": 107,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 25,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.89,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 49,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 62,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "ground turkey breast": {
+    "label": "99% lean ground turkey",
+    "per100g": {
+      "calories": {
+        "value": 107,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 25,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.89,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 49,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 62,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "lean ground chicken": {
+    "label": "93% lean ground chicken",
+    "per100g": {
+      "calories": {
+        "value": 134,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 19.6,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 6.25,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 1.79,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 62,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 76,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "extra lean ground chicken": {
+    "label": "99% lean ground chicken",
+    "per100g": {
+      "calories": {
+        "value": 98,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 23.2,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.89,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0.89,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 33,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 54,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "ground chicken breast": {
+    "label": "99% lean ground chicken",
+    "per100g": {
+      "calories": {
+        "value": 98,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 23.2,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.89,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0.89,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 33,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 54,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "lean ground pork": {
+    "label": "95% lean ground pork",
+    "per100g": {
+      "calories": {
+        "value": 123,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 21,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 4.39,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0.88,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 1.75,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 70,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 53,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "extra lean ground pork": {
+    "label": "95% lean ground pork",
+    "per100g": {
+      "calories": {
+        "value": 123,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 21,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 4.39,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0.88,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 1.75,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 70,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 53,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Cup",
+        "gramWeight": 224
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 113
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 15
+      }
+    ],
+    "source": "USDA FoodData Central"
+  },
+  "tortellini": {
+    "source": "edamam",
+    "foodId": "food_afbcanpbxijvjja2hlr86arwv3xu",
+    "label": "Cheese Tortellini",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 307,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 13.5,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 7.23,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 47,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 1.9,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 184
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 15
+      },
+      {
+        "label": "Pouch",
+        "gramWeight": 225
+      },
+      {
+        "label": "Piece",
+        "gramWeight": 15
+      },
+      {
+        "label": "Pierogi",
+        "gramWeight": 15
+      },
+      {
+        "label": "Ravioli",
+        "gramWeight": 15
+      },
+      {
+        "label": "Tortellini",
+        "gramWeight": 15
+      },
+      {
+        "label": "Box",
+        "gramWeight": 368
+      },
+      {
+        "label": "Package",
+        "gramWeight": 368
+      },
+      {
+        "label": "Bag",
+        "gramWeight": 225
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 108
+      }
+    ]
+  },
+  "fresh tortellini": {
+    "source": "edamam",
+    "foodId": "food_afbcanpbxijvjja2hlr86arwv3xu",
+    "label": "Cheese Tortellini",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 307,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 13.5,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 7.23,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 47,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 1.9,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 184
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 15
+      },
+      {
+        "label": "Pouch",
+        "gramWeight": 225
+      },
+      {
+        "label": "Piece",
+        "gramWeight": 15
+      },
+      {
+        "label": "Pierogi",
+        "gramWeight": 15
+      },
+      {
+        "label": "Ravioli",
+        "gramWeight": 15
+      },
+      {
+        "label": "Tortellini",
+        "gramWeight": 15
+      },
+      {
+        "label": "Box",
+        "gramWeight": 368
+      },
+      {
+        "label": "Package",
+        "gramWeight": 368
+      },
+      {
+        "label": "Bag",
+        "gramWeight": 225
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 108
+      }
+    ]
+  },
+  "fresh cheese tortellini": {
+    "source": "edamam",
+    "foodId": "food_afbcanpbxijvjja2hlr86arwv3xu",
+    "label": "Cheese Tortellini",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 307,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 13.5,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 7.23,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 47,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 1.9,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 184
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 15
+      },
+      {
+        "label": "Pouch",
+        "gramWeight": 225
+      },
+      {
+        "label": "Piece",
+        "gramWeight": 15
+      },
+      {
+        "label": "Pierogi",
+        "gramWeight": 15
+      },
+      {
+        "label": "Ravioli",
+        "gramWeight": 15
+      },
+      {
+        "label": "Tortellini",
+        "gramWeight": 15
+      },
+      {
+        "label": "Box",
+        "gramWeight": 368
+      },
+      {
+        "label": "Package",
+        "gramWeight": 368
+      },
+      {
+        "label": "Bag",
+        "gramWeight": 225
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 108
+      }
+    ]
+  },
+  "medium firm tofu": {
+    "source": "edamam",
+    "foodId": "food_bu9fz3paqr6xcebft7onna22v8ve",
+    "label": "Firm Tofu",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 144,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 17.3,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 8.72,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 2.78,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 2.3,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 126
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 324
+      },
+      {
+        "label": "Block",
+        "gramWeight": 324
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 252
+      }
+    ]
+  },
+  "firm or medium firm tofu": {
+    "source": "edamam",
+    "foodId": "food_bu9fz3paqr6xcebft7onna22v8ve",
+    "label": "Firm Tofu",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 144,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 17.3,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 8.72,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 2.78,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 2.3,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 126
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 324
+      },
+      {
+        "label": "Block",
+        "gramWeight": 324
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 252
+      }
+    ]
+  },
+  "white kidney beans": {
+    "source": "usda",
+    "foodId": "food_bf8uz1aamavv8ebjkliwfai0ezuv",
+    "label": "Cannellini Bean (cooked, USDA)",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 124,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 8.5,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.5,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 22,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 6,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 64
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 2
+      },
+      {
+        "label": "Bean",
+        "gramWeight": 2
+      },
+      {
+        "label": "Can",
+        "gramWeight": 256
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 12.6
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 202
+      }
+    ]
+  },
+  "lima beans": {
+    "source": "edamam",
+    "foodId": "food_br66stnb5yfn4aasfv5j7amppvi6",
+    "label": "Butter Bean",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 113,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 6.84,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.86,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 20.2,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 4.9,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 156
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 156
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      }
+    ]
+  },
+  "small red beans": {
+    "source": "edamam",
+    "foodId": "food_bg13k5uafva4jta78xnjcaqkli85",
+    "label": "Red Beans",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 127,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 8.7,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.5,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 22.8,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 6.4,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 48
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 12
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 192
+      }
+    ]
+  },
+  "sirloin flap": {
+    "source": "edamam",
+    "foodId": "food_abhe6ejbfw25i1a4u0iiwbi0aw6s",
+    "label": "Flank Steak",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 165,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 21.2,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 8.29,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 113.4
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 202
+      },
+      {
+        "label": "Steak",
+        "gramWeight": 202
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      }
+    ]
+  },
+  "sirloin flap steak": {
+    "source": "edamam",
+    "foodId": "food_abhe6ejbfw25i1a4u0iiwbi0aw6s",
+    "label": "Flank Steak",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 165,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 21.2,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 8.29,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 113.4
+      },
+      {
+        "label": "Whole",
+        "gramWeight": 202
+      },
+      {
+        "label": "Steak",
+        "gramWeight": 202
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      }
+    ]
+  },
+  "reduced-sodium chicken stock": {
+    "source": "edamam",
+    "foodId": "food_bptblvzambd16nbhewqmhaw1rnh5",
+    "label": "Chicken Broth",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 8,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 1.67,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0.42,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "sugar": {
+        "value": 0.42,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "cholesterol": {
+        "value": 0,
+        "unit": "mg"
+      },
+      "sodium": {
+        "value": 212,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 200
+      },
+      {
+        "label": "Carton",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 240
+      },
+      {
+        "label": "Quart",
+        "gramWeight": 960
+      },
+      {
+        "gramWeight": 0.2
+      }
+    ]
+  },
+  "reduced sodium chicken stock": {
+    "source": "edamam",
+    "foodId": "food_bptblvzambd16nbhewqmhaw1rnh5",
+    "label": "Chicken Broth",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 8,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 1.67,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0.42,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "sugar": {
+        "value": 0.42,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "cholesterol": {
+        "value": 0,
+        "unit": "mg"
+      },
+      "sodium": {
+        "value": 212,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 200
+      },
+      {
+        "label": "Carton",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 240
+      },
+      {
+        "label": "Quart",
+        "gramWeight": 960
+      },
+      {
+        "gramWeight": 0.2
+      }
+    ]
+  },
+  "low-sodium chicken broth": {
+    "source": "edamam",
+    "foodId": "food_bptblvzambd16nbhewqmhaw1rnh5",
+    "label": "Chicken Broth",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 8,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 1.67,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0.42,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "sugar": {
+        "value": 0.42,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "cholesterol": {
+        "value": 0,
+        "unit": "mg"
+      },
+      "sodium": {
+        "value": 212,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 200
+      },
+      {
+        "label": "Carton",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 240
+      },
+      {
+        "label": "Quart",
+        "gramWeight": 960
+      },
+      {
+        "gramWeight": 0.2
+      }
+    ]
+  },
+  "low sodium chicken broth": {
+    "source": "edamam",
+    "foodId": "food_bptblvzambd16nbhewqmhaw1rnh5",
+    "label": "Chicken Broth",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 8,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 1.67,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0.42,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "sugar": {
+        "value": 0.42,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "cholesterol": {
+        "value": 0,
+        "unit": "mg"
+      },
+      "sodium": {
+        "value": 212,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 200
+      },
+      {
+        "label": "Carton",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 240
+      },
+      {
+        "label": "Quart",
+        "gramWeight": 960
+      },
+      {
+        "gramWeight": 0.2
+      }
+    ]
+  },
+  "low sodium chicken stock": {
+    "source": "edamam",
+    "foodId": "food_bptblvzambd16nbhewqmhaw1rnh5",
+    "label": "Chicken Broth",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 8,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 1.67,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0.42,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "sugar": {
+        "value": 0.42,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "cholesterol": {
+        "value": 0,
+        "unit": "mg"
+      },
+      "sodium": {
+        "value": 212,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 200
+      },
+      {
+        "label": "Carton",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 240
+      },
+      {
+        "label": "Quart",
+        "gramWeight": 960
+      },
+      {
+        "gramWeight": 0.2
+      }
+    ]
+  },
+  "reduced-sodium chicken broth": {
+    "source": "edamam",
+    "foodId": "food_bptblvzambd16nbhewqmhaw1rnh5",
+    "label": "Chicken Broth",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 8,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 1.67,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 0.42,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "sugar": {
+        "value": 0.42,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "cholesterol": {
+        "value": 0,
+        "unit": "mg"
+      },
+      "sodium": {
+        "value": 212,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 200
+      },
+      {
+        "label": "Carton",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 240
+      },
+      {
+        "label": "Quart",
+        "gramWeight": 960
+      },
+      {
+        "gramWeight": 0.2
+      }
+    ]
+  },
+  "low-sodium beef broth": {
+    "source": "edamam",
+    "foodId": "food_bxd832fblxgfaibgn0zk0b6dg6dh",
+    "label": "Beef Broth",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 13,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 1.97,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.09,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 1.2,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 150
+      },
+      {
+        "label": "Carton",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 240
+      }
+    ]
+  },
+  "low-sodium beef stock": {
+    "source": "edamam",
+    "foodId": "food_bxd832fblxgfaibgn0zk0b6dg6dh",
+    "label": "Beef Broth",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 13,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 1.97,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.09,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 1.2,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 150
+      },
+      {
+        "label": "Carton",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 240
+      }
+    ]
+  },
+  "reduced-sodium beef broth": {
+    "source": "edamam",
+    "foodId": "food_bxd832fblxgfaibgn0zk0b6dg6dh",
+    "label": "Beef Broth",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 13,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 1.97,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.09,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 1.2,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 150
+      },
+      {
+        "label": "Carton",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 240
+      }
+    ]
+  },
+  "low-sodium vegetable broth": {
+    "source": "edamam",
+    "foodId": "food_bb2qjrjamst0vmam39stubtkmrs4",
+    "label": "Vegetable Broth",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 6,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 1.25,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "sugar": {
+        "value": 0.83,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "cholesterol": {
+        "value": 0,
+        "unit": "mg"
+      },
+      "sodium": {
+        "value": 238,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 240
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 240
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Teaspoon",
+        "gramWeight": 4.729166667
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 14.1875
+      },
+      {
+        "gramWeight": 0.2
+      }
+    ]
+  },
+  "low-sodium vegetable stock": {
+    "source": "edamam",
+    "foodId": "food_bb2qjrjamst0vmam39stubtkmrs4",
+    "label": "Vegetable Broth",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 6,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 0,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 1.25,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0,
+        "unit": "g"
+      },
+      "sugar": {
+        "value": 0.83,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0,
+        "unit": "g"
+      },
+      "cholesterol": {
+        "value": 0,
+        "unit": "mg"
+      },
+      "sodium": {
+        "value": 238,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 240
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 240
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.349523125
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59237
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      },
+      {
+        "label": "Teaspoon",
+        "gramWeight": 4.729166667
+      },
+      {
+        "label": "Tablespoon",
+        "gramWeight": 14.1875
+      },
+      {
+        "gramWeight": 0.2
       }
     ]
   }
