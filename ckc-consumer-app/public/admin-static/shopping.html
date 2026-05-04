@@ -1462,17 +1462,58 @@ function cleanSwapTerm(t) {
 
 function parseSwapPairs(notes) {
   const result = [];
+
+  // Format A: structured array — notes is an array of {type, from, to} objects
+  // (newer recipes have this from the diet-tag classifier).
+  if (Array.isArray(notes)) {
+    for (const n of notes) {
+      if (!n || typeof n !== 'object') continue;
+      const from = (n.from || '').toString().trim();
+      if (!from) continue;
+      if (n.type === 'remove' || n.type === 'skip' || n.type === 'omit') {
+        result.push({ from: cleanSwapTerm(from), to: null });
+      } else if (n.type === 'replace' || n.type === 'use') {
+        const to = (n.to || '').toString().trim();
+        if (to) result.push({ from: cleanSwapTerm(from), to });
+      }
+    }
+    return result;
+  }
+
+  // Format B: plain text — parse with regex patterns.
+  if (typeof notes !== 'string' || !notes.trim()) return result;
   const s = notes.toLowerCase();
+
   const insteadRe = /use\s+(.+?)\s+instead\s+of\s+(.+?)(?:[,.]|$)/gi;
   let m;
   while ((m = insteadRe.exec(s)) !== null) result.push({ from: cleanSwapTerm(m[2].trim()), to: m[1].trim() });
+
   const replaceRe = /replace\s+(.+?)\s+with\s+(.+?)(?:[,.]|$)/gi;
   while ((m = replaceRe.exec(s)) !== null) {
     const to = m[2].trim();
     m[1].split(/\s+and\s+/i).forEach(f => result.push({ from: cleanSwapTerm(f.trim()), to }));
   }
+
   const skipRe = /(?:skip|omit)\s+([^,.\n]+)/gi;
   while ((m = skipRe.exec(s)) !== null) result.push({ from: cleanSwapTerm(m[1].split(',')[0].trim()), to: null });
+
+  // "X: Use Y" / "X: Replace with Y" — colon-prefix format common in chef-written
+  // diet notes (e.g. "Naan: Use GF naan.", "Butter: Use olive oil.").
+  // Multiline-aware so multiple swaps in one notes string all parse.
+  const colonUseRe = /(?:^|[.;\n])\s*([^:\n.]+?):\s*use\s+([^.;\n]+?)(?=[.;\n]|$)/gi;
+  while ((m = colonUseRe.exec(s)) !== null) {
+    const from = cleanSwapTerm(m[1].trim());
+    const to = m[2].trim();
+    if (from && to) result.push({ from, to });
+  }
+
+  // "X: Remove [entirely]" — colon-prefix removal phrasing.
+  const colonRemoveRe = /(?:^|[.;\n])\s*([^:\n.]+?):\s*remove\s+(?:entirely|completely)?[^.;\n]*?(?=[.;\n]|$)/gi;
+  while ((m = colonRemoveRe.exec(s)) !== null) {
+    const from = cleanSwapTerm(m[1].trim());
+    if (from) result.push({ from, to: null });
+  }
+
   return result;
 }
 
@@ -1492,7 +1533,12 @@ function buildSwapMap(dietKey) {
   for (const m of menuItems) {
     const recipe = m.recipe;
     const tag = recipe.dietTags && recipe.dietTags[dietKey];
-    if (!tag || tag.native || !tag.mod || !(tag.notes || '').trim()) continue;
+    if (!tag || tag.native || !tag.mod) continue;
+    // notes may be string OR array — both are valid; only skip when truly empty
+    const hasNotes = typeof tag.notes === 'string'
+      ? tag.notes.trim().length > 0
+      : Array.isArray(tag.notes) && tag.notes.length > 0;
+    if (!hasNotes) continue;
     const pairs = parseSwapPairs(tag.notes);
     for (const pair of pairs) {
       for (const ingName of aggregated.keys()) {
