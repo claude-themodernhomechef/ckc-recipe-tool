@@ -2942,13 +2942,14 @@ export function parseIngredient(raw: string): {
     /^(\d+)\s+\(\s*(?:about\s+|approximately\s+|~\s*)?(\d+(?:\.\d+)?)(?:\s*-\s*\d+(?:\.\d+)?)?\s*(pound|lb|ounce|oz|kg|gram|g)s?\.?\s*\)\s+/i,
     (_, _n, w, u) => `${w} ${u} `
   );
-  // "4 6-ounce portions/pieces/fillets X" — leading count + per-piece weight + portion-word + noun
+  // "4 6-ounce portions/pieces/fillets X" — leading count + per-piece weight + (optional adj/noun) + portion-word
   // Multiply N × W to get total weight.
   //   "4 6-ounce portions salmon fillet" → "24 ounce salmon fillet"
+  //   "4 6-ounce salmon fillets, skin removed" → "24 ounce salmon"
   //   "4 5-oz pieces chicken breast" → "20 oz chicken breast"
   str = str.replace(
-    /^(\d+)\s+(\d+(?:\.\d+)?)\s*-?\s*(pound|lb|ounce|oz|kg|gram|g)s?\.?\s+(?:portions?|pieces?|fillets?|filets?|servings?)\s+/i,
-    (_, n, w, u) => `${parseInt(n) * parseFloat(w)} ${u} `
+    /^(\d+)\s+(\d+(?:\.\d+)?)\s*-?\s*(pound|lb|ounce|oz|kg|gram|g)s?\.?\s+((?:[a-z][a-z-]*\s+)*?)(?:portions?|pieces?|fillets?|filets?|servings?|steaks?|chops?|breasts?|thighs?|legs?|wings?|drumsticks?|tails?)\b/i,
+    (_, n, w, u, mid) => `${parseInt(n) * parseFloat(w)} ${u} ${mid.trim()}`.replace(/\s+/g, ' ').trim() + ' '
   );
   // Bare "15 ounce can X" / "15-oz can X" / "15- ounce can X" with no leading
   // count → "1 (15 oz) can X" so the existing paren-weight handler picks it up.
