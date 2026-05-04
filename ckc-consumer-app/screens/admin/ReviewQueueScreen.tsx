@@ -1811,25 +1811,36 @@ function NutritionPanel({
       )
     : activeBase;
 
-  // Build garnish ingredient list for the explanation note
+  // Build garnish ingredient list for the per-item breakdown.
+  // Keep the full ingredient object so we can show quantity + macros per garnish.
   const garnishIngredients = (nutrition?.ingredients ?? [])
-    .filter((i: any) => i.garnish && !i.skip && i.raw?.trim())
-    .map((i: any) => i.raw as string);
+    .filter((i: any) => i.garnish && !i.skip && i.raw?.trim() && i.nutrition);
 
   // Build list of assumed-quantity ingredients for the assumptions note
   const assumedIngredients = (nutrition?.ingredients ?? [])
     .filter((i: any) => i.assumed && !i.skip && i.raw?.trim())
     .map((i: any) => ({ raw: i.raw as string, name: i.name as string, assumedDefault: i.assumedDefault as string }));
 
-  // Auto-generate the garnish assumption note
-  function buildGarnishNote(): string {
-    if (!garnishIngredients.length) return '';
-    const listed = garnishIngredients
-      .map(r => r.replace(/,?\s*(for serving|for garnish|to serve|to garnish|to top|optional[:\s]*)/gi, '').trim())
-      .filter(Boolean)
-      .join(', ');
-    const gCal = Math.round(garnishPs?.['calories'] ?? 0);
-    return `Garnish assumptions: ${listed}.\n\nNutrition for these items was calculated from their stated recipe quantities using our USDA-sourced ingredient database${gCal > 0 ? ` and adds ~${gCal} cal per serving` : ''}. Items listed as "for serving" or "optional" are excluded from the base nutrition facts above — toggle them on to include them.`;
+  // Convert a whole-recipe qty/unit into a per-serving display string.
+  // Tries to keep "1 naan", "1/2 cup rice", "2 tbsp" readable.
+  function formatPerServingQty(qty: number, unit: string, servings: number): string {
+    if (!qty || !servings) return '';
+    const perServ = qty / servings;
+    // Fraction-friendly rounding for common kitchen quantities
+    const rounded = Math.round(perServ * 8) / 8;
+    let qtyStr: string;
+    if (rounded === 0.125) qtyStr = '1/8';
+    else if (rounded === 0.25) qtyStr = '1/4';
+    else if (rounded === 0.333 || Math.abs(rounded - 1/3) < 0.05) qtyStr = '1/3';
+    else if (rounded === 0.375) qtyStr = '3/8';
+    else if (rounded === 0.5) qtyStr = '1/2';
+    else if (rounded === 0.625) qtyStr = '5/8';
+    else if (rounded === 0.667 || Math.abs(rounded - 2/3) < 0.05) qtyStr = '2/3';
+    else if (rounded === 0.75) qtyStr = '3/4';
+    else if (rounded === 0.875) qtyStr = '7/8';
+    else if (Number.isInteger(rounded)) qtyStr = String(rounded);
+    else qtyStr = rounded.toFixed(2).replace(/\.?0+$/, '');
+    return `${qtyStr}${unit ? ' ' + unit : ''}`.trim();
   }
 
   // Diet tokens — only show native + mod
@@ -1962,11 +1973,31 @@ function NutritionPanel({
             </View>
           )}
 
-          {/* Garnish note — always visible when garnish toggle is on */}
+          {/* Garnish note — always visible when garnish toggle is on.
+              Shows each garnish on its own row with quantity + macros per serving. */}
           {showGarnish && hasGarnish && garnishIngredients.length > 0 && (
             <View style={np.garnishNoteBox}>
               <Text style={np.garnishNoteTitle}>How we calculated garnish nutrition</Text>
-              <Text style={np.garnishNoteText}>{buildGarnishNote()}</Text>
+              {garnishIngredients.map((ing: any, idx: number) => {
+                const qtyStr = formatPerServingQty(ing.qty, ing.unit, srvNum);
+                const cal = Math.round((ing.nutrition?.calories ?? 0) / srvNum);
+                const protein = Math.round(((ing.nutrition?.protein ?? 0) / srvNum) * 10) / 10;
+                const carbs = Math.round(((ing.nutrition?.carbs ?? 0) / srvNum) * 10) / 10;
+                const fat = Math.round(((ing.nutrition?.fat ?? 0) / srvNum) * 10) / 10;
+                return (
+                  <View key={idx} style={np.garnishItemRow}>
+                    <Text style={np.garnishItemName}>
+                      {qtyStr ? `${qtyStr} ` : ''}{ing.name} per serving
+                    </Text>
+                    <Text style={np.garnishItemMacros}>
+                      {cal} cal · {protein}g protein · {carbs}g carbs · {fat}g fat
+                    </Text>
+                  </View>
+                );
+              })}
+              <Text style={np.garnishNoteFooter}>
+                Calculated from each ingredient's stated recipe quantity using our USDA-sourced database. Items listed as "for serving" or "optional" are excluded from the base nutrition facts above — toggle them on to include them.
+              </Text>
             </View>
           )}
 
@@ -2040,6 +2071,10 @@ const np = StyleSheet.create({
   garnishNoteBox:    { backgroundColor: 'rgba(124,184,122,0.10)', borderRadius: 8, borderWidth: 1, borderColor: 'rgba(124,184,122,0.25)', padding: 12, gap: 6 },
   garnishNoteTitle:  { fontFamily: Fonts.bodyMedium, fontSize: 12, color: '#7cb87a' },
   garnishNoteText:   { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted, lineHeight: 17 },
+  garnishItemRow:    { paddingVertical: 4, gap: 2 },
+  garnishItemName:   { fontFamily: Fonts.bodyMedium, fontSize: 12, color: Colors.text },
+  garnishItemMacros: { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted, lineHeight: 16 },
+  garnishNoteFooter: { fontFamily: Fonts.body, fontSize: 10, color: Colors.textMuted, fontStyle: 'italic', lineHeight: 14, marginTop: 6 },
   // Assumed-quantity note box
   assumptionNoteBox:   { backgroundColor: 'rgba(212,168,67,0.10)', borderRadius: 8, borderWidth: 1, borderColor: 'rgba(212,168,67,0.25)', padding: 12, gap: 6 },
   assumptionNoteTitle: { fontFamily: Fonts.bodyMedium, fontSize: 12, color: '#d4a843' },
