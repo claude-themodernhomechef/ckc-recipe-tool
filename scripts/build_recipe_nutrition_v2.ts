@@ -646,7 +646,7 @@ async function main() {
   snap.forEach(doc => {
     const d = doc.data();
     if (d.ingredients && d.ingredients.length >= 2) {
-      recipes.push({ id: doc.id, name: d.name, ingredients: d.ingredients, dietTags: d.dietTags ?? {} });
+      recipes.push({ id: doc.id, name: d.name, ingredients: d.ingredients, parsedIngredients: d.parsedIngredients, dietTags: d.dietTags ?? {} });
     }
   });
 
@@ -666,16 +666,37 @@ async function main() {
     const ingredientResults: any[] = [];
     let matchedCount = 0, totalCount = 0;
 
-    // Apply the production splitter so "X and Y, for serving" becomes two
-    // ingredients, each carrying the "for serving" suffix.
-    const splitIngredients: string[] = [];
-    for (const raw of recipe.ingredients) {
-      if (!raw || !raw.trim()) continue;
-      for (const part of splitIngredientLine(raw)) splitIngredients.push(part);
+    // Build the working list of ingredient items.
+    //
+    // PREFERRED: read recipe.parsedIngredients (pre-computed canonical form,
+    //   stored on Firestore by scripts/write_parsed_ingredients.ts). This is the
+    //   single source of truth — manual per-recipe overrides edit this field
+    //   directly so both shopping list and nutrition pipeline stay in sync.
+    //
+    // FALLBACK: if missing, fall back to live parsing via splitIngredientLine
+    //   + parseIngredient (legacy path).
+    interface Item { raw: string; pre?: any; }  // pre = pre-parsed { qty, unit, name, ... } or undefined
+    const items: Item[] = [];
+    if (Array.isArray(recipe.parsedIngredients) && recipe.parsedIngredients.length > 0) {
+      for (const p of recipe.parsedIngredients) {
+        items.push({ raw: p.raw || '', pre: p });
+      }
+    } else {
+      for (const raw of recipe.ingredients) {
+        if (!raw || !raw.trim()) continue;
+        for (const part of splitIngredientLine(raw)) items.push({ raw: part });
+      }
     }
 
-    for (const raw of splitIngredients) {
+    for (const item of items) {
+      const raw = item.raw;
       if (!raw || !raw.trim()) continue;
+
+      // If pre-parsed says skip, honor that
+      if (item.pre?.skip) {
+        ingredientResults.push({ raw, name: '', skip: true, skipReason: item.pre.skipReason || 'pre_parsed_skip' });
+        continue;
+      }
 
       // Skip multi-spice "EACH:" strings — negligible calories
       if (isEachSpice(raw)) {
@@ -697,9 +718,21 @@ async function main() {
       // stored separately and excluded from the default per-serving totals)
       const garnishFlag = isGarnish(raw);
 
-      // Pre-process then parse
-      const normalised = preprocessIngredient(raw);
-      let parsed = parseIngredient(normalised);
+      // Use pre-parsed values if available, else live-parse
+      let parsed: any;
+      if (item.pre) {
+        parsed = {
+          qty: item.pre.qty || 0,
+          unit: item.pre.unit || '',
+          name: item.pre.name || '',
+          category: item.pre.category || '',
+          raw,
+          note: item.pre.note,
+        };
+      } else {
+        const normalised = preprocessIngredient(raw);
+        parsed = parseIngredient(normalised);
+      }
 
       // Learned alias on the RAW string: if the user previously corrected this
       // exact raw, use their canonical name instead of the parser's guess.
