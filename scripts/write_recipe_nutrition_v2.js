@@ -15,8 +15,8 @@ const fs    = require('fs');
 const path  = require('path');
 
 const SA_PATH       = path.join(__dirname, '../service-account.json');
-const PROGRESS_FILE = path.join(__dirname, '../data/recipe_nutrition_hybrid_progress.json');
-const WRITE_LOG     = path.join(__dirname, '../data/recipe_nutrition_hybrid_write_log.json');
+const PROGRESS_FILE = path.join(__dirname, '../data/recipe_nutrition_v2_progress.json');
+const WRITE_LOG     = path.join(__dirname, '../data/recipe_nutrition_v2_write_log.json');
 
 const sa = require(SA_PATH);
 if (!admin.apps.length) admin.initializeApp({ credential: admin.credential.cert(sa) });
