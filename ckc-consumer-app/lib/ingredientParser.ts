@@ -2892,6 +2892,19 @@ export function parseIngredient(raw: string): {
     .replace(/((?:\d+(?:\s+\d+\/\d+)?|\d+\/\d+|\d+(?:\.\d+)?)\s*(?:cups?|tbsps?|tablespoons?|tsps?|teaspoons?))\s*\/\s*\d+(?:\.\d+)?\s*(?:g|grams?|kg|ml|l|oz|ounces?)\.?\s+/gi, '$1 ')
     // Multiple consecutive spaces → single space
     .replace(/\s{2,}/g, ' ');
+  // "<N> <unit/count-word> <noun> (about <W> oz/lb)" — recipe author gives
+  // total weight in parens. Use that as the primary qty + unit.
+  //   "1 loaf of bread (about 12 ounces)" → "12 ounces bread"
+  //   "1 head cauliflower (about 2 pounds)" → "2 pounds cauliflower"
+  //   "1 small bunch dill (about 2 oz)" → "2 oz dill"
+  // Skip if there's already a leading explicit weight (qty > 1 and unit is g/lb/oz).
+  str = str.replace(
+    /^(\d+)\s+(?:large\s+|small\s+|medium\s+|big\s+)?(?:loaf|head|bunch|piece|block|pack|package|bag|jar|can|bottle)s?\s+(?:of\s+)?([^,(]+?)\s*\(\s*(?:about\s+|approximately\s+|approx\.?\s+|~\s*)?(\d+(?:\.\d+)?)\s*(oz|ounce|lb|pound|g|gram|kg)s?\.?[^)]*\)/i,
+    (_, n, noun, w, u) => {
+      const count = parseInt(n);
+      return `${count * parseFloat(w)} ${u} ${noun.trim()}`;
+    }
+  );
   // "<N> <noun>, each weighing about <W> g/oz" — recipe author gives explicit
   // per-piece weight. Multiply N × W to get total weight directly.
   //   "4 salmon fillets, each weighing about 100g (4oz)" → "400 g salmon fillets"
@@ -4135,15 +4148,15 @@ export function parseIngredient(raw: string): {
       /\b(?:can|jar|tin|block|blocks|box|package|pkg|bag|pack|bottle|bunch|head)s?\b/i.test(name) ||
       // No container word but has (N-oz/lb) paren prefix immediately before a piece-word noun
       // (fillet/breast/thigh/etc.) — recipe author's per-piece weight spec. Allow 0-3 intermediate words.
-      /^\s*\(\s*\d+(?:\.\d+)?(?:\s*[-–]\s*(?:to\s+)?\d+(?:\.\d+)?)?\s*[-\s]?(?:oz|ounce|lb|pound|ounces|pounds)s?\.?\s*\)\s*(?:[\w-]+\s+){0,3}(?:fillet|fillets|filet|filets|breast|breasts|thigh|thighs|chop|chops|steak|steaks|piece|pieces|slice|slices|tail|tails)\b/i.test(name);
+      /^\s*\(\s*(?:about\s+|approximately\s+|~\s*)?\d+(?:\.\d+)?(?:\s*[-–]\s*(?:to\s+)?\d+(?:\.\d+)?)?\s*[-\s]?(?:oz|ounce|lb|pound|ounces|pounds)s?\.?\s*\)\s*(?:[\w-]+\s+){0,3}(?:fillet|fillets|filet|filets|breast|breasts|thigh|thighs|chop|chops|steak|steaks|piece|pieces|slice|slices|tail|tails)\b/i.test(name);
     if (isCanContext) {
       // Track the original count before we replace qty (e.g. "2 jars" of 28oz each → ×2)
       const originalCount = qty || 1;
 
       // Try multi-pack first: "(2 x .75 ounce packages)" / "(3 × 14 oz cans)" — N × M = total
       const multiPackM = name.match(/\(\s*(\d+)\s*[xX×]\s*(\d*\.?\d+)\s*(oz|ounce|lb|pound|g|gram|ml)s?\.?[^)]*\)/i);
-      // Try paren-oz: "(15-oz.)", "(28-ounce)", "(7 ounce)", "(10-12 oz)" (use UPPER bound when range)
-      const ozM = !multiPackM && name.match(/\(\s*(\d+(?:\.\d+)?)(?:\s*(?:[-–]|to)\s*(\d+(?:\.\d+)?))?[\s.\-]*(oz|ounce|fl\s*oz|fluid\s+ounce|lb|pound)s?\.?[^)]*\)/i);
+      // Try paren-oz: "(15-oz.)", "(28-ounce)", "(7 ounce)", "(10-12 oz)", "(about 12 ounces)", "(about 2 pounds)"
+      const ozM = !multiPackM && name.match(/\(\s*(?:about\s+|approximately\s+|approx\.?\s+|~\s*)?(\d+(?:\.\d+)?)(?:\s*(?:[-–]|to)\s*(\d+(?:\.\d+)?))?[\s.\-]*(oz|ounce|fl\s*oz|fluid\s+ounce|lb|pound)s?\.?[^)]*\)/i);
       // Convert lb to oz at extraction time so downstream is consistent
       let _lbToOz = false;
       if (ozM && /lb|pound/i.test(ozM[3])) _lbToOz = true;

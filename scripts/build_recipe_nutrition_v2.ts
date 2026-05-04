@@ -256,8 +256,12 @@ const STANDARD_GRAMS: Record<string, number> = {
   // Mushrooms
   'mushroom':               18,  // medium cremini/button
   // Bread / tortillas
-  'tortilla':               40,  // medium flour tortilla
+  'tortilla':               25,  // small/medium tortilla
+  'tortillas':              25,
   'corn tortilla':          25,
+  'corn tortillas':         25,
+  'flour tortilla':         25,
+  'flour tortillas':        25,
   'slice bread':            28,
   'bread slice':            28,
   // Spices / small-count items
