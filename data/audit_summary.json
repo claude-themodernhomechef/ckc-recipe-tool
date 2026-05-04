@@ -1,100 +1,84 @@
 {
-  "auditDate": "2026-05-03T08:25:43.097Z",
+  "auditDate": "2026-05-03T13:04:33.176Z",
   "totalRecipes": 1074,
   "recipesByStatus": {
     "approved": 17,
     "needs_review": 1057
   },
-  "totalIngredientsScanned": 14530,
-  "totalMatched": 14400,
-  "overallMatchRatePct": 99,
+  "totalIngredientsScanned": 14869,
+  "totalMatched": 14858,
+  "overallMatchRatePct": 100,
   "recipesWithMatchRateBelow50": 0,
   "recipesWithMatchRateBelow80": 0,
   "learnedAliasesLoaded": 0,
-  "uniqueUnmatchedIngredients": 125,
-  "uniqueCategoryMisses": 99,
+  "uniqueUnmatchedIngredients": 11,
+  "uniqueCategoryMisses": 6,
   "openDietUncertainties": 1,
   "top10Unmatched": [
     {
-      "name": "mediterranean salad",
-      "recipes": 2
-    },
-    {
-      "name": "---",
-      "recipes": 2
-    },
-    {
-      "name": "--",
-      "recipes": 2
-    },
-    {
-      "name": "delallo castelvetrano olives",
+      "name": "sort of flatbread or couscous or rice",
       "recipes": 1
     },
     {
-      "name": "spice mill",
+      "name": "other",
       "recipes": 1
     },
     {
-      "name": "toppings: parmesan cheese fresh basil",
+      "name": "a",
       "recipes": 1
     },
     {
-      "name": "jarred favorite marinara sauce",
+      "name": "/",
       "recipes": 1
     },
     {
-      "name": "any other seasoning you like",
+      "name": "any combination of kimchi",
       "recipes": 1
     },
     {
-      "name": "or vegetables to accompany",
+      "name": "julienne",
       "recipes": 1
     },
     {
-      "name": "shredded low-moisture shredded mozzarella cheese",
+      "name": "cooked salmon",
+      "recipes": 1
+    },
+    {
+      "name": "extra fresh dill",
+      "recipes": 1
+    },
+    {
+      "name": "pasta- acini de pepe",
+      "recipes": 1
+    },
+    {
+      "name": "lettuce/cabbage",
       "recipes": 1
     }
   ],
   "top10CatMisses": [
     {
-      "name": "white fish",
-      "recipes": 4
-    },
-    {
-      "name": "parmigiano-reggiano",
-      "recipes": 3
-    },
-    {
-      "name": "---",
-      "recipes": 2
-    },
-    {
-      "name": "--",
-      "recipes": 2
-    },
-    {
-      "name": "aji amarillo paste",
-      "recipes": 2
-    },
-    {
-      "name": "canned garbanzo beans",
+      "name": "other",
       "recipes": 1
     },
     {
-      "name": "bone-in skin-on thighs 4 bone-in skin-on drumsticks",
+      "name": "/",
       "recipes": 1
     },
     {
-      "name": "green onions thinly",
+      "name": "pitas pieces",
       "recipes": 1
     },
     {
-      "name": "canned green chilis",
+      "name": "julienne",
       "recipes": 1
     },
     {
-      "name": "any other seasoning you like",
+      "name": "lettuce/cabbage",
+      "recipes": 1
+    },
+    {
+      "name": "6 oz fresh, to serve",
       "recipes": 1
     }
   ],

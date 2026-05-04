@@ -1,0 +1,10 @@
+parsed_name,matched_to_db_key,via,recipes_affected,total_occurrences,example_raw_strings
+corn tortillas pieces,corn,first-word,2,2,"6 pieces corn tortillas, to serve"
+tortillas pieces,tortillas,first-word,2,2,"8 pieces Warm tortillas, to serve | 6 pieces warm tortillas, to serve"
+naan pieces,naan,first-word,1,1,"6 pieces naan, to serve"
+bread pieces,bread,first-word,1,1,"2 pieces bread, to serve"
+nori sheets pieces,nori,first-word,1,1,"4 pieces nori sheets, to serve"
+pitas pieces,pitas,first-word,1,1,"6 pieces pitas, to serve"
+flatbreads pieces,flatbreads,first-word,1,1,"4 pieces Flatbreads, to serve"
+dried chilies,dried red chilies,partial,1,1,1 cup dried Chinese chili peppers ((*Footnote 1))
+"6 oz fresh, to serve",preserved lemon,prep-stripped:partial,1,1,"6 oz fresh, to serve"

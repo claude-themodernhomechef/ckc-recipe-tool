@@ -1,0 +1,194 @@
+{
+  "recipesWithGarnish": 127,
+  "totalGarnishLines": 177,
+  "samples": [
+    {
+      "id": "15-minute-ground-beef-stir-fry",
+      "servings": 4,
+      "lines": [
+        "garlic rice, for serving",
+        "thinly sliced green onion, for garnish",
+        "sesame seeds, for garnish",
+        "chili crisp, for serving"
+      ]
+    },
+    {
+      "id": "1Lqkj42P66K2zy4uMncB",
+      "servings": 6,
+      "lines": [
+        "Iceberg lettuce, finely shredded, for serving",
+        "Radish, sliced, for serving",
+        "Onion, chopped, for serving",
+        "Avocado, diced, for serving",
+        "Sour cream, for serving",
+        "Tortilla chips, for serving",
+        "Lime wedges, for serving"
+      ]
+    },
+    {
+      "id": "1RsQWRKk2fh71b6UwvlQ",
+      "servings": 6,
+      "lines": [
+        "steamed rice and naan, for serving"
+      ]
+    },
+    {
+      "id": "1Ysypi3acarqsJcvU3xL",
+      "servings": 6,
+      "lines": [
+        "cotija cheese, limes, and cilantro, for serving"
+      ]
+    },
+    {
+      "id": "2021-05-03-sheet-pan-salmon-with-moroccan-apricot-glaze",
+      "servings": 4,
+      "lines": [
+        "Fresh flat leaf parsley, for garnish"
+      ]
+    },
+    {
+      "id": "2022-01-05-vegan-creamy-cauliflower-sweet-potato-chowder",
+      "servings": 4,
+      "lines": [
+        "chopped chives, for garnish"
+      ]
+    },
+    {
+      "id": "2023-08-16-smoky-vegan-corn-chowder-with-potatoes",
+      "servings": 4,
+      "lines": [
+        "chopped chives or parsley, for garnish"
+      ]
+    },
+    {
+      "id": "2023-09-13-spicy-maple-tofu-bowls-golden-garlic-rice",
+      "servings": 3,
+      "lines": [
+        "sliced green onions, for garnish"
+      ]
+    },
+    {
+      "id": "6XFPymuTKCk45djsG386",
+      "servings": 6,
+      "lines": [
+        "Diced avocado, for serving",
+        "Minced cilantro, for serving"
+      ]
+    },
+    {
+      "id": "8FGlsn3MdRmZfrAAGUit",
+      "servings": 2,
+      "lines": [
+        "toasted bread or cooked grains, for serving"
+      ]
+    },
+    {
+      "id": "9DPwRSd2vhMYfhdjWKth",
+      "servings": 4,
+      "lines": [
+        "avocado wedges + sesame seeds, for serving"
+      ]
+    },
+    {
+      "id": "ARBvD0ofhiWgfLLCeKRx",
+      "servings": 4,
+      "lines": [
+        "creamy ranch, for serving"
+      ]
+    },
+    {
+      "id": "B2u8nv9MiSuQwcsST9tz",
+      "servings": 6,
+      "lines": [
+        "Croutons, for serving"
+      ]
+    },
+    {
+      "id": "E8YrN5DhKGErVsEGJnSC",
+      "servings": 4,
+      "lines": [
+        "rice pilaf, couscous, or mashed potatoes, for serving"
+      ]
+    },
+    {
+      "id": "EhzZLumjhhze5w2nF1fk",
+      "servings": 6,
+      "lines": [
+        "Chopped fresh parsley or cilantro, for garnish"
+      ]
+    },
+    {
+      "id": "GK2Lwz1nEMoxzYMx0raq",
+      "servings": 4,
+      "lines": [
+        "Crumbled feta and crushed pita chips, for topping"
+      ]
+    },
+    {
+      "id": "HcqT2YmFdYFde86Z7Q4u",
+      "servings": 4,
+      "lines": [
+        "Cooked rice, for serving"
+      ]
+    },
+    {
+      "id": "KjZfhHacjHC7usqTReL0",
+      "servings": 6,
+      "lines": [
+        "Cooked rice, noodles or lettuce cups, for serving",
+        "Toasted sesame seeds, sliced scallions and chopped cilantro, for topping"
+      ]
+    },
+    {
+      "id": "LlzqzrcSeCUSJ1gXqw8o",
+      "servings": 6,
+      "lines": [
+        "crumbled feta or goat cheese, for serving",
+        "fresh mint, for serving"
+      ]
+    },
+    {
+      "id": "NYV5ZeccsIy3oWKdMix4",
+      "servings": 4,
+      "lines": [
+        "parsley, for garnish"
+      ]
+    },
+    {
+      "id": "O0HKfkE44bZVUTRNH00Y",
+      "servings": 6,
+      "lines": [
+        "warmed corn or flour tortillas, for serving",
+        "crema, avocado, feta cheese, pickled onion, and cilantro, for serving"
+      ]
+    },
+    {
+      "id": "QPqIzaiONvksPSTMIk1Y",
+      "servings": 2,
+      "lines": [
+        "4 tablespoons fresh parsley, for garnish"
+      ]
+    },
+    {
+      "id": "TCMcoRRgFTgxqtKSpsw1",
+      "servings": 8,
+      "lines": [
+        "cilantro, green onion, avocado, and crumbled cotija cheese, for serving"
+      ]
+    },
+    {
+      "id": "TKa7OZKFaqRU5B3b6g8D",
+      "servings": 8,
+      "lines": [
+        "Warm tortillas and frijoles de olla, for serving"
+      ]
+    },
+    {
+      "id": "Wg5KZN33YZZUBeciZpAf",
+      "servings": 6,
+      "lines": [
+        "grated pecorino romano and black pepper, for serving"
+      ]
+    }
+  ]
+}

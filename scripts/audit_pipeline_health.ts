@@ -201,6 +201,9 @@ function isSkippable(raw: string): boolean {
   if (/^[,\s]*(?:to|for)\s+(?:serving|serve|garnish(?:ing)?|topping)\s*[:.]?\s*$/i.test(t)) return true;
   // "X total" / "total X" qty-aggregation noise (also "4 pieces total")
   if (/^total\s+\w+$|^\w+\s+total$|^\d+\s+\w+\s+total$/i.test(t)) return true;
+  // "N pieces" / "N slices" with no noun — splitter byproduct, not a real ingredient
+  // (when noun is present like "8 chicken breast", parser handles it correctly)
+  if (/^\d+\s+(?:pieces?|slices?|sticks?|sprigs?|stalks?)$/i.test(t)) return true;
   // "1/2 cup blanched" / "5 cups chopped into bite-sized pieces" — qty+unit+prep with NO noun
   // (end of string immediately, or only "into <size> pieces" trailing)
   if (/^[\d¼½¾⅓⅔⅛⅜⅝⅞.\/\s-]+\s*(?:tsps?|tbsps?|teaspoons?|tablespoons?|cups?|oz|ounces?|lbs?|pounds?|grams?|kg|g|ml|inch|inches)\s+(?:chopped|diced|sliced|crushed|minced|julienne|julienned|blanched|peeled|cubed|halved|quartered|grated|shredded)(?:\s+into\s+[\w-]+(?:\s+[\w-]+)?\s+pieces?)?\s*$/i.test(t)) return true;

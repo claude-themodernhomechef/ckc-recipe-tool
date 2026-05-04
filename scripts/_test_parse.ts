@@ -1,12 +1,11 @@
 import { parseIngredient } from '../ckc-consumer-app/lib/ingredientParser';
 const tests = [
-  "450 g (1 lb) chicken thigh fillets (chopped)",
-  "100 g (1 cup) sugar snap peas",
-  "1 salmon fillet (about 2 pounds)",
-  "Organic whole chicken (About 5-10 lbs. is perfect)",
-  "2 to 3 cups vegetable oil (for frying)",
+  "1 cup mint leaves, packed ( 2 x .75 ounce packages)",  // "75 oz" bug
+  "1/4 teaspoon pepper ()",  // empty paren strips unit
+  "8 pieces",  // standalone fragment
+  "1 (12.3 oz block) silken tofu",  // 12.3 oz
 ];
 for (const t of tests) {
   const p = parseIngredient(t);
-  console.log(`RAW: ${t}\n  → qty=${p.qty} unit="${p.unit}" name="${p.name}"\n`);
+  console.log(`"${t}"\n  → qty=${p.qty} unit="${p.unit}" name="${p.name}"\n`);
 }

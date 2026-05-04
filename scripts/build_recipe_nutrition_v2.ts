@@ -44,49 +44,38 @@ const COOKING_DEFAULTS: Array<{ pattern: RegExp; qty: number; unit: string; note
 // "to garnish") and qty is 0, apply a per-serving default. The qty will be
 // multiplied by the recipe's `servings` count to get the total recipe amount.
 //
-// Per Rafi: grain "to serve" gets 1/2 cup cooked per serving; common
-// garnishes get the amounts below (cheese 1 oz, herbs 1 tbsp,
-// pickled onions 2 tbsp, olive oil drizzle 1 tbsp).
-const SERVING_DEFAULTS: Array<{
-  pattern: RegExp;
+// Rules live in data/garnish_portion_rules.json — single source of truth used
+// by the build pipeline AND the offline garnish-rewrite scripts. Edit the JSON
+// to change a portion (e.g. cheese 1 oz → 0.5 oz); no code change needed.
+const PORTION_RULES_PATH = path.join(__dirname, '../data/garnish_portion_rules.json');
+
+interface PortionRule {
+  id: string;
+  displayName: string;
   perServing: { qty: number; unit: string };
   note: string;
-}> = [
-  // Grains — 1/2 cup cooked per serving
-  { pattern: /\b(?:steamed\s+)?(?:rice|brown\s+rice|white\s+rice|jasmine\s+rice|basmati\s+rice|cauliflower\s+rice|quinoa|couscous|pasta|noodles?|orzo|farro|barley|bulgur)\b/i,
-    perServing: { qty: 0.5, unit: 'cup' }, note: '½ cup cooked per serving' },
-  // Flatbreads / breads — 1 piece per serving
-  { pattern: /\b(?:naan|pita|tortillas?|flatbread|bread|roti|focaccia)\b/i,
-    perServing: { qty: 1, unit: 'piece' }, note: '1 piece per serving' },
-  // Cheese garnishes — 1 oz per serving
-  { pattern: /\b(?:cheddar|cotija|mozzarella|parmesan|feta|gruyere|gouda|brie|provolone|queso\s+fresco|manchego|blue\s+cheese|goat\s+cheese)\b/i,
-    perServing: { qty: 1, unit: 'oz' }, note: '1 oz per serving' },
-  // Pickled onions — 2 tbsp per serving (placed before generic herb pattern)
-  { pattern: /\bpickled\s+(?:red\s+)?onion/i,
-    perServing: { qty: 2, unit: 'tbsp' }, note: '2 tbsp per serving' },
-  // Olive oil drizzle — 1 tbsp per serving
-  { pattern: /\b(?:olive\s+oil|extra[\s-]virgin\s+olive\s+oil|evoo)\b/i,
-    perServing: { qty: 1, unit: 'tbsp' }, note: '1 tbsp per serving' },
-  // Herb leaves (cilantro/parsley/etc.) — 1 tbsp per serving
-  { pattern: /\b(?:cilantro|parsley|basil|mint|dill|chives|tarragon)\b/i,
-    perServing: { qty: 1, unit: 'tbsp' }, note: '1 tbsp per serving' },
-  // Lime / lemon wedges — 1 wedge per serving
-  { pattern: /\b(?:lime|lemon)\s+wedges?\b/i,
-    perServing: { qty: 1, unit: 'piece' }, note: '1 wedge per serving' },
-];
+  regex: string;
+  skip?: boolean;
+}
+
+const PORTION_RULES: Array<{ rule: PortionRule; pattern: RegExp }> = (() => {
+  const raw = JSON.parse(fs.readFileSync(PORTION_RULES_PATH, 'utf8'));
+  return (raw.rules as PortionRule[]).map(r => ({ rule: r, pattern: new RegExp(r.regex, 'i') }));
+})();
 
 function applyServingDefault(parsed: { qty: number; unit: string; name: string }, servings: number):
-  { qty: number; unit: string; note: string } | null
+  { qty: number; unit: string; note: string; skip?: boolean } | null
 {
   const isServingMarker = parsed.unit === 'to serve' || parsed.unit === 'to garnish';
   if (!isServingMarker || parsed.qty !== 0) return null;
   const haystack = parsed.name.toLowerCase();
-  for (const def of SERVING_DEFAULTS) {
-    if (def.pattern.test(haystack)) {
+  for (const { rule, pattern } of PORTION_RULES) {
+    if (pattern.test(haystack)) {
       return {
-        qty: def.perServing.qty * servings,
-        unit: def.perServing.unit,
-        note: def.note,
+        qty: rule.perServing.qty * servings,
+        unit: rule.perServing.unit,
+        note: rule.note,
+        skip: rule.skip,
       };
     }
   }

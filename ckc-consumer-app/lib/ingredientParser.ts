@@ -4081,17 +4081,32 @@ export function parseIngredient(raw: string): {
       // Track the original count before we replace qty (e.g. "2 jars" of 28oz each → ×2)
       const originalCount = qty || 1;
 
-      // Try paren-oz first: "(15-oz.)", "(28-ounce)", "(7 ounce)", "(10-12 oz)" / "(16- to 17-ounce)" (use UPPER bound)
-      const ozM = name.match(/\(\s*(\d+(?:\.\d+)?)(?:\s*(?:[-–]|to)\s*(\d+(?:\.\d+)?))?[\s.\-]*(oz|ounce|fl\s*oz|fluid\s+ounce|lb|pound)s?\.?[^)]*\)/i);
+      // Try multi-pack first: "(2 x .75 ounce packages)" / "(3 × 14 oz cans)" — N × M = total
+      const multiPackM = name.match(/\(\s*(\d+)\s*[xX×]\s*(\d*\.?\d+)\s*(oz|ounce|lb|pound|g|gram|ml)s?\.?[^)]*\)/i);
+      // Try paren-oz: "(15-oz.)", "(28-ounce)", "(7 ounce)", "(10-12 oz)" (use UPPER bound when range)
+      const ozM = !multiPackM && name.match(/\(\s*(\d+(?:\.\d+)?)(?:\s*(?:[-–]|to)\s*(\d+(?:\.\d+)?))?[\s.\-]*(oz|ounce|fl\s*oz|fluid\s+ounce|lb|pound)s?\.?[^)]*\)/i);
       // Convert lb to oz at extraction time so downstream is consistent
       let _lbToOz = false;
       if (ozM && /lb|pound/i.test(ozM[3])) _lbToOz = true;
       // Try paren-ml: "(160ml)", "(160 ml)" — convert to oz (1ml ≈ 0.0338 oz)
       const mlM = !ozM && name.match(/\(?\s*(\d+(?:\.\d+)?)\s*ml\b/i);
       // Try inline-oz: "19 oz tin", "15 ounce can"
-      const inlineOzM = !ozM && !mlM && name.match(/\b(\d+(?:\.\d+)?)\s*(?:oz|ounce)s?\b/i);
+      // Use lookbehind to avoid eating the digits AFTER a decimal point
+      // (e.g. ".75 ounce" should NOT match as "75 ounce").
+      const inlineOzM = !multiPackM && !ozM && !mlM && name.match(/(?<![.\d])(\d+(?:\.\d+)?)\s*(?:oz|ounce)s?\b/i);
 
-      if (ozM) {
+      if (multiPackM) {
+        // Multi-pack: "2 x .75 ounce packages" → 1.5 oz total
+        const n = parseInt(multiPackM[1]);
+        const m = parseFloat(multiPackM[2]);
+        const u = multiPackM[3].toLowerCase();
+        let total = n * m;
+        if (u === 'lb' || u === 'pound') total *= 16;
+        else if (u === 'g' || u === 'gram') { /* keep as g handled below */ }
+        qty = Math.round(total * originalCount * 10) / 10;
+        unit = (u === 'g' || u === 'gram') ? 'g' : (u === 'ml' ? 'ml' : 'oz');
+        name = name.replace(multiPackM[0], '').replace(/\s+/g, ' ').trim();
+      } else if (ozM) {
         // Use UPPER bound when range present (group 2), else single value (group 1).
         // Per Rafi: paren-oz ranges represent the larger packaging size more often
         // than the smaller, so 12 oz from "(10-12 ounces)" is more accurate.
@@ -4111,7 +4126,7 @@ export function parseIngredient(raw: string): {
         name = name.replace(inlineOzM[0], '').replace(/\s+/g, ' ').trim();
       }
 
-      if (ozM || mlM || inlineOzM) {
+      if (multiPackM || ozM || mlM || inlineOzM) {
         // Strip leading container words and connector "or"/"of"
         const isJar     = unit === 'jar' || /\bjars?\b/i.test(name);
         const isBlock   = /\bblocks?\b/i.test(name);

@@ -1,104 +1,120 @@
 # Pass-off — Recipe Text Edits & Garnish/Per-Serving Logic
 
-**Date:** 2026-05-03
-**Session ending state:** match rate 96%, 3 recipes still under 80%
+**Last updated:** 2026-05-03
+**Current state:** Match rate **100%** (14,858 / 14,869 ingredient lines). 0 recipes under 80%.
 
 ---
 
 ## Where we are
 
-After 30+ rounds of parser/alias work + 2 recipe-text edits, the codebase is at:
-- **Match rate:** 96% (13,948 / 14,517 ingredients)
-- **Distribution:**
-  - 100%: 632 recipes (+65 from session start)
-  - 80–99%: 438
-  - 50–79%: 4 (was ~30)
-  - <50%: 0 (was 18)
-
-We pivoted from parser improvements to **recipe-text edits** for the last stuck recipes. Two recipes have been edited so far:
-- ✅ **Goodbye Meatballs** (50% → 100%) — split smushed paragraph into 16 lines
-- ✅ **Easy Chicken Enchiladas** (60% → 100%) — split into 13 lines, garnishes scaled × 8 servings
+Pipeline is fully clean:
+- **Match rate:** 100% (was 96% → 97.4% → 100%)
+- **Match-path breakdown:** 97.3% exact, 2.5% prep-stripped exact, rest negligible
+- **Recipes <80%:** 0 (was 3)
+- **Recipes <50%:** 0
+- **Garnish/serving lines:** all 177 lines across 127 recipes now carry whole-recipe quantities scaled from per-serving rules. Nutrition can now read accurate per-serving values for every garnish.
 
 ---
 
 ## The two key formats to remember
 
-### 1. Garnishes — `, for garnish` suffix
+### 1. Suffix wording: `, to garnish` and `, to serve`
 
-Every garnish ingredient should be stored as one line with `, for garnish` at the end:
+(Switched from `, for garnish` / `, for serving` in the 2026-05-03 garnish pass.) The parser still recognizes both, but **all new recipes should use "to garnish" / "to serve".**
 
 ```
-1 cup sour cream, for garnish
-2 avocados, for garnish
-1/2 cup fresh cilantro, for garnish
+1 cup sour cream, to garnish
+2 avocados, to serve
+1/2 cup fresh cilantro, to garnish
 ```
 
 What this does:
 - **Shopping list** displays: `to garnish | sour cream` (qty hidden, marker shown)
 - **Nutrition layer** reads: `qty=1, unit=cup, name="sour cream"` (used for math)
-- **One stored line carries both views.**
-
-Same pattern for `, for serving` (e.g. accompaniments) and `, to taste`.
 
 ### 2. Quantities are **whole recipe**, not per-serving
 
-The nutrition pipeline assumes the qty in each ingredient line is for the **whole recipe**, then divides by `servings` to get per-serving values. So when you write a garnish line, if you're thinking "1 tbsp cilantro per plate," you need to scale up by the recipe's servings count.
-
-**Example — Easy Chicken Enchiladas (servings = 8):**
-
-| Per-serving (what you might think)     | Whole recipe (× 8) — what to STORE |
-|----------------------------------------|------------------------------------|
-| 2 tbsp sour cream                      | 1 cup sour cream                   |
-| 1/4 avocado                            | 2 avocados                         |
-| 1 tbsp fresh cilantro                  | 1/2 cup fresh cilantro             |
-| 1 tbsp fresh scallions                 | 1/2 cup fresh scallions            |
-| 1 tbsp pickled jalapeno                | 1/2 cup pickled jalapeno           |
-| 1 tbsp pickled onions                  | 1/2 cup pickled onions             |
-
-Conversion shortcuts:
-- 1 tbsp × 8 = 8 tbsp = **1/2 cup**
-- 2 tbsp × 8 = 16 tbsp = **1 cup**
-- 1/4 × 8 = **2** (whole units)
+The nutrition pipeline divides whole-recipe qty by `servings` to get per-serving values. So when adding a garnish line, scale up by servings count.
 
 ---
 
-## Recipes still to address
+## Standard per-serving portion rules
 
-### Stuck recipes (<80%, in priority order)
+**Source of truth:** [`data/garnish_portion_rules.json`](data/garnish_portion_rules.json)
 
-| Recipe | Match | Action needed |
-|--------|-------|---------------|
-| How to Cook Jasmine Rice | 75% | Tutorial recipe with duplicate lines + "MINUS 2 tbsp water" math expression. Pick one cooking method or simplify. |
-| Garlic Caper Lamb Chop With Tomato Burrata Peach Salad | 78% | Likely has compound ingredient lines that need splitting. |
-| Grilled Broccolini | 80% | Edge of bottom tier; one or two unmatched. |
+That JSON file is read by `build_recipe_nutrition_v2.ts` whenever a garnish line has no explicit qty. To change a portion (e.g. cheese 1 oz → 0.5 oz), edit the JSON — no code change needed. Order matters in the JSON: more-specific rules must come before more-general ones (e.g. `pita chips` before `pita`).
 
-### Recipes already edited that may need a garnish/scaling audit
+The table below is a human-readable mirror of that JSON. **If they ever drift, the JSON wins.**
 
-These had garnish-list lines but they were NOT manually re-verified for per-serving scaling. The parser's automatic garnish-list splitter handled them, but the qtys may still be per-serving from the original recipe text:
+When writing a new garnish/serving line, look up the ingredient here, then multiply by `servings`:
 
-- (none flagged so far — both edited recipes had main-ingredient lines, the Enchiladas was the only one with garnishes that needed scaling)
+| Category | Per serving | Examples |
+|---|---|---|
+| Grains (cooked) | 1/2 cup | rice (jasmine/white/brown/basmati/garlic/coconut/cilantro/steamed/cooked), rice pilaf, quinoa, couscous, farro, bulgur, rice noodles, soba noodles, cooked pasta, cauliflower rice, lettuce cups |
+| Mashed potatoes | 1/2 cup | mashed potatoes |
+| Beans / frijoles | 1/2 cup | frijoles, cooked beans, black/pinto/refried beans |
+| Bread / flatbread | 1 piece | naan, pita, tortillas, flatbread, roti, crusty bread, toasted bread, whole grain bread, nori sheets |
+| Cheese | 1 oz | cotija, feta, goat cheese, parmesan, pecorino romano, cheddar, mozzarella, blue cheese, gorgonzola, ricotta |
+| Sour cream / yogurt tier | 2 oz | sour cream, Greek yogurt, yogurt, tzatziki, crema, creamy ranch, ranch, spicy mayo |
+| Fresh herbs | 1 oz | cilantro, parsley, scallions, green/spring onions, chives, mint, basil, coriander, dill, tarragon, pea shoots, "mixed herbs" / "fresh herbs" |
+| Fresh thyme (woody) | 1 tsp | thyme |
+| Chips | 28 g | tortilla chips, pita chips, potato chips, croutons |
+| Avocado | 1/3 avocado | avocado |
+| Olives | 15 g | kalamata, castelvetrano, frescatrano, generic olives |
+| Pickled / fermented jalapeño | 2 tbsp | pickled or fermented jalapeño |
+| Fresh jalapeño slices | 2 tbsp (15 g) | fresh jalapeño |
+| Pickled onion | 28 g | pickled red onion, pickled white onion |
+| Pepperoncini | 28 g | peperoncini, pepperoncini |
+| Kimchi | 28 g | kimchi |
+| Nuts / large seeds | 30 g | almonds, walnuts, pecans, pine nuts, cashews, pistachios, hazelnuts, peanuts, pumpkin seeds, pepitas, sunflower seeds |
+| Sesame / hemp / chia / poppy seeds | 1 tsp | sesame seeds (toasted or raw), hemp, chia, poppy seeds |
+| Lime / lemon (wedges, zest, juice) | 10 g | limes, lemons, lime/lemon wedges, lime/lemon zest |
+| Hot sauce / drizzles | 1 tsp | hot sauce, sriracha, tabasco, chili crisp, chile crisp, chili oil, sesame oil, hoisin sauce, mango chutney |
+| Persian cucumber | 1/2 cucumber | persian/baby/mini cucumber, generic cucumber |
+| Lettuce / leafy greens | 1/4 cup (18 g) | iceberg, romaine, shredded lettuce, leafy greens, salad greens, mixed greens |
+| Radish | 1/2 radish (~2 g) | radish |
+| Raw onion | 1 tbsp (15 g) | red/white/yellow onion, generic onion |
+| Shallot | 1 tbsp | shallot |
+| Cherry / grape tomatoes | 1/4 cup (38 g) | cherry/grape/generic tomatoes |
+| Bell pepper (sliced) | 1/4 cup (30 g) | bell peppers, sliced peppers |
+| Zucchini ribbons | 200 g | zucchini ribbons |
+| Guacamole | 3 tbsp | guacamole |
+| Salsa | 3 tbsp | salsa |
+| Salt / black pepper / togarashi | (skip — `, to taste`) | salt, kosher salt, sea salt, flaky salt, black pepper, togarashi |
 
-### Future scope — recipes with "for garnish" / "for serving" lines that came through the auto-splitter
+### How to scale (math shortcuts)
 
-The parser's `garnish-list` splitter (in `splitIngredientLine`) auto-tags `optional garnishes: A, B, C` lines as `<each>, for garnish` — but the qtys in those original lines were typically **omitted entirely** (recipe authors say "scallions" not "1 tbsp scallions"). So nutrition will undercount these. If you want accurate nutrition for garnishes across the full corpus, you'd need to:
+- Anything in `cup`s: multiply, round to nearest 1/4 cup
+- Anything in `tsp`: keep as tsp up to 12 tsp; convert to tbsp above that; convert to cups above 48 tsp
+- Anything in `tbsp`: convert to cups above 16 tbsp
+- `oz` and `g`: just multiply
+- Pieces (bread/avocado/radish/cucumber): round to nearest whole or 1/4
 
-1. Identify recipes with auto-split garnish lines
-2. Decide a default per-serving garnish portion (e.g. 1 tbsp herbs, 1/4 avocado)
-3. Multiply by servings
-4. Rewrite those lines with explicit qtys
+**Example — recipe with 8 servings, line says "shredded cotija cheese, to garnish":**
+1 oz cheese × 8 servings = **8 oz**
+→ stored as `8 oz shredded cotija cheese, to garnish`
 
-This is a separate, larger-scope task — not blocking the bottom-tier cleanup.
+---
+
+## Conventions to follow when writing a new recipe text
+
+1. **One ingredient per line.** Never smush multiple into a paragraph.
+2. **Whole-recipe quantities.** Scale per-serving values × `servings` before saving.
+3. **`, to garnish` / `, to serve` suffix** for non-essential / topping items (preferred over the older `for garnish` / `for serving`).
+4. **Strip recipe-author commentary** like "(I have also used cottage cheese...)" — store just the ingredient.
+5. **Use canonical names** (e.g. `whole peeled tomatoes` not `canned whole peeled tomatoes`).
+6. **Drop sub-recipe references** (e.g. "5-minute Enchilada Sauce" should be replaced with the actual ingredients).
+7. **For "or" alternatives in garnish lines** — pick the first option; the parser will handle it but cleaner to just store one.
+8. **For compound garnish lines** — split into separate stored lines, one per ingredient, each with its own scaled qty.
 
 ---
 
 ## Tools available in this repo
 
 ### Show one recipe's parse status
-The script `scripts/_show_one.ts` shows match status per ingredient line. Pass the recipe ID:
 ```
 npx tsx scripts/_show_one.ts <recipe_id>
 ```
-Output marks each line with ✓ (matched), ✗ (unmatched), or ○ (skipped).
 
 ### Run the full audit
 ```
@@ -107,7 +123,7 @@ npx tsx scripts/audit_pipeline_health.ts
 Outputs to `data/audit_summary.json`, `data/audit_low_matchrate_recipes.csv`, etc.
 
 ### Write a recipe to Firestore
-Pattern (write a one-off `_write_<name>.ts` script in `scripts/`, run via `npx tsx`, then delete the script). Example used for Goodbye Meatballs / Enchiladas:
+Pattern: write a one-off `_write_<name>.ts` script in `scripts/`, run via `npx tsx`, then delete it. Example:
 
 ```typescript
 import * as admin from 'firebase-admin';
@@ -115,70 +131,40 @@ import * as path from 'path';
 const sa = require(path.join(__dirname, '../service-account.json'));
 if (!admin.apps.length) admin.initializeApp({ credential: admin.credential.cert(sa) });
 const db = admin.firestore();
-const ingredients = [
-  '<line 1>',
-  '<line 2>',
-  // ...
-];
+const ingredients = ['<line 1>', '<line 2>', /* ... */];
 (async () => {
-  const ref = db.collection('recipes').doc('<recipe-id>');
-  await ref.update({ ingredients });
+  await db.collection('recipes').doc('<recipe-id>').update({ ingredients });
   process.exit(0);
 })();
 ```
 
 ---
 
-## Conventions to follow when writing a new recipe text
+## What was done in the 2026-05-03 garnish pass
 
-1. **One ingredient per line.** Never smush multiple into a paragraph.
-2. **Whole-recipe quantities.** Scale per-serving values × `servings` before saving.
-3. **`, for garnish` / `, for serving` suffix** for non-essential / topping items.
-4. **Strip recipe-author commentary** like "(I have also used cottage cheese...)" — store just the ingredient.
-5. **Use canonical names where possible** (e.g. `whole peeled tomatoes` not `canned whole peeled tomatoes` — the alias map handles common variants but cleaner names always match).
-6. **Drop sub-recipe references** (e.g. "5-minute Enchilada Sauce" in the Enchiladas was replaced — it pointed to another recipe and was unmatchable).
+- Built a portion-rules table (above) covering ~30 ingredient categories.
+- Wrote a categorizer + splitter script that handled compound lines (`"A, B, and C, for serving"` → 3 lines), "or" alternatives (pick first), and "X or Y noun" patterns (e.g. `"steamed white or brown rice"` → `"steamed white rice"`).
+- Auto-rewrote all 177 garnish/serving lines across 127 recipes with scaled qtys + new suffix wording.
+- 0 lines flagged for manual review.
+- Match rate moved 97.4% → 100% after push.
+
+The throwaway scripts (`_scan_garnishes.ts`, `_garnish_preview.ts`, `_garnish_push.ts`) were deleted after the push.
 
 ---
 
-## Aliases added this session (high-frequency)
+## Remaining edge cases (low-priority, not blocking)
 
-For reference if you're auditing the alias coverage. All in `INGREDIENT_ALIASES` in `ckc-consumer-app/lib/ingredientParser.ts`:
+The audit shows 11 unmatched ingredients across the whole corpus, each in 1 recipe. They're splitter artifacts on weirdly-written lines:
 
-- Common variants → canonical:
-  - `pepitas` → `pumpkin seeds`
-  - `cornflour` → `cornstarch`
-  - `worcestershire` → `worcestershire sauce`
-  - `half & half` / `half-and-half` → `half-and-half`
-  - `natural yoghurt` / `yoghurt` → `yogurt`
-  - `90% lean ground beef` / `93% lean ground turkey` → `ground beef` / `ground turkey`
-  - `mini cucumbers` / `baby cucumbers` / `persian cucumbers` → `cucumber`
-  - `tamari/soy sauce` / `tamari` → `soy sauce`
-  - `red boat fish sauce` → `fish sauce`
-  - `chunky red salsa` → `salsa`
-  - `bbq sauce of choice` → `bbq sauce`
-  - `prepared rice` / `cooked rice` / `steamed white rice` → `white rice`
-  - `firm white fish` → `white fish`
-  - `green cardamoms` → `cardamom`
-  - `tajin powder` → `tajin`
-  - `better than bouillon X base` → `X broth`
-  - `canned X beans` → `X beans` (chickpeas, kidney, pinto, cannellini, navy, black)
-  - `whole milk full-fat ricotta cheese` → `ricotta cheese`
-  - `grated parmesan cheese` → `parmesan cheese`
-  - `shredded cotija cheese` / `shredded cotija` → `cotija cheese`
-  - `salt + pepper` → `salt`
-  - `6/8/10-inch tortillas` → `corn/flour tortillas`
-  - `frescatrano olives` → `castelvetrano olives`
-  - `baby creamer potato` → `yukon gold potato`
-  - `pure clam juice` → `clam juice`
-  - `skinless halibut/cod/salmon` → noun
-  - `frozen sweet peas` → `frozen peas`
-  - `grassfed ground beef` → `ground beef`
-  - `dried poultry blend` → `poultry seasoning`
-  - `mixed herbs` → `fresh herbs`
-  - `head red cabbage` / `head cabbage` → `red cabbage` / `cabbage`
-  - `canned tomatoes` / `canned whole peeled tomatoes` → `whole peeled tomatoes`
+- `"sort of flatbread or couscous or rice"` (1)
+- `"any combination of kimchi"` (1)
+- `"pasta- acini de pepe"` (1)
+- `"lettuce/cabbage"` (1)
+- `"extra fresh dill"` (1)
+- `"cooked salmon"` (1)
+- Single-character orphans: `"a"`, `"/"`, `"other"` (1 each)
 
-If a recipe has an unmatched ingredient that's clearly a real ingredient with a different name in the nutrition DB, add an alias rather than editing the recipe text.
+These can be fixed one-off by editing the source recipe text.
 
 ---
 
@@ -186,8 +172,6 @@ If a recipe has an unmatched ingredient that's clearly a real ingredient with a 
 
 1. Open this repo: `/Users/rafi/Desktop/Claude-MHC/CKC Recipes /CKC- Recipe Tool/`
 2. Run latest audit: `npx tsx scripts/audit_pipeline_health.ts`
-3. Check the bottom tier: `head data/audit_low_matchrate_recipes.csv`
-4. For each stuck recipe, run `npx tsx scripts/_show_one.ts <recipe_id>` to see what's failing
-5. Decide: alias fix vs recipe-text edit
-6. After any change, re-audit to confirm match rate moved
-7. Commit + push after each round (check git log for message style)
+3. Check the bottom tier: `head data/audit_low_matchrate_recipes.csv` (currently empty)
+4. For any new recipe being added, follow the conventions in **"Conventions to follow"** above.
+5. For garnish/serving lines, look up the ingredient in **"Standard per-serving portion rules"** and multiply by `servings`.

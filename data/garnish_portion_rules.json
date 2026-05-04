@@ -1,0 +1,275 @@
+{
+  "_doc": "Per-serving portion rules for ingredients used in 'to garnish' / 'to serve' lines. Read by build_recipe_nutrition_v2.ts and any script that needs to scale garnishes from per-serving to whole-recipe quantities. ORDER MATTERS — the build script tests rules top-to-bottom and uses the first match, so MORE SPECIFIC PATTERNS must come BEFORE more general ones (e.g. 'pita chips' before 'pita').",
+  "_lastUpdated": "2026-05-04",
+  "_version": "1.0",
+  "_schema": {
+    "id": "stable identifier for the category (used in logs/UI)",
+    "displayName": "human-readable name for assumption-disclosure UI",
+    "perServing": { "qty": "number — qty per serving", "unit": "string — unit; '' for bare count (e.g. '1/3 avocado')" },
+    "note": "human-readable per-serving note for assumption-disclosure UI (e.g. '1 oz per serving')",
+    "regex": "regex string (case-insensitive). Tested against ingredient name. First match wins.",
+    "skip": "OPTIONAL — true for ingredients that should be treated as 'to taste' / zero-cal (salt, pepper, etc.)"
+  },
+  "rules": [
+    {
+      "id": "small_seeds",
+      "displayName": "seeds",
+      "perServing": { "qty": 1, "unit": "tsp" },
+      "note": "1 tsp per serving",
+      "regex": "\\b(sesame|hemp|chia|poppy)\\s+seeds?\\b"
+    },
+    {
+      "id": "grain_specific",
+      "displayName": "rice",
+      "perServing": { "qty": 0.5, "unit": "cup" },
+      "note": "1/2 cup cooked per serving",
+      "regex": "\\b(jasmine|white|brown|steamed|cooked|garlic|coconut|cilantro|basmati|prepared)\\s+rice\\b"
+    },
+    {
+      "id": "rice_pilaf",
+      "displayName": "rice pilaf",
+      "perServing": { "qty": 0.5, "unit": "cup" },
+      "note": "1/2 cup cooked per serving",
+      "regex": "\\brice\\s+pilaf\\b"
+    },
+    {
+      "id": "grain_other",
+      "displayName": "grain",
+      "perServing": { "qty": 0.5, "unit": "cup" },
+      "note": "1/2 cup cooked per serving",
+      "regex": "\\b(rice noodles|soba noodles|cooked pasta|cooked couscous|cooked noodles|cooked grains?|cauliflower rice)\\b"
+    },
+    {
+      "id": "grain_bare",
+      "displayName": "grain",
+      "perServing": { "qty": 0.5, "unit": "cup" },
+      "note": "1/2 cup cooked per serving",
+      "regex": "^(rice|quinoa|couscous|farro|bulgur|noodles|lettuce cups?)$"
+    },
+    {
+      "id": "mashed_potato",
+      "displayName": "mashed potatoes",
+      "perServing": { "qty": 0.5, "unit": "cup" },
+      "note": "1/2 cup per serving",
+      "regex": "\\bmashed potatoes?\\b"
+    },
+    {
+      "id": "beans",
+      "displayName": "beans",
+      "perServing": { "qty": 0.5, "unit": "cup" },
+      "note": "1/2 cup per serving",
+      "regex": "\\b(frijoles?( de olla)?|cooked beans|black beans|pinto beans|refried beans)\\b"
+    },
+    {
+      "id": "chips",
+      "displayName": "chips",
+      "perServing": { "qty": 28, "unit": "g" },
+      "note": "28 g per serving",
+      "regex": "\\b(tortilla chips|pita chips|potato chips|chips)\\b"
+    },
+    {
+      "id": "bread",
+      "displayName": "bread",
+      "perServing": { "qty": 1, "unit": "piece" },
+      "note": "1 piece per serving",
+      "regex": "\\b(naan|pita|pitas|tortillas?|flatbreads?|roti|crusty bread|toasted bread|whole grain bread|sprouted bread|bread)\\b"
+    },
+    {
+      "id": "nori",
+      "displayName": "nori",
+      "perServing": { "qty": 1, "unit": "piece" },
+      "note": "1 sheet per serving",
+      "regex": "\\bnori sheets?\\b"
+    },
+    {
+      "id": "sour_cream_tier",
+      "displayName": "sour cream / yogurt",
+      "perServing": { "qty": 2, "unit": "oz" },
+      "note": "2 oz per serving",
+      "regex": "\\b(sour cream|greek yogh?urt|yogh?urt|tzatziki|crema|creamy ranch|spicy mayo|ranch)\\b"
+    },
+    {
+      "id": "cheese",
+      "displayName": "cheese",
+      "perServing": { "qty": 1, "unit": "oz" },
+      "note": "1 oz per serving",
+      "regex": "\\b(cotija|feta|goat cheese|parmesan|pecorino( romano)?|cheddar|mozzarella|blue cheese|gorgonzola|ricotta|cheese)\\b"
+    },
+    {
+      "id": "woody_herb",
+      "displayName": "thyme",
+      "perServing": { "qty": 1, "unit": "tsp" },
+      "note": "1 tsp per serving",
+      "regex": "\\bthyme\\b"
+    },
+    {
+      "id": "herb",
+      "displayName": "fresh herbs",
+      "perServing": { "qty": 1, "unit": "oz" },
+      "note": "1 oz per serving",
+      "regex": "\\b(cilantro|parsley|scallions?|green onions?|spring onions?|chives|mint|basil|coriander|dill|tarragon|pea shoots)\\b"
+    },
+    {
+      "id": "croutons",
+      "displayName": "croutons",
+      "perServing": { "qty": 28, "unit": "g" },
+      "note": "28 g per serving",
+      "regex": "\\bcroutons\\b"
+    },
+    {
+      "id": "avocado",
+      "displayName": "avocado",
+      "perServing": { "qty": 0.333, "unit": "" },
+      "note": "1/3 avocado per serving",
+      "regex": "\\bavocados?\\b"
+    },
+    {
+      "id": "olives",
+      "displayName": "olives",
+      "perServing": { "qty": 15, "unit": "g" },
+      "note": "15 g per serving",
+      "regex": "\\b(kalamata olives|castelvetrano olives|frescatrano olives|olives)\\b"
+    },
+    {
+      "id": "pickled_jalapeno",
+      "displayName": "pickled jalapeño",
+      "perServing": { "qty": 2, "unit": "tbsp" },
+      "note": "2 tbsp per serving",
+      "regex": "\\b(pickled|fermented)\\s+jalape(n|ñ)os?\\b"
+    },
+    {
+      "id": "pickled_onion",
+      "displayName": "pickled onion",
+      "perServing": { "qty": 28, "unit": "g" },
+      "note": "28 g per serving",
+      "regex": "\\bpickled (red )?onions?\\b"
+    },
+    {
+      "id": "pepperoncini",
+      "displayName": "pepperoncini",
+      "perServing": { "qty": 28, "unit": "g" },
+      "note": "28 g per serving",
+      "regex": "\\bpe(p)?peroncini\\b"
+    },
+    {
+      "id": "kimchi",
+      "displayName": "kimchi",
+      "perServing": { "qty": 28, "unit": "g" },
+      "note": "28 g per serving",
+      "regex": "\\bkimchi\\b"
+    },
+    {
+      "id": "nuts",
+      "displayName": "nuts",
+      "perServing": { "qty": 30, "unit": "g" },
+      "note": "30 g per serving",
+      "regex": "\\b(almonds|walnuts|pecans|pine nuts|cashews|pistachios|hazelnuts|peanuts|pumpkin seeds|pepitas|sunflower seeds|nuts)\\b"
+    },
+    {
+      "id": "citrus",
+      "displayName": "lime / lemon",
+      "perServing": { "qty": 10, "unit": "g" },
+      "note": "10 g per serving",
+      "regex": "\\b(lime wedges?|lemon wedges?|limes?|lemons?|lime zest|lemon zest|zest)\\b"
+    },
+    {
+      "id": "hot_sauce",
+      "displayName": "hot sauce / drizzle",
+      "perServing": { "qty": 1, "unit": "tsp" },
+      "note": "1 tsp per serving",
+      "regex": "\\b(hot sauce|sriracha|tabasco|chili crisp|chile crisp|chili oil|sesame oil|hoisin sauce|mango chutney)\\b"
+    },
+    {
+      "id": "cucumber",
+      "displayName": "persian cucumber",
+      "perServing": { "qty": 0.5, "unit": "" },
+      "note": "1/2 cucumber per serving",
+      "regex": "\\b(persian|baby|mini)?\\s*cucumbers?\\b"
+    },
+    {
+      "id": "lettuce",
+      "displayName": "lettuce",
+      "perServing": { "qty": 0.25, "unit": "cup" },
+      "note": "1/4 cup per serving",
+      "regex": "\\b(iceberg|romaine|shredded)?\\s*lettuce\\b"
+    },
+    {
+      "id": "leafy_greens",
+      "displayName": "leafy greens",
+      "perServing": { "qty": 0.25, "unit": "cup" },
+      "note": "1/4 cup per serving",
+      "regex": "\\b(leafy greens|salad greens|seasonal greens|crisp salad greens|mixed greens|baby greens)\\b"
+    },
+    {
+      "id": "radish",
+      "displayName": "radish",
+      "perServing": { "qty": 0.5, "unit": "" },
+      "note": "1/2 radish per serving",
+      "regex": "\\bradish(es)?\\b"
+    },
+    {
+      "id": "onion",
+      "displayName": "onion",
+      "perServing": { "qty": 1, "unit": "tbsp" },
+      "note": "1 tbsp per serving",
+      "regex": "\\b(red onions?|white onions?|yellow onions?|onions?)\\b"
+    },
+    {
+      "id": "shallot",
+      "displayName": "shallot",
+      "perServing": { "qty": 1, "unit": "tbsp" },
+      "note": "1 tbsp per serving",
+      "regex": "\\bshallots?\\b"
+    },
+    {
+      "id": "tomatoes",
+      "displayName": "tomatoes",
+      "perServing": { "qty": 0.25, "unit": "cup" },
+      "note": "1/4 cup per serving",
+      "regex": "\\b(cherry tomatoes|grape tomatoes|tomatoes|tomato)\\b"
+    },
+    {
+      "id": "fresh_jalapeno",
+      "displayName": "fresh jalapeño",
+      "perServing": { "qty": 2, "unit": "tbsp" },
+      "note": "2 tbsp per serving",
+      "regex": "\\b(fresh jalape(n|ñ)os?|jalape(n|ñ)os?)\\b"
+    },
+    {
+      "id": "bell_pepper",
+      "displayName": "bell pepper",
+      "perServing": { "qty": 0.25, "unit": "cup" },
+      "note": "1/4 cup per serving",
+      "regex": "\\b(bell peppers?|sliced peppers?)\\b"
+    },
+    {
+      "id": "zucchini",
+      "displayName": "zucchini",
+      "perServing": { "qty": 200, "unit": "g" },
+      "note": "200 g per serving",
+      "regex": "\\b(zucchini ribbons?|zucchini)\\b"
+    },
+    {
+      "id": "guacamole",
+      "displayName": "guacamole",
+      "perServing": { "qty": 3, "unit": "tbsp" },
+      "note": "3 tbsp per serving",
+      "regex": "\\bguacamole\\b"
+    },
+    {
+      "id": "salsa",
+      "displayName": "salsa",
+      "perServing": { "qty": 3, "unit": "tbsp" },
+      "note": "3 tbsp per serving",
+      "regex": "\\bsalsa\\b"
+    },
+    {
+      "id": "salt_skip",
+      "displayName": "salt / pepper / to taste",
+      "perServing": { "qty": 0, "unit": "" },
+      "note": "to taste",
+      "regex": "\\b(flaky salt|kosher salt|sea salt|salt|black pepper|togarashi)\\b",
+      "skip": true
+    }
+  ]
+}

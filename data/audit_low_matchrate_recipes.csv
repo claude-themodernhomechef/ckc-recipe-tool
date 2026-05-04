@@ -1,152 +1,46 @@
 recipe_id,recipe_name,status,ingredients_counted,ingredients_matched,match_rate_pct,open_review_items
-chicken-zucchini-pasta,Chicken Zucchini Pasta,needs_review,5,4,80,0
-xSJv5beluVkDJVb96nJk,Roasted Root Vegetables with Jalapeno Yogurt Sauce,needs_review,11,9,82,0
-better-broccoli-casserole-recipe,Better Broccoli Casserole,needs_review,12,10,83,0
-tk2Zueudg6RvLZutzZXO,Quick and Easy Shrimp Tacos,needs_review,12,10,83,0
-french-chicken-au-poivre-sauce,Chicken au Poivre (Creamy Peppercorn Sauce),needs_review,7,6,86,0
-larb,Thai Larb Salad (Beef),needs_review,22,19,86,0
-recipes-grilled-summer-fish,"Grilled White Fish With a Tomato, Corn, and Basil Salad",needs_review,14,12,86,0
-sheet-pan-garlic-herb-salmon-lobster-veggies,Sheet Pan Garlic Herb Salmon Lobster and Veggies,needs_review,23,20,87,0
-coconut-chicken-curry,Coconut Chicken Curry with Crispy Shallot Basil Oil,needs_review,17,15,88,0
-four-ingredient-salmon-nuggets,Four Ingredient Salmon Nuggets,needs_review,8,7,88,0
-olive-chicken-skillet-with-lemon-shallot,Castelvetrano Olive Chicken Skillet,needs_review,8,7,88,0
-poblano-mushroom-texmex-enchiladas,Poblano and Mushroom TexMex Enchiladas,needs_review,16,14,88,0
-sausage-and-cabbage-skillet,Easy Chicken Sausage and Cabbage Skillet,needs_review,8,7,88,0
-tzatziki-sauce,Tzatziki Sauce,needs_review,8,7,88,0
-MIDFC4VMZfEUywEic81b,Keto Chicken and Broccoli Casserole,needs_review,9,8,89,0
-aDAyJ2hjK7hF42Hx8xQX,Chicken Enchilada Casserole,needs_review,9,8,89,0
-blogs-recipes-whole-roasted-fish-with-citrus-herbs,Whole Roasted Fish with Citrus & Herbs,needs_review,9,8,89,0
-crispy-garlic-parmesan-salmon,Parmesan Crusted Salmon,needs_review,9,8,89,0
-honey-mustard-salmon-in-foil,Honey Mustard Salmon in Foil,needs_review,9,8,89,0
-8odqH3JiSPeeiBcnYh6E,Golden Coconut Broth Bowl with Crispy Tofu,needs_review,21,19,90,0
-G57olNhOWLU59zsfyPC2,Creamy Roasted Cauliflower Soup Recipe,needs_review,10,9,90,0
-citrus-salmon-confit,Citrus Salmon Confit,needs_review,10,9,90,0
-recipes-spicy-salmon,Spicy Salmon by Ken Hom,needs_review,10,9,90,0
-salmon-with-lemon-dill-sauce,Baked Salmon with Creamy Lemon Dill Sauce,needs_review,10,9,90,0
-teriyaki-tofu-tempeh-casserole,Teriyaki Tofu and Tempeh Casserole,needs_review,10,9,90,0
-8-ingredient-zucchini-lasagna-gf,Zucchini Lasagna with Vegan Ricotta,needs_review,11,10,91,0
-baked-chicken-tenders-paleo-aip-nut-free-egg-free-dairy-free,Baked Chicken Tenders with Peachy Dipping Sauce,needs_review,11,10,91,0
-cQpD9e7GUKSuRTNz3naW,Sticky Grapefruit Miso Salmon,needs_review,11,10,91,0
-creamy-coconut-chicken-satay-meatballs,Creamy Coconut Chicken Satay Meatballs,needs_review,22,20,91,0
-green-coconut-curry-with-shrimp-paleo-whole30,Green Coconut Curry Soup with Shrimp,needs_review,11,10,91,0
-grilled-broccoli-crunch-salad,Grilled Broccoli Crunch Salad,needs_review,11,10,91,0
-grilled-sambal-chicken,Indonesian Grilled Sambal Chicken,needs_review,11,10,91,0
-jP60yy50nvIXQTvl8nCN,Halibut Florentine,needs_review,11,10,91,0
-jbi8uJ9dyskpHlR0vgRe,Italian Fish Soup,needs_review,11,10,91,0
-korean-bbq-steak-bowls-with-spicy-sesame-dressing,Korean BBQ Steak Bowls with Spicy Sesame Dressing,needs_review,11,10,91,0
-pages-recipes-slow-cooked-lamb-shoulder-fig-pistachio-salsa,Slow-Cooked Lamb Shoulder with Fig and Pistachio Salsa,needs_review,22,20,91,0
-pan-fried-pork-chops-with-pear-and-ginger-sauce-skillet-pork-chops,Cast Iron Pork Chops With Pears & Ginger,needs_review,11,10,91,0
-recipes-pan-seared-salmon-with-soy-mustard-glazehtml,Pan-Seared Salmon with Soy Mustard Glaze,needs_review,11,10,91,0
-salmon-pasta,Rich and Creamy Salmon Pasta,needs_review,11,10,91,0
-tzqzmEPcZil3eQbC6KNf,Tender and Tangy Brisket,needs_review,11,10,91,0
-V6W7JpcuRLJb6h6BVpbT,Cheesy White Bean Tomato Bake,needs_review,12,11,92,0
-chicken-alfredo-pasta,Chicken Alfredo Pasta,needs_review,13,12,92,0
-chicken-fajitas,Chicken Fajitas,needs_review,13,12,92,0
-creamy-garlic-dijon-salmon,Garlic Dijon Salmon,needs_review,13,12,92,0
+Lz8PUuNwzGk5t4ORcCGo,Homemade Pita Bread,needs_review,6,5,83,0
+creamy-pasta-salmon-asparagus,Creamy Salmon Pasta with Asparagus,needs_review,8,7,88,0
+JB42V5lODM4UIJCCy83k,Spiced Carrots,needs_review,9,8,89,0
+2014-03-12-chicken-with-preserved-lemons-green-olives,Chicken with Preserved Lemons and Green Olives,needs_review,12,11,92,0
 crustless-quiche-with-smoked-salmon,Crustless Quiche with Salmon,needs_review,13,12,92,0
-ewas7jlYdB9nlvnSXsTm,One Pan Coconut Chicken,needs_review,13,12,92,0
-fish-chowder-recipe,Fish Chowder,needs_review,13,12,92,0
-gorgonzola-chicken,Gorgonzola Chicken with Mushrooms & Sage,needs_review,13,12,92,0
-hIbTxi1PZnXtSSn6FCYe,Butternut Squash Mac and Cheese,needs_review,12,11,92,0
-k5gw3kpiqtmG5I796WUE,Vegan Creamy Beany Cavolo Nero Pasta,needs_review,13,12,92,0
-mediterranean-tuna-salad,Mediterranean Tuna Salad,needs_review,13,12,92,0
-perfect-chicken-scampi,Perfect Chicken Scampi,needs_review,12,11,92,0
-recipes-quick-lamb-ragu,Quick Lamb Ragù,needs_review,12,11,92,0
-recipes-turkey-meatballshtml,Turkey Meatballs,needs_review,13,12,92,0
-spaghetti-squash-boats-turkey-sausage-paleo-whole30,Turkey Sausage Spaghetti Squash Boats,needs_review,13,12,92,0
-5cs0zaZZ0ocPRyq2W582,Butternut Squash Sausage and Tortellini Soup,needs_review,15,14,93,0
-GK2Lwz1nEMoxzYMx0raq,"Lemony Greek Chicken, Spinach and Potato Stew",needs_review,14,13,93,0
-b0yWUoctG16Qu1aIjPj3,Cheesy Italian Meatballs,needs_review,14,13,93,0
-best-vegan-lasagna-recipe,Vegan Lasagna,needs_review,15,14,93,0
-creamy-jamaican-rasta-pasta,Creamy Jamaican Rasta Pasta,needs_review,15,14,93,0
-fCyCGC9OGNd4Gf7k0TRr,Sheet Pan Chicken Fajitas,needs_review,14,13,93,0
-green-onion-shrimp-stir-fry,Ginger Shrimp Stir-Fry with Garlic Bok Choy,needs_review,15,14,93,0
-high-protein-easy-salmon-melts,High-Protein Salmon Melts,needs_review,14,13,93,0
-osvmPWJY7SKDHPDNtP0w,Persian Chopped Salad,needs_review,28,26,93,0
-pages-recipes-blistered-green-bean-casserole-parmesan-rosemary,Blistered Green Bean Casserole with Parmesan and Rosemary,needs_review,14,13,93,0
-potato-and-kale-soup,Smoky Potato Kale Soup,needs_review,14,13,93,0
-recipe-thai-coconut-curry-dumpling-soup,Thai Coconut Curry Dumpling Soup (Chicken),needs_review,14,13,93,0
-recipes-everything-salmon-green-pesto-chickpeas,Everything Salmon and Green Pesto Chickpeas,needs_review,14,13,93,0
-salmon-fajitas,Salmon Fajitas,needs_review,15,14,93,0
-2cCrQAUp7sLNVil2cekd,Green Minestrone Soup,needs_review,17,16,94,0
-8JnhfKajq5huU8ESJyZl,Beef Shawarma,needs_review,18,17,94,0
-9qgrZmIZkKyPEg4KfFBl,Spinach Artichoke Dip,needs_review,16,15,94,0
-APXRSgd12sIMlCVkX8bP,Coconut and Lemongrass Steak Skewers,needs_review,17,16,94,0
-H4Iuhbn5VN3lo0Wuq7TO,Greek Chicken Meatball Bowl,needs_review,18,17,94,0
-SKFRFLKyQ8Gk4GEWE3SK,Greek Shrimp Grain Bowl,needs_review,16,15,94,0
-TKa7OZKFaqRU5B3b6g8D,Chile Verde Pork Ribs,needs_review,16,15,94,0
-YDNsxVFu2OQ4sg7lau48,Creamy Chicken Stew with Hearty Vegetables,needs_review,17,16,94,0
-bbq-chicken-bowls,BBQ Chicken Bowls with Grilled Veggies & Sweet Potatoes,needs_review,16,15,94,0
-beef-broccoli-stir-fry-whole30-paleo,Paleo Beef and Broccoli Stir Fry,needs_review,17,16,94,0
-bourbon-sweet-potato-casserole-sweet-n-savory-bacon-pecans,Bourbon Sweet Potato Casserole Sweet N Savory Bacon Pecans,needs_review,16,15,94,0
-broiled-sheet-pan-salmon-and-veggies,Broiled Sheet Pan Salmon and Veggies with Lemon Caper Sauce,needs_review,18,17,94,0
-chicken-shawarma-bowl,Chicken Shawarma Bowl,needs_review,18,17,94,0
-coconut-braised-beef,Coconut Braised Beef,needs_review,16,15,94,0
-cozy-beef-autumnal-stew,Cozy Beef Stew,needs_review,18,17,94,0
-d2NDuBgKDxgVIHig7LC9,Southwestern Kale Power Salad,needs_review,18,17,94,0
-garlic-butter-coconut-salmon,Baked One Pan Garlic Butter Coconut Salmon,needs_review,17,16,94,0
-greek-baked-orzo,Greek Baked Orzo,needs_review,17,16,94,0
-grilled-beef-shawarma,Beef Shawarma Recipe,needs_review,18,17,94,0
-jDx4MKAkkhiSALd6a5z7,Chili Lime Vegan Shrimp Bowl,needs_review,18,17,94,0
-loBfAEW264zWtgX2DTLA,Roasted Carrots Recipe With Farro Chickpeas,needs_review,17,16,94,0
-phyllo-topped-ground-turkey-casserole,Phyllo Topped Ground Turkey Casserole,needs_review,18,17,94,0
-recipes-1020763-vegan-caesar-salad-with-crisp-chickpeas,Vegan Caesar Salad With Crisp Chickpeas,needs_review,16,15,94,0
-recipes-1857-thomas-kellers-butternut-squash-soup-with-brown-butter,Butternut Squash Soup,needs_review,17,16,94,0
-shrimp-burrito-bowls,Salsa Verde Shrimp Burrito Bowls,needs_review,18,17,94,0
-skillet-tomato-cheddar-chicken-pot-pie,Skillet Tomato Cheddar Chicken Pot Pie,needs_review,17,16,94,0
-sun-dried-tomato-chicken-bowls,Sheet Pan Sun-Dried Tomato Chicken Bowls,needs_review,17,16,94,0
-warm-comforting-lasagna-soup,Chicken Sausage Lasagna Soup,needs_review,17,16,94,0
-zDofwb88VJ9IXfYGkJHz,Turkey Pumpkin Chili,needs_review,16,15,94,0
-2024-06-08-pesto-pasta-salad-with-grilled-chicken-asparagus,Pesto Pasta Salad with Grilled Chicken & Asparagus,needs_review,19,18,95,0
-XIKJfzB6KaInQPCwXDkJ,Grilled Peach and Quinoa Salad,needs_review,20,19,95,0
-blogs-eyeswoon-unplugged-eyeswoon-unplugged-pork-shoulder-ragu,Pork Shoulder Ragu,needs_review,21,20,95,0
-chicken-kurma-recipe-chicken-curry,Chicken Kurma (South Indian),needs_review,22,21,95,0
+recipes-pan-seared-salmon-with-peas-chanterelles-and-dill-chive-sauce,"Pan-Seared Salmon with Peas, Chanterelles and Dill-Chive Sauce",needs_review,14,13,93,0
+cQpD9e7GUKSuRTNz3naW,Sticky Grapefruit Miso Salmon,needs_review,16,15,94,0
 coconut-rice,Coconut Curried Rice Bowl,needs_review,21,20,95,0
-dutepurNJPHWdqyboY4H,Bali Bowls with Peanut Tofu,needs_review,20,19,95,0
-gochujang-shrimp-tacos,Weeknight Gochujang Shrimp Tacos,needs_review,19,18,95,0
 kekxJgUL0qTC6msTuguD,BBQ Salmon Tacos,needs_review,20,19,95,0
-pages-recipes-braised-lamb-shoulder-fennel-orange,Braised Lamb Shoulder with Fennel and Orange,needs_review,20,19,95,0
-paleo-beef-stir-fry-with-veggies-whole30-keto,Paleo Beef Stir Fry with Veggies,needs_review,20,19,95,0
-pollo-a-la-brasa-peruvian-chicken,Pollo a la Brasa (Peruvian-style Roasted Chicken),needs_review,22,21,95,0
-steak-and-caramelized-onion-salad,Steak and Caramelized Onion Salad,needs_review,21,20,95,0
-t31WwRM8Hxp22yViJe4c,Thai Butternut Quinoa Salad Gluten Free,needs_review,20,19,95,0
-DB5nRM690pKjumokuM84,Blackened Fish Tacos,needs_review,24,23,96,0
-malai-chicken-recipe,Malai Chicken (Creamy White Chicken Curry),needs_review,26,25,96,0
-quick-chicken-pho,Quick Chicken Pho,needs_review,25,24,96,0
-recipes-beef-broccoli,Authentic Beef and Broccoli,needs_review,26,25,96,0
-tandoori-salmon-bowls,Tandoori Salmon Bowls,needs_review,24,23,96,0
+TlFzaPFUulKG7g2jXHD5,Cuban Mojo Bowl,needs_review,27,26,96,0
+italian-wedding-soup,Italian Wedding Soup,needs_review,24,23,96,0
 0DYjHr8SpRhISppq03MB,Spicy Zhoug Sauce,approved,9,9,100,0
 0J5EouhsqixS0bwNCQpG,Peperoncino-Feta Turkey Meatballs,approved,19,19,100,0
-0LRkhK64aTny5ygHpZr3,Citrus Glazed Pork Chops with Gingery Bok Choy,approved,10,10,100,0
+0LRkhK64aTny5ygHpZr3,Citrus Glazed Pork Chops with Gingery Bok Choy,approved,11,11,100,0
 0V1nI8Ac7Or0vjqfVGv3,Potato and Carrot Mash,approved,4,4,100,0
 0XFFe7iOgmPHOBzU0yLh,"Chicken With Tomatoes, Pancetta and Mozzarella",approved,11,11,100,0
 0oQAts0rnkglkZdZ5SCJ,Beef and Broccoli,approved,12,12,100,0
 0q7fx35evMTTr8VhyVgi,Grilled Salmon with Acorn Squash and Herbed Butter,approved,12,12,100,0
-0whIusZsMGeyDLJzmpnY,Baked Chicken Thighs,approved,12,12,100,0
+0whIusZsMGeyDLJzmpnY,Baked Chicken Thighs,approved,18,18,100,0
 0zmPQSzevbvXznpELs21,Mashed Purple Sweet Potato,approved,3,3,100,0
-1-pot-everyday-lentil-soup,1-Pot Vegan Lentil Soup,approved,13,13,100,0
+1-pot-everyday-lentil-soup,1-Pot Vegan Lentil Soup,approved,15,15,100,0
 1-pot-golden-curry-lentil-soup,1-Pot Golden Curry Lentil Soup,approved,14,14,100,0
 1-pot-lentil-dal,1-Pot Lentil Green Curry,approved,16,16,100,0
 10-minute-crazy-good-italian-chopped-salad,10 Minute Crazy Good Italian Chopped Salad,approved,15,15,100,0
 149-moms-oven-poached-salmon,Lemon Dill Baked Salmon,approved,6,6,100,0
-15-minute-ground-beef-stir-fry,15-Minute Ground Beef Stir Fry,approved,18,18,100,0
-15-minute-pad-thai,Tofu Pad Thai,approved,12,12,100,0
-1Lqkj42P66K2zy4uMncB,Chicken Pozole Verde,approved,19,19,100,0
-1RsQWRKk2fh71b6UwvlQ,Spicy Sesame Butter Chicken,needs_review,20,20,100,0
-1Ysypi3acarqsJcvU3xL,Chicken Fajitas,needs_review,18,18,100,0
+15-minute-ground-beef-stir-fry,15-Minute Ground Beef Stir Fry,approved,19,19,100,0
+15-minute-pad-thai,Tofu Pad Thai,approved,13,13,100,0
+1Lqkj42P66K2zy4uMncB,Chicken Pozole Verde,approved,21,21,100,0
+1RsQWRKk2fh71b6UwvlQ,Spicy Sesame Butter Chicken,needs_review,21,21,100,0
+1Ysypi3acarqsJcvU3xL,Chicken Fajitas,needs_review,19,19,100,0
 2013-01-14-an-oldie-but-a-goodie-honey-baked-chicken-legs,Honey Mustard Baked Chicken Legs,needs_review,7,7,100,0
-2013-10-24-ina-gartens-mustard-roasted-chicken,Ina Garten's Mustard-Roasted Chicken,needs_review,9,9,100,0
-2014-03-12-chicken-with-preserved-lemons-green-olives,Chicken with Preserved Lemons and Green Olives,needs_review,10,10,100,0
+2013-10-24-ina-gartens-mustard-roasted-chicken,Ina Garten's Mustard-Roasted Chicken,needs_review,10,10,100,0
 2014-11-18-genius-chicken-lemon-canal-house,Simple Crispy Chicken Thighs,needs_review,4,4,100,0
-2016-07-14-fish-sauce-nicoise,Pan-Seared Cod with Sauce Niçoise,needs_review,11,11,100,0
+2016-07-14-fish-sauce-nicoise,Pan-Seared Cod with Sauce Niçoise,needs_review,10,10,100,0
 2018-02-01-roast-chicken-and-shallots-with-mustard-white-wine-and-thyme,"One-Pan Roast Chicken with Shallots, Mustard and White Wine",needs_review,7,7,100,0
 2018-03-sheet-pan-salmon-brussels,Sheet Pan Salmon with Honey Garlic & Brussels Sprouts,needs_review,8,8,100,0
 2018-07-09-creamy-one-pot-pasta-with-smoked-salmon-and-asparagus,Creamy One-Pot Pasta With Smoked Salmon and Asparagus,needs_review,12,12,100,0
 2019-02-06-mushroom-beet-bolognese-vegan-recipe,Mushroom and Beet Bolognese,needs_review,16,16,100,0
-2019-10-sweet-potato-chowder,Sweet Potato Chowder,needs_review,14,14,100,0
+2019-10-sweet-potato-chowder,Sweet Potato Chowder,needs_review,15,15,100,0
 2020-04-23-simple-salmon-dinner-with-roasted-carrots,Simple Salmon Dinner with Roasted Carrots,needs_review,12,12,100,0
 2020-05-18-garlicky-grilled-chicken-with-paprika-butter,Garlicky Grilled Chicken with Paprika Butter,needs_review,11,11,100,0
-2020-12-20-pan-roasted-shrimp-with-paprika-lemon-butter-sauce,Pan-Roasted Shrimp with Paprika Lemon Butter Sauce,needs_review,14,14,100,0
+2020-12-20-pan-roasted-shrimp-with-paprika-lemon-butter-sauce,Pan-Roasted Shrimp with Paprika Lemon Butter Sauce,needs_review,13,13,100,0
 2021-03-08-pan-roasted-ribeye-with-parsley-butter,Pan-Roasted Ribeye with Parsley Butter,needs_review,10,10,100,0
 2021-05-03-sheet-pan-salmon-with-moroccan-apricot-glaze,Sheet Pan Salmon with Moroccan Apricot Glaze,needs_review,9,9,100,0
 2022-01-05-vegan-creamy-cauliflower-sweet-potato-chowder,Creamy Cauliflower & Sweet Potato Chowder,needs_review,24,24,100,0
@@ -159,79 +53,87 @@ tandoori-salmon-bowls,Tandoori Salmon Bowls,needs_review,24,23,96,0
 2023-08-16-smoky-vegan-corn-chowder-with-potatoes,Smoky Vegan Corn Chowder with Potatoes,needs_review,16,16,100,0
 2023-08-21-slow-roasted-tomato-and-chickpea-pasta,Slow Roasted Tomato and Chickpea Pasta,needs_review,11,11,100,0
 2023-09-13-spicy-maple-tofu-bowls-golden-garlic-rice,Maple Tofu Bowl with Golden Rice,needs_review,16,16,100,0
-2024-05-crispy-bruschetta-chicken,Crispy Bruschetta Chicken,needs_review,12,12,100,0
+2024-05-crispy-bruschetta-chicken,Crispy Bruschetta Chicken,needs_review,14,14,100,0
+2024-06-08-pesto-pasta-salad-with-grilled-chicken-asparagus,Pesto Pasta Salad with Grilled Chicken & Asparagus,needs_review,18,18,100,0
 2025-03-28-spicy-maple-glazed-chicken-with-cheddar-polenta,Spicy Maple Glazed Chicken with Cheddar Polenta,needs_review,17,17,100,0
 24xp2T4uwX3fLhhNOBuE,Crunchy Brussels Sprout Salad,needs_review,18,18,100,0
-25-minute-kung-pao-chicken,Kung Pao Chicken,needs_review,16,16,100,0
+25-minute-kung-pao-chicken,Kung Pao Chicken,needs_review,17,17,100,0
 2D35EhnYfQkSXgdqozTt,Easy Refrigerator Pickles Recipe,needs_review,10,10,100,0
 2FM6MyeEHJTBkXdFqy45,Scalloped Potatoes Recipe,needs_review,12,12,100,0
 2RTxTV52wYdfikur0ENs,Marry Me Chicken Pasta,needs_review,14,14,100,0
+2cCrQAUp7sLNVil2cekd,Green Minestrone Soup,needs_review,16,16,100,0
 2eFlgjAW2IDqgKKZY2jt,Stewed Lentils,needs_review,20,20,100,0
 2fa1Ac9sVKhEYl4zmCHr,Copycat Erewhon Cabbage Slaw,needs_review,10,10,100,0
-2kGOR4OqUrjAKi7EtqHz,Fennel Apple Salad,needs_review,12,12,100,0
+2kGOR4OqUrjAKi7EtqHz,Fennel Apple Salad,needs_review,13,13,100,0
 2ndhEfd8JNZUyk9fTxvG,Quick Aioli,needs_review,2,2,100,0
 2pcbbJ0uf6LO8EBySczS,Fettuccine with Smoked Salmon and Dill Cream Sauce,needs_review,10,10,100,0
 2w28a6fg4VflnRPtrYcA,Air Fryer Baked Sweet Potato,needs_review,1,1,100,0
 30-minute-garlic-ginger-salmon-dinner,30-Minute Garlic-Ginger Salmon Dinner,needs_review,12,12,100,0
 30-minute-mozzarella-chicken,30 Minute Mozzarella Chicken in Tomato Sauce,needs_review,13,13,100,0
-32IrdCyyUADxjnahjUEV,Salmon Burgers,needs_review,18,18,100,0
+32IrdCyyUADxjnahjUEV,Salmon Burgers,needs_review,17,17,100,0
 32yT7qRGVEujMFtcXwoZ,Dijon Roasted Vegetables,needs_review,11,11,100,0
 3N7Iq3VRBlgBR8VgFL1G,Guacamole,needs_review,8,8,100,0
 3UClvsLLEJy6e5pLl4CI,Easy Air Fryer Broccoli,needs_review,3,3,100,1
 3XeOn1mKgskygFOxG5KS,Lemony Chicken Soup With Fennel and Dill,needs_review,15,15,100,0
 3Z7DJda4nxCe5ma88X1q,Parmesan Herb Roasted Acorn Squash,needs_review,8,8,100,0
 3sBasFITU2KWQZHaFd4c,Greek Lemon Soup,needs_review,13,13,100,0
-3zsm5VhJUmRqbQtRoGMS,Glazed Pork Rice Bowls,needs_review,14,14,100,0
+3zsm5VhJUmRqbQtRoGMS,Glazed Pork Rice Bowls,needs_review,15,15,100,0
 42V4svWWuiglVnacrK2l,Soy Sauce Fried Rice,needs_review,8,8,100,0
 47owkoJcdwyclnwwNrhk,How To Make Caesar Salad,needs_review,18,18,100,0
-4FcTH8Qj1xzFH4zSfPzk,Street Corn Chicken Enchiladas,needs_review,20,20,100,0
+4FcTH8Qj1xzFH4zSfPzk,Street Corn Chicken Enchiladas,needs_review,19,19,100,0
 4SamqXyoAgUjnPSKkP0V,Mason Jar Salad,needs_review,10,10,100,0
 4TXl1zTCK1uoZv0K0muJ,Roasted Maple Ginger Kabocha Squash,needs_review,6,6,100,0
 4V59axXu1Y9GaJiUzSOS,Grilled Broccolini,needs_review,5,5,100,0
-4VvbLdH9jtwy7I26J9lj,Chili Mango Zesty Quinoa Salad,needs_review,10,10,100,0
+4VvbLdH9jtwy7I26J9lj,Chili Mango Zesty Quinoa Salad,needs_review,9,9,100,0
 4dseo7DdJuv5wlpgyFZs,Balsamic-Red Wine Roasted Chicken Thighs and Vegetables,needs_review,11,11,100,0
-59efcJLQDifyVRfBq9Je,Curry Roasted Cauliflower Sweet Potato Salad,needs_review,20,20,100,0
-5ArmVAPPAJDwnI4P2tCv,Vegetable Low Mein,needs_review,17,17,100,0
+59efcJLQDifyVRfBq9Je,Curry Roasted Cauliflower Sweet Potato Salad,needs_review,21,21,100,0
+5ArmVAPPAJDwnI4P2tCv,Vegetable Low Mein,needs_review,15,15,100,0
 5BeZmG0gsGsJdLcrinle,Osso Bucco,needs_review,18,18,100,0
 5FERA93fDPNPXq9LhJe7,Mexican Instant Pot Pinto Beans,needs_review,19,19,100,0
+5cs0zaZZ0ocPRyq2W582,Butternut Squash Sausage and Tortellini Soup,needs_review,17,17,100,0
 5j8qzT30GDgaB3FNA6DG,Mediterranean Tuna Salad,needs_review,16,16,100,0
-5jw3dmY8vO7JdyqLDpOc,Italian Wild Rice,needs_review,7,7,100,0
+5jw3dmY8vO7JdyqLDpOc,Italian Wild Rice,needs_review,8,8,100,0
 5twRgGX6CBwTYI0d56Th,Creamy Polenta,needs_review,3,3,100,0
 604QcPBtmGeBToRgtVGm,Papa a la Huancaina,needs_review,13,13,100,0
 65P8JPEunxhVgFV6JPHC,Asian Cucumber Salad,needs_review,9,9,100,0
 6PXj0FqlBjufSl67CLBf,Edamame,needs_review,3,3,100,0
 6XFPymuTKCk45djsG386,Green Chicken Chili Soup,needs_review,16,16,100,0
 6a5wsEGhsz8D4FXnllsR,Authentic Chicken Stir Fry,needs_review,26,26,100,0
-6cgQeMFtwjDDzIbdc9Py,Parmesan and Herb Orzo,needs_review,6,6,100,0
+6cgQeMFtwjDDzIbdc9Py,Parmesan and Herb Orzo,needs_review,7,7,100,0
 6qxrLm0j2o9PEVBmk4Wc,Parmesan Roasted Cauliflower,needs_review,9,9,100,0
 6ylxQbPzISsNWCIzsmaY,Homemade Scalloped Potatoes with Cheese,needs_review,12,12,100,0
 7R8bg1XRZsGAyOn36b9f,Red Enchilada Sauce,needs_review,7,7,100,0
 7ofDTj0fFsUkueEIjmyW,Crispy Sweet Potato Fries,needs_review,6,6,100,0
 7rVgYpu2kOuGbA42dNud,Cacio E Peppe White Bean Soup,needs_review,12,12,100,0
+8-ingredient-zucchini-lasagna-gf,Zucchini Lasagna with Vegan Ricotta,needs_review,11,11,100,0
 82p4yG5jTQ6yuWiMfEj4,Cilantro Lime Rice (Chipotle Copycat),needs_review,6,6,100,0
 84Lz3tBqevcjtcrtRpUL,Chinese 4-Ingredient Fried Cabbage,needs_review,6,6,100,0
 8BocSP8rTcVcCs1sT0nt,Apple Cider Braised Pork Shoulder,needs_review,13,13,100,0
 8FGlsn3MdRmZfrAAGUit,Halibut with Citrus and Smashed Olives,needs_review,10,10,100,0
+8JnhfKajq5huU8ESJyZl,Beef Shawarma,needs_review,17,17,100,0
 8MFjQOSjqdwiEyEcs2bF,Roasted Broccoli Salad,needs_review,13,13,100,0
 8Ov9k0ScuCxTO2YEU1Dx,Tahdig Rice,needs_review,6,6,100,0
 8QPEVSBKpsMrZWwVHgrX,Honey Garlic Chicken,needs_review,14,14,100,0
-8Um7RfEOSz7Dvy01XRx2,Autumn Harvest Honeycrisp Apple And Feta Salad,needs_review,20,20,100,0
+8Um7RfEOSz7Dvy01XRx2,Autumn Harvest Honeycrisp Apple And Feta Salad,needs_review,19,19,100,0
 8WE8yNHkozzrFV9LWIJg,Moroccan Halibut,needs_review,15,15,100,0
 8inXTYmXEgpOkSmm2rt0,Roasted Spaghetti Squash,needs_review,3,3,100,0
+8odqH3JiSPeeiBcnYh6E,Golden Coconut Broth Bowl with Crispy Tofu,needs_review,18,18,100,0
 97FGxl8pyNohYfVKedAf,Roasted Brussels Sprouts with Balsamic Vinegar and Honey,needs_review,6,6,100,0
-9CH1EeVM9yEGzGQDWEWI,Instant Pot Refried Beans,needs_review,8,8,100,0
-9DPwRSd2vhMYfhdjWKth,Salmon Garlic Chili Bowl,needs_review,17,17,100,0
-9JiQG5J6xr4nTP01gOQz,Creamy Gochujang Potato Salad,needs_review,8,8,100,0
+9CH1EeVM9yEGzGQDWEWI,Instant Pot Refried Beans,needs_review,9,9,100,0
+9DPwRSd2vhMYfhdjWKth,Salmon Garlic Chili Bowl,needs_review,18,18,100,0
+9JiQG5J6xr4nTP01gOQz,Creamy Gochujang Potato Salad,needs_review,7,7,100,0
 9LppJSc4a2ZbWHSaUDyw,Chicken Taco Bowl,needs_review,19,19,100,0
 9SxUbOeDwQhdm4lTH3y3,Garlic Herb Mashed Potatoes,needs_review,10,10,100,0
-9a8tZhMNWSRYLXbaw8v8,Dijon and Cognac Beef Stew,needs_review,14,14,100,0
+9a8tZhMNWSRYLXbaw8v8,Dijon and Cognac Beef Stew,needs_review,13,13,100,0
 9eCc8bvAHJbEaY3UFmAY,How to Grill Salmon,needs_review,1,1,100,0
 9ezL2S7skLI5sH8lZDJH,Spicy Southern Shrimp,needs_review,14,14,100,0
-9fDfEMPh0U2HCWiU2JFI,Turmeric Black Pepper Chicken,needs_review,9,9,100,0
+9fDfEMPh0U2HCWiU2JFI,Turmeric Black Pepper Chicken,needs_review,10,10,100,0
 9nrYBGhK1ywQX7Z5loez,Pomegranate Chicken,needs_review,10,10,100,0
+9qgrZmIZkKyPEg4KfFBl,Spinach Artichoke Dip,needs_review,17,17,100,0
 AEPjJvQcSOXUImY6ltqZ,Curried Rice,needs_review,17,17,100,0
 AHvrcmHI9J5hOyAQjhGr,Buffalo Chicken Pasta,needs_review,15,15,100,0
-AQF2bHCfBo4kPHxrb7x8,Salmon Burgers,needs_review,18,18,100,0
+APXRSgd12sIMlCVkX8bP,Coconut and Lemongrass Steak Skewers,needs_review,16,16,100,0
+AQF2bHCfBo4kPHxrb7x8,Salmon Burgers,needs_review,19,19,100,0
 ARBvD0ofhiWgfLLCeKRx,Hot Honey Salmon Bowl,needs_review,21,21,100,0
 AbTkhJy3lf3o7P1tRmAu,Chickpea Mediterranean Salad,needs_review,7,7,100,0
 AeEXqIyTerPRDI2FZoCK,Broccoli Crunch Salad,needs_review,14,14,100,0
@@ -242,66 +144,69 @@ B5JS7rbmSLeIAgvPG5uF,Moroccan Cauliflower With Tahini Honey 5 Ingredients,needs_
 BM1TtCA2VFdBm9hMjldV,Cauliflower Rice Blend,needs_review,6,6,100,0
 BldNxkQmcwFe0H9FhFf2,Quinoa Southwest Salad,needs_review,22,22,100,0
 BwfHxK0YvdsIh0Whdz3I,Honey Lemon Chicken,needs_review,14,14,100,0
-C4y3NeM0R4nNAaEetKPi,Persian Kebab (Koobideh),needs_review,12,12,100,0
+C4y3NeM0R4nNAaEetKPi,Persian Kebab (Koobideh),needs_review,14,14,100,0
 CDtdopJ9lckWJpWbVXBu,Pan con Tomate,needs_review,6,6,100,0
 CWL9NFHzftsPqWxLCXfk,Healthy Chicken Salad Recipe,needs_review,12,12,100,0
-CkML2bKo3jwvEE3A74OE,Cauliflower Salad,needs_review,9,9,100,0
+CkML2bKo3jwvEE3A74OE,Cauliflower Salad,needs_review,10,10,100,0
 CytlQaZbrOsqZdTs6UyU,Cottage Pie,needs_review,22,22,100,0
-DAo8R5SqWWX5HcWQdYbJ,Black Rice Pilaf,needs_review,14,14,100,0
+DAo8R5SqWWX5HcWQdYbJ,Black Rice Pilaf,needs_review,15,15,100,0
+DB5nRM690pKjumokuM84,Blackened Fish Tacos,needs_review,26,26,100,0
 DJs6N2XEej50w5386Xdt,Easy Fried Cabbage,needs_review,6,6,100,0
 DYfqrixJ2O696tuMmLn3,Cheesey Broccoli White Rice,needs_review,10,10,100,0
 DbFql7azPz06cFeWoW0V,Fattoush Salad,needs_review,17,17,100,0
-DmCwDeJEkCI865F0WhbF,"Rosemary, Potato, Cauliflower Soup",needs_review,14,14,100,0
+DmCwDeJEkCI865F0WhbF,"Rosemary, Potato, Cauliflower Soup",needs_review,15,15,100,0
 DoPBaWVLaCRjMTdMmWkg,Tamale Casserole,needs_review,10,10,100,0
-E2nJPYga9KYFRmVxTjw1,Butter Lettuce Salad,needs_review,10,10,100,0
-E6XX2dmDPOl0P7LrBwaY,Sesame Salmon Bowl,needs_review,20,20,100,0
-E8Ne6mNsLsrSb6SAmW9P,Turkey Shepards Pie,needs_review,18,18,100,0
-E8YrN5DhKGErVsEGJnSC,Pomegranate-Braised Pot Roast,needs_review,15,15,100,0
-EH7ZjPZ8zViUgS7Rb2dH,Brussels Sprouts Gratin,needs_review,15,15,100,0
+E2nJPYga9KYFRmVxTjw1,Butter Lettuce Salad,needs_review,9,9,100,0
+E6XX2dmDPOl0P7LrBwaY,Sesame Salmon Bowl,needs_review,19,19,100,0
+E8Ne6mNsLsrSb6SAmW9P,Turkey Shepards Pie,needs_review,19,19,100,0
+E8YrN5DhKGErVsEGJnSC,Pomegranate-Braised Pot Roast,needs_review,19,19,100,0
+EH7ZjPZ8zViUgS7Rb2dH,Brussels Sprouts Gratin,needs_review,14,14,100,0
 EJKabCBS7V4FjOvWgeKk,Better Than Takeout Broccoli,needs_review,13,13,100,0
-EPbkCAEmZn6fxcGr7qnH,Butcher's Steak with Leafy Greens Salsa,needs_review,10,10,100,0
+EPbkCAEmZn6fxcGr7qnH,Butcher's Steak with Leafy Greens Salsa,needs_review,11,11,100,0
 EZaPqRHFkNsmkyqezaTs,Baked Potato,needs_review,4,4,100,0
 Eba4QeZv6gzmkGSr83h0,Creamy Pesto Chicken Pasta,needs_review,13,13,100,0
 EhzZLumjhhze5w2nF1fk,Air Fryer Sweet Potatoes,needs_review,10,10,100,0
 FCJ7uamskHkxG2y3cbkG,Instant Pot Mexican Rice,needs_review,17,17,100,0
-FKY5ohKBQt8H68nqki3s,Shrimp Enchiladas with Creamy Poblano Sauce,needs_review,16,16,100,0
+FKY5ohKBQt8H68nqki3s,Shrimp Enchiladas with Creamy Poblano Sauce,needs_review,17,17,100,0
 FNkWcAvSjISujHYAoqFq,Chicken in Butternut Squash Mushroom Cream Sauce,needs_review,16,16,100,0
 FbCwH0SGW8bF2GIQnyXo,Honey Mustard Chicken with Peaches,needs_review,17,17,100,0
 Fbr7nBMrtphQCBzJn4d9,Baked Stuffed Tomatoes,needs_review,11,11,100,0
-FcKEuHi0LQGNS33rZT2Q,Loaded Bbq Baked Potatoes,needs_review,8,8,100,0
+FcKEuHi0LQGNS33rZT2Q,Loaded Bbq Baked Potatoes,needs_review,11,11,100,0
 Frpcyy9QbA3hZjFfuMSp,Rosemary White Sweet Potatoes,needs_review,7,7,100,0
 Ftmi2C2tH3bRn04RDpua,Smashed Sweet Potatoes,needs_review,9,9,100,0
 G3p3c6rryXfr9EefiCMv,Miso Pumpkin Pasta,needs_review,10,10,100,0
+G57olNhOWLU59zsfyPC2,Creamy Roasted Cauliflower Soup Recipe,needs_review,10,10,100,0
 GDIKp5GZfv9jlxP3ZxWp,Perfect Mashed Potatoes,needs_review,5,5,100,0
 GDZ3pxvzFuFvkA4q0AI5,Ground Beef Stir Fry,needs_review,15,15,100,0
-GEGtqkr24NjnKHXkM5Kx,Oven Roasted Rosemary Garlic Brick Chicken,needs_review,18,18,100,0
+GEGtqkr24NjnKHXkM5Kx,Oven Roasted Rosemary Garlic Brick Chicken,needs_review,19,19,100,0
+GK2Lwz1nEMoxzYMx0raq,"Lemony Greek Chicken, Spinach and Potato Stew",needs_review,16,16,100,0
 GjJlM63ZpuCJC78ROlMy,Cheesy Scalloped Potatoes,needs_review,12,12,100,0
 GqE4YVFVO5hCFx6OP90Y,Sautéed Cabbage (Easy & Healthy),needs_review,4,4,100,0
+H4Iuhbn5VN3lo0Wuq7TO,Greek Chicken Meatball Bowl,needs_review,20,20,100,0
 HHwPnSAEY8MbSwwZY6p4,Cod Bake with Coriander and Lime,needs_review,14,14,100,0
 HSHGApSfN1ewzyW7cIFD,Greek Potato Salad,needs_review,15,15,100,0
 HcqT2YmFdYFde86Z7Q4u,Ginger Miso Brothy Soup with Crispy Shredded Sesame Tofu,needs_review,19,19,100,0
 HhkCalOnKC8L63ZLOWa2,Lemon Garlic Butter Shrimp,needs_review,6,6,100,0
 HsBLkjaAOYpIb98HsJ0R,One Pan Herby Chicken and Wild Rice,needs_review,16,16,100,0
-HtfYYaa7sVMQ1h7GgjHm,Chicken Piccata,needs_review,9,9,100,0
+HtfYYaa7sVMQ1h7GgjHm,Chicken Piccata,needs_review,11,11,100,0
 HuLGcHzs1H7l5qQJOswn,Summer Minestrone Soup,needs_review,18,18,100,0
-HvTyIaKHatsiExRuEFUg,Fish Taco Bowl with Cilantro Lime Rice,needs_review,28,28,100,0
-HykULxXU0ey778vZKNFJ,Spring Fish Chowder,needs_review,12,12,100,0
+HvTyIaKHatsiExRuEFUg,Fish Taco Bowl with Cilantro Lime Rice,needs_review,32,32,100,0
+HykULxXU0ey778vZKNFJ,Spring Fish Chowder,needs_review,15,15,100,0
 I0GloiQm16JqEiE8Pm7V,Chicken Fajita Pasta,needs_review,20,20,100,0
 IE4PpcE0C7ZIMqHS0UHb,Quick Pickled Red Onions,needs_review,5,5,100,0
 IFWtypzok5l3rKipv9Pu,Lettuce Salad Recipe,needs_review,8,8,100,0
-IKGA2kNAwe9fR5TYidfF,French Onion Soup,needs_review,23,23,100,0
+IKGA2kNAwe9fR5TYidfF,French Onion Soup,needs_review,22,22,100,0
 IQC3q2iHMMjI8eVAnqE2,Butternut Coconut Noodles,needs_review,24,24,100,0
 IhQccOkgQxs8d2UmhaE3,Green Goddess Salmon,needs_review,22,22,100,0
 Ijp9mla8RWe5NAfcckP0,Roasted Cauliflower Green Goddess Salad,needs_review,15,15,100,0
-IknJIRbt8v4pBn8wNYS6,Creamy Tuscan Chicken,needs_review,15,15,100,0
-ImjtcpxuDt5cNIOQoOu0,Potatoes au Gratin (Dauphinoise),needs_review,8,8,100,0
-IsVOBGX6bnRv4xJm7ohx,Moroccan Carrot and Lentil Soup,needs_review,15,15,100,0
-IxduJ4HWjw69CRkeINX6,Chicken Lo Mein,needs_review,15,15,100,0
+IknJIRbt8v4pBn8wNYS6,Creamy Tuscan Chicken,needs_review,16,16,100,0
+ImjtcpxuDt5cNIOQoOu0,Potatoes au Gratin (Dauphinoise),needs_review,7,7,100,0
+IsVOBGX6bnRv4xJm7ohx,Moroccan Carrot and Lentil Soup,needs_review,18,18,100,0
+IxduJ4HWjw69CRkeINX6,Chicken Lo Mein,needs_review,16,16,100,0
 IzEEbHzbeSO8a3M3rP8S,Fall Harvest Salad,needs_review,19,19,100,0
 Izq7OsJ4k2MJChDx7yBW,Braised Lamb Shank,needs_review,18,18,100,0
-JB42V5lODM4UIJCCy83k,Spiced Carrots,needs_review,7,7,100,0
 JBS9O1RbDwZUUvkXlNM2,Asian Stirfry Vegetables,needs_review,18,18,100,0
-JDhVwtpzMxilu7wdcKlj,California Roasted Sweet Potato Kale Salad,needs_review,16,16,100,0
+JDhVwtpzMxilu7wdcKlj,California Roasted Sweet Potato Kale Salad,needs_review,17,17,100,0
 JDn1RFFYkyVsHmP0xzF8,Cilantro Lime Rice,needs_review,10,10,100,0
 JJ5dSSLSiIkYCD6SO2s7,Pan Seared Bok Choy,needs_review,6,6,100,0
 JL3UZe6odZVZJsh4Sj25,Cashew Chicken,needs_review,10,10,100,0
@@ -313,130 +218,135 @@ K5NdPK4X7e0QirbIaoP9,Tagliatelle with Asparagus and Peas,needs_review,18,18,100,
 KDQefQOlJd1Cjo0mBOqj,Sweet Corn with Smoked Paprika Butter,needs_review,7,7,100,0
 KOOxMbRMQkunl2FTC5wV,Radicchio Salad,needs_review,18,18,100,0
 KP9Xsj33XKTTebKVMy73,Honey Garlic Shrimp,needs_review,16,16,100,0
-KZjBmnYM9Cz1qT28TdLb,Spring Orange Asparagus,needs_review,6,6,100,0
+KZjBmnYM9Cz1qT28TdLb,Spring Orange Asparagus,needs_review,7,7,100,0
 KhjMRKnbhv7RyOTt6tTg,Bang Bang Shrimp,needs_review,13,13,100,0
-KjZfhHacjHC7usqTReL0,Honey-Soy Braised Pork With Lime and Ginger,needs_review,9,9,100,0
-LF6lhlCp0AaQg4M3Uqz3,Baked Meatballs with Orzo in Roasted Pepper Sauce,needs_review,17,17,100,0
-LKeAgkw433ztKuxEaQiy,Sheet Pan Lemon Chicken and Potatoes,needs_review,14,14,100,0
+KjZfhHacjHC7usqTReL0,Honey-Soy Braised Pork With Lime and Ginger,needs_review,14,14,100,0
+LF6lhlCp0AaQg4M3Uqz3,Baked Meatballs with Orzo in Roasted Pepper Sauce,needs_review,25,25,100,0
+LKeAgkw433ztKuxEaQiy,Sheet Pan Lemon Chicken and Potatoes,needs_review,13,13,100,0
 LOsjmo9J2TTuJx5Q5ZIh,Mango Pico de Gallo,needs_review,9,9,100,0
 LZcOirY25iStkWMVCrPX,Healthy Refried Pinto Beans,needs_review,9,9,100,0
 LfHj4qTJaVYXNeXklJ0K,Sautéed Spinach,needs_review,6,6,100,0
 LgNwxmsIRtv9yEGrOlr7,Steamed Kale,needs_review,6,6,100,0
 LlzqzrcSeCUSJ1gXqw8o,Herby Beef Stew,needs_review,19,19,100,0
-Lz8PUuNwzGk5t4ORcCGo,Homemade Pita Bread,needs_review,5,5,100,0
+MIDFC4VMZfEUywEic81b,Keto Chicken and Broccoli Casserole,needs_review,9,9,100,0
 MRL2PHKnxvHKrFcJJLa6,Mediterranean Bean Salad Recipe,needs_review,12,12,100,0
 MZ8rjfjXAJfziEP6Fouq,Colcannon,needs_review,15,15,100,0
 MgHEG5iVHGxf3ujAU6yj,Spicy Mayo,needs_review,4,4,100,0
 MhEn02AXs5uhhN9l6z8X,Bacon Walnut Shaved Brussels Sprout Salad,needs_review,25,25,100,0
-Mhdh1JoeQsrHuaOFKyul,Charred Peppers with Feta Tzatziki,needs_review,12,12,100,0
+Mhdh1JoeQsrHuaOFKyul,Charred Peppers with Feta Tzatziki,needs_review,13,13,100,0
 Mx4iMcAFJLBHU8G1e9Fc,Slow Roasted Salmon with Salsa Verde,needs_review,9,9,100,0
 MzExZKdJYhsKKUguJfMq,Pan Seared Salmon,needs_review,7,7,100,0
 N1Nker0LQvgZsE0hSW6V,Salmon Puttanesca,needs_review,17,17,100,0
-N2Bt4s1qMsLaQOFx4RHT,Marry Me Chicken,needs_review,14,14,100,0
-N3G9uuOFyHpyYW5bA1Ez,Coconut Shrimp Bowl,needs_review,11,11,100,0
+N2Bt4s1qMsLaQOFx4RHT,Marry Me Chicken,needs_review,15,15,100,0
+N3G9uuOFyHpyYW5bA1Ez,Coconut Shrimp Bowl,needs_review,15,15,100,0
 N7VemCTWya5zTN0p2Joc,Spiced Roasted Squash with Pomegranate Molasses and Pistachios,needs_review,16,16,100,0
 NYV5ZeccsIy3oWKdMix4,Moroccan Chicken Meatballs,needs_review,20,20,100,0
 NfD8FganDST9wVCmpsLJ,Italian Wedding Soup,needs_review,17,17,100,0
 NjZl3Kos6bsMVK4RTp8M,Sesame Chicken Salad,needs_review,15,15,100,0
 NvptgTPBYKGkHp7iq8bJ,Chinese coleslaw,needs_review,12,12,100,0
-O0HKfkE44bZVUTRNH00Y,Chicken Carnitas,needs_review,16,16,100,0
+O0HKfkE44bZVUTRNH00Y,Chicken Carnitas,needs_review,20,20,100,0
 O0Rg90GFWsljAhnmtdxm,Honey Mustard Salmon with Caesar Roasted Potatoes,needs_review,17,17,100,0
 O3hFfPHcDobSw0EHVEuP,Twice-Baked Honeynut Squash,needs_review,11,11,100,0
 OPQDg3u6MPlIiKsfpA8h,Creamy Garlic Shrimp with Parmesan,needs_review,8,8,100,0
 ORc80RCHriVe8qLeROfA,Dressed Up Baked Beans,needs_review,9,9,100,0
 Os2ayj0huXBqL9I0N75g,Black Rice,needs_review,3,3,100,0
-P9MopQL6CoNk41AJrcQt,Moroccan Meatball Couscous Soup,needs_review,18,18,100,0
+P9MopQL6CoNk41AJrcQt,Moroccan Meatball Couscous Soup,needs_review,20,20,100,0
 PAK5gly0DyxHPkrCw0a6,Honey-Gochujang Shrimp Bowls,needs_review,11,11,100,0
-PAKKikXCz5S21Ya2u0wi,Ginger Soy Herb Salad,needs_review,14,14,100,0
-PCXgPa7NEr852hq1t5uY,Vegetable Fried Rice,needs_review,10,10,100,0
+PAKKikXCz5S21Ya2u0wi,Ginger Soy Herb Salad,needs_review,13,13,100,0
+PCXgPa7NEr852hq1t5uY,Vegetable Fried Rice,needs_review,12,12,100,0
 PHtSQ0iaTyMPBvrO7Cec,Chicken Tinga Tacos,needs_review,16,16,100,0
 PTUNsbiypCMxmead0EZD,Greek Yogurt Mashed Potatoes,needs_review,7,7,100,0
-PVOd7MD0neHr0yrzIM0A,Easy Sheet Pan Salmon Dinner,needs_review,20,20,100,0
+PVOd7MD0neHr0yrzIM0A,Easy Sheet Pan Salmon Dinner,needs_review,22,22,100,0
 PohABSxmMWPjtErdzRNy,Whipped Mashed Potatoes,needs_review,8,8,100,0
-PomNdO9jsj08qPzNGvZY,Chicken Korma,needs_review,20,20,100,0
+PomNdO9jsj08qPzNGvZY,Chicken Korma,needs_review,19,19,100,0
 PsgqPlUWilJoZE6Ihxbv,Creamy Vegan Coconut Chickpea Curry,needs_review,11,11,100,0
 Q3hfk7p5OwlNELhsJaq9,Sunday Sauce,needs_review,11,11,100,0
-QAt2IEHDUxcub479z5al,Chicken Noodle Casserole,needs_review,10,10,100,0
+QAt2IEHDUxcub479z5al,Chicken Noodle Casserole,needs_review,11,11,100,0
 QKVwGq5Skcn8HCWmnjFl,Authentic Beef Chow Fun,needs_review,20,20,100,0
 QPqIzaiONvksPSTMIk1Y,Creamy Tuscan Salmon,needs_review,16,16,100,0
-QRVZziXSfir8X1xQDgTL,Carne Asada Bowl,needs_review,25,25,100,0
+QRVZziXSfir8X1xQDgTL,Carne Asada Bowl,needs_review,27,27,100,0
 QWykqdVAZtrseHcOmwdr,Dairy Free Mashed Sweet Potatoes,needs_review,3,3,100,0
 Qa8hb7FZyqJ7JoXFaVOn,Garlic Shrimp in Tomato Sauce,needs_review,11,11,100,0
-Qc4Q2x9WZfvFD9tLhr18,Chicken Fricassee,needs_review,17,17,100,0
+Qc4Q2x9WZfvFD9tLhr18,Chicken Fricassee,needs_review,16,16,100,0
 QhMeNAaRPv5Q5YNLpLdW,Mediterranean Cabbage Salad,needs_review,19,19,100,0
-QxHNptGPbFcR2txAxx6R,Tarragon Chicken Skewers,needs_review,15,15,100,0
+QxHNptGPbFcR2txAxx6R,Tarragon Chicken Skewers,needs_review,14,14,100,0
 R68WFHFJGJb6IWt4iUse,Smothered Chicken,needs_review,9,9,100,0
 RS8YiCcEJ9WN0QjfwSEZ,Cilantro Chicken with Mango Salsa and Cauliflower Rice,needs_review,19,19,100,0
 RV84mSdVnTtSttbTMsDM,The Best Instant Pot Mashed Potatoes,needs_review,8,8,100,0
 Rx6yQ3Hc1nm1U85YQVA2,Lemon Garlic Baked Cod,needs_review,12,12,100,0
 S0f8w6p14wDKFTlDc8qf,Thai Basil Beef,needs_review,14,14,100,0
-S2yVKZncRB8Ul1gA7crb,Beef Tenderloin with Mushroom Shiitake Sauce,needs_review,13,13,100,0
+S2yVKZncRB8Ul1gA7crb,Beef Tenderloin with Mushroom Shiitake Sauce,needs_review,14,14,100,0
 S4ApxGZgNMPCbRBq0zwC,Hawaiian Style Mac Salad,needs_review,13,13,100,0
 SDpjKiu7Nb8FAaI2LUGV,Traditional Greek Salad Recipe,needs_review,10,10,100,0
 SE7Z5qJY4o5dZ7mrSEHv,Steak Lettuce Wraps,needs_review,14,14,100,0
+SKFRFLKyQ8Gk4GEWE3SK,Greek Shrimp Grain Bowl,needs_review,20,20,100,0
 SRNRCUedzrdUIaU3RAnm,Crispy Gnocchi With Spinach and Feta,needs_review,9,9,100,0
 SWvrvCRJKEPjmivRmnxp,Ratatouille,needs_review,13,13,100,0
-SYZLFIJZmb7CR36I0uF6,Cauliflower Fried Rice,needs_review,14,14,100,0
+SYZLFIJZmb7CR36I0uF6,Cauliflower Fried Rice,needs_review,15,15,100,0
 SeuW8eWDD23BXBeauzBj,Curry Cashew Chickpea Quinoa Salad,needs_review,21,21,100,0
 Si9m2wK5ocp6z9O0n9rF,Vinegar Coleslaw Recipe (No Mayo Coleslaw),needs_review,10,10,100,0
 SnWiPgDdbM6c5qHKiAjv,Herby Green Rice,needs_review,15,15,100,0
 Sog4b7Hyxf0ZXm9iSRpV,Creamy Mashed Cauliflower,needs_review,4,4,100,0
-TBi4MHfSHuFDPixz7086,Easy Egg Fried Rice,needs_review,4,4,100,0
-TCMcoRRgFTgxqtKSpsw1,Chipotle Honey Pot Roast Tacos,needs_review,14,14,100,0
+TBi4MHfSHuFDPixz7086,Easy Egg Fried Rice,needs_review,5,5,100,0
+TCMcoRRgFTgxqtKSpsw1,Chipotle Honey Pot Roast Tacos,needs_review,17,17,100,0
 TDQkVnGRKW9GmFg935Rm,Ground Turkey Stir Fry,needs_review,17,17,100,0
+TKa7OZKFaqRU5B3b6g8D,Chile Verde Pork Ribs,needs_review,18,18,100,0
 TaH5U9qythLvwuGSXvzx,Cherry Plum Goat Cheese Summer Salad,needs_review,12,12,100,0
-TgLekNvLt3eZrYqxzyMz,Garlic Butter Pasta with Crispy Salmon,needs_review,11,11,100,0
-TlFzaPFUulKG7g2jXHD5,Cuban Mojo Bowl,needs_review,31,31,100,0
+TgLekNvLt3eZrYqxzyMz,Garlic Butter Pasta with Crispy Salmon,needs_review,12,12,100,0
 TxO9SNjPmW6FoF0xssl6,Moroccan Couscous Salad,needs_review,19,19,100,0
 U3UDblsPmXVDtiiFUjQj,Greek Potato Salad,needs_review,14,14,100,0
 U41MxVLS3mgNFCgbmjy0,Grilled Cod with Homemade Romesco Sauce,needs_review,12,12,100,0
 UGYqxPUuwxoYwHxbw8ZI,Shrimp Taco Salad,needs_review,20,20,100,0
-UWYq5cqblXCVSD8Xg2xa,Butternut Squash Enchiladas,needs_review,14,14,100,0
+UWYq5cqblXCVSD8Xg2xa,Butternut Squash Enchiladas,needs_review,17,17,100,0
 Ugf2PRCJ2g1llxJnOa68,Cauliflower Gratin,needs_review,12,12,100,0
 UiRMfgY63QR3jcQrxHZx,Mediterranean Salad Bowls W Lebanese Bbq Meatballs,needs_review,31,31,100,0
 V1nzyzL02GLFv5mRBSgM,Roasted Cauliflower with Gremolata,needs_review,13,13,100,0
-V4CrRQthfi79rzcXE7fh,Best Potato Salad,needs_review,11,11,100,0
-VMFGUu9E3AGKY5Xc6QTT,Honey Garlic Salmon,needs_review,9,9,100,0
+V4CrRQthfi79rzcXE7fh,Best Potato Salad,needs_review,14,14,100,0
+V6W7JpcuRLJb6h6BVpbT,Cheesy White Bean Tomato Bake,needs_review,12,12,100,0
+VMFGUu9E3AGKY5Xc6QTT,Honey Garlic Salmon,needs_review,11,11,100,0
 VTHcfNEjiuivSC8gTZbv,Tropical Salad,needs_review,18,18,100,0
-VdiVNpWDNyWWU3eylazb,Beet Hummus,needs_review,9,9,100,0
-VqgtNDPXseiv6p4jx5KV,Marry Me Salmon,needs_review,18,18,100,0
+VdiVNpWDNyWWU3eylazb,Beet Hummus,needs_review,13,13,100,0
+VqgtNDPXseiv6p4jx5KV,Marry Me Salmon,needs_review,19,19,100,0
 VwQhXtBqYNZsstqIQfuw,Sichuan Dry Fried Green Beans,needs_review,11,11,100,0
-W79UgoxYW2008qQcLhfk,Crispy Latkes,needs_review,8,8,100,0
-WBLBwM1gn2rx4Yho5JEd,Broccoli Salad with Bacon Recipe,needs_review,14,14,100,0
-WMZDiUPZZucOTFMYGaC8,Thai Short Ribs,needs_review,13,13,100,0
+W79UgoxYW2008qQcLhfk,Crispy Latkes,needs_review,9,9,100,0
+WBLBwM1gn2rx4Yho5JEd,Broccoli Salad with Bacon Recipe,needs_review,15,15,100,0
+WMZDiUPZZucOTFMYGaC8,Thai Short Ribs,needs_review,12,12,100,0
 WURez0lPSJ3ad37BVJeP,Lamb Shepards Pie,needs_review,19,19,100,0
 WdtoEer09NumLsgajXTt,Emergency Dump 'n Bake Fried Rice,needs_review,10,10,100,0
 Wg5KZN33YZZUBeciZpAf,Spring Chicken Soup,needs_review,19,19,100,0
-WnnVtp4JpwuBxNsz3mQ8,House Favorite Roasted Brussels Sprouts,needs_review,8,8,100,0
+WnnVtp4JpwuBxNsz3mQ8,House Favorite Roasted Brussels Sprouts,needs_review,10,10,100,0
 WtIvAwMjX0MWzGU1LlZL,Roasted Pumpkin Salad,needs_review,20,20,100,0
 WwivIKmIkSGRF7rphCaf,"Couscous with Golden Raisins, Lemon and Almonds",needs_review,13,13,100,0
 WxQoJtV8XHPvAckSTI8p,Grilled Flank Steak with Avocado Corn Salsa,needs_review,14,14,100,0
 Wz9GKiXyGqJ4q0JIGpE8,Mustard Potato Salad,needs_review,13,13,100,0
-X4DHjbjIuj0Tg4KCtExm,Bistro Salad,needs_review,13,13,100,0
+X4DHjbjIuj0Tg4KCtExm,Bistro Salad,needs_review,14,14,100,0
 X7yhruN6lzKCCkVIlwLg,Broccoli and Brown Rice,needs_review,8,8,100,0
 XCMgqNmqDtZWFwZ72v5B,Slow-Roasted Caponata Fish,needs_review,16,16,100,0
+XIKJfzB6KaInQPCwXDkJ,Grilled Peach and Quinoa Salad,needs_review,18,18,100,0
 XJU69jDLP7aDcol64cQP,Best Quinoa Salad Recipe,needs_review,12,12,100,0
 XOoLJ7TmSqFBzCMOHutS,Best Healthy Coleslaw Ever No Mayo,needs_review,15,15,100,0
-XQk0bSiJFzFOfNlnNgMZ,Vegan Burritos,needs_review,22,22,100,0
-XjULdGM8IR8cicEHVVwM,Herby Tomato Soup,needs_review,10,10,100,0
-Xx9EOH7hAXMUsSVntlnF,Borracho Beans,needs_review,18,18,100,0
-Y0JsVGMDi2KOFxm8tIdb,Chili Honey Roasted Sweet Potatoes,needs_review,9,9,100,0
+XQk0bSiJFzFOfNlnNgMZ,Vegan Burritos,needs_review,23,23,100,0
+XjULdGM8IR8cicEHVVwM,Herby Tomato Soup,needs_review,13,13,100,0
+Xx9EOH7hAXMUsSVntlnF,Borracho Beans,needs_review,17,17,100,0
+Y0JsVGMDi2KOFxm8tIdb,Chili Honey Roasted Sweet Potatoes,needs_review,10,10,100,0
 Y3KIi8Rby0mdJ1ryZbui,Light New England Clam Chowder,needs_review,15,15,100,0
-Y7foLLFl3d6Z4q5mtHui,Grilled Chicken Parmesan,needs_review,15,15,100,0
+Y7foLLFl3d6Z4q5mtHui,Grilled Chicken Parmesan,needs_review,16,16,100,0
 Y8EiY0wcHI8iy73wsXKF,Frijoles de la Olla,needs_review,6,6,100,0
 Y9PBa6j8vvrt6iHQKi9D,Mexican Chopped Salad,needs_review,7,7,100,0
 YAl578Ra2222j2Kuj4bG,Sea Bass with Spicy Tomato Butter,needs_review,12,12,100,0
+YDNsxVFu2OQ4sg7lau48,Creamy Chicken Stew with Hearty Vegetables,needs_review,16,16,100,0
 YZFnmHEikAFyoSE6XUqZ,Kale Cherry Salad,needs_review,9,9,100,0
 YeK8GnqMmClDlpe1EXDv,Goat Cheese Potato Gratin,needs_review,9,9,100,0
-Ylm9ZMMMZGG1s7cxNVuf,"Saffron, Barberry and Pistachio Rice",needs_review,10,10,100,0
+Ylm9ZMMMZGG1s7cxNVuf,"Saffron, Barberry and Pistachio Rice",needs_review,11,11,100,0
 YrheLVjSNft95vVRM5sN,Grilled Salmon,needs_review,11,11,100,0
 Z0gOFJtD5j8wbW4kdMUI,Spring Pork Bulgogi,needs_review,16,16,100,0
 Z9Gv7sRsjaBj9e7bG6Ka,Miso Maple Sweet Potato Stacks,needs_review,12,12,100,0
-ZACB2YnCEzmgymk2DcRr,Grilled Corn Orzo Salad with Scallion Dill Dressing,needs_review,17,17,100,0
-ZP0v7IOBJrebw5wOCPWo,Chicken Tikka Masala,needs_review,25,25,100,0
+ZACB2YnCEzmgymk2DcRr,Grilled Corn Orzo Salad with Scallion Dill Dressing,needs_review,16,16,100,0
+ZP0v7IOBJrebw5wOCPWo,Chicken Tikka Masala,needs_review,24,24,100,0
 ZbCgORklOLyQ5QiYvNcd,Salmon Nicoise Smashed Potato Salad,needs_review,16,16,100,0
 ZiEbkG3znPuEXoDN7E4g,Lighter Chicken Tikka Masala,needs_review,26,26,100,0
-aBfCQ8NWjcMKcOLQCvik,Fish Tacos with Tequila Lime Pickled Pineapple,needs_review,20,20,100,0
+aBfCQ8NWjcMKcOLQCvik,Fish Tacos with Tequila Lime Pickled Pineapple,needs_review,21,21,100,0
+aDAyJ2hjK7hF42Hx8xQX,Chicken Enchilada Casserole,needs_review,10,10,100,0
 aIoXT5t4nzCn7dOTVMRg,Cherry Chicken Thighs,needs_review,10,10,100,0
 aKH88mSdjlI9qH3qvsFf,"Shrimp Linguine with Herbs, Corn and Arugula",needs_review,12,12,100,0
 ahWtjQ7J8yCRSGqJc3U1,Spiced Chicken with Vinegar Potatoes,needs_review,11,11,100,0
@@ -445,20 +355,22 @@ air-fryer-green-beans,Air Fryer Green Beans,needs_review,7,7,100,0
 air-fryer-salmon-bites,Air Fryer Salmon Bites,needs_review,13,13,100,0
 andhra-chicken-curry-recipe-kodi-kura-with-step-by-step-pictures,Andhra Chicken Curry (Kodi Kura),needs_review,26,26,100,0
 apple-cider-braised-chicken-thighs,Apple Cider Braised Chicken Thighs,needs_review,11,11,100,0
-asian-chilli-garlic-prawns-shrimp,Asian Chilli Garlic Prawns,needs_review,13,13,100,0
-asian-grilled-shrimp-prawns-bbq-or-stove,Asian Grilled Shrimp,needs_review,8,8,100,0
-avocado-corn-chicken-salad,Avocado Corn Chicken Salad,needs_review,19,19,100,0
-ay70INWggT0nLDwugshV,Crispy Garlic Butter Potatoes,needs_review,12,12,100,0
-b3iF3CW5pjkt2Uw2OR8w,Sheet Pan Steak Tacos,needs_review,16,16,100,0
-b5yFEqPBJZx7zP6760FC,Shrimp Lettuce Cups,needs_review,18,18,100,0
+asian-chilli-garlic-prawns-shrimp,Asian Chilli Garlic Prawns,needs_review,12,12,100,0
+asian-grilled-shrimp-prawns-bbq-or-stove,Asian Grilled Shrimp,needs_review,7,7,100,0
+avocado-corn-chicken-salad,Avocado Corn Chicken Salad,needs_review,20,20,100,0
+ay70INWggT0nLDwugshV,Crispy Garlic Butter Potatoes,needs_review,13,13,100,0
+b0yWUoctG16Qu1aIjPj3,Cheesy Italian Meatballs,needs_review,14,14,100,0
+b3iF3CW5pjkt2Uw2OR8w,Sheet Pan Steak Tacos,needs_review,18,18,100,0
+b5yFEqPBJZx7zP6760FC,Shrimp Lettuce Cups,needs_review,20,20,100,0
 b9CcGHFK4QBKTeWBZmvr,New Mexico Sopapillas,needs_review,7,7,100,0
 bAIzoeqfTxpCepdqYLPt,Chicken Romano Meatballs,needs_review,17,17,100,0
 bFDz1bYcrBRCuPh8FN7X,Southwest Chopped Salad,needs_review,15,15,100,0
-bGRiIpV10maQ7lv4Z8tI,BBQ Vegan Black Bean Burgers,needs_review,15,15,100,0
+bGRiIpV10maQ7lv4Z8tI,BBQ Vegan Black Bean Burgers,needs_review,16,16,100,0
 bIcpk93bRmuMbpY0DHf7,Filet Mignon Kabobs,needs_review,14,14,100,0
 bacon-wrapped-air-fryer-chicken-breast,Bacon-Wrapped Air Fryer Chicken Breast,needs_review,3,3,100,0
 baharat-baked-chicken-thighs,Baked Boneless Chicken Thighs with Baharat,needs_review,12,12,100,0
-baked-haddock-with-roasted-tomato-and-fennel,Baked Haddock with Roasted Tomato and Fennel,needs_review,11,11,100,0
+baked-chicken-tenders-paleo-aip-nut-free-egg-free-dairy-free,Baked Chicken Tenders with Peachy Dipping Sauce,needs_review,10,10,100,0
+baked-haddock-with-roasted-tomato-and-fennel,Baked Haddock with Roasted Tomato and Fennel,needs_review,12,12,100,0
 baked-halibut-recipe-with-lemon-and-dill,Baked Halibut with Lemon and Dill,needs_review,9,9,100,0
 baked-salmon-in-foil-garlic-rosemary-thyme-whole30,"Baked Salmon in Foil with Garlic, Rosemary and Thyme",needs_review,8,8,100,0
 baked-salmon-poke-bowls,Baked Salmon Poke Bowls,needs_review,18,18,100,0
@@ -467,23 +379,30 @@ baked-salmon-with-amazing-lemon-sauce,Baked Salmon with Amazing Lemon Sauce,need
 baked-salmon-with-garlic-and-dijon,Baked Salmon with Garlic and Dijon,needs_review,9,9,100,0
 baked-salmon-with-vegetables,Mediterranean Salmon,needs_review,14,14,100,0
 baked-sweet-potato,Baked Sweet Potato,needs_review,7,7,100,0
-baked-ziti,Baked Ziti,needs_review,10,10,100,0
+baked-ziti,Baked Ziti,needs_review,14,14,100,0
 baked-zucchini-fries-paleo-gluten-free-low-carb,Baked Zucchini Fries,needs_review,5,5,100,0
 bang-bang-chicken-bowls,Bang Bang Chicken Bowls,needs_review,23,23,100,0
 bang-bang-salmon-bowls,Bang Bang Salmon Bowls,needs_review,17,17,100,0
 barbacoa-recipe,Barbacoa Enchiladas,needs_review,14,14,100,0
+bbq-chicken-bowls,BBQ Chicken Bowls with Grilled Veggies & Sweet Potatoes,needs_review,21,21,100,0
 bbq-shrimp,New Orleans BBQ Shrimp,needs_review,10,10,100,0
 bbq-tofu,BBQ Tofu,needs_review,3,3,100,0
 becWCABaIeFpfuaqENBD,Potatoes Au Gratin,needs_review,7,7,100,0
 beef-and-cabbage-stir-fry,Beef and Cabbage Stir Fry,needs_review,15,15,100,0
-beef-enchilada-casserole,Beef Enchilada Casserole,needs_review,13,13,100,0
+beef-broccoli-stir-fry-whole30-paleo,Paleo Beef and Broccoli Stir Fry,needs_review,17,17,100,0
+beef-enchilada-casserole,Beef Enchilada Casserole,needs_review,16,16,100,0
 beef-tajine-with-prunes,Beef Tagine,needs_review,14,14,100,0
 best-healthy-grilled-chicken,Best Grilled Chicken,needs_review,8,8,100,0
 best-kung-pao-chicken-recipe,Authentic Kung Pao Chicken Recipe,needs_review,19,19,100,0
-bhindi-masala-okra-stir-fry,Bhindi Masala,needs_review,11,11,100,0
+best-vegan-lasagna-recipe,Vegan Lasagna,needs_review,16,16,100,0
+better-broccoli-casserole-recipe,Better Broccoli Casserole,needs_review,12,12,100,0
+bhindi-masala-okra-stir-fry,Bhindi Masala,needs_review,13,13,100,0
 bhyIpMK0jpfNhtFAere0,Cheesy Mashed Potato Casserole,needs_review,17,17,100,0
 birria,Beef Birria,needs_review,21,21,100,0
+blogs-eyeswoon-unplugged-eyeswoon-unplugged-pork-shoulder-ragu,Pork Shoulder Ragu,needs_review,21,21,100,0
 blogs-eyeswoon-unplugged-pan-roasted-chicken-recipe-athena-calderone,Pan-Roasted Chicken with Shallots and Dates,needs_review,13,13,100,0
+blogs-recipes-whole-roasted-fish-with-citrus-herbs,Whole Roasted Fish with Citrus & Herbs,needs_review,8,8,100,0
+bourbon-sweet-potato-casserole-sweet-n-savory-bacon-pecans,Bourbon Sweet Potato Casserole Sweet N Savory Bacon Pecans,needs_review,16,16,100,0
 braised-beef-chili,Fall-Apart Tender Braised Beef Chili,needs_review,21,21,100,0
 braised-ginger-chicken-thighs,Braised Ginger Chicken Thighs and Broccoli,needs_review,15,15,100,0
 braised-halibut-with-roasted-cherry-tomatoes-and-tahini,Braised Halibut,needs_review,18,18,100,0
@@ -491,6 +410,7 @@ brazilian-steak-chicken-kabobs,Grilled Brazilian Steak and Chicken Kabobs,needs_
 broccoli-cheddar-chicken,Crockpot Creamy Broccoli Cheddar Chicken,needs_review,15,15,100,0
 broccoli-cheddar-orzo,Broccoli Cheddar Orzo,needs_review,12,12,100,0
 broccoli-cheddar-soup,Broccoli Cheddar Soup,needs_review,13,13,100,0
+broiled-sheet-pan-salmon-and-veggies,Broiled Sheet Pan Salmon and Veggies with Lemon Caper Sauce,needs_review,18,18,100,0
 brown-butter-green-beans-with-toasted-pistachios-and-lemony-whipped-feta,Brown Butter Green Beans With Toasted Pistachios And Lemony Whipped Feta,needs_review,13,13,100,0
 bruschetta-chicken-pasta,Bruschetta Chicken Pasta,needs_review,12,12,100,0
 buffalo-ranch-chicken,Sheet Pan Buffalo Ranch Chicken,needs_review,24,24,100,0
@@ -500,104 +420,118 @@ cA6v9OHZ8Id9hylAVzV1,Fluffy Creamy Mashed Potatoes,needs_review,8,8,100,0
 cHjp2i04o0lKIa4iVzx8,Creamy Polenta,needs_review,5,5,100,0
 cI1oGWWW21jC9xObMwKh,Chinese Garlic Green Beans,needs_review,8,8,100,0
 cantonese-ground-beef-rice-eggs,Cantonese Ground Beef Rice and Eggs,needs_review,15,15,100,0
-canyon-ranch-healthy-shrimp-salad-recipe,Canyon Ranch Shrimp Salad with White Beans and Kale,needs_review,10,10,100,0
+canyon-ranch-healthy-shrimp-salad-recipe,Canyon Ranch Shrimp Salad with White Beans and Kale,needs_review,9,9,100,0
 caramelized-onion-potatoes-au-gratin,Caramelized Onion Potatoes Au Gratin,needs_review,13,13,100,0
 carne-asada-tacos,Carne Asada Tacos,needs_review,17,17,100,0
 carrot-ginger-soup,Carrot Ginger Soup,needs_review,11,11,100,0
-cedar-plank-salmon,Cedar Plank Salmon,needs_review,6,6,100,0
-cheddar-chicken-chili,Healthy Cheddar Chicken Chili,needs_review,20,20,100,0
-cheeseburger-slider-skewers,Cheeseburger Slider Skewers,needs_review,17,17,100,0
+cedar-plank-salmon,Cedar Plank Salmon,needs_review,5,5,100,0
+cheddar-chicken-chili,Healthy Cheddar Chicken Chili,needs_review,22,22,100,0
+cheeseburger-slider-skewers,Cheeseburger Slider Skewers,needs_review,18,18,100,0
 chicken-alfredo-noodle-casserole,Dump and Bake Chicken Alfredo Noodle Casserole,needs_review,15,15,100,0
+chicken-alfredo-pasta,Chicken Alfredo Pasta,needs_review,13,13,100,0
 chicken-and-mushroom-soup,Chicken and Mushroom Soup,needs_review,14,14,100,0
-chicken-and-seafood-paella,Chicken and Seafood Paella,needs_review,15,15,100,0
+chicken-and-seafood-paella,Chicken and Seafood Paella,needs_review,16,16,100,0
 chicken-cabbage-stir-fry,Chicken Cabbage Stir Fry,needs_review,16,16,100,0
-chicken-caprese,Chicken Caprese,needs_review,11,11,100,0
+chicken-caprese,Chicken Caprese,needs_review,12,12,100,0
 chicken-egg-roll-bowl,Chicken Egg Roll Bowl,needs_review,10,10,100,0
-chicken-katsu-bowls,Crispy Chicken Katsu Bowls,needs_review,16,16,100,0
-chicken-marsala,Double the Mushrooms Chicken Marsala,needs_review,13,13,100,0
-chicken-meatball-stuffed-spaghetti-squash,Chicken Meatball Stuffed Spaghetti Squash,needs_review,14,14,100,0
+chicken-fajitas,Chicken Fajitas,needs_review,12,12,100,0
+chicken-katsu-bowls,Crispy Chicken Katsu Bowls,needs_review,21,21,100,0
+chicken-kurma-recipe-chicken-curry,Chicken Kurma (South Indian),needs_review,21,21,100,0
+chicken-marsala,Double the Mushrooms Chicken Marsala,needs_review,14,14,100,0
+chicken-meatball-stuffed-spaghetti-squash,Chicken Meatball Stuffed Spaghetti Squash,needs_review,16,16,100,0
 chicken-piccata,Chicken Piccata,needs_review,12,12,100,0
+chicken-shawarma-bowl,Chicken Shawarma Bowl,needs_review,20,20,100,0
 chicken-shawarma-bowls,Halal-Cart Copycat Chicken Shawarma Bowls,needs_review,21,21,100,0
 chicken-shawarma-grain-bowls,Chicken Shawarma Bowl,needs_review,25,25,100,0
 chicken-shawarma-sheet-pan-dinner,Chicken Shawarma Sheet Pan Dinner,needs_review,15,15,100,0
-chicken-shepherds-pie,Chicken Shepards Pie,needs_review,12,12,100,0
-chicken-soup,Feel Better Chicken Soup,needs_review,14,14,100,0
-chicken-souvlaki-rice-pilaf,Chicken Souvlaki Rice Pilaf,needs_review,17,17,100,0
+chicken-shepherds-pie,Chicken Shepards Pie,needs_review,16,16,100,0
+chicken-soup,Feel Better Chicken Soup,needs_review,17,17,100,0
+chicken-souvlaki-rice-pilaf,Chicken Souvlaki Rice Pilaf,needs_review,20,20,100,0
 chicken-stir-fry-recipe,Chicken Stir Fry,needs_review,17,17,100,0
 chicken-taco-bowls,Chicken Taco Bowls,needs_review,16,16,100,0
 chicken-taco-recipe,Chicken Taco Recipe,needs_review,16,16,100,0
-chicken-tinga-enchiladas,Chicken Tinga Enchiladas,needs_review,16,16,100,0
-chicken-tortilla-soup,Chipotle Chicken Tortilla Soup,needs_review,15,15,100,0
-chicken-tzatziki-bowls,Chicken Tzatziki Bowls,needs_review,21,21,100,0
+chicken-tinga-enchiladas,Chicken Tinga Enchiladas,needs_review,17,17,100,0
+chicken-tortilla-soup,Chipotle Chicken Tortilla Soup,needs_review,18,18,100,0
+chicken-tzatziki-bowls,Chicken Tzatziki Bowls,needs_review,23,23,100,0
 chicken-tzatziki-rice-bowls,Chicken Tzatziki Rice Bowls,needs_review,17,17,100,0
 chicken-veggie-pasta-salad,Gluten-Free Pasta Salad with Chicken & Roasted Shallot Vinaigrette,needs_review,8,8,100,0
 chicken-with-creamy-white-wine-garlic-sauce,Chicken in White Wine Sauce,needs_review,12,12,100,0
 chicken-with-mustard-cream-sauce,Chicken With Mustard Cream Sauce,needs_review,19,19,100,0
+chicken-zucchini-pasta,Chicken Zucchini Pasta,needs_review,5,5,100,0
 chickpea-and-rice-soup,Chickpea and Rice Soup,needs_review,16,16,100,0
-chickpea-lentil-quinoa-spinach-stew,Chickpea Lentil Quinoa Spinach Stew,needs_review,19,19,100,0
-chickpea-tuna-salad,Chickpea Tuna Salad,needs_review,11,11,100,0
-chili-crisp-chicken-mango-rice-bowl,Chili Crisp Chicken Mango Cucumber Rice Bowl,needs_review,20,20,100,0
-chili-lime-chicken,Easy Chili Lime Chicken,needs_review,17,17,100,0
-chimichurri-chicken-thighs,Chimichurri Chicken Thighs,needs_review,9,9,100,0
+chickpea-lentil-quinoa-spinach-stew,Chickpea Lentil Quinoa Spinach Stew,needs_review,22,22,100,0
+chickpea-tuna-salad,Chickpea Tuna Salad,needs_review,12,12,100,0
+chili-crisp-chicken-mango-rice-bowl,Chili Crisp Chicken Mango Cucumber Rice Bowl,needs_review,18,18,100,0
+chili-lime-chicken,Easy Chili Lime Chicken,needs_review,18,18,100,0
+chimichurri-chicken-thighs,Chimichurri Chicken Thighs,needs_review,10,10,100,0
 chinese-chicken-salad,Chinese Chicken Salad,needs_review,25,25,100,0
 chinese-stuffed-eggplant,Chinese Stuffed Eggplant,needs_review,20,20,100,0
 chinese-tea-eggs,Chinese Tea Eggs,needs_review,11,11,100,0
-chipotle-beef-and-cheese-tacos,Baked Chipotle Beef and Melted Cheese Tacos,needs_review,13,13,100,0
-chipotle-beef-sweet-potato-skins,Chipotle Beef Sweet Potato Skins,needs_review,15,15,100,0
+chipotle-beef-and-cheese-tacos,Baked Chipotle Beef and Melted Cheese Tacos,needs_review,16,16,100,0
+chipotle-beef-sweet-potato-skins,Chipotle Beef Sweet Potato Skins,needs_review,19,19,100,0
 chipotle-chicken-chopped-salad,Chipotle Chicken Chopped Salad,needs_review,20,20,100,0
 chipotle-steak-fajita-bowls,Chipotle Steak Fajita Bowls,needs_review,16,16,100,0
 chopped-thai-chicken-salad,Chopped Thai Chicken Salad,needs_review,17,17,100,0
-cider-braised-pot-roast,Cider Braised Pot Roast with Crispy Sage Butter Potatoes,needs_review,14,14,100,0
+cider-braised-pot-roast,Cider Braised Pot Roast with Crispy Sage Butter Potatoes,needs_review,13,13,100,0
 cilantro-lime-chicken-thighs,Cilantro Lime Chicken Thighs,needs_review,10,10,100,0
 cilantro-lime-grilled-salmon-paleo-keto,Cilantro Lime Grilled Salmon,needs_review,12,12,100,0
 cilantro-mint-chutney-recipe,Cilantro Mint Chutney,needs_review,10,10,100,0
 citrus-salmon,Citrus Salmon,needs_review,12,12,100,0
-ck6I2TG8t3wc7Hds0HLj,15-Minute Flavorful Spanish Cauliflower Rice,needs_review,9,9,100,0
-coconut-curry-basil-chicken,Coconut Curry Basil Chicken,needs_review,15,15,100,0
-coconut-curry-chicken-meatballs,Coconut Curry Chicken Meatballs with Garlic Butter,needs_review,16,16,100,0
+citrus-salmon-confit,Citrus Salmon Confit,needs_review,10,10,100,0
+ck6I2TG8t3wc7Hds0HLj,15-Minute Flavorful Spanish Cauliflower Rice,needs_review,10,10,100,0
+coconut-braised-beef,Coconut Braised Beef,needs_review,18,18,100,0
+coconut-chicken-curry,Coconut Chicken Curry with Crispy Shallot Basil Oil,needs_review,16,16,100,0
+coconut-curry-basil-chicken,Coconut Curry Basil Chicken,needs_review,16,16,100,0
+coconut-curry-chicken-meatballs,Coconut Curry Chicken Meatballs with Garlic Butter,needs_review,15,15,100,0
 cooking-recipe-ideas-a36815367-soy-sauce-eggs-recipe,Soy Sauce Eggs,needs_review,9,9,100,0
 cooking-recipe-ideas-a38080244-sauteed-spinach-recipe,Sauteed Spinach,needs_review,10,10,100,0
 corn-tomato-avocado-salad,Corn Tomato Avocado Salad,needs_review,8,8,100,0
-crab-stuffed-salmon,Crab Stuffed Salmon,needs_review,15,15,100,0
-creamy-chicken-orzo,Creamy Chicken Orzo,needs_review,12,12,100,0
+cozy-beef-autumnal-stew,Cozy Beef Stew,needs_review,18,18,100,0
+crab-stuffed-salmon,Crab Stuffed Salmon,needs_review,16,16,100,0
+creamy-chicken-orzo,Creamy Chicken Orzo,needs_review,13,13,100,0
+creamy-coconut-chicken-satay-meatballs,Creamy Coconut Chicken Satay Meatballs,needs_review,24,24,100,0
 creamy-corn-zucchini-and-bacon-chowder,"Creamy Corn, Zucchini, and Bacon Chowder",needs_review,17,17,100,0
 creamy-garlic-butter-salmon,Creamy Garlic Butter Salmon,needs_review,10,10,100,0
 creamy-garlic-butter-tuscan-salmon,Creamy Garlic Butter Tuscan Salmon,needs_review,14,14,100,0
 creamy-garlic-butter-tuscan-shrimp,Creamy Garlic Tuscan Butter Shrimp,needs_review,13,13,100,0
-creamy-garlic-chicken,Creamy Garlic Chicken,needs_review,15,15,100,0
+creamy-garlic-chicken,Creamy Garlic Chicken,needs_review,17,17,100,0
+creamy-garlic-dijon-salmon,Garlic Dijon Salmon,needs_review,13,13,100,0
+creamy-jamaican-rasta-pasta,Creamy Jamaican Rasta Pasta,needs_review,15,15,100,0
 creamy-lemon-dill-shrimp,Creamy Lemon Dill Shrimp,needs_review,7,7,100,0
 creamy-moroccan-tomato-soup,Creamy Moroccan Tomato Soup,needs_review,14,14,100,0
 creamy-paprika-chicken-pasta,Creamy Chicken Paprika Pasta,needs_review,17,17,100,0
-creamy-pasta-salmon-asparagus,Creamy Salmon Pasta with Asparagus,needs_review,8,8,100,0
-creamy-roasted-red-pepper-pasta,Creamy Roasted Red Pepper Pasta with Grilled Chicken,needs_review,12,12,100,0
-creamy-sausage-pasta,Creamy Sausage Pasta,needs_review,10,10,100,0
+creamy-roasted-red-pepper-pasta,Creamy Roasted Red Pepper Pasta with Grilled Chicken,needs_review,13,13,100,0
+creamy-sausage-pasta,Creamy Sausage Pasta,needs_review,11,11,100,0
 creamy-spring-salmon,Creamy Spring Salmon,needs_review,15,15,100,0
 creamy-tuscan-garlic-salmon,Creamy Tuscan Garlic Salmon,needs_review,11,11,100,0
-creamy-wild-rice-chicken-soup,Creamy Wild Rice Chicken Soup with Roasted Mushrooms,needs_review,19,19,100,0
-crispy-chicken-tinga-tacos,Crispy Chicken Tinga Tacos,needs_review,18,18,100,0
+creamy-wild-rice-chicken-soup,Creamy Wild Rice Chicken Soup with Roasted Mushrooms,needs_review,18,18,100,0
+crispy-chicken-tinga-tacos,Crispy Chicken Tinga Tacos,needs_review,19,19,100,0
 crispy-cilantro-lime-chicken,Crispy Cilantro Lime Chicken,needs_review,10,10,100,0
-crispy-falafel-recipe,Crispy Falafel Recipe,needs_review,10,10,100,0
-crispy-feta-with-lemon-pepper-chicken,Crispy Feta with Lemon Pepper Chicken and Rice,needs_review,19,19,100,0
+crispy-falafel-recipe,Crispy Falafel Recipe,needs_review,11,11,100,0
+crispy-feta-with-lemon-pepper-chicken,Crispy Feta with Lemon Pepper Chicken and Rice,needs_review,18,18,100,0
 crispy-fried-chicken-tenders,20-Minute Fried Chicken Tenders,needs_review,17,17,100,0
-crispy-mini-chipotle-chicken-tacos,Crispy Mini Chipotle Chicken Tacos,needs_review,16,16,100,0
-crispy-peanut-tofu-cauliflower-rice-stir-fry,Crispy Baked Peanut Tofu,needs_review,13,13,100,0
-crispy-salmon-bites,Air Fryer Crispy Salmon Bites with Lemon Dill Sauce,needs_review,15,15,100,0
+crispy-garlic-parmesan-salmon,Parmesan Crusted Salmon,needs_review,9,9,100,0
+crispy-mini-chipotle-chicken-tacos,Crispy Mini Chipotle Chicken Tacos,needs_review,18,18,100,0
+crispy-peanut-tofu-cauliflower-rice-stir-fry,Crispy Baked Peanut Tofu,needs_review,14,14,100,0
+crispy-salmon-bites,Air Fryer Crispy Salmon Bites with Lemon Dill Sauce,needs_review,16,16,100,0
 crispy-seared-lemon-garlic-herb-salmon,Pan Seared Salmon with Lemon Garlic Butter Sauce,needs_review,9,9,100,0
-crispy-wild-rice-harvest-salad,Crispy Wild Rice Harvest Salad,needs_review,14,14,100,0
-crockpot-creamy-coconut-chicken-tikka-masala,Crockpot Creamy Coconut Chicken Tikka Masala,needs_review,16,16,100,0
-crockpot-sticky-sesame-ginger-chicken,Crockpot Sticky Sesame Ginger Chicken,needs_review,17,17,100,0
+crispy-wild-rice-harvest-salad,Crispy Wild Rice Harvest Salad,needs_review,15,15,100,0
+crockpot-creamy-coconut-chicken-tikka-masala,Crockpot Creamy Coconut Chicken Tikka Masala,needs_review,15,15,100,0
+crockpot-sticky-sesame-ginger-chicken,Crockpot Sticky Sesame Ginger Chicken,needs_review,19,19,100,0
 crockpot-white-chicken-chili,White Chicken Chili,needs_review,11,11,100,0
-cu7N2HtfU3iLqy62IRAO,Lightened Up Cheddar Cauliflower Broccoli Soup,needs_review,14,14,100,0
-cuban-chicken-taquitos,Baked Cheesy Cuban Chicken Taquitos,needs_review,19,19,100,0
-cuban-mojo-marinated-pork-recipe-comment-page-16,Cuban Mojo Pork,needs_review,11,11,100,0
-curry-butter-chicken,Curry Butter Chicken with Sweet Potatoes and Tahini,needs_review,17,17,100,0
-d6W2UKh2g4YkLgDlyzCS,Au Gratin Potatoes,needs_review,11,11,100,0
+cu7N2HtfU3iLqy62IRAO,Lightened Up Cheddar Cauliflower Broccoli Soup,needs_review,16,16,100,0
+cuban-chicken-taquitos,Baked Cheesy Cuban Chicken Taquitos,needs_review,20,20,100,0
+cuban-mojo-marinated-pork-recipe-comment-page-16,Cuban Mojo Pork,needs_review,12,12,100,0
+curry-butter-chicken,Curry Butter Chicken with Sweet Potatoes and Tahini,needs_review,18,18,100,0
+d2NDuBgKDxgVIHig7LC9,Southwestern Kale Power Salad,needs_review,19,19,100,0
+d6W2UKh2g4YkLgDlyzCS,Au Gratin Potatoes,needs_review,12,12,100,0
 dGu5aIj20HC7OwnR119w,Roasted Sweet Potatoes,needs_review,3,3,100,0
-dO0PLRw3qdBnOXB4YX1l,Herby Skillet Chicken with Greens,needs_review,13,13,100,0
+dO0PLRw3qdBnOXB4YX1l,Herby Skillet Chicken with Greens,needs_review,14,14,100,0
 dairy-free-tuscan-chicken-skillet,Dairy-Free Tuscan Chicken,needs_review,12,12,100,0
-dgsKN1b8UMRh35SpjKpy,Gado Gado (Indonesian Salad),needs_review,18,18,100,0
+dgsKN1b8UMRh35SpjKpy,Gado Gado (Indonesian Salad),needs_review,16,16,100,0
 duRXcKPL6AaYQqTo7Cmi,Cacio e Pepe Mashed Potatoes,needs_review,7,7,100,0
 dutch-oven-chicken-carnitas,"Chicken Carnitas (Dutch Oven, Instant Pot, Slow Cooker)",needs_review,14,14,100,0
+dutepurNJPHWdqyboY4H,Bali Bowls with Peanut Tofu,needs_review,21,21,100,0
 e0MTiSXoe0dHV1xifiGA,Marry Me Chicken,needs_review,15,15,100,0
 eTmFpWTZxWTBCjd09vNY,Spanish Rice,needs_review,10,10,100,0
 eY0CtZZ1b4UnJq0eAOTL,Garlicky Broccolini,needs_review,5,5,100,0
@@ -612,74 +546,89 @@ easy-tandoori-chicken,Easy Tandoori Chicken Sheet Pan Dinner,needs_review,18,18,
 egg-and-tofu-stir-fry,Egg and Tofu Stir Fry,needs_review,9,9,100,0
 egg-roll-in-a-bowl-keto-recipe,Egg Roll in a Bowl,needs_review,12,12,100,0
 euPgKPrVBHyYYZej2wgr,Fennel and Orange Halibut,needs_review,9,9,100,0
+ewas7jlYdB9nlvnSXsTm,One Pan Coconut Chicken,needs_review,13,13,100,0
 f1Jko3a1duEwdNA4Q287,Yogurt Tahini Sauce,needs_review,5,5,100,0
 f8SZkjbfpl09BGiMlR1O,Mashed Sweet Potatoes,needs_review,9,9,100,0
-fM9vMF5BdkSpx5OLU6E1,Beef Bibimbap,needs_review,29,29,100,0
+fCyCGC9OGNd4Gf7k0TRr,Sheet Pan Chicken Fajitas,needs_review,18,18,100,0
+fM9vMF5BdkSpx5OLU6E1,Beef Bibimbap,needs_review,28,28,100,0
 fNxc5GglHgMKQO4hiGds,Baked Falafel,needs_review,11,11,100,0
 fTldhdObf2BVi3wHzwQc,Persian Chicken and Walnut Stew,needs_review,9,9,100,0
 fahXJhrXoGc4d23bi4o1,Kale and Raddichio Caesar,needs_review,21,21,100,0
 favorite-broccoli-salad-recipe,Favorite Broccoli Salad Recipe,needs_review,11,11,100,0
 fiRfv84sYM0mrceu6WFm,Shrimp Scampi,needs_review,8,8,100,0
-fiesta-creamy-corn-chicken,Fiesta Creamy Corn Chicken,needs_review,13,13,100,0
+fiesta-creamy-corn-chicken,Fiesta Creamy Corn Chicken,needs_review,15,15,100,0
 firecracker-chicken,Firecracker Chicken,needs_review,24,24,100,0
-fluffy-coconut-rice,Restaurant Style Coconut Rice,needs_review,8,8,100,0
+fish-chowder-recipe,Fish Chowder,needs_review,13,13,100,0
+fluffy-coconut-rice,Restaurant Style Coconut Rice,needs_review,7,7,100,0
+four-ingredient-salmon-nuggets,Four Ingredient Salmon Nuggets,needs_review,8,8,100,0
+french-chicken-au-poivre-sauce,Chicken au Poivre (Creamy Peppercorn Sauce),needs_review,7,7,100,0
 french-onion-pork-chops,French Onion Pork Chops,needs_review,17,17,100,0
 fried-rice,The Best Fried Rice,needs_review,11,11,100,0
 fvKZKyMuhq8HtAXqwt44,Cilantro Lime Slaw,needs_review,5,5,100,0
 g3SIoVH9UpdH8mGDlsuo,Potato Leek Soup,needs_review,8,8,100,0
-g8NgE93AB4QlV6an6GOn,Tart Cherry Pot Roast,needs_review,15,15,100,0
+g8NgE93AB4QlV6an6GOn,Tart Cherry Pot Roast,needs_review,14,14,100,0
 gFb8TbZiNMRDqv38jcAv,Air Fryer Salmon,needs_review,7,7,100,0
-gUX7P0ecbBoCZMj94Sds,Italian Stuffed Peppers,needs_review,13,13,100,0
+gUX7P0ecbBoCZMj94Sds,Italian Stuffed Peppers,needs_review,14,14,100,0
+garlic-butter-coconut-salmon,Baked One Pan Garlic Butter Coconut Salmon,needs_review,18,18,100,0
 garlic-butter-salmon-and-veggies-whole30,Garlic Butter Salmon and Veggies,needs_review,11,11,100,0
 garlic-butter-salmon-lobster-in-creamy-lemon-parmesan-sauce,Garlic Butter Salmon and Lobster in Creamy Lemon Parmesan Sauce,needs_review,10,10,100,0
-garlic-butter-salmon-recipe,Garlic Butter Salmon,needs_review,7,7,100,0
+garlic-butter-salmon-recipe,Garlic Butter Salmon,needs_review,8,8,100,0
 garlic-butter-shrimp-scampi,Garlic Butter Shrimp Scampi,needs_review,7,7,100,0
 garlic-herb-chicken-paleo-whole30-keto,Creamy Garlic Herb Chicken,needs_review,16,16,100,0
 garlic-lemon-herb-mediterranean-chicken-potatoes,Garlic Lemon Herb Mediterranean Chicken and Potatoes,needs_review,15,15,100,0
-garlic-parmesan-chicken,Garlic Parmesan Chicken,needs_review,16,16,100,0
+garlic-parmesan-chicken,Garlic Parmesan Chicken,needs_review,20,20,100,0
 garlic-scape-curry,Garlic Scape Curry (Curried Salmon),needs_review,17,17,100,0
 garlic-shrimp-stir-fry,Garlic Shrimp Stir-Fry,needs_review,15,15,100,0
-garlic-tuscan-shrimp-paleo-whole30,Tuscan Garlic Shrimp,needs_review,14,14,100,0
+garlic-tuscan-shrimp-paleo-whole30,Tuscan Garlic Shrimp,needs_review,16,16,100,0
 general-tsos-chicken-bowls,General Tso's Chicken Bowls,needs_review,19,19,100,0
 general-tsos-tofu,General Tso's Tofu Stir-Fry,needs_review,20,20,100,0
 gfpLERrzvZpL3pxY4l3q,Cilantro Lime Dressing,needs_review,5,5,100,0
 ghzLrUh7JmPcVpAnL79x,The Ultimate Healthy Chicken Salad,needs_review,11,11,100,0
 ginger-beef-broccoli-bowls,Ginger Beef and Broccoli Bowls,needs_review,25,25,100,0
 ginger-citrus-salmon,Ginger Citrus Salmon,needs_review,13,13,100,0
-ginger-sesame-crusted-salmon-bowl,Spicy Ginger Sesame Crusted Salmon Bowl,needs_review,20,20,100,0
-ginger-sesame-pineapple-beef,Sticky Ginger Sesame Pineapple Beef,needs_review,16,16,100,0
+ginger-sesame-crusted-salmon-bowl,Spicy Ginger Sesame Crusted Salmon Bowl,needs_review,19,19,100,0
+ginger-sesame-pineapple-beef,Sticky Ginger Sesame Pineapple Beef,needs_review,17,17,100,0
 ginger-sesame-vegan-meatballs,Ginger Sesame Vegan Meatballs,needs_review,13,13,100,0
-goulash-recipe,Goulash (Classic One-Pan),needs_review,12,12,100,0
-greek-chicken-gyros,Weeknight Greek Chicken Gyros,needs_review,24,24,100,0
+gochujang-shrimp-tacos,Weeknight Gochujang Shrimp Tacos,needs_review,19,19,100,0
+gorgonzola-chicken,Gorgonzola Chicken with Mushrooms & Sage,needs_review,11,11,100,0
+goulash-recipe,Goulash (Classic One-Pan),needs_review,14,14,100,0
+greek-baked-orzo,Greek Baked Orzo,needs_review,16,16,100,0
+greek-chicken-gyros,Weeknight Greek Chicken Gyros,needs_review,23,23,100,0
 greek-chicken-rice-bowls,Greek Chicken Bowl Recipe,needs_review,27,27,100,0
-greek-feta-and-melty-gouda-cheesesteak,Greek Feta and Melty Gouda Cheesesteak,needs_review,16,16,100,0
+greek-feta-and-melty-gouda-cheesesteak,Greek Feta and Melty Gouda Cheesesteak,needs_review,17,17,100,0
 greek-grilled-chicken,The Easiest Greek Grilled Chicken,needs_review,11,11,100,0
 greek-salad,Greek Salad,needs_review,14,14,100,0
+green-coconut-curry-with-shrimp-paleo-whole30,Green Coconut Curry Soup with Shrimp,needs_review,11,11,100,0
 green-curry,5-Ingredient Green Curry,needs_review,9,9,100,0
+green-onion-shrimp-stir-fry,Ginger Shrimp Stir-Fry with Garlic Bok Choy,needs_review,15,15,100,0
 grilled-bbq-chicken-recipe,Best Ever Grilled BBQ Chicken,needs_review,14,14,100,0
+grilled-beef-shawarma,Beef Shawarma Recipe,needs_review,17,17,100,0
+grilled-broccoli-crunch-salad,Grilled Broccoli Crunch Salad,needs_review,9,9,100,0
 grilled-chicken,Grilled Chicken,needs_review,11,11,100,0
 grilled-chicken-salad-shawarma,Grilled Chicken Shawarma Salad,needs_review,20,20,100,0
 grilled-chicken-shawarma-recipe,Chicken Shawarma Recipe,needs_review,11,11,100,0
 grilled-grass-fed-steak-gyros,Steak Gyros,needs_review,19,19,100,0
-grilled-greek-chicken-salad,Grilled Greek Chicken Salad,needs_review,26,26,100,0
-grilled-lemon-herb-chicken,Grilled Lemon Herb Chicken,needs_review,8,8,100,0
-grilled-rib-eye-steak-with-italian-salsa-verde,Grilled Rib Eye Steak with Italian Salsa Verde,needs_review,12,12,100,0
+grilled-greek-chicken-salad,Grilled Greek Chicken Salad,needs_review,25,25,100,0
+grilled-lemon-herb-chicken,Grilled Lemon Herb Chicken,needs_review,10,10,100,0
+grilled-rib-eye-steak-with-italian-salsa-verde,Grilled Rib Eye Steak with Italian Salsa Verde,needs_review,15,15,100,0
 grilled-salmon-fillets-with-crispy-skin,Grilled Salmon Fillets with Crispy Skin,needs_review,11,11,100,0
-grilled-salmon-salad,Grilled Salmon Salad,needs_review,18,18,100,0
+grilled-salmon-salad,Grilled Salmon Salad,needs_review,17,17,100,0
+grilled-sambal-chicken,Indonesian Grilled Sambal Chicken,needs_review,10,10,100,0
 grilled-shrimp-with-salsa-and-garlic-marinade,Grilled Shrimp with Salsa and Garlic Marinade,needs_review,8,8,100,0
 grilled-steak-kebabs,Grilled Steak Kebabs,needs_review,10,10,100,0
 grilled-tofu,Grilled Tofu,needs_review,8,8,100,0
 ground-beef-pasta,Ground Beef Pasta,needs_review,12,12,100,0
 ground-beef-stir-fry-with-celery,Ground Beef Stir Fry with Celery,needs_review,10,10,100,0
-ground-turkey-stir-fry,Ground Turkey Stir Fry,needs_review,20,20,100,0
+ground-turkey-stir-fry,Ground Turkey Stir Fry,needs_review,21,21,100,0
 hBCpxMMkgJOlxzDQ641q,Seeded Chicken Schnitzel,needs_review,13,13,100,0
-hBVKrnGtn8mjCjOHnz4J,30 minute grilled veggie orzo [ORZO],needs_review,11,11,100,0
+hBVKrnGtn8mjCjOHnz4J,30 minute grilled veggie orzo [ORZO],needs_review,12,12,100,0
 hG6GVQd7oIQEqJhM4yge,Zesty Thai Beef Salad,needs_review,8,8,100,0
-hLZjcvMpz4CCTfCTJHne,Strawberry Feta Salad,needs_review,16,16,100,0
-hVEijw9seFGs0y0tvf6p,Thai Coconut Poached Fish,needs_review,17,17,100,0
+hIbTxi1PZnXtSSn6FCYe,Butternut Squash Mac and Cheese,needs_review,12,12,100,0
+hLZjcvMpz4CCTfCTJHne,Strawberry Feta Salad,needs_review,17,17,100,0
+hVEijw9seFGs0y0tvf6p,Thai Coconut Poached Fish,needs_review,19,19,100,0
 harissa-baked-salmon,Honey-Harissa Baked Salmon,needs_review,16,16,100,0
 harissa-salmon,Harissa Salmon,needs_review,10,10,100,0
-hawaiian-chicken-tacos,Hawaiian Chicken Tacos,needs_review,19,19,100,0
+hawaiian-chicken-tacos,Hawaiian Chicken Tacos,needs_review,20,20,100,0
 hawaiian-garlic-shrimp,Hawaiian Garlic Shrimp,needs_review,11,11,100,0
 hb4IO36rtmszpD0i2wrl,Classic Beef Stew,needs_review,18,18,100,0
 healthy-chicken-cobb-salad-recipe,Healthy Chicken Cobb Salad Recipe,needs_review,19,19,100,0
@@ -689,78 +638,87 @@ herb-and-beef-stew,Persian Inspired Herb and Beef Stew,needs_review,19,19,100,0
 herb-butter-salmon-asparagus-foil-packs,Herb Butter Salmon and Asparagus Foil Packs,needs_review,7,7,100,0
 herb-crusted-roasted-salmon,Herb Crusted Roasted Salmon,needs_review,6,6,100,0
 herby-potato-stacks,Herby Potato Stacks,needs_review,11,11,100,0
+high-protein-easy-salmon-melts,High-Protein Salmon Melts,needs_review,14,14,100,0
 hlbjRfPWoDfmNylKbutH,Miso-Glazed Bok Choy,needs_review,8,8,100,0
-homemade-tomato-soup,Homemade Tomato Soup,needs_review,12,12,100,0
-honey-balsamic-chicken-veggies,Honey Balsamic Chicken & Veggies,needs_review,10,10,100,0
-honey-chipotle-chicken-rice-bowls,Honey Chipotle Chicken Rice Bowl,needs_review,17,17,100,0
+homemade-tomato-soup,Homemade Tomato Soup,needs_review,13,13,100,0
+honey-balsamic-chicken-veggies,Honey Balsamic Chicken & Veggies,needs_review,11,11,100,0
+honey-chipotle-chicken-rice-bowls,Honey Chipotle Chicken Rice Bowl,needs_review,18,18,100,0
 honey-chipotle-salmon-tacos,Honey-Chipotle Salmon Tacos,needs_review,13,13,100,0
 honey-glazed-salmon-bowls,Honey Glazed Salmon Bowls,needs_review,18,18,100,0
 honey-mustard-pretzel-chicken-bowls,Honey Mustard Pretzel Chicken Bowls,needs_review,23,23,100,0
-honey-sesame-chicken,Sheet Pan Honey-Sesame Chicken,needs_review,15,15,100,0
+honey-mustard-salmon-in-foil,Honey Mustard Salmon in Foil,needs_review,9,9,100,0
+honey-sesame-chicken,Sheet Pan Honey-Sesame Chicken,needs_review,16,16,100,0
 honey-sesame-chicken-meal-prep-bowls,Honey Sesame Chicken Meal Prep Bowls,needs_review,23,23,100,0
 hot-honey-chicken-bowls,Hot Honey Chicken Bowls,needs_review,24,24,100,0
-hot-honey-chicken-tenders,Baked Crispy Hot Honey Chicken Tenders,needs_review,18,18,100,0
+hot-honey-chicken-tenders,Baked Crispy Hot Honey Chicken Tenders,needs_review,17,17,100,0
 hot-honey-crispy-salmon-bowls,Hot Honey Crispy Salmon Bowls,needs_review,21,21,100,0
 hot-honey-mustard-chicken-bowls,Hot Honey Mustard Chicken Bowls,needs_review,19,19,100,0
-hot-honey-salmon-tenders,Crispy Hot Honey Salmon Tenders,needs_review,14,14,100,0
+hot-honey-salmon-tenders,Crispy Hot Honey Salmon Tenders,needs_review,16,16,100,0
 how-to-cook-jasmine-rice,How to Cook Jasmine Rice,needs_review,1,1,100,0
-how-to-cook-steak,How to Cook Steak,needs_review,6,6,100,0
+how-to-cook-steak,How to Cook Steak,needs_review,7,7,100,0
 huli-huli-chicken,Huli Huli Chicken,needs_review,12,12,100,0
 i2a3BABWYbzro1p4ayUX,Mango Vinaigrette,needs_review,10,10,100,0
 i9lsQySLqwjUe03mQjAC,Shredded Snap Pea Salad with Lemon & Mint,needs_review,10,10,100,0
 iS7XEqhFDop9ShVZtsU9,Rice Pilaf with Nuts and Dried Fruit,needs_review,14,14,100,0
 ilTWbAiLGlFqLjHE2vD5,Basmati Rice and Orzo Pilaf,needs_review,6,6,100,0
 instant-pot-chipotle-cheddar-corn-chowder,Chipotle Cheddar Corn Chowder,needs_review,12,12,100,0
-instant-pot-peanut-chicken,Peanut Butter Chicken,needs_review,11,11,100,0
+instant-pot-peanut-chicken,Peanut Butter Chicken,needs_review,12,12,100,0
 instant-pot-teriyaki-chicken,Instant Pot Teriyaki Chicken,needs_review,9,9,100,0
-italian-wedding-soup,Italian Wedding Soup,needs_review,20,20,100,0
 iwUthwt1j406Elu5hh1F,Miso and Sesame Bok Choy,needs_review,8,8,100,0
 j7XfLHMTY1qkO9qvAtdY,"Shaved Brussels, Raddichio and Romaine Caesar",needs_review,18,18,100,0
-jalapeno-pepper-jack-cheeseburger-sliders,Jalapeño Pepper Jack Cheeseburger Sliders,needs_review,21,21,100,0
-jalapeno-pineapple-shrimp-tacos,Jalapeño Pineapple Shrimp Tacos,needs_review,21,21,100,0
-japanese-steak-bowls,Easy Japanese Steak Bowls,needs_review,14,14,100,0
-jce21xU8ijiqYcxmBnnM,Mixed Green Salad with Yuzu,needs_review,15,15,100,0
+jDx4MKAkkhiSALd6a5z7,Chili Lime Vegan Shrimp Bowl,needs_review,18,18,100,0
+jP60yy50nvIXQTvl8nCN,Halibut Florentine,needs_review,11,11,100,0
+jalapeno-pepper-jack-cheeseburger-sliders,Jalapeño Pepper Jack Cheeseburger Sliders,needs_review,22,22,100,0
+jalapeno-pineapple-shrimp-tacos,Jalapeño Pineapple Shrimp Tacos,needs_review,22,22,100,0
+japanese-steak-bowls,Easy Japanese Steak Bowls,needs_review,17,17,100,0
+jbi8uJ9dyskpHlR0vgRe,Italian Fish Soup,needs_review,11,11,100,0
+jce21xU8ijiqYcxmBnnM,Mixed Green Salad with Yuzu,needs_review,17,17,100,0
 jerk-chicken-dumplings,Spicy One-Pot Jerk Chicken and Dumplings,needs_review,18,18,100,0
-jerk-whole-roast-chicken,Jamaican Spatchcock Jerk Whole Roast Chicken,needs_review,15,15,100,0
-jkEyCY3vhAhexgyQRqLk,Lemon-Dill Meatballs with Orzo,needs_review,11,11,100,0
+jerk-whole-roast-chicken,Jamaican Spatchcock Jerk Whole Roast Chicken,needs_review,14,14,100,0
+jkEyCY3vhAhexgyQRqLk,Lemon-Dill Meatballs with Orzo,needs_review,12,12,100,0
 jollof-rice-with-chicken,Jollof Rice with Chicken,needs_review,17,17,100,0
 jpOk9EEkGA6GURwyvCbo,Chickpea Soup,needs_review,17,17,100,0
 jyatJrspipOop9jKt36B,Mediterranean Grilled Branzino Recipe,needs_review,19,19,100,0
-jzXBt1FJ9KpGomqcRlN5,Spicy Chicken Tortilla Soup,needs_review,14,14,100,0
+jzXBt1FJ9KpGomqcRlN5,Spicy Chicken Tortilla Soup,needs_review,18,18,100,0
+k5gw3kpiqtmG5I796WUE,Vegan Creamy Beany Cavolo Nero Pasta,needs_review,13,13,100,0
 kWAqApQV5amPbaDRRGh7,Roasted Mini Potatoes,needs_review,10,10,100,0
 kerala-chicken,Kerala Chicken Curry,needs_review,23,23,100,0
 kfBFFw5lNRGehPVzMjaj,Smoky Grilled Mushroom Doner,needs_review,21,21,100,0
+korean-bbq-steak-bowls-with-spicy-sesame-dressing,Korean BBQ Steak Bowls with Spicy Sesame Dressing,needs_review,13,13,100,0
 ktsTv56y11K31MIVaqDp,Beef Enchiladas Verdes,needs_review,16,16,100,0
 kung-pao-beef,Kung Pao Beef,needs_review,22,22,100,0
-kung-pao-noodles,Kung Pao Noodles,needs_review,10,10,100,0
+kung-pao-noodles,Kung Pao Noodles,needs_review,11,11,100,0
 kzXKTjahve3DpzJHy7v8,Green Goddess Dressing,needs_review,14,14,100,0
 l0o1YVMMsCuXW5ZHGwLT,Chicken al Pastor Tacos,needs_review,13,13,100,0
-l9Ihfvd74y2zHhxOZNsv,Halloumi Tacos,needs_review,17,17,100,0
-lFubYFRQJjj87pkWUaPs,Salmon with Peach and Avocado Salsa,needs_review,15,15,100,0
+l9Ihfvd74y2zHhxOZNsv,Halloumi Tacos,needs_review,16,16,100,0
+lFubYFRQJjj87pkWUaPs,Salmon with Peach and Avocado Salsa,needs_review,12,12,100,0
 lGV3RcZRczjG9ER8m7Nf,Cumin Rice,needs_review,6,6,100,0
 lNXRw4zqjS1ySsUx0LzA,Greek Yogurt Cucumber Salad,needs_review,10,10,100,0
-lamb-shawarma,Lamb Shawarma,needs_review,16,16,100,0
-lazy-girl-chicken-breasts,Lazy Girl Chicken Breasts,needs_review,4,4,100,0
-lazy-girl-chicken-thighs,Pan Seared Chicken Thighs (Lazy Girl),needs_review,3,3,100,0
+lamb-shawarma,Lamb Shawarma,needs_review,15,15,100,0
+larb,Thai Larb Salad (Beef),needs_review,19,19,100,0
+lazy-girl-chicken-breasts,Lazy Girl Chicken Breasts,needs_review,5,5,100,0
+lazy-girl-chicken-thighs,Pan Seared Chicken Thighs (Lazy Girl),needs_review,4,4,100,0
 lemon-basil-potato-salad,Lemon Basil Potato Salad,needs_review,6,6,100,0
 lemon-garlic-grilled-shrimp,Lemon Garlic Shrimp,needs_review,8,8,100,0
 lemon-garlic-salmon-tray-bake-easy-healthy,Lemon Garlic Salmon Tray Bake,needs_review,15,15,100,0
 lemon-parmesan-chicken-pasta,Lemon Chicken Pasta,needs_review,15,15,100,0
 lemon-pepper-air-fryer-baby-potatoes,Lemon Pepper Air Fryer Baby Potatoes,needs_review,9,9,100,0
 lemon-pepper-wings,Lemon Pepper Wings,needs_review,24,24,100,0
-lentil-coconut-curry,Lentil Coconut Curry,needs_review,13,13,100,0
-lettuce-wraps,Asian Chicken Lettuce Wraps,needs_review,20,20,100,0
+lentil-coconut-curry,Lentil Coconut Curry,needs_review,14,14,100,0
+lettuce-wraps,Asian Chicken Lettuce Wraps,needs_review,24,24,100,0
 lnfhJutfrIPt2ICvOxF2,Chicken Tagine Bowl,needs_review,18,18,100,0
+loBfAEW264zWtgX2DTLA,Roasted Carrots Recipe With Farro Chickpeas,needs_review,19,19,100,0
 low-carb-chicken-parmesan-keto,Low Carb Chicken Parmesan,needs_review,15,15,100,0
-low-carb-peanut-chicken-lettuce-wraps,Low-Carb Peanut Chicken Lettuce Wraps,needs_review,14,14,100,0
+low-carb-peanut-chicken-lettuce-wraps,Low-Carb Peanut Chicken Lettuce Wraps,needs_review,15,15,100,0
 lyLXtYSGadUCfUVlocSI,Quick Bang Bang Salmon Bowls,needs_review,11,11,100,0
 m3nVZL0btuH3vMPYWOUV,Pomegranate Braised Lamb,needs_review,18,18,100,0
 mMtUwcfTUU4N3xgcQz7e,30-Minute Crispy Roasted Radishes,needs_review,5,5,100,0
 mPTf5cdLwesyJ5cIZoLy,Zucchini Pesto Pasta,needs_review,15,15,100,0
 mQp0ojMexbouvIkRHdwi,Sweet and Spicy Grilled Tofu with Pineapple and Herbed Cauliflower Rice,needs_review,12,12,100,0
 mUo6vNz7kGWz4DwwH3It,Sauté of Winter Greens and Shiitake Mushrooms,needs_review,10,10,100,0
+malai-chicken-recipe,Malai Chicken (Creamy White Chicken Curry),needs_review,26,26,100,0
 maple-dijon-chicken-pear-bowls,Maple Dijon Chicken & Pear Bowls,needs_review,21,21,100,0
-mapo-tofu,Mapo Tofu,needs_review,13,13,100,0
+mapo-tofu,Mapo Tofu,needs_review,12,12,100,0
 marry-me-pasta,Marry Me Pasta (Vegan),needs_review,18,18,100,0
 mediterranean-chicken,Sheet Pan Mediterranean Chicken,needs_review,18,18,100,0
 mediterranean-chicken-feta-bake,Mediterranean Chicken Feta Bake,needs_review,12,12,100,0
@@ -768,16 +726,17 @@ mediterranean-garlic-shrimp-skewers,Grilled Shrimp Kabobs Mediterranean-Style,ne
 mediterranean-grilled-lamb-leg-mint-pesto,Mediterranean Grilled Lamb Leg with Mint Pesto,needs_review,20,20,100,0
 mediterranean-lentil-salad,Mediterranean Lentil Salad,needs_review,13,13,100,0
 mediterranean-salmon-skillet,Mediterranean Salmon Skillet,needs_review,16,16,100,0
-mediterranean-style-leg-of-lamb-recipe-with-potatoes,Perfect Roasted Leg of Lamb,needs_review,17,17,100,0
+mediterranean-style-leg-of-lamb-recipe-with-potatoes,Perfect Roasted Leg of Lamb,needs_review,18,18,100,0
+mediterranean-tuna-salad,Mediterranean Tuna Salad,needs_review,13,13,100,0
 mexican-picadillo,Easy One-Pan Mexican Picadillo,needs_review,19,19,100,0
 mexican-shrimp-recipe,Mexican Shrimp Skillet,needs_review,10,10,100,0
 mggnwFP5JtXHKBsOl2pd,Teriyaki Salmon Bowl,needs_review,16,16,100,0
 minestrone-soup,Minestrone Soup,needs_review,17,17,100,0
 miso-glazed-salmon-bowls,Miso Glazed Salmon Bowls,needs_review,18,18,100,0
-miso-roasted-sweet-potatoes-with-labneh-and-chilli-lime-salsa,Miso Roasted Sweet Potatoes with Labneh and Chilli Lime Salsa,needs_review,14,14,100,0
-mix-and-bake-chicken-taco-casserole,Mix and Bake Chicken Taco Casserole,needs_review,15,15,100,0
-moroccan-chicken,Moroccan Chicken Recipe,needs_review,7,7,100,0
-moroccan-chicken-and-chickpeas,One Pan Moroccan Chicken and Chickpeas,needs_review,15,15,100,0
+miso-roasted-sweet-potatoes-with-labneh-and-chilli-lime-salsa,Miso Roasted Sweet Potatoes with Labneh and Chilli Lime Salsa,needs_review,13,13,100,0
+mix-and-bake-chicken-taco-casserole,Mix and Bake Chicken Taco Casserole,needs_review,17,17,100,0
+moroccan-chicken,Moroccan Chicken Recipe,needs_review,8,8,100,0
+moroccan-chicken-and-chickpeas,One Pan Moroccan Chicken and Chickpeas,needs_review,16,16,100,0
 msq9daK70fZaHXbyfUNO,Slow Roasted Lamb,needs_review,12,12,100,0
 my-favorite-crispy-chicken-milanese,Crispy Chicken Milanese,needs_review,13,13,100,0
 nC0UVX6KFyMzU9J1tkhl,Ginger-Basil Beef and Zucchini Skillet,needs_review,13,13,100,0
@@ -786,77 +745,90 @@ nIfnW52LAIgJXtSEUt9q,Turkey Kofta Bowl,needs_review,37,37,100,0
 nZqY4uP8d6umKzRzJLR1,Coconut Braised Chicken and Chickpeas,needs_review,18,18,100,0
 newsletters-chicken-and-tomatoes-forever,Chicken and Tomatoes Forever,needs_review,8,8,100,0
 njEt7jipBWbr03565q9l,Mediterranean Halloumi Pitas,needs_review,14,14,100,0
-npEOrfRZv0by8KzpmLi8,Paleo Mashed Cauliflower + Parsnip Colcannon with Bacon,needs_review,8,8,100,0
+npEOrfRZv0by8KzpmLi8,Paleo Mashed Cauliflower + Parsnip Colcannon with Bacon,needs_review,9,9,100,0
 nsTPAUrEjKPnDs4JX8pb,Steamed Vegetables,needs_review,6,6,100,0
 oJNLyAuRHjaYKbpI8xXM,Honey Glazed Carrots,needs_review,10,10,100,0
 oX8Ct4uM2aZ4LyIZJa1s,The Ultimate Sheet Pan Potatoes Au Gratin,needs_review,12,12,100,0
 oY15UdhxREq1fueophIw,Balsamic Bacon Brussels Sprouts,needs_review,5,5,100,0
 obj5w4crf9bmDAsDwBZF,Creamy Avocado Lime Dressing,needs_review,3,3,100,0
-obmaLoLiqfIHSx6MJH3a,BBQ Chicken Pulled Sandwhich,needs_review,15,15,100,0
+obmaLoLiqfIHSx6MJH3a,BBQ Chicken Pulled Sandwhich,needs_review,17,17,100,0
 okLxHrJoH8NKuTi5oXMD,Teriyaki King Oyster Mushroom,needs_review,8,8,100,0
+olive-chicken-skillet-with-lemon-shallot,Castelvetrano Olive Chicken Skillet,needs_review,12,12,100,0
 olive-citrus-slow-roasted-salmon,Olive-Citrus Slow Roasted Salmon,needs_review,11,11,100,0
 one-pan-chicken-and-crispy-potatoes,Baked Chicken Thighs,needs_review,7,7,100,0
-one-pan-salmon-with-herb-butter-couscous,One-Pan Salmon with Herb Butter Couscous,needs_review,16,16,100,0
+one-pan-salmon-with-herb-butter-couscous,One-Pan Salmon with Herb Butter Couscous,needs_review,18,18,100,0
 one-pot-chicken-and-rice,One Pot Chicken and Rice,needs_review,21,21,100,0
 one-pot-chicken-stew,Chicken Potato Stew,needs_review,11,11,100,0
 one-pot-mustard-chicken-and-orzo,One Pot Mustard Chicken and Orzo,needs_review,18,18,100,0
 one-skillet-greek-salmon-paleo-whole30,One Skillet Greek Salmon,needs_review,16,16,100,0
 one-skillet-mediterranean-chicken-recipe,Mediterranean Chicken Recipe,needs_review,14,14,100,0
 orange-ginger-salmon-bowls,Orange Ginger Salmon Bowls,needs_review,22,22,100,0
-orange-sesame-chicken,Orange Sesame Chicken,needs_review,17,17,100,0
+orange-sesame-chicken,Orange Sesame Chicken,needs_review,18,18,100,0
 osDsgRcHhvZoHqYsJESo,Israeli Couscous,needs_review,12,12,100,0
-oyxNSiLq9vJmIwS9D28W,Moroccan Grilled Lamb Chops,needs_review,21,21,100,0
-ozVt3p57NKBOJdKKtYQz,Green Vegan Salad,needs_review,13,13,100,0
+osvmPWJY7SKDHPDNtP0w,Persian Chopped Salad,needs_review,28,28,100,0
+oyxNSiLq9vJmIwS9D28W,Moroccan Grilled Lamb Chops,needs_review,22,22,100,0
+ozVt3p57NKBOJdKKtYQz,Green Vegan Salad,needs_review,12,12,100,0
 pJOTjp61cMuhCxQ6Hc7f,Sweet Potato Casserole with Brown Sugar Topping,needs_review,10,10,100,0
 pJlWErrrDogTJUomF5KD,Thai Inspired Chicken Meatball Soup,needs_review,14,14,100,0
 pRcfpJeZFVuXrkMDVdBz,Teriyaki Salmon,needs_review,7,7,100,0
+pages-recipes-blistered-green-bean-casserole-parmesan-rosemary,Blistered Green Bean Casserole with Parmesan and Rosemary,needs_review,14,14,100,0
 pages-recipes-bourbon-glazed-carrots-ginger-rosemary,Bourbon Glazed Carrots with Ginger and Rosemary,needs_review,13,13,100,0
+pages-recipes-braised-lamb-shoulder-fennel-orange,Braised Lamb Shoulder with Fennel and Orange,needs_review,20,20,100,0
 pages-recipes-celebration-rice-lamb-chicken-garlic-yoghurt,"Rice with Lamb, Chicken & Garlic Yoghurt",needs_review,26,26,100,0
 pages-recipes-festive-hummus-roasted-brussels-sprouts-chestnuts,Festive Hummus with Roasted Brussels Sprouts and Chestnuts,needs_review,11,11,100,0
-pages-recipes-grilled-salmon-pine-nut-salsa,Pan-Fried Salmon with Pine Nut Salsa,needs_review,11,11,100,0
+pages-recipes-grilled-salmon-pine-nut-salsa,Pan-Fried Salmon with Pine Nut Salsa,needs_review,12,12,100,0
 pages-recipes-preserved-lemon-chicken,Preserved Lemon Chicken,needs_review,7,7,100,0
-pages-recipes-roasted-chicken-clementines-arak,Roasted Chicken with Clementines and Arak,needs_review,13,13,100,0
+pages-recipes-roasted-chicken-clementines-arak,Roasted Chicken with Clementines and Arak,needs_review,14,14,100,0
 pages-recipes-roasted-chicken-legs-dates-olives-capers,"Roasted Chicken Legs with Dates, Olives and Capers",needs_review,12,12,100,0
 pages-recipes-roasted-leeks-creme-fraiche-hazelnuts-sumac,"Roasted Leeks with Crème Fraîche, Hazelnuts and Sumac",needs_review,14,14,100,0
-pages-recipes-roasted-squash-pepita-pesto,Roasted Squash with Pepita Pesto,needs_review,10,10,100,0
-pages-recipes-spinach-feta-dumplings-lemon-butter,Spinach and Feta Dumplings in Lemon Butter,needs_review,18,18,100,0
-pages-recipes-warm-green-bean-and-lentil-salad,Warm Green Bean and Lentil Salad,needs_review,13,13,100,0
+pages-recipes-roasted-squash-pepita-pesto,Roasted Squash with Pepita Pesto,needs_review,9,9,100,0
+pages-recipes-slow-cooked-lamb-shoulder-fig-pistachio-salsa,Slow-Cooked Lamb Shoulder with Fig and Pistachio Salsa,needs_review,22,22,100,0
+pages-recipes-spinach-feta-dumplings-lemon-butter,Spinach and Feta Dumplings in Lemon Butter,needs_review,17,17,100,0
+pages-recipes-warm-green-bean-and-lentil-salad,Warm Green Bean and Lentil Salad,needs_review,14,14,100,0
 palak-tempehtempeh-in-spinach-tomato,Palak Tempeh (Tempeh in Spinach Tomato Sauce),needs_review,12,12,100,0
-paleo-beef-stew-whole30-low-carb,Paleo Beef Stew,needs_review,17,17,100,0
-paleo-carne-asada-bowl,Paleo Carne Asada Bowl,needs_review,25,25,100,0
-paleo-ground-chicken-taco-salad,Ground Chicken Taco Salad,needs_review,16,16,100,0
+paleo-beef-stew-whole30-low-carb,Paleo Beef Stew,needs_review,18,18,100,0
+paleo-beef-stir-fry-with-veggies-whole30-keto,Paleo Beef Stir Fry with Veggies,needs_review,20,20,100,0
+paleo-carne-asada-bowl,Paleo Carne Asada Bowl,needs_review,27,27,100,0
+paleo-ground-chicken-taco-salad,Ground Chicken Taco Salad,needs_review,15,15,100,0
 paleo-pork-tenderloin-teriyaki-whole30,Paleo Pork Tenderloin with Teriyaki Sauce,needs_review,11,11,100,0
+pan-fried-pork-chops-with-pear-and-ginger-sauce-skillet-pork-chops,Cast Iron Pork Chops With Pears & Ginger,needs_review,11,11,100,0
 pan-fried-salmon,Pan Fried Salmon Bites,needs_review,13,13,100,0
-pan-seared-cod-with-lemon-caper-sauce-paleo-whole30,Pan-seared Cod with Lemon Caper Sauce,needs_review,20,20,100,0
-pan-seared-salmon-with-rosemary-walnut-sauce,Pan Seared Salmon with Rosemary-Walnut Sauce,needs_review,12,12,100,0
-paneer-tikka-masala,Paneer Tikka Masala,needs_review,23,23,100,0
+pan-seared-cod-with-lemon-caper-sauce-paleo-whole30,Pan-seared Cod with Lemon Caper Sauce,needs_review,18,18,100,0
+pan-seared-salmon-with-rosemary-walnut-sauce,Pan Seared Salmon with Rosemary-Walnut Sauce,needs_review,15,15,100,0
+paneer-tikka-masala,Paneer Tikka Masala,needs_review,26,26,100,0
 panko-crusted-baked-salmon,Panko-Crusted Baked Salmon,needs_review,6,6,100,0
-parmesan-garlic-butter-crusted-halibut,Parmesan Garlic Butter Crusted Halibut,needs_review,11,11,100,0
+parmesan-garlic-butter-crusted-halibut,Parmesan Garlic Butter Crusted Halibut,needs_review,12,12,100,0
 parmesan-herb-baked-salmon,Parmesan-Herb Baked Salmon,needs_review,8,8,100,0
-pasta-e-fagioli-recipe,Pasta e Fagioli (Italian Pasta & Beans),needs_review,18,18,100,0
+pasta-e-fagioli-recipe,Pasta e Fagioli (Italian Pasta & Beans),needs_review,20,20,100,0
 pasta-fresca,Pasta Fresca,needs_review,13,13,100,0
 pdMlBv4LCxJ2rSVUhE6D,Roasted Carrots with Whipped Feta,needs_review,14,14,100,0
+perfect-chicken-scampi,Perfect Chicken Scampi,needs_review,12,12,100,0
 perfect-pan-roasted-salmon,Perfect Pan-Roasted Salmon,needs_review,3,3,100,0
-persian-chicken-with-chelow-and-yogurt-sauce,Persian Chicken,needs_review,18,18,100,0
+persian-chicken-with-chelow-and-yogurt-sauce,Persian Chicken,needs_review,22,22,100,0
 pesto-recipe,Pesto Recipe,needs_review,8,8,100,0
 pfXmWp2fNfvaFEFspRoM,Blackened Chicken with Caramel,needs_review,15,15,100,0
+phyllo-topped-ground-turkey-casserole,Phyllo Topped Ground Turkey Casserole,needs_review,18,18,100,0
 pkeXxX1FXfxPJWnng7VM,Chicken Shawarma,needs_review,13,13,100,0
+poblano-mushroom-texmex-enchiladas,Poblano and Mushroom TexMex Enchiladas,needs_review,16,16,100,0
+pollo-a-la-brasa-peruvian-chicken,Pollo a la Brasa (Peruvian-style Roasted Chicken),needs_review,22,22,100,0
 pollo-pibil,Pollo Pibil,needs_review,8,8,100,0
 portuguese-chicken-and-potatoes,Portuguese Peri Peri Chicken,needs_review,16,16,100,0
-pozole-recipe,Chicken Pozole Recipe,needs_review,14,14,100,0
+potato-and-kale-soup,Smoky Potato Kale Soup,needs_review,15,15,100,0
+pozole-recipe,Chicken Pozole Recipe,needs_review,13,13,100,0
 pqxJ0k3h8b15vaaf8WbB,Turkey and Zucchini Lasagna,needs_review,9,9,100,0
 pwJUnpidUIyhmLFKguvi,Lightened Sweet Potato Casserole Pecan Oat Streusel,needs_review,14,14,100,0
 qEk3a8BUSzX4bqhcmlMK,Moroccan Roasted Green Beans,needs_review,5,5,100,0
 qGpgBjOHQt43bORXiTaR,Sage Mashed Potatoes,needs_review,10,10,100,0
-qSV5yHANCkptQ9jAS8HA,Slow Cooker Beef Curry,needs_review,12,12,100,0
-queso-chicken-chili,Chipotle Queso Chicken Chili,needs_review,19,19,100,0
+qSV5yHANCkptQ9jAS8HA,Slow Cooker Beef Curry,needs_review,11,11,100,0
+queso-chicken-chili,Chipotle Queso Chicken Chili,needs_review,20,20,100,0
 quick-cajun-chicken-and-rice,Quick Cajun Chicken and Rice,needs_review,13,13,100,0
+quick-chicken-pho,Quick Chicken Pho,needs_review,25,25,100,0
 quick-garlic-butter-shrimp,Quick Garlic Butter Shrimp,needs_review,8,8,100,0
 quick-salmon-rice-bowls,Quick Salmon Sushi Rice Bowls,needs_review,15,15,100,0
 quinoa-chili,Quinoa Chili Bowl,needs_review,15,15,100,0
-qwoCuUDle3dJ2P0loOGM,Garlicky Broccolini,needs_review,6,6,100,0
+qwoCuUDle3dJ2P0loOGM,Garlicky Broccolini,needs_review,5,5,100,0
 r99LnkaYtAobAebass71,Tahinia,needs_review,6,6,100,0
-rAoYT1vNyH9BcD9DmWZu,Ginger-Braised Meatballs in Coconut Broth,needs_review,19,19,100,0
+rAoYT1vNyH9BcD9DmWZu,Ginger-Braised Meatballs in Coconut Broth,needs_review,23,23,100,0
 rOcQMrHU5HaI3U4ogqhQ,Sweet and Sour Chicken,needs_review,18,18,100,0
 rYF8s54ZI5ro3Z07S2pJ,Vegetable Soup Recipe,needs_review,15,15,100,0
 rYaUeDL8dG3ka7qKqmAX,Baked Feta with Cherry Tomatoes,needs_review,10,10,100,0
@@ -866,64 +838,73 @@ recipe-cacio-e-pepe-mashed-potatoes,Cacio e Pepe Mashed Potatoes,needs_review,5,
 recipe-cajun-honey-garlic-butter-salmon,Cajun Honey Butter Salmon,needs_review,16,16,100,0
 recipe-chimichurri-shrimp,20-Minute Chimichurri Shrimp,needs_review,18,18,100,0
 recipe-creamy-pesto-chicken-pasta,Creamy Pesto Chicken Pasta,needs_review,13,13,100,0
-recipe-grilled-salmon,Grilled Salmon with Simple Marinade,needs_review,11,11,100,0
+recipe-grilled-salmon,Grilled Salmon with Simple Marinade,needs_review,12,12,100,0
 recipe-ground-chicken-burgers,Ground Chicken Burgers,needs_review,12,12,100,0
 recipe-honey-orange-salmon,Honey Orange Salmon,needs_review,16,16,100,0
 recipe-pan-seared-salmon-in-garlic-mascarpone-sauce,Pan Seared Salmon in Garlic Mascarpone Sauce,needs_review,16,16,100,0
-recipe-panko-crusted-salmon-with-asparagus,Panko Crusted Salmon with Asparagus,needs_review,11,11,100,0
+recipe-panko-crusted-salmon-with-asparagus,Panko Crusted Salmon with Asparagus,needs_review,12,12,100,0
 recipe-salmon-in-creamy-red-pesto-sauce,Salmon in Creamy Red Pesto Sauce,needs_review,12,12,100,0
 recipe-shaved-brussels-sprouts-salad,Shaved Brussels Sprouts Salad,needs_review,13,13,100,0
-recipe-shrimp-with-garlic-sauteed-mushrooms,Shrimp with Garlic Sauteed Mushrooms,needs_review,10,10,100,0
+recipe-shrimp-with-garlic-sauteed-mushrooms,Shrimp with Garlic Sauteed Mushrooms,needs_review,11,11,100,0
 recipe-steak-salad-with-harissa-potatoes-and-crunchy-radishes,Middle Eastern Steak Bowl,needs_review,11,11,100,0
 recipe-stovetop-cooking-method-chraime,Braised Halibut,needs_review,15,15,100,0
+recipe-thai-coconut-curry-dumpling-soup,Thai Coconut Curry Dumpling Soup (Chicken),needs_review,13,13,100,0
 recipes-1013383-tomato-soup,Tomato Soup,needs_review,11,11,100,0
 recipes-1013536-tagine-style-lamb-stew,Lamb Tagine,needs_review,18,18,100,0
-recipes-1017729-sausage-ragu,Sausage Ragu,needs_review,14,14,100,0
-recipes-1018068-chicken-paprikash,Chicken Paprikash,needs_review,11,11,100,0
+recipes-1017729-sausage-ragu,Sausage Ragu,needs_review,12,12,100,0
+recipes-1018068-chicken-paprikash,Chicken Paprikash,needs_review,12,12,100,0
 recipes-1018528-beef-bourguignon,Beef Bourguignon,needs_review,16,16,100,0
 recipes-1018974-peruvian-roasted-chicken-with-spicy-cilantro-sauce,Peruvian Roasted Chicken,needs_review,22,22,100,0
 recipes-1019764-pork-meatballs-with-ginger-and-fish-sauce,Ginger Pork Meatballs,needs_review,7,7,100,0
-recipes-1020616-vegan-mac-and-cheese,Vegan Mac and Cheese,needs_review,16,16,100,0
+recipes-1020616-vegan-mac-and-cheese,Vegan Mac and Cheese,needs_review,17,17,100,0
+recipes-1020763-vegan-caesar-salad-with-crisp-chickpeas,Vegan Caesar Salad With Crisp Chickpeas,needs_review,16,16,100,0
 recipes-1020777-sopa-de-albondigas-mexican-meatball-soup,Mexcian Meatball Soup,needs_review,26,26,100,0
 recipes-1020864-one-pot-braised-chicken-with-coconut-milk-tomato-and-ginger,"Braised Chicken With Coconut Milk, Tomato and Ginger",needs_review,14,14,100,0
-recipes-1020923-slow-cooker-honey-soy-braised-pork-with-lime-and-ginger,Honey Soy Braised Pork,needs_review,9,9,100,0
-recipes-1021776-lemony-white-bean-soup-with-turkey-and-greens,White Bean Soup with Turkey and Greens,needs_review,11,11,100,0
+recipes-1020923-slow-cooker-honey-soy-braised-pork-with-lime-and-ginger,Honey Soy Braised Pork,needs_review,14,14,100,0
+recipes-1021776-lemony-white-bean-soup-with-turkey-and-greens,White Bean Soup with Turkey and Greens,needs_review,14,14,100,0
 recipes-1021943-lemony-chicken-feta-meatball-soup-with-spinach,Turkey Feta Meatball Soup,needs_review,13,13,100,0
-recipes-a-really-nice-fish-with-cucumber-and-crunchy-garlic-salad,A Really Nice Fish,needs_review,13,13,100,0
+recipes-1857-thomas-kellers-butternut-squash-soup-with-brown-butter,Butternut Squash Soup,needs_review,19,19,100,0
+recipes-a-really-nice-fish-with-cucumber-and-crunchy-garlic-salad,A Really Nice Fish,needs_review,18,18,100,0
 recipes-beef-and-broccolihtml,Easy Beef and Broccoli,needs_review,15,15,100,0
+recipes-beef-broccoli,Authentic Beef and Broccoli,needs_review,26,26,100,0
 recipes-blackened-salmon-grilled-lettuce-avocado-cream,Blackened Salmon with Grilled Lettuce and Avocado Cream,needs_review,12,12,100,0
-recipes-chicken-tacoshtml,Chicken Tacos,needs_review,16,16,100,0
-recipes-chicken-traybake,Chicken Traybake,needs_review,10,10,100,0
+recipes-chicken-tacoshtml,Chicken Tacos,needs_review,17,17,100,0
+recipes-chicken-traybake,Chicken Traybake,needs_review,11,11,100,0
 recipes-cilantro-lime-rice,Cilantro Lime Rice (Chipotle Copycat),needs_review,7,7,100,0
 recipes-creamy-salmon-pasta-with-a-chilli-lemon-kick,Creamy Salmon Pasta with Chilli Lemon,needs_review,8,8,100,0
 recipes-curry-fried-chicken,Curry Fried Chicken,needs_review,27,27,100,0
 recipes-double-cut-lamb-chops-with-garlic-caper-rub,Garlic Caper Lamb Chop With Tomato Burrata Peach Salad,needs_review,9,9,100,0
 recipes-easy-beef-picadillo,Beef Picadillo Bowl,needs_review,17,17,100,0
+recipes-everything-salmon-green-pesto-chickpeas,Everything Salmon and Green Pesto Chickpeas,needs_review,14,14,100,0
 recipes-food-views-spiced-moroccan-vegetable-soup-with-chickpeas-cilantro-and-lemon-harira,Moroccan Harira,needs_review,17,17,100,0
 recipes-goodbye-meatballs,Goodbye Meatballs,needs_review,16,16,100,0
 recipes-greek-sheet-pan-chicken,Greek Sheet Pan Chicken Dinner,needs_review,16,16,100,0
-recipes-greek-shrimp-tomatoes-fetahtml,Shrimp Saganaki (Greek Shrimp with Tomatoes and Feta),needs_review,13,13,100,0
+recipes-greek-shrimp-tomatoes-fetahtml,Shrimp Saganaki (Greek Shrimp with Tomatoes and Feta),needs_review,14,14,100,0
 recipes-grilled-chicken,Perfectly Grilled Chicken,needs_review,2,2,100,0
+recipes-grilled-summer-fish,"Grilled White Fish With a Tomato, Corn, and Basil Salad",needs_review,16,16,100,0
 recipes-honey-garlic-pork-tenderloin,Honey Garlic Pork Tenderloin,needs_review,12,12,100,0
-recipes-honey-glazed-carrots,Honey Glazed Carrots,needs_review,10,10,100,0
+recipes-honey-glazed-carrots,Honey Glazed Carrots,needs_review,12,12,100,0
 recipes-honey-soy-chicken-sesame-spinach,Honey Soy Chicken and Sesame Spinach,needs_review,17,17,100,0
 recipes-mediterranean-ground-beef-stir-fry,Mediterranean Ground Beef Stir Fry,needs_review,9,9,100,0
 recipes-miso-butter-air-fryer-roast-chicken-recipe,Miso Butter Air Fryer Roast Chicken,needs_review,12,12,100,0
-recipes-miso-salmon,Perfect Miso Salmon,needs_review,7,7,100,0
-recipes-one-pot-creamy-chicken-pot-pie-pasta,Chicken Pot Pie Pasta (One Pot),needs_review,12,12,100,0
-recipes-pan-seared-salmon-with-peas-chanterelles-and-dill-chive-sauce,"Pan-Seared Salmon with Peas, Chanterelles and Dill-Chive Sauce",needs_review,14,14,100,0
+recipes-miso-salmon,Perfect Miso Salmon,needs_review,8,8,100,0
+recipes-one-pot-creamy-chicken-pot-pie-pasta,Chicken Pot Pie Pasta (One Pot),needs_review,14,14,100,0
+recipes-pan-seared-salmon-with-soy-mustard-glazehtml,Pan-Seared Salmon with Soy Mustard Glaze,needs_review,11,11,100,0
 recipes-pan-seared-scallops-lemon-garlic-butter,Pan Seared Scallops (Lemon Garlic Butter),needs_review,6,6,100,0
+recipes-quick-lamb-ragu,Quick Lamb Ragù,needs_review,15,15,100,0
 recipes-restaurant-style-pan-seared-salmonhtml,Restaurant-Style Pan Seared Salmon,needs_review,4,4,100,0
 recipes-roasted-sweet-potatoes,Roasted Sweet Potatoes (Perfectly Seasoned),needs_review,5,5,100,0
 recipes-salmon-with-whole-lemon-dressing,Salmon with Whole Lemon Dressing,needs_review,9,9,100,0
-recipes-shawarma-chicken-rice-bake,Shawarma Chicken Rice Bake,needs_review,14,14,100,0
+recipes-shawarma-chicken-rice-bake,Shawarma Chicken Rice Bake,needs_review,13,13,100,0
 recipes-shrimp-scampi,Classic Shrimp Scampi,needs_review,9,9,100,0
 recipes-sizzle-butter-salmon,Sizzle Butter Salmon with Raita Rice,needs_review,13,13,100,0
 recipes-slow-roasted-salmon-with-french-herb-salsahtml,Slow-Roasted Salmon with French Herb Salsa,needs_review,13,13,100,0
 recipes-spicy-chicken-pasta,Spicy Chicken Pasta,needs_review,12,12,100,0
+recipes-spicy-salmon,Spicy Salmon by Ken Hom,needs_review,10,10,100,0
 recipes-tangy-braised-short-ribs,Tangy Braised Short Ribs,needs_review,14,14,100,0
+recipes-turkey-meatballshtml,Turkey Meatballs,needs_review,13,13,100,0
 recipes-vietnamesedaikonandcarrotpickles,Vietnamese Pickled Carrot and Daikon,needs_review,6,6,100,0
-recipes-zucchini-fritters-with-feta-and-dillhtml,Zucchini Fritters with Feta and Dill,needs_review,12,12,100,0
+recipes-zucchini-fritters-with-feta-and-dillhtml,Zucchini Fritters with Feta and Dill,needs_review,11,11,100,0
 red-lentil-curry,Red Lentil Curry,needs_review,15,15,100,0
 red-wine-braised-short-ribs,Red Wine Braised Short Ribs,needs_review,16,16,100,0
 rice-bowl,Mango Ginger Rice Bowl,needs_review,17,17,100,0
@@ -937,58 +918,67 @@ sHwiQKEpkdqi4yAS0Qhm,Greek Style Lamb Burgers,needs_review,15,15,100,0
 sK2Lmj89IJm6WDltfjyi,Chicken Florentine,needs_review,11,11,100,0
 salmon-and-lentil-salad,Salmon and Lentil Salad,needs_review,15,15,100,0
 salmon-cakes-recipe,Salmon Cakes,needs_review,12,12,100,0
+salmon-fajitas,Salmon Fajitas,needs_review,19,19,100,0
 salmon-florentine,Salmon with Spinach Cream Sauce,needs_review,9,9,100,0
+salmon-pasta,Rich and Creamy Salmon Pasta,needs_review,11,11,100,0
 salmon-sushi-bake,Salmon Sushi Bake (No Rolling),needs_review,20,20,100,0
-salmon-sushi-stacks,Easy Spicy Salmon Sushi Stacks,needs_review,16,16,100,0
-salmon-with-braised-french-lentils,Oven Roasted Salmon with Braised French Lentils,needs_review,19,19,100,0
+salmon-sushi-stacks,Easy Spicy Salmon Sushi Stacks,needs_review,19,19,100,0
+salmon-with-braised-french-lentils,Oven Roasted Salmon with Braised French Lentils,needs_review,20,20,100,0
+salmon-with-lemon-dill-sauce,Baked Salmon with Creamy Lemon Dill Sauce,needs_review,12,12,100,0
 salsa-chicken,Salsa Chicken (Crock Pot),needs_review,9,9,100,0
-salsa-verde-chicken-tortilla-bowl,Crockpot Salsa Verde Chicken Tortilla Bowl,needs_review,14,14,100,0
+salsa-verde-chicken-tortilla-bowl,Crockpot Salsa Verde Chicken Tortilla Bowl,needs_review,18,18,100,0
 salt-and-pepper-chicken,Salt and Pepper Chicken,needs_review,11,11,100,0
 saucy-salmon-curry-rice-bowls,Saucy Salmon Curry Rice Bowls,needs_review,15,15,100,0
+sausage-and-cabbage-skillet,Easy Chicken Sausage and Cabbage Skillet,needs_review,8,8,100,0
 sgaeEpobLdHjvhfZ1zDM,Butter Lettuce Salad,needs_review,12,12,100,0
 sgi0mYqmUcVtD3EcApM7,Belgian Ale-Braised Pot Roast,needs_review,13,13,100,0
-sh1koHdQPchP3hMIpCqL,"Sausage, Butternut Squash and Tortellini Soup",needs_review,14,14,100,0
+sh1koHdQPchP3hMIpCqL,"Sausage, Butternut Squash and Tortellini Soup",needs_review,15,15,100,0
 shanghai-style-braised-pork-belly,Shanghai-Style Braised Pork Belly (Hong Shao Rou),needs_review,7,7,100,0
 sheet-pan-chicken-recipe,Sheet Pan Baked Chicken Breast with Veggies,needs_review,9,9,100,0
 sheet-pan-garlic-butter-baked-salmon,Garlic Butter Baked Salmon,needs_review,12,12,100,0
+sheet-pan-garlic-herb-salmon-lobster-veggies,Sheet Pan Garlic Herb Salmon Lobster and Veggies,needs_review,23,23,100,0
 sheet-pan-gochujang-glazed-salmon,Sheet Pan Gochujang Glazed Salmon,needs_review,15,15,100,0
 sheet-pan-harissa-chicken,Harissa Chicken,needs_review,19,19,100,0
-sheet-pan-honey-garlic-chicken,Honey Garlic Chicken and Feta Potatoes,needs_review,18,18,100,0
+sheet-pan-honey-garlic-chicken,Honey Garlic Chicken and Feta Potatoes,needs_review,19,19,100,0
 sheet-pan-lemon-chicken-potatoes,Sheet Pan Lemon Chicken and Potatoes,needs_review,6,6,100,0
-sheet-pan-sesame-feta-chicken,Sheet Pan Sesame Feta Chicken and Sweet Potatoes,needs_review,20,20,100,0
+sheet-pan-sesame-feta-chicken,Sheet Pan Sesame Feta Chicken and Sweet Potatoes,needs_review,21,21,100,0
 sheet-pan-shrimp,Sheet Pan Shrimp,needs_review,12,12,100,0
 sheet-pan-spicy-ginger-sesame-beef,Sheet Pan Spicy Ginger Sesame Beef and Broccoli,needs_review,19,19,100,0
-sheet-pan-sticky-ginger-sesame-chicken,Sticky Ginger Sesame Chicken and Crispy Brussels Sprouts,needs_review,16,16,100,0
+sheet-pan-sticky-ginger-sesame-chicken,Sticky Ginger Sesame Chicken and Crispy Brussels Sprouts,needs_review,17,17,100,0
 shrimp-and-mushrooms-in-a-garlic-bisque-sauce,Shrimp and Mushrooms in Garlic Bisque Sauce,needs_review,11,11,100,0
+shrimp-burrito-bowls,Salsa Verde Shrimp Burrito Bowls,needs_review,18,18,100,0
 shrimp-oreganata,Shrimp Oreganata,needs_review,16,16,100,0
 shrimp-tacos-with-slaw,Shrimp Tacos with Slaw,needs_review,17,17,100,0
 sichuan-shrimp-stir-fry,Sichuan Shrimp Stir Fry,needs_review,12,12,100,0
 silken-tofu-pasta-sauce,Silken Tofu Pasta Sauce,needs_review,10,10,100,0
-simple-chicken-enchiladas,Easy Chicken Enchiladas,needs_review,13,13,100,0
+simple-chicken-enchiladas,Easy Chicken Enchiladas,needs_review,14,14,100,0
 simple-salmon-cakes-aip-paleo-low-fodmap,AIP Salmon Cakes,needs_review,7,7,100,0
-simple-vegetable-tempeh-stir-fry,30-Minute Tempeh Stir-Fry,needs_review,12,12,100,0
+simple-vegetable-tempeh-stir-fry,30-Minute Tempeh Stir-Fry,needs_review,13,13,100,0
 sirloin-steak-recipe,Sirloin Steak,needs_review,8,8,100,0
-skillet-chicken-dumplings,Skillet Chicken Dumplings,needs_review,15,15,100,0
-skillet-chicken-thighs-with-mushroom-gravy,Skillet Chicken Thighs with Mushroom Gravy,needs_review,10,10,100,0
+skillet-chicken-dumplings,Skillet Chicken Dumplings,needs_review,16,16,100,0
+skillet-chicken-thighs-with-mushroom-gravy,Skillet Chicken Thighs with Mushroom Gravy,needs_review,11,11,100,0
 skillet-mexican-beef-and-rice,Skillet Mexican Beef and Rice,needs_review,15,15,100,0
+skillet-tomato-cheddar-chicken-pot-pie,Skillet Tomato Cheddar Chicken Pot Pie,needs_review,17,17,100,0
 skinny-broccoli-cheddar-soup,Broccoli Cheddar Soup,needs_review,13,13,100,0
-sloppy-joe-recipe,Sloppy Joes with Homemade BBQ Sauce,needs_review,18,18,100,0
+sloppy-joe-recipe,Sloppy Joes with Homemade BBQ Sauce,needs_review,17,17,100,0
 slow-baked-salmon-butter-beans,Slow Baked Salmon with Butter Beans,needs_review,9,9,100,0
-slow-cooker-chipotle-beef-burrito-bowls,Chipotle Beef Burrito Bowl,needs_review,23,23,100,0
+slow-cooker-chipotle-beef-burrito-bowls,Chipotle Beef Burrito Bowl,needs_review,24,24,100,0
 slow-cooker-creamy-ranch-pork-chops,Slow Cooker Pork Chops,needs_review,11,11,100,0
-slow-cooker-french-wine-and-mustard-chicken,French Wine and Mustard Chicken,needs_review,15,15,100,0
+slow-cooker-french-wine-and-mustard-chicken,French Wine and Mustard Chicken,needs_review,16,16,100,0
 slow-cooker-kalua-pork,Slow Cooker Kalua Pork,needs_review,3,3,100,0
 slow-cooker-luau-pork-rice-bowls,Kalua Pork Rice Bowl,needs_review,14,14,100,0
 slow-cooker-salsa-verde-chicken,Slow Cooker Salsa Verde Chicken,needs_review,18,18,100,0
 smoked-salmon-pasta,Creamy Smoked Salmon Pasta,needs_review,13,13,100,0
 smothered-chicken,Smothered Chicken,needs_review,19,19,100,0
+spaghetti-squash-boats-turkey-sausage-paleo-whole30,Turkey Sausage Spaghetti Squash Boats,needs_review,13,13,100,0
 spiced-roasted-carrots-with-lemony-whipped-feta,Spiced Roasted Carrots With Lemony Whipped Feta,needs_review,16,16,100,0
 spicy-chicken-ramen,Spicy Ramen Recipe (Chicken Broth Ramen),needs_review,17,17,100,0
 spicy-miso-ramen,Spicy Miso Ramen,needs_review,16,16,100,0
-spicy-shrimp-tacos-with-garlic-cilantro-lime-slaw,Spicy Shrimp Tacos with Garlic Cilantro Lime Slaw,needs_review,17,17,100,0
+spicy-shrimp-tacos-with-garlic-cilantro-lime-slaw,Spicy Shrimp Tacos with Garlic Cilantro Lime Slaw,needs_review,19,19,100,0
 spicy-southwest-salad,Spicy Southwest Salad,needs_review,18,18,100,0
 spinach-artichoke-salmon-skillet,Spinach Artichoke Salmon Skillet,needs_review,18,18,100,0
 ssxj1TvtPv4Jc4zuW2xX,Yakisoba with Veggies and Tiger Prawns,needs_review,17,17,100,0
+steak-and-caramelized-onion-salad,Steak and Caramelized Onion Salad,needs_review,19,19,100,0
 steak-creamy-garlic-shrimp,Steak and Creamy Garlic Shrimp (Surf and Turf),needs_review,11,11,100,0
 steak-salad-dijon-balsamic-dressing,Steak Salad with Dijon Balsamic Dressing,needs_review,15,15,100,0
 steak-salad-with-creamy-chimichurri-dressing,Steak Salad with Creamy Chimichurri Dressing,needs_review,18,18,100,0
@@ -997,79 +987,89 @@ steamed-salmon-with-garlic-herbs-and-lemon,"Steamed Salmon with Garlic, Herbs an
 sticky-asian-chicken-wings,Sticky Asian Chicken Wings,needs_review,10,10,100,0
 sticky-chicken-thighs,Sticky Chicken Thighs,needs_review,20,20,100,0
 sticky-garlic-sesame-shrimp-bowls,Sticky Garlic Sesame Shrimp Bowls,needs_review,19,19,100,0
-sticky-pomegranate-chicken,Sticky Pomegranate Chicken and Honey Roasted Squash,needs_review,16,16,100,0
+sticky-pomegranate-chicken,Sticky Pomegranate Chicken and Honey Roasted Squash,needs_review,15,15,100,0
 stuffed-cabbage-rolls-recipe,Stuffed Cabbage Rolls,needs_review,20,20,100,0
 sumac-chicken-with-meyer-lemons,Sumac Chicken,needs_review,15,15,100,0
 sumac-salmon-tacos-coriander-mint-yogurt,Sumac Salmon Tacos with Coriander-Mint Yogurt,needs_review,21,21,100,0
 sumac-salmon-with-golden-rice,Sumac Salmon with Golden Rice,needs_review,17,17,100,0
+sun-dried-tomato-chicken-bowls,Sheet Pan Sun-Dried Tomato Chicken Bowls,needs_review,20,20,100,0
 sushi-inspired-chicken-salad,High-Protein Sushi-Inspired Chicken Salad,needs_review,14,14,100,0
-swedish-meatballs-2,Swedish Meatballs,needs_review,18,18,100,0
+swedish-meatballs-2,Swedish Meatballs,needs_review,19,19,100,0
 sweet-and-sour-salmon,Sweet and Sour Salmon with Bok Choy,needs_review,8,8,100,0
 sweet-potato-black-bean-enchiladas,Vegan Sweet Potato Black Bean Enchiladas,needs_review,13,13,100,0
-t2QajYcTtDxPaJC6DeHB,Chicken Florentine Soup,needs_review,13,13,100,0
-t3F8xL31LpXfGrY3aqCq,Salmon Burgers with Lemon-Caper Spread and Fennel Slaw,needs_review,22,22,100,0
-tAW0Pv86s82D3QVu4MZ7,Vegan Bang Bang Tofu,needs_review,8,8,100,0
+t2QajYcTtDxPaJC6DeHB,Chicken Florentine Soup,needs_review,14,14,100,0
+t31WwRM8Hxp22yViJe4c,Thai Butternut Quinoa Salad Gluten Free,needs_review,20,20,100,0
+t3F8xL31LpXfGrY3aqCq,Salmon Burgers with Lemon-Caper Spread and Fennel Slaw,needs_review,21,21,100,0
+tAW0Pv86s82D3QVu4MZ7,Vegan Bang Bang Tofu,needs_review,10,10,100,0
 tFbLcZ0Xe9KahQWnAZJ2,Spiralized Sweet Potato Bake,needs_review,7,7,100,0
 taco-pasta,Taco Pasta,needs_review,15,15,100,0
+tandoori-salmon-bowls,Tandoori Salmon Bowls,needs_review,24,24,100,0
 tarragon-chicken-with-asparagus-lemon-leeks,Tarragon Chicken with Asparagus,needs_review,10,10,100,0
-tequila-lime-fish-tacos,Tequila Lime Fish Tacos,needs_review,15,15,100,0
-teriyaki-chicken-stir-fry,Teriyaki Chicken Stir Fry,needs_review,10,10,100,0
+tequila-lime-fish-tacos,Tequila Lime Fish Tacos,needs_review,16,16,100,0
+teriyaki-chicken-stir-fry,Teriyaki Chicken Stir Fry,needs_review,11,11,100,0
 teriyaki-salmon-bowls,Teriyaki Salmon Bowls,needs_review,16,16,100,0
-thai-basil-beef-pad-gra-prow,Thai Basil Beef,needs_review,17,17,100,0
+teriyaki-tofu-tempeh-casserole,Teriyaki Tofu and Tempeh Casserole,needs_review,10,10,100,0
+thai-basil-beef-pad-gra-prow,Thai Basil Beef,needs_review,16,16,100,0
 the-ultimate-garlic-shrimp-scampi,Ultimate Garlic Shrimp Scampi,needs_review,10,10,100,0
+tk2Zueudg6RvLZutzZXO,Quick and Easy Shrimp Tacos,needs_review,11,11,100,0
 toasted-coconut-rice,Easy Toasted Coconut Rice,needs_review,6,6,100,0
 tomato-basil-chicken-pasta,Tomato Basil Pasta,needs_review,7,7,100,0
-tortellini-soup,Tortellini Soup,needs_review,17,17,100,0
+tortellini-soup,Tortellini Soup,needs_review,18,18,100,0
 turkey-stuffed-peppers-45-pts,Turkey Stuffed Peppers,needs_review,13,13,100,0
-turkish-lamb-wraps,Turkish Lamb Wraps,needs_review,19,19,100,0
+turkish-lamb-wraps,Turkish Lamb Wraps,needs_review,18,18,100,0
 turkish-red-lentil-soup,Turkish Red Lentil Soup,needs_review,15,15,100,0
 tuscan-butter-salmon-recipe,Tuscan Butter Salmon,needs_review,11,11,100,0
-tuscan-chicken,Creamy Tuscan Chicken,needs_review,15,15,100,0
-tuscan-garlic-salmon-whole30-paleo,Tuscan Garlic Salmon,needs_review,16,16,100,0
+tuscan-chicken,Creamy Tuscan Chicken,needs_review,14,14,100,0
+tuscan-garlic-salmon-whole30-paleo,Tuscan Garlic Salmon,needs_review,18,18,100,0
 tuscan-salmon-recipe,Tuscan Salmon,needs_review,11,11,100,0
 tuscan-turkey-and-white-bean-skillet,Tuscan Turkey and White Bean Skillet,needs_review,16,16,100,0
-uDw9n09PGxuCtMm4uujA,"Skillet Meatballs With Peaches, Basil and Lime",needs_review,13,13,100,0
-uRVG5fx0SrCQIVdRYVOO,Cajun Shrimp and Sausage Skillet,needs_review,8,8,100,0
+tzatziki-sauce,Tzatziki Sauce,needs_review,8,8,100,0
+tzqzmEPcZil3eQbC6KNf,Tender and Tangy Brisket,needs_review,11,11,100,0
+uDw9n09PGxuCtMm4uujA,"Skillet Meatballs With Peaches, Basil and Lime",needs_review,14,14,100,0
+uRVG5fx0SrCQIVdRYVOO,Cajun Shrimp and Sausage Skillet,needs_review,9,9,100,0
 uSNA0k3Z0PkNRpI2k8TW,Moroccan Meatballs,needs_review,19,19,100,0
 uYuD9o2SFoWdXdYD92fu,Vietnamese Pickled Carrots and Daikon,needs_review,6,6,100,0
 ukMNQulT4lBydbkjIp35,Thai Sticky Rice,needs_review,2,2,100,0
-urQixJ0IcYIVQaMCANqy,Mongolian Beef,needs_review,16,16,100,0
+urQixJ0IcYIVQaMCANqy,Mongolian Beef,needs_review,15,15,100,0
 vN5YDDZSzF7GcM7DQPEq,Roasted Baby Back Ribs with Coconut Sugar,needs_review,9,9,100,0
-vTwsrdgOtLdfJkHaLEQG,Butternut Squash Chicken Enchilada Skillet,needs_review,15,15,100,0
+vTwsrdgOtLdfJkHaLEQG,Butternut Squash Chicken Enchilada Skillet,needs_review,17,17,100,0
 vZiJTmIykSaKhEBPSMgx,Halibut in Papillote,needs_review,13,13,100,0
 vegan-pasta,Creamy Vegan Pasta,needs_review,13,13,100,0
 vegan-spicy-thai-tofu-tacos,Spicy Tofu Tacos,needs_review,22,22,100,0
-vegan-thai-red-curry,Vegan Thai Red Curry with Tofu,needs_review,18,18,100,0
+vegan-thai-red-curry,Vegan Thai Red Curry with Tofu,needs_review,19,19,100,0
 vegetable-pasta-bake,Vegetable Pasta Bake,needs_review,14,14,100,0
-vegetarian-enchilada-casserole-recipe,Roasted Veggie Enchilada Casserole,needs_review,14,14,100,0
-vegetarian-enchiladas-recipe,Veggie Black Bean Enchiladas,needs_review,12,12,100,0
+vegetarian-enchilada-casserole-recipe,Roasted Veggie Enchilada Casserole,needs_review,15,15,100,0
+vegetarian-enchiladas-recipe,Veggie Black Bean Enchiladas,needs_review,13,13,100,0
 veggie-stir-fry-recipe,Spring Veggie Stir-Fry,needs_review,11,11,100,0
 wG1ooQbJXsePHA6PIJZ8,Thai Basil Chicken (10-Minute),needs_review,10,10,100,0
+warm-comforting-lasagna-soup,Chicken Sausage Lasagna Soup,needs_review,18,18,100,0
 wcPyvBfJCr8Ncj1rrK8v,Zucchini Rice,needs_review,5,5,100,0
-weeknight-saucy-pineapple-bbq-chicken-bowls,BBQ Pineapple Chicken bowl,needs_review,15,15,100,0
-white-bean-lemon-pesto-orzo-soup,Creamy White Bean Lemon Pesto Orzo Soup,needs_review,14,14,100,0
-white-chicken-poblano-enchiladas,White Chicken Poblano Enchiladas,needs_review,15,15,100,0
+weeknight-saucy-pineapple-bbq-chicken-bowls,BBQ Pineapple Chicken bowl,needs_review,16,16,100,0
+white-bean-lemon-pesto-orzo-soup,Creamy White Bean Lemon Pesto Orzo Soup,needs_review,13,13,100,0
+white-chicken-poblano-enchiladas,White Chicken Poblano Enchiladas,needs_review,17,17,100,0
 whole30-changs-spicy-chicken,Whole30 Chang's Spicy Chicken,needs_review,14,14,100,0
 whole30-mongolian-beef-stir-fry,Whole30 Mongolian Beef Stir Fry,needs_review,20,20,100,0
 whole30-peppered-steak,Whole30 Peppered Steak Stir-Fry,needs_review,18,18,100,0
 x1VESexu6BjBwTS89SLq,Shrimp Stir Fry,needs_review,10,10,100,0
 x4oA8o0vYEYkbu8p54VF,Salisbury Steak,needs_review,27,27,100,0
-x8r0hiv1EKq429QtmKBN,Black Bean Tostadas,needs_review,15,15,100,0
+x8r0hiv1EKq429QtmKBN,Black Bean Tostadas,needs_review,16,16,100,0
 xFDgt1IP2UKxfX5T3cpG,"Sausage, Potato and Kale Soup",needs_review,9,9,100,0
-xoBHAshYeSI5YMohnp0u,Garlicky Green Beans,needs_review,6,6,100,0
+xSJv5beluVkDJVb96nJk,Roasted Root Vegetables with Jalapeno Yogurt Sauce,needs_review,10,10,100,0
+xoBHAshYeSI5YMohnp0u,Garlicky Green Beans,needs_review,5,5,100,0
 xtOVkb9So1PmTgKdQgr8,Corn Gazpacho with Salmon & Crispy Rice,needs_review,11,11,100,0
 yBxgVSacLJwypYpzAXKU,Steamed Rice,needs_review,2,2,100,0
-yVhVG4iWEGmaidN3Ko3w,Chuck Roast with Au Jus,needs_review,9,9,100,0
+yVhVG4iWEGmaidN3Ko3w,Chuck Roast with Au Jus,needs_review,10,10,100,0
 ysSz2kqhNQlrLGyPW1bE,Sheet Pan Sesame Chicken and Vegetables,needs_review,16,16,100,0
 yummy-salmon-burgers-slaw,Salmon Burgers with Creamy Slaw,needs_review,14,14,100,0
 yxBXLuANEUkjNfcQuq8R,Light Chicken and Dumpling Soup,needs_review,20,20,100,0
-zE7277CmmiM3LWyUiE7Z,Turkey and White Bean Chili,needs_review,18,18,100,0
-zHvFjx1qZVGBdawCDsuZ,Creamy Refried Beans,needs_review,18,18,100,0
+zDofwb88VJ9IXfYGkJHz,Turkey Pumpkin Chili,needs_review,20,20,100,0
+zE7277CmmiM3LWyUiE7Z,Turkey and White Bean Chili,needs_review,21,21,100,0
+zHvFjx1qZVGBdawCDsuZ,Creamy Refried Beans,needs_review,19,19,100,0
 zIKWJ524TBNNDtnGPJ0N,Crispy Salmon Tacos,needs_review,13,13,100,0
 zNzNNoHjcCPDGXv8DNXA,Harissa Chicken,needs_review,9,9,100,0
 zaUkt80Cl66unxMw7HL0,Slow-Braised Leg of Lamb,needs_review,10,10,100,0
 zaatar-meatballs-with-green-tahini-sauce,Zaatar Meatballs with Green Tahini Sauce (Beef),needs_review,17,17,100,0
-zbWTvBALgLfjyaIAt33J,Baked Sage Chicken Meatballs,needs_review,23,23,100,0
+zbWTvBALgLfjyaIAt33J,Baked Sage Chicken Meatballs,needs_review,22,22,100,0
 zdYvZ5CgqCbq27Qt0bUP,Ina's Spaghetti and Meatballs,needs_review,23,23,100,0
 zucchini-pasta,Zucchini Pasta,needs_review,12,12,100,0
 zuppa-toscana-recipe-video,Zuppa Toscana,needs_review,10,10,100,0
