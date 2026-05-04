@@ -599,6 +599,11 @@ function preprocessIngredient(raw: string): string {
   s = s.replace(/^[-–]\s*\d*\.?\d*\s*(ounce|oz|pound|lb)\s+(can|cans|jar|jars|package|packages?|bag|bags?)\b/gi,
     (_, _u, container) => `1 ${container}`);
 
+  // 6b. Bare "15- ounce can X" / "15-oz can X" / "15 ounce can X" with no leading count
+  //     →  "1 (15 oz) can X"  (route through paren-weight handler so qty=15 oz)
+  s = s.replace(/^(\d+(?:\.\d+)?)\s*-?\s*(ounce|oz|pound|lb|gram|g|kg|ml)s?\.?\s+(can|cans|jar|jars|package|packages?|bag|bags?|block|blocks?|box|boxes?|bottle|bottles?)\b/gi,
+    (_, n, u, container) => `1 (${n} ${u}) ${container}`);
+
   // 7. "1 - 15 ounce can …"  →  "1 can …"
   s = s.replace(/^([1-4])\s*[-–]\s*\d{2,}\s*(?:ounce|oz)\s+(can|cans|jar|jars|package|packages?)\b/gi,
     (_, n, container) => `${n} ${container}`);
