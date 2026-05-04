@@ -9139,25 +9139,29 @@
     ]
   },
   "white rice": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_bpumdjzb5rtqaeabb0kbgbcgr4t9",
-    "label": "White Rice",
+    "label": "white rice (cooked, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 360,
+        "value": 130,
         "unit": "kcal"
       },
       "protein": {
-        "value": 6.61,
+        "value": 2.7,
         "unit": "g"
       },
       "fat": {
-        "value": 0.58,
+        "value": 0.3,
         "unit": "g"
       },
       "carbs": {
-        "value": 79.3,
+        "value": 28.2,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0.4,
         "unit": "g"
       }
     },
@@ -10673,29 +10677,29 @@
     ]
   },
   "jasmine rice": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_a3g7g0kb4xvknbbdl91t8a19a6ci",
-    "label": "Jasmine Rice",
+    "label": "jasmine rice (cooked, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 365,
+        "value": 129,
         "unit": "kcal"
       },
       "protein": {
-        "value": 7.13,
+        "value": 2.7,
         "unit": "g"
       },
       "fat": {
-        "value": 0.66,
+        "value": 0.3,
         "unit": "g"
       },
       "carbs": {
-        "value": 80,
+        "value": 28,
         "unit": "g"
       },
       "fiber": {
-        "value": 1.3,
+        "value": 0.5,
         "unit": "g"
       }
     },
@@ -11561,29 +11565,29 @@
     ]
   },
   "quinoa": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_a0d1h1cbporq98adlzq8tadghm2a",
-    "label": "Quinoa",
+    "label": "quinoa (cooked, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 368,
+        "value": 120,
         "unit": "kcal"
       },
       "protein": {
-        "value": 14.1,
+        "value": 4.4,
         "unit": "g"
       },
       "fat": {
-        "value": 6.07,
+        "value": 1.92,
         "unit": "g"
       },
       "carbs": {
-        "value": 64.2,
+        "value": 21.3,
         "unit": "g"
       },
       "fiber": {
-        "value": 7,
+        "value": 2.8,
         "unit": "g"
       }
     },
@@ -11979,29 +11983,29 @@
     ]
   },
   "basmati rice": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_a3g7g0kb4xvknbbdl91t8a19a6ci",
-    "label": "Basmati Rice",
+    "label": "basmati rice (cooked, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 365,
+        "value": 130,
         "unit": "kcal"
       },
       "protein": {
-        "value": 7.13,
+        "value": 2.7,
         "unit": "g"
       },
       "fat": {
-        "value": 0.66,
+        "value": 0.3,
         "unit": "g"
       },
       "carbs": {
-        "value": 80,
+        "value": 28.2,
         "unit": "g"
       },
       "fiber": {
-        "value": 1.3,
+        "value": 0.4,
         "unit": "g"
       }
     },
@@ -16480,29 +16484,29 @@
     ]
   },
   "brown rice": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_aro09r9avsklizbsberuoaegj0uh",
-    "label": "Brown Rice",
+    "label": "brown rice (cooked, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 362,
+        "value": 123,
         "unit": "kcal"
       },
       "protein": {
-        "value": 7.5,
+        "value": 2.7,
         "unit": "g"
       },
       "fat": {
-        "value": 2.68,
+        "value": 1,
         "unit": "g"
       },
       "carbs": {
-        "value": 76.2,
+        "value": 25.6,
         "unit": "g"
       },
       "fiber": {
-        "value": 3.4,
+        "value": 1.6,
         "unit": "g"
       }
     },
@@ -34801,6 +34805,48 @@
       }
     ]
   },
+  "cooked farro": {
+    "source": "usda",
+    "foodId": "fdc_farro_cooked",
+    "label": "Farro, cooked",
+    "category": "Grains",
+    "per100g": {
+      "calories": {
+        "value": 123,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 5.4,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 0.7,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 25.7,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 3.6,
+        "unit": "g"
+      }
+    },
+    "measures": [
+      {
+        "label": "Serving",
+        "gramWeight": 195
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 195
+      }
+    ]
+  },
   "farro": {
     "source": "edamam",
     "foodId": "food_bulq1w3a0qy4x4af2vjawbccp4yw",
@@ -37361,25 +37407,29 @@
     ]
   },
   "sushi rice": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_bpumdjzb5rtqaeabb0kbgbcgr4t9",
-    "label": "Rice",
+    "label": "sushi rice (cooked, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 360,
+        "value": 130,
         "unit": "kcal"
       },
       "protein": {
-        "value": 6.61,
+        "value": 2.7,
         "unit": "g"
       },
       "fat": {
-        "value": 0.58,
+        "value": 0.3,
         "unit": "g"
       },
       "carbs": {
-        "value": 79.3,
+        "value": 28.2,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0.4,
         "unit": "g"
       }
     },
@@ -42665,25 +42715,29 @@
     ]
   },
   "long grain white rice": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_bpumdjzb5rtqaeabb0kbgbcgr4t9",
-    "label": "White Rice",
+    "label": "long grain white rice (cooked, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 360,
+        "value": 130,
         "unit": "kcal"
       },
       "protein": {
-        "value": 6.61,
+        "value": 2.7,
         "unit": "g"
       },
       "fat": {
-        "value": 0.58,
+        "value": 0.3,
         "unit": "g"
       },
       "carbs": {
-        "value": 79.3,
+        "value": 28.2,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0.4,
         "unit": "g"
       }
     },
@@ -86598,25 +86652,29 @@
     ]
   },
   "short-grain white rice": {
-    "source": "edamam",
+    "source": "usda",
     "foodId": "food_bpumdjzb5rtqaeabb0kbgbcgr4t9",
-    "label": "White Rice",
+    "label": "short-grain white rice (cooked, USDA)",
     "category": "Generic foods",
     "per100g": {
       "calories": {
-        "value": 360,
+        "value": 130,
         "unit": "kcal"
       },
       "protein": {
-        "value": 6.61,
+        "value": 2.7,
         "unit": "g"
       },
       "fat": {
-        "value": 0.58,
+        "value": 0.3,
         "unit": "g"
       },
       "carbs": {
-        "value": 79.3,
+        "value": 28.2,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0.4,
         "unit": "g"
       }
     },

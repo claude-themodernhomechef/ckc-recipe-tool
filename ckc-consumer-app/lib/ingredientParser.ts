@@ -1094,6 +1094,16 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'cooked salmon':'salmon','flaked cooked salmon':'salmon',
   'cooked shrimp':'shrimp','cooked prawns':'shrimp',
   'cooked beef':'ground beef',
+  // Round 76 — cooked beans/legumes — DB beans entries are already cooked values
+  'cooked black beans':'black beans','cooked chickpeas':'chickpeas',
+  'cooked kidney beans':'kidney beans','cooked pinto beans':'pinto beans',
+  'cooked white beans':'white beans','cooked navy beans':'navy beans',
+  'cooked cannellini beans':'cannellini beans',
+  'cooked great northern beans':'great northern beans',
+  'cooked lentils':'cooked lentils',  // own entry exists
+  // Cooked farro — same kcal as cooked grains
+  'cooked farro':'cooked farro',
+  'farro':'farro',
   // Round 74 — pasta water is essentially water for nutrition purposes
   'pasta water':'water','reserved pasta water':'water',
   // Round 71 — final 9 cleanup (aliasing to actual DB keys, not idealized names)
@@ -2499,8 +2509,11 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'bunch cilantro':'cilantro',
   'small bunch cilantro':'cilantro',
   'large bunch cilantro':'cilantro',
-  'prepared rice':'white rice', 'cooked rice':'white rice',
-  'steamed white rice':'white rice', 'steamed brown rice':'brown rice',
+  // 'cooked rice' / 'steamed X rice' kept distinct — DB has separate 'cooked rice'
+  // / 'cooked white rice' / 'cooked brown rice' entries with COOKED kcal values
+  // (~130/100g) vs raw (~360/100g). Aliasing back to raw form would over-count.
+  'prepared rice':'cooked white rice',
+  'steamed white rice':'cooked white rice', 'steamed brown rice':'cooked brown rice',
   'firm white fish':'white fish',
   'green cardamoms':'cardamom', 'green cardamom':'cardamom',
   'tajin powder':'tajin',
