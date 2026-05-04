@@ -590,6 +590,50 @@ function extractLeadingQty(s: string): string {
 }
 
 /**
+ * pickBestOption — when a chef offers multiple swap options ("X, or Y"),
+ * pick the one closest in form to the original ingredient.
+ *
+ * Example: from="butter", optionStr="olive oil for cooking, or DF butter for finishing"
+ *   → picks "DF butter for finishing" because it contains the word "butter"
+ *
+ * Falls back to the first option if no match scores higher than baseline.
+ */
+function pickBestOption(from: string, optionStr: string): string {
+  if (!/\bor\b/i.test(optionStr)) return optionStr;
+  const options = optionStr.split(/\s*,?\s+or\s+/i).map(s => s.trim()).filter(Boolean);
+  if (options.length <= 1) return optionStr;
+  const fromLower = from.toLowerCase().trim();
+  const fromWords = fromLower.split(/\s+/).filter(w => w.length > 2);
+  let best = options[0];
+  let bestScore = -Infinity;
+  for (const opt of options) {
+    const optLower = opt.toLowerCase();
+    let score = 0;
+    // Strong: option contains the original ingredient verbatim
+    if (optLower.includes(fromLower)) score += 100;
+    // Moderate: word-level overlap
+    const optWords = optLower.split(/\s+/);
+    score += fromWords.filter(w => optWords.includes(w)).length * 10;
+    // Mild tiebreak: shorter options are more concise
+    score -= opt.length * 0.01;
+    if (score > bestScore) { bestScore = score; best = opt; }
+  }
+  return best;
+}
+
+/**
+ * cleanSwapTarget — strip cooking-purpose suffixes and parenthetical notes from
+ * a swap target so "DF butter for finishing" becomes "DF butter".
+ */
+function cleanSwapTarget(s: string): string {
+  return s
+    .replace(/\s+for\s+(?:cooking|saut[eé]ing|finishing|baking|frying|searing|garnish|serving|spritzing|drizzling|sprinkling|dipping|topping|brushing)(?:\s*\/\s*\w+)*\b[\s\w/]*$/i, '')
+    .replace(/\s*\([^)]*\)/g, '')
+    .replace(/[,;]+\s*$/, '')
+    .trim();
+}
+
+/**
  * buildSwapPairs — reads swap data from a DietTagData object.
  *
  * Format A (structured): tag.notes = [{ type, from, to?, note? }]
@@ -602,6 +646,9 @@ function extractLeadingQty(s: string): string {
  *   - "Skip/Omit X"
  *   - "X: Use Y" (colon-prefix swap — most common chef-written form)
  *   - "X: Remove [entirely]" (colon-prefix removal)
+ *
+ * When a chef offers multiple options ("Use A, or B"), we pick the one closest
+ * in form to the original ingredient (e.g. butter → DF butter, not olive oil).
  */
 function buildSwapPairs(tag: DietTagData): Array<{ from: string; to: string | null }> {
   // Format A: structured array
@@ -623,13 +670,19 @@ function buildSwapPairs(tag: DietTagData): Array<{ from: string; to: string | nu
 
   const insteadRe = /use\s+(.+?)\s+instead\s+of\s+(.+?)(?:[,.]|$)/gi;
   while ((m = insteadRe.exec(s)) !== null) {
-    result.push({ from: stripLeadingQty(m[2].trim()), to: m[1].trim() });
+    const from = stripLeadingQty(m[2].trim());
+    const to   = cleanSwapTarget(pickBestOption(from, m[1].trim()));
+    result.push({ from, to });
   }
 
   const replaceRe = /replace\s+(.+?)\s+with\s+(.+?)(?:[,.]|$)/gi;
   while ((m = replaceRe.exec(s)) !== null) {
-    const to = m[2].trim();
-    m[1].split(/\s+and\s+/i).forEach(f => result.push({ from: stripLeadingQty(f.trim()), to }));
+    const rawTo = m[2].trim();
+    m[1].split(/\s+and\s+/i).forEach(f => {
+      const from = stripLeadingQty(f.trim());
+      const to   = cleanSwapTarget(pickBestOption(from, rawTo));
+      result.push({ from, to });
+    });
   }
 
   const skipRe = /(?:skip|omit)\s+([^,.\n]+)/gi;
@@ -641,7 +694,8 @@ function buildSwapPairs(tag: DietTagData): Array<{ from: string; to: string | nu
   const colonUseRe = /(?:^|[.;\n])\s*([^:\n.]+?):\s*use\s+([^.;\n]+?)(?=[.;\n]|$)/gi;
   while ((m = colonUseRe.exec(s)) !== null) {
     const from = stripLeadingQty(m[1].trim());
-    const to = m[2].trim();
+    const rawTo = m[2].trim();
+    const to   = cleanSwapTarget(pickBestOption(from, rawTo));
     if (from && to) result.push({ from, to });
   }
 
