@@ -1086,6 +1086,8 @@ const INGREDIENT_ALIASES: Record<string, string> = {
   'center-cut salmon filets':'salmon filets', 'center cut salmon filets':'salmon filets',
   'center-cut salmon filet':'salmon filet', 'center cut salmon filet':'salmon filet',
   'center-cut, skin-on salmon fillets':'salmon fillets',
+  // Round 74 — pasta water is essentially water for nutrition purposes
+  'pasta water':'water','reserved pasta water':'water',
   // Round 71 — final 9 cleanup (aliasing to actual DB keys, not idealized names)
   'garlic herb':'garlic',
   'roasted tomatoes':'fire roasted tomatoes',
@@ -2874,7 +2876,8 @@ export function parseIngredient(raw: string): {
   //   "Organic whole chicken ((About 5-10 lbs. is perfect; See Notes))"
   //     → "5 lb Organic whole chicken" (then qty=5, unit=lb after standard parse)
   {
-    const aboutLbsM = str.match(/\(\(?\s*about\s+(\d+)(?:\s*[-–]\s*\d+)?\s*lbs?\.?\s*[^)]*\)\)?/i);
+    // Accept 0/1/2 closing parens — earlier semicolon-strip may have chopped them.
+    const aboutLbsM = str.match(/\(\(?\s*about\s+(\d+)(?:\s*[-–]\s*\d+)?\s*lbs?\.?\s*[^)]*\)?\)?/i);
     if (aboutLbsM) {
       const stripped = str.replace(aboutLbsM[0], '').trim();
       str = `${aboutLbsM[1]} lb ${stripped}`;

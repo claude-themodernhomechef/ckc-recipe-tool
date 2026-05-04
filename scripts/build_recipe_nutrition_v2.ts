@@ -44,10 +44,9 @@ const COOKING_DEFAULTS: Array<{ pattern: RegExp; qty: number; unit: string; note
 // "to garnish") and qty is 0, apply a per-serving default. The qty will be
 // multiplied by the recipe's `servings` count to get the total recipe amount.
 //
-// Rules live in data/garnish_portion_rules.json — single source of truth used
-// by the build pipeline AND the offline garnish-rewrite scripts. Edit the JSON
-// to change a portion (e.g. cheese 1 oz → 0.5 oz); no code change needed.
-const PORTION_RULES_PATH = path.join(__dirname, '../data/garnish_portion_rules.json');
+// Rules live in Firestore: config/garnishPortionRules — single source of truth.
+// Edit that doc to change a portion (e.g. cheese 1 oz → 0.5 oz); no code change
+// needed. Loaded once at build start and cached in memory for the run.
 
 interface PortionRule {
   id: string;
@@ -58,10 +57,16 @@ interface PortionRule {
   skip?: boolean;
 }
 
-const PORTION_RULES: Array<{ rule: PortionRule; pattern: RegExp }> = (() => {
-  const raw = JSON.parse(fs.readFileSync(PORTION_RULES_PATH, 'utf8'));
-  return (raw.rules as PortionRule[]).map(r => ({ rule: r, pattern: new RegExp(r.regex, 'i') }));
-})();
+let PORTION_RULES: Array<{ rule: PortionRule; pattern: RegExp }> = [];
+
+async function loadPortionRules(): Promise<void> {
+  const doc = await db.collection('config').doc('garnishPortionRules').get();
+  if (!doc.exists) throw new Error('config/garnishPortionRules not found in Firestore');
+  const data = doc.data()!;
+  const rules = data.rules as PortionRule[];
+  PORTION_RULES = rules.map(r => ({ rule: r, pattern: new RegExp(r.regex, 'i') }));
+  console.log(`Loaded ${PORTION_RULES.length} portion rules from config/garnishPortionRules`);
+}
 
 function applyServingDefault(parsed: { qty: number; unit: string; name: string }, servings: number):
   { qty: number; unit: string; note: string; skip?: boolean } | null
@@ -162,6 +167,7 @@ const STANDARD_GRAMS: Record<string, number> = {
   'chicken drumstick':      55,  // edible (~85g whole, ~35% bone)
   'chicken wing':           20,  // edible (~30g whole)
   'turkey breast':         227,
+  'whole chicken':        2268,  // 5 lbs (USDA standard whole-chicken purchase weight)
   // Proteins — seafood
   // Generic fish filet default = 6 oz (170g) per piece (raw, skin-on)
   'fish filet':            170,
@@ -607,6 +613,8 @@ async function main() {
   const aliasCount = await loadLearnedAliases();
   console.log(`  ${aliasCount} learned aliases loaded`);
 
+  await loadPortionRules();
+
   let progress: any = {};
   if (fs.existsSync(PROGRESS_FILE)) {
     progress = JSON.parse(fs.readFileSync(PROGRESS_FILE, 'utf8'));
@@ -659,6 +667,14 @@ async function main() {
         continue;
       }
 
+      // Skip splitter-byproduct fragments — "8 pieces" / "3 sticks" / "2 sprigs"
+      // with no actual ingredient noun (when noun is present like "8 chicken breast"
+      // it still parses correctly via STANDARD_GRAMS).
+      if (/^\s*\d+\s+(?:pieces?|slices?|sticks?|sprigs?|stalks?)\s*$/i.test(raw)) {
+        ingredientResults.push({ raw, name: '', skip: true, skipReason: 'fragment' });
+        continue;
+      }
+
       totalCount++;
 
       // Check if this is a garnish BEFORE parsing (garnishes are calculated but
@@ -677,11 +693,14 @@ async function main() {
       }
 
       // Recovery for qty=0: if the ingredient name matches a STANDARD_GRAMS entry,
-      // treat it as qty=1 (e.g. "skin-on salmon fillet", "leg of lamb").
+      // treat it as qty=1 (e.g. "skin-on salmon fillet", "leg of lamb", "whole chicken").
+      // IMPORTANT: require exact match OR matchKey to be the trailing phrase of name —
+      // prevents short common words like "pepper" from matching "bell pepper" via
+      // substring overlap.
       if ((!parsed || parsed.qty === 0) && parsed?.name) {
         const lower = parsed.name.toLowerCase().trim();
         const matchKey = Object.keys(STANDARD_GRAMS).find(k =>
-          lower.includes(k) || k.includes(lower)
+          lower === k || lower.endsWith(' ' + k) || k.endsWith(' ' + lower)
         );
         if (matchKey) {
           parsed = { ...parsed, qty: 1, unit: '' };

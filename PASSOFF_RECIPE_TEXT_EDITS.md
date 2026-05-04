@@ -40,11 +40,20 @@ The nutrition pipeline divides whole-recipe qty by `servings` to get per-serving
 
 ## Standard per-serving portion rules
 
-**Source of truth:** [`data/garnish_portion_rules.json`](data/garnish_portion_rules.json)
+**Source of truth:** Firestore document `config/garnishPortionRules`
 
-That JSON file is read by `build_recipe_nutrition_v2.ts` whenever a garnish line has no explicit qty. To change a portion (e.g. cheese 1 oz → 0.5 oz), edit the JSON — no code change needed. Order matters in the JSON: more-specific rules must come before more-general ones (e.g. `pita chips` before `pita`).
+The Firestore doc holds an array of 37 rules (one per category). It is fetched at the start of every `build_recipe_nutrition_v2.ts` run and applied whenever a garnish line has no explicit qty. To change a portion (e.g. cheese 1 oz → 0.5 oz), edit the Firestore doc — no code change needed. Order matters in the array: more-specific rules must come before more-general ones (e.g. `pita chips` before `pita`).
 
-The table below is a human-readable mirror of that JSON. **If they ever drift, the JSON wins.**
+**How it works end-to-end:**
+1. Recipe author writes `"cotija cheese, to garnish"` — no qty needed.
+2. Build pipeline reads `config/garnishPortionRules` from Firestore.
+3. For 4-serving recipe, scales: 1 oz × 4 = 4 oz cotija → calculates nutrition.
+4. Writes `recipes/{id}.nutrition.garnishPerServing` to Firestore.
+5. Consumer app reads that nutrition object — already correctly scaled.
+
+**The recipe ingredient lines themselves stay raw** — no baked qtys. This avoids drift between rules and stored data. If you change a portion rule, just re-run the build and all 1000+ recipes recalculate.
+
+The table below is a human-readable mirror of the Firestore doc. **If they ever drift, the Firestore doc wins.**
 
 When writing a new garnish/serving line, look up the ingredient here, then multiply by `servings`:
 
