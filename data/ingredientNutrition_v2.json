@@ -58328,6 +58328,10 @@
       {
         "label": "Cubic inch",
         "gramWeight": 16
+      },
+      {
+        "label": "Can",
+        "gramWeight": 142
       }
     ]
   },
