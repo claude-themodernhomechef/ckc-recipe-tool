@@ -8,13 +8,15 @@
       "pasta", "orzo", "ramen", "ramen noodles", "lo mein", "chow mein", "couscous",
       "gnocchi", "tortellini", "panko", "pot pie", "dumpling", "flour tortilla",
       "flour tortillas", "bread crumb", "breadcrumb", "cornbread mix",
-      "soy sauce", "oyster sauce", "worcestershire", "hoisin"
+      "soy sauce", "oyster sauce", "worcestershire", "hoisin",
+      "naan", "pita", "pitas", "flatbread", "flatbreads", "roti"
     ],
     "mod_candidates": [
       "pasta", "orzo", "ramen", "lo mein", "chow mein", "couscous", "gnocchi",
       "tortellini", "panko", "flour tortilla", "breadcrumb", "bread crumb",
       "soy sauce", "oyster sauce", "worcestershire", "hoisin", "all-purpose flour",
-      "ap flour", "flour"
+      "ap flour", "flour",
+      "naan", "pita", "flatbread", "roti"
     ],
     "swaps": {
       "pasta": "Use brown rice pasta or GF pasta alternative",
@@ -36,7 +38,11 @@
       "hoisin": "Use GF hoisin sauce",
       "all-purpose flour": "Use arrowroot powder for thickening, or a 1:1 GF flour blend for structural applications",
       "ap flour": "Use arrowroot powder for thickening, or a 1:1 GF flour blend for structural applications",
-      "flour": "Use arrowroot powder for thickening sauces, or a 1:1 GF flour blend for binding/coating"
+      "flour": "Use arrowroot powder for thickening sauces, or a 1:1 GF flour blend for binding/coating",
+      "naan": "Use GF naan",
+      "pita": "Use GF pita",
+      "flatbread": "Use GF flatbread",
+      "roti": "Use GF roti or GF flatbread"
     }
   },
 
@@ -94,8 +100,9 @@
     ],
     "mod_candidates": [
       "chicken", "beef", "pork", "lamb", "turkey", "salmon", "tuna", "shrimp",
-      "fish", "anchovy", "egg", "eggs", "milk", "cream", "butter", "cheese",
-      "yogurt", "honey", "fish sauce", "worcestershire", "oyster sauce", "broth"
+      "fish", "anchovy", "egg", "eggs", "milk", "cream", "sour cream", "heavy cream",
+      "butter", "cheese", "yogurt", "honey", "fish sauce", "worcestershire",
+      "oyster sauce", "broth"
     ],
     "swaps": {
       "chicken": "Use extra firm tofu (cut to match the protein shape of the dish)",
@@ -117,6 +124,8 @@
       "broth": "Replace chicken or beef broth with vegetable broth",
       "milk": "Use unsweetened oat milk or coconut milk",
       "cream": "Use full-fat canned coconut milk",
+      "heavy cream": "Use full-fat canned coconut milk",
+      "sour cream": "Use plain unsweetened coconut yogurt or vegan sour cream",
       "butter": "Use olive oil or DF butter",
       "cheese": "Use nutritional yeast or vegan cheese alternative",
       "yogurt": "Use plain unsweetened coconut yogurt"
@@ -185,6 +194,14 @@
       "noodle": "Use shirataki noodles (Asian dishes) or spiralized zucchini (lighter dishes)",
       "noodles": "Use shirataki noodles (Asian dishes) or spiralized zucchini (lighter dishes)",
       "tortilla": "Use keto wraps",
+      "naan": "Use cauliflower flatbread",
+      "pita": "Use cauliflower flatbread",
+      "flatbread": "Use cauliflower flatbread",
+      "roti": "Use cauliflower flatbread",
+      "bread": "Use keto bread",
+      "bun": "Use lettuce wraps",
+      "buns": "Use lettuce wraps",
+      "rolls": "Use keto rolls",
       "flour": "Use almond flour or a keto baking blend",
       "breadcrumb": "Use almond flour",
       "honey": "Use allulose liquid sweetener",

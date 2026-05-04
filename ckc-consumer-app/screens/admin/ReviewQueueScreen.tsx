@@ -31,6 +31,7 @@ async function triggerByDietRecompute(recipeId: string) {
 import { resolveReviewItem, ReviewItem } from '../../lib/firestore';
 import { Colors, Fonts } from '../../constants/theme';
 import DietTag, { DIET_COLORS } from '../components/DietTag';
+import masterSwapTable from '../../data/masterSwapTable.json';
 
 // ── AI swap note generator (same as NeedsReviewScreen) ────────────────────────
 
@@ -817,21 +818,37 @@ function ShoppingList({
   const swapMap = useMemo((): Map<string, { to: string | null; from: string; protocol: string; color: string }> => {
     if (activeDietFilter.size === 0 || !dietTags) return new Map();
     const map = new Map<string, { to: string | null; from: string; protocol: string; color: string }>();
+    const defaultTable = masterSwapTable as Record<string, Record<string, { type: string; to?: string }>>;
+
     for (const code of activeDietFilter) {
       const tagData = dietTags[code];
       if (!tagData?.mod) continue;
       const color = (DIET_COLORS as Record<string, string>)[code] ?? Colors.gold;
 
-      // Use buildSwapPairs — reads structured notes array (new records) or
-      // returns [] for legacy string records (no regex parsing).
+      // 1) Chef notes — highest priority (specific, recipe-aware swaps)
       const pairs = buildSwapPairs(tagData);
-      if (pairs.length === 0) continue;
-
       for (const pair of pairs) {
         for (const item of baseItems) {
           if (fuzzyMatch(pair.from, item.name) && !map.has(item.name)) {
             map.set(item.name, { to: pair.to, from: pair.from, protocol: code, color });
           }
+        }
+      }
+
+      // 2) Default-table fallback — fills gaps for ingredients chef notes
+      // didn't address. Common case: chef writes "Rice: Use cauliflower rice"
+      // for K but forgets naan. The default table catches naan → cauliflower
+      // flatbread automatically.
+      for (const item of baseItems) {
+        if (map.has(item.name)) continue;  // chef note already handled it
+        const itemKey = item.name.toLowerCase().trim();
+        const entry = defaultTable[itemKey];
+        const swap = entry?.[code];
+        if (!swap) continue;
+        if (swap.type === 'replace' && swap.to) {
+          map.set(item.name, { to: swap.to, from: itemKey, protocol: code, color });
+        } else if (swap.type === 'remove') {
+          map.set(item.name, { to: null, from: itemKey, protocol: code, color });
         }
       }
     }

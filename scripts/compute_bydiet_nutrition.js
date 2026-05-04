@@ -50,6 +50,40 @@ function stripLeadingQty(s) {
     .trim();
 }
 
+// pickBestOption — when a chef offers multiple swap options ("X, or Y"),
+// pick the one closest in form to the original ingredient.
+// Example: from="butter", optionStr="olive oil for cooking, or DF butter for finishing"
+//   → picks "DF butter for finishing" because it contains the word "butter"
+function pickBestOption(from, optionStr) {
+  if (!/\bor\b/i.test(optionStr)) return optionStr;
+  const options = optionStr.split(/\s*,?\s+or\s+/i).map(s => s.trim()).filter(Boolean);
+  if (options.length <= 1) return optionStr;
+  const fromLower = from.toLowerCase().trim();
+  const fromWords = fromLower.split(/\s+/).filter(w => w.length > 2);
+  let best = options[0];
+  let bestScore = -Infinity;
+  for (const opt of options) {
+    const optLower = opt.toLowerCase();
+    let score = 0;
+    if (optLower.includes(fromLower)) score += 100;
+    const optWords = optLower.split(/\s+/);
+    score += fromWords.filter(w => optWords.includes(w)).length * 10;
+    score -= opt.length * 0.01;
+    if (score > bestScore) { bestScore = score; best = opt; }
+  }
+  return best;
+}
+
+// cleanSwapTarget — strip cooking-purpose suffixes from a swap target so
+// "DF butter for finishing" → "DF butter", "tofu (cut to match)" → "tofu".
+function cleanSwapTarget(s) {
+  return s
+    .replace(/\s+for\s+(?:cooking|saut[eé]ing|finishing|baking|frying|searing|garnish|serving|spritzing|drizzling|sprinkling|dipping|topping|brushing)(?:\s*\/\s*\w+)*\b[\s\w/]*$/i, '')
+    .replace(/\s*\([^)]*\)/g, '')
+    .replace(/[,;]+\s*$/, '')
+    .trim();
+}
+
 function parseSwapPairs(notes) {
   const result = [];
   const s = notes.toLowerCase();
@@ -58,9 +92,13 @@ function parseSwapPairs(notes) {
 
   const insteadRe = new RegExp(`use\\s+([^.]+?)\\s+instead\\s+of\\s+([^.]+?)${stopStr}`, 'gi');
   while ((m = insteadRe.exec(s)) !== null) {
-    const rawFrom = m[2].trim(), rawTo = m[1].trim();
+    const rawFrom = m[2].trim();
+    const fromName = stripLeadingQty(rawFrom);
+    const rawTo = m[1].trim();
     const qty = extractLeadingQty(rawFrom);
-    result.push({ from: stripLeadingQty(rawFrom), to: (qty && !extractLeadingQty(rawTo)) ? `${qty} ${rawTo}` : rawTo });
+    const picked = cleanSwapTarget(pickBestOption(fromName, rawTo));
+    const finalTo = (qty && !extractLeadingQty(picked)) ? `${qty} ${picked}` : picked;
+    result.push({ from: fromName, to: finalTo });
   }
 
   const replaceRe = new RegExp(`replace\\s+([^.]+?)\\s+with\\s+([^.]+?)${stopStr}`, 'gi');
@@ -68,14 +106,16 @@ function parseSwapPairs(notes) {
     const rawTo = m[2].trim().replace(/\s+[—–].*$/, '').trim();
     const toHasQty = extractLeadingQty(rawTo) !== '';
     m[1].split(/\s+and\s+/i).forEach(f => {
-      // Strip editorial commentary after the ingredient name
       const cleaned = f.trim()
-        .replace(/\s*\([^)]*\)/g, '')                                      // strip (parentheticals)
-        .replace(/\s+(do\s+not|but\s+not|except|however|–|—|\bdo\b).*/i, '') // strip "do not sub..." etc
+        .replace(/\s*\([^)]*\)/g, '')
+        .replace(/\s+(do\s+not|but\s+not|except|however|–|—|\bdo\b).*/i, '')
         .trim();
       const rawFrom = cleaned;
+      const fromName = stripLeadingQty(rawFrom);
       const qty = extractLeadingQty(rawFrom);
-      result.push({ from: stripLeadingQty(rawFrom), to: (qty && !toHasQty) ? `${qty} ${rawTo}` : rawTo });
+      const picked = cleanSwapTarget(pickBestOption(fromName, rawTo));
+      const finalTo = (qty && !toHasQty) ? `${qty} ${picked}` : picked;
+      result.push({ from: fromName, to: finalTo });
     });
   }
 
@@ -86,6 +126,34 @@ function parseSwapPairs(notes) {
   const skipRe = /(?:skip|omit)\s+([^,.\n—–\u2013\u2014]+)/gi;
   while ((m = skipRe.exec(s)) !== null)
     result.push({ from: stripLeadingQty(m[1].split(',')[0].trim()), to: null });
+
+  // "X: swap text" format produced by rules-based regen (regen_diet_tags.js).
+  // Example: "Sour cream: Use plain coconut yogurt or DF sour cream. Cheddar:
+  // Use DF cheddar alternative."  Each sentence "X: <text>" yields one swap.
+  notes.split(/\.\s+/).forEach(sentence => {
+    const colonMatch = sentence.match(/^\s*([a-z][a-z\s-]+?):\s+(.+)$/i);
+    if (!colonMatch) return;
+    const from = colonMatch[1].trim().toLowerCase();
+    const swapText = colonMatch[2].trim();
+    if (/^(replace|remove|skip|omit|use)\s/i.test(from)) return;
+    if (/^remove\b/i.test(swapText)) {
+      result.push({ from, to: null });
+      return;
+    }
+    const useMatch = swapText.match(/^use\s+(.+?)(?:\.|$)/i);
+    if (useMatch) {
+      const rawTo = useMatch[1].trim().replace(/\s+if\s+.+$/i, '');
+      const picked = cleanSwapTarget(pickBestOption(from, rawTo));
+      if (picked) result.push({ from, to: picked });
+      return;
+    }
+    const replaceMatch = swapText.match(/^replace\s+(?:.+?\s+)?with\s+(.+?)(?:\.|$)/i);
+    if (replaceMatch) {
+      const picked = cleanSwapTarget(pickBestOption(from, replaceMatch[1].trim()));
+      result.push({ from, to: picked });
+      return;
+    }
+  });
 
   return result;
 }
@@ -237,44 +305,66 @@ async function main() {
         seen.add(key); return true;
       });
 
-      const workingTotal = { ...baseTotal };
-      const swapLog = [];
-      const swappedIngIndices = new Set(); // track which recipe ingredients have been swapped
+      // Compute base garnish total from garnish-flagged items (main ingredients
+      // are already excluded from baseTotal in build_recipe_nutrition_v2).
+      const baseGarnishTotal = {};
+      for (const i of ings) {
+        if (i.skip || !i.matched || !i.grams || !i.garnish) continue;
+        const entry = lookupIngredient(i.name, ingDB);
+        if (!entry) continue;
+        const nutr = calcNutrition(i.grams, entry);
+        if (!nutr) continue;
+        for (const [k, v] of Object.entries(nutr))
+          baseGarnishTotal[k] = Math.round(((baseGarnishTotal[k] ?? 0) + v) * 100) / 100;
+      }
+
+      const workingMain    = { ...baseTotal };
+      const workingGarnish = { ...baseGarnishTotal };
+      const swapLog        = [];   // main-ingredient swap log
+      const garnishSwapLog = [];   // garnish swap log
+      const swappedIngIndices = new Set();
 
       for (const { from, to } of pairs) {
+        // Match against ALL ingredients (main + garnish), then route adjustments
+        // to the correct working total based on each match's garnish flag.
         const origIngs = ings.filter((i, idx) =>
           !i.skip && i.matched && i.grams > 0 &&
           !swappedIngIndices.has(idx) &&
           fuzzyMatch(from, i.name)
         );
         if (!origIngs.length) continue;
-
-        // Mark all matched ingredients as processed
         origIngs.forEach(i => swappedIngIndices.add(ings.indexOf(i)));
         const displayName = cleanIngName(origIngs[0].name);
 
+        // Group matches by main vs garnish so each adjustment hits the right total
+        const mainMatches    = origIngs.filter(i => !i.garnish);
+        const garnishMatches = origIngs.filter(i =>  i.garnish);
+
         if (to === null) {
-          // Remove all matches — one combined log entry
-          let totalRemoveCal = 0, anyInDB = false;
-          for (const origIng of origIngs) {
-            const origEntry = lookupIngredient(origIng.name, ingDB);
-            if (origEntry) {
-              const origNutr = calcNutrition(origIng.grams, origEntry);
-              if (origNutr) {
-                for (const [k, v] of Object.entries(origNutr))
-                  workingTotal[k] = Math.round(((workingTotal[k] ?? 0) - v) * 100) / 100;
-                totalRemoveCal += origNutr.calories ?? 0;
-                anyInDB = true;
-              }
+          // REMOVE
+          const applyRemove = (matches, working, log) => {
+            if (!matches.length) return;
+            let totalCal = 0, anyInDB = false;
+            for (const ing of matches) {
+              const entry = lookupIngredient(ing.name, ingDB);
+              if (!entry) continue;
+              const nutr = calcNutrition(ing.grams, entry);
+              if (!nutr) continue;
+              for (const [k, v] of Object.entries(nutr))
+                working[k] = Math.round(((working[k] ?? 0) - v) * 100) / 100;
+              totalCal += nutr.calories ?? 0;
+              anyInDB = true;
             }
-          }
-          swapLog.push(anyInDB
-            ? `Removed ${displayName} (−${Math.round(totalRemoveCal)} cal)`
-            : `Removed ${displayName} (not in DB)`);
+            log.push(anyInDB
+              ? `Removed ${displayName} (−${Math.round(totalCal)} cal)`
+              : `Removed ${displayName} (not in DB)`);
+          };
+          applyRemove(mainMatches,    workingMain,    swapLog);
+          applyRemove(garnishMatches, workingGarnish, garnishSwapLog);
           continue;
         }
 
-        // Swap — look up replacement; try each "or"/"/" variant
+        // REPLACE — resolve swap target
         const toName = to
           .replace(/^\d[\d/.\s]*\s*(tablespoons?|teaspoons?|cups?|tbsp|tsp|oz|lb|g\b|ml)\s*(of\s+)?/i, '')
           .trim();
@@ -284,44 +374,48 @@ async function main() {
           swapEntry = lookupIngredient(variant.trim(), ingDB);
           if (swapEntry) break;
         }
-
-        // Fallback: check masterSwapTable for an explicit nutritionKey
         if (!swapEntry) {
           const fallbackKey = resolveNutritionKey(from, dietCode);
           if (fallbackKey) swapEntry = lookupIngredient(fallbackKey, ingDB);
         }
-
         if (!swapEntry) {
-          swapLog.push(`${displayName} → ${toName} (not in DB, kept original)`);
+          if (mainMatches.length)    swapLog.push(`${displayName} → ${toName} (not in DB, kept original)`);
+          if (garnishMatches.length) garnishSwapLog.push(`${displayName} → ${toName} (not in DB, kept original)`);
           continue;
         }
 
-        // Apply all matches together — one combined log entry
-        let totalDelta = 0;
-        for (const origIng of origIngs) {
-          const origEntry = lookupIngredient(origIng.name, ingDB);
-          if (origEntry) {
-            const origNutr = calcNutrition(origIng.grams, origEntry);
-            if (origNutr) {
-              for (const [k, v] of Object.entries(origNutr))
-                workingTotal[k] = Math.round(((workingTotal[k] ?? 0) - v) * 100) / 100;
-              totalDelta -= origNutr.calories ?? 0;
+        const applyReplace = (matches, working, log) => {
+          if (!matches.length) return;
+          let totalDelta = 0;
+          for (const ing of matches) {
+            const origEntry = lookupIngredient(ing.name, ingDB);
+            if (origEntry) {
+              const origNutr = calcNutrition(ing.grams, origEntry);
+              if (origNutr) {
+                for (const [k, v] of Object.entries(origNutr))
+                  working[k] = Math.round(((working[k] ?? 0) - v) * 100) / 100;
+                totalDelta -= origNutr.calories ?? 0;
+              }
+            }
+            const swapNutr = calcNutrition(ing.grams, swapEntry);
+            if (swapNutr) {
+              for (const [k, v] of Object.entries(swapNutr))
+                working[k] = Math.round(((working[k] ?? 0) + v) * 100) / 100;
+              totalDelta += swapNutr.calories ?? 0;
             }
           }
-          const swapNutr = calcNutrition(origIng.grams, swapEntry);
-          if (swapNutr) {
-            for (const [k, v] of Object.entries(swapNutr))
-              workingTotal[k] = Math.round(((workingTotal[k] ?? 0) + v) * 100) / 100;
-            totalDelta += swapNutr.calories ?? 0;
-          }
-        }
-        const delta = Math.round(totalDelta);
-        swapLog.push(`${displayName} → ${toName} (${delta >= 0 ? '+' : ''}${delta} cal)`);
+          const delta = Math.round(totalDelta);
+          log.push(`${displayName} → ${toName} (${delta >= 0 ? '+' : ''}${delta} cal)`);
+        };
+        applyReplace(mainMatches,    workingMain,    swapLog);
+        applyReplace(garnishMatches, workingGarnish, garnishSwapLog);
       }
 
       byDiet[dietCode] = {
-        perServing: divideByServings(workingTotal, servings),
+        perServing:        divideByServings(workingMain,    servings),
+        garnishPerServing: divideByServings(workingGarnish, servings),
         swapLog,
+        garnishSwapLog,
       };
     }
 
