@@ -158318,25 +158318,29 @@
     "_proxy_for": "vegetable broth"
   },
   "cooked rice": {
-    "source": "edamam",
-    "foodId": "food_bpumdjzb5rtqaeabb0kbgbcgr4t9",
-    "label": "White Rice",
-    "category": "Generic foods",
+    "source": "usda",
+    "foodId": "fdc_169756",
+    "label": "Rice, white, long-grain, regular, cooked",
+    "category": "Grains",
     "per100g": {
       "calories": {
-        "value": 360,
+        "value": 130,
         "unit": "kcal"
       },
       "protein": {
-        "value": 6.61,
+        "value": 2.7,
         "unit": "g"
       },
       "fat": {
-        "value": 0.58,
+        "value": 0.3,
         "unit": "g"
       },
       "carbs": {
-        "value": 79.3,
+        "value": 28.2,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0.4,
         "unit": "g"
       }
     },
@@ -161428,29 +161432,29 @@
     "_proxy_for": "kashmiri red chili powder"
   },
   "cooked quinoa": {
-    "source": "edamam",
-    "foodId": "food_a0d1h1cbporq98adlzq8tadghm2a",
-    "label": "Quinoa",
-    "category": "Generic foods",
+    "source": "usda",
+    "foodId": "fdc_168917",
+    "label": "Quinoa, cooked",
+    "category": "Grains",
     "per100g": {
       "calories": {
-        "value": 368,
+        "value": 120,
         "unit": "kcal"
       },
       "protein": {
-        "value": 14.1,
+        "value": 4.4,
         "unit": "g"
       },
       "fat": {
-        "value": 6.07,
+        "value": 1.92,
         "unit": "g"
       },
       "carbs": {
-        "value": 64.2,
+        "value": 21.3,
         "unit": "g"
       },
       "fiber": {
-        "value": 7,
+        "value": 2.8,
         "unit": "g"
       }
     },
@@ -165572,25 +165576,29 @@
     "_proxy_for": "unsalted pistachios"
   },
   "cooked white rice": {
-    "source": "edamam",
-    "foodId": "food_bpumdjzb5rtqaeabb0kbgbcgr4t9",
-    "label": "White Rice",
-    "category": "Generic foods",
+    "source": "usda",
+    "foodId": "fdc_169756",
+    "label": "Rice, white, long-grain, regular, cooked",
+    "category": "Grains",
     "per100g": {
       "calories": {
-        "value": 360,
+        "value": 130,
         "unit": "kcal"
       },
       "protein": {
-        "value": 6.61,
+        "value": 2.7,
         "unit": "g"
       },
       "fat": {
-        "value": 0.58,
+        "value": 0.3,
         "unit": "g"
       },
       "carbs": {
-        "value": 79.3,
+        "value": 28.2,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 0.4,
         "unit": "g"
       }
     },
@@ -179017,25 +179025,25 @@
     "_proxy_for": "avocado"
   },
   "cooked brown rice": {
-    "source": "edamam",
-    "foodId": "food_aro09r9avsklizbsberuoaegj0uh",
-    "label": "Brown Rice",
-    "category": "Generic foods",
+    "source": "usda",
+    "foodId": "fdc_169704",
+    "label": "Rice, brown, long-grain, cooked",
+    "category": "Grains",
     "per100g": {
       "calories": {
-        "value": 362,
+        "value": 123,
         "unit": "kcal"
       },
       "protein": {
-        "value": 7.5,
+        "value": 2.7,
         "unit": "g"
       },
       "fat": {
-        "value": 2.68,
+        "value": 1,
         "unit": "g"
       },
       "carbs": {
-        "value": 76.2,
+        "value": 25.6,
         "unit": "g"
       },
       "fiber": {
