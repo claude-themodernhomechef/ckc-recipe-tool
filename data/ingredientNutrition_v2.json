@@ -21250,7 +21250,7 @@
       },
       {
         "label": "Cup",
-        "gramWeight": 60
+        "gramWeight": 30
       },
       {
         "label": "Whole",
@@ -49520,6 +49520,10 @@
       {
         "label": "Kilogram",
         "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 25
       }
     ]
   },
@@ -62480,6 +62484,10 @@
       {
         "label": "Kilogram",
         "gramWeight": 1000
+      },
+      {
+        "label": "Cup",
+        "gramWeight": 25
       }
     ]
   },
@@ -73136,7 +73144,7 @@
       },
       {
         "label": "Cup",
-        "gramWeight": 160
+        "gramWeight": 28
       }
     ]
   },
@@ -83093,7 +83101,7 @@
       },
       {
         "label": "Cup",
-        "gramWeight": 160
+        "gramWeight": 28
       }
     ]
   },
