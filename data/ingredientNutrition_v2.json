@@ -188252,5 +188252,313 @@
         "gramWeight": 0.2
       }
     ]
+  },
+  "gf naan": {
+    "source": "BFree Stone Baked Naan (label)",
+    "label": "GF Naan",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 267,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 5,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 6.67,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0.67,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 43.33,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 10,
+        "unit": "g"
+      },
+      "sugar": {
+        "value": 3.33,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 550,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 0,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Whole",
+        "gramWeight": 120
+      },
+      {
+        "label": "Piece",
+        "gramWeight": 120
+      },
+      {
+        "label": "Half",
+        "gramWeight": 60
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 60
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      }
+    ]
+  },
+  "gluten-free naan": {
+    "source": "BFree Stone Baked Naan (label)",
+    "label": "GF Naan",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 267,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 5,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 6.67,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0.67,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 43.33,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 10,
+        "unit": "g"
+      },
+      "sugar": {
+        "value": 3.33,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 550,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 0,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Whole",
+        "gramWeight": 120
+      },
+      {
+        "label": "Piece",
+        "gramWeight": 120
+      },
+      {
+        "label": "Half",
+        "gramWeight": 60
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 60
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      }
+    ]
+  },
+  "gluten free naan": {
+    "source": "BFree Stone Baked Naan (label)",
+    "label": "GF Naan",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 267,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 5,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 6.67,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0.67,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 43.33,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 10,
+        "unit": "g"
+      },
+      "sugar": {
+        "value": 3.33,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 550,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 0,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Whole",
+        "gramWeight": 120
+      },
+      {
+        "label": "Piece",
+        "gramWeight": 120
+      },
+      {
+        "label": "Half",
+        "gramWeight": 60
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 60
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      }
+    ]
+  },
+  "bfree naan": {
+    "source": "BFree Stone Baked Naan (label)",
+    "label": "GF Naan",
+    "category": "Generic foods",
+    "per100g": {
+      "calories": {
+        "value": 267,
+        "unit": "kcal"
+      },
+      "protein": {
+        "value": 5,
+        "unit": "g"
+      },
+      "fat": {
+        "value": 6.67,
+        "unit": "g"
+      },
+      "saturatedFat": {
+        "value": 0.67,
+        "unit": "g"
+      },
+      "carbs": {
+        "value": 43.33,
+        "unit": "g"
+      },
+      "fiber": {
+        "value": 10,
+        "unit": "g"
+      },
+      "sugar": {
+        "value": 3.33,
+        "unit": "g"
+      },
+      "sodium": {
+        "value": 550,
+        "unit": "mg"
+      },
+      "cholesterol": {
+        "value": 0,
+        "unit": "mg"
+      }
+    },
+    "measures": [
+      {
+        "label": "Whole",
+        "gramWeight": 120
+      },
+      {
+        "label": "Piece",
+        "gramWeight": 120
+      },
+      {
+        "label": "Half",
+        "gramWeight": 60
+      },
+      {
+        "label": "Serving",
+        "gramWeight": 60
+      },
+      {
+        "label": "Gram",
+        "gramWeight": 1
+      },
+      {
+        "label": "Ounce",
+        "gramWeight": 28.35
+      },
+      {
+        "label": "Pound",
+        "gramWeight": 453.59
+      },
+      {
+        "label": "Kilogram",
+        "gramWeight": 1000
+      }
+    ]
   }
 }
