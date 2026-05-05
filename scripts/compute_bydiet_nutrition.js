@@ -50,6 +50,22 @@ function stripLeadingQty(s) {
     .trim();
 }
 
+// computeSwapPortion — when swap target has a "Serving" weight smaller than its
+// "Piece" weight (e.g. BFree GF naan: 60g serving / 120g whole), use the
+// label serving size as the per-recipe-serving portion. Display qty becomes
+// fractional in piece-units (e.g. "1/2 GF naan per serving").
+// Returns null when no rescaling is needed — caller keeps original grams.
+function computeSwapPortion(swapEntry, numServings) {
+  const measures = swapEntry?.measures || [];
+  const serving = measures.find(m => m.label === 'Serving');
+  const piece   = measures.find(m => m.label === 'Piece') || measures.find(m => m.label === 'Whole');
+  if (!serving || !piece) return null;
+  if (serving.gramWeight >= piece.gramWeight) return null;
+  const newGrams = serving.gramWeight * numServings;
+  const newQty   = newGrams / piece.gramWeight;
+  return { grams: newGrams, qty: newQty, unit: 'piece' };
+}
+
 // pickBestOption — when a chef offers multiple swap options ("X, or Y"),
 // pick the one closest in form to the original ingredient.
 // Example: from="butter", optionStr="olive oil for cooking, or DF butter for finishing"
@@ -422,12 +438,18 @@ async function main() {
         };
         applyReplace(mainMatches,    workingMain,    swapLog);
         applyReplace(garnishMatches, workingGarnish, garnishSwapLog);
-        // Track per-garnish replacement for the UI — name change + adjusted nutrition
+        // Track per-garnish replacement for the UI — name change + adjusted nutrition.
+        // If swap target has a smaller "Serving" measure than its "Piece" measure
+        // (e.g. BFree GF naan), recompute portion to use label serving size.
+        const portion = computeSwapPortion(swapEntry, servings);
         for (const ing of garnishMatches) {
-          const swapNutr = swapEntry ? calcNutrition(ing.grams, swapEntry) : null;
+          const useGrams = portion ? portion.grams : ing.grams;
+          const useQty   = portion ? portion.qty   : ing.qty;
+          const useUnit  = portion ? portion.unit  : ing.unit;
+          const swapNutr = swapEntry ? calcNutrition(useGrams, swapEntry) : null;
           garnishOverrides.set(ings.indexOf(ing), {
             name: toName, originalName: ing.name,
-            qty: ing.qty, unit: ing.unit, grams: ing.grams,
+            qty: useQty, unit: useUnit, grams: useGrams,
             nutrition: swapNutr, removed: false,
           });
         }
@@ -514,10 +536,16 @@ async function main() {
           const delta = Math.round(totalDelta);
           log.push(`${displayName} → ${toName} (${delta >= 0 ? '+' : ''}${delta} cal) [default]`);
           if (isGarnish) {
+            // Apply label-serving portion adjustment if applicable
+            const portion = computeSwapPortion(swapEntry, servings);
+            const useGrams = portion ? portion.grams : ing.grams;
+            const useQty   = portion ? portion.qty   : ing.qty;
+            const useUnit  = portion ? portion.unit  : ing.unit;
+            const useNutr  = portion ? calcNutrition(useGrams, swapEntry) : swapNutr;
             garnishOverrides.set(idx, {
               name: toName, originalName: ing.name,
-              qty: ing.qty, unit: ing.unit, grams: ing.grams,
-              nutrition: swapNutr, removed: false,
+              qty: useQty, unit: useUnit, grams: useGrams,
+              nutrition: useNutr, removed: false,
             });
           }
         }
