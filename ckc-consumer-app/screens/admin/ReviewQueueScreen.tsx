@@ -1908,8 +1908,13 @@ function NutritionPanel({
       )
     : stored;
 
-  // Garnish data
-  const garnishPs = nutrition?.garnishPerServing as Record<string, number> | undefined;
+  // Garnish data — when a diet is active, use the diet-adjusted garnish totals
+  // (e.g. naan → GF naan macros) instead of the base garnish values.
+  const baseGarnishPs = nutrition?.garnishPerServing as Record<string, number> | undefined;
+  const dietGarnishPs = activeDiet
+    ? ((nutrition as any)?.byDiet?.[activeDiet]?.garnishPerServing as Record<string, number> | undefined)
+    : undefined;
+  const garnishPs = dietGarnishPs ?? baseGarnishPs;
   const hasGarnish = garnishPs && Object.values(garnishPs).some(v => (v ?? 0) > 0);
 
   // Active display values — diet swap takes priority, then garnish toggle, then base
