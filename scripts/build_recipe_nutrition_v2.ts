@@ -597,11 +597,20 @@ function divideNutrition(total: any, servings: number): any {
   return perServing;
 }
 
+// Staple sides/starches that are NEVER garnish-flagged even when the recipe
+// says "to serve" — they're integral to the meal, not optional toppings.
+// Examples: "steamed rice, to serve" with butter chicken, "naan, to serve"
+// with curry. The diner eats them as the meal, so they belong in the main
+// nutrition total.
+const NON_GARNISH_STAPLES = /\b(?:rice|naan|pita|flatbread|roti|tortillas?|pasta|noodles?|spaghetti|fettuccine|linguine|penne|rigatoni|orzo|couscous|quinoa|polenta|grits|cornbread|biscuits?|baguette|sourdough|french\s+bread|ciabatta|focaccia|mashed\s+potatoes?|cauliflower\s+rice|cauliflower\s+mash)\b/i;
+
 // Is this ingredient a garnish? Garnishes are calculated but excluded from default totals.
 // The app will show them behind an "add garnishes" toggle.
 function isGarnish(raw: string): boolean {
   if (!raw) return false;
   const lower = raw.toLowerCase().trim();
+  // Exempt staples even when "to serve" is in the text
+  if (NON_GARNISH_STAPLES.test(lower)) return false;
   return /\bfor\s+serving\b|\bfor\s+garnish\b|\bto\s+serve\b|\bto\s+garnish\b|\bto\s+top\b/.test(lower)
     || /\bfor\s+(?:spritzing|drizzling|sprinkling|dipping|finishing|brushing)\b/.test(lower)
     || /\bon\s+top\b/.test(lower)
