@@ -1936,6 +1936,22 @@ function NutritionPanel({
   const [dietPs,       setDietPs]       = useState<Record<string, number> | null>(null);
   const [dietSwapLog,  setDietSwapLog]  = useState<string[]>([]);
 
+  // Keep dietPs + dietSwapLog in sync with the latest nutrition.byDiet whenever
+  // it changes. Without this, the diet's macro bars stay frozen on the value
+  // captured the moment the diet token was first clicked — they wouldn't
+  // refresh after a chef-note save triggered the Cloud Function recompute.
+  useEffect(() => {
+    if (!activeDiet) { setDietPs(null); setDietSwapLog([]); return; }
+    const byDietEntry = (nutrition as any)?.byDiet?.[activeDiet];
+    if (byDietEntry?.perServing) {
+      setDietPs(byDietEntry.perServing);
+      setDietSwapLog(byDietEntry.swapLog ?? []);
+    } else {
+      setDietPs(null);
+      setDietSwapLog([]);
+    }
+  }, [activeDiet, nutrition]);
+
   // Divide nutrition.total by live servings so editing the field recalculates instantly
   const srvNum = parseFloat(String(servings ?? nutrition?.servings ?? '1')) || 1;
   const total  = nutrition?.total as Record<string, number> | undefined;
