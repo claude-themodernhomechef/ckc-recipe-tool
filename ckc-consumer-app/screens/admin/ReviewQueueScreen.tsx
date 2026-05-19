@@ -2383,7 +2383,18 @@ export default function ReviewQueueScreen() {
       .then(() => {
         setSaving(false);
         setSavedFields(prev => new Set([...prev, ...savedKeys]));
-        if (savedKeys.includes('dietTags')) triggerByDietRecompute(targetId);
+        if (savedKeys.includes('dietTags')) {
+          // After the Cloud Function recomputes byDiet, push the fresh
+          // nutrition back into recipes state so NutritionPanel's macro
+          // bars re-derive from the new byDiet. Without this callback, the
+          // debounced-save path (diet-protocol note edits) leaves the bars
+          // frozen on the pre-edit value.
+          triggerByDietRecompute(targetId, (freshData) => {
+            if (freshData?.nutrition) {
+              setRecipes(prev => prev.map(r => r._id === targetId ? { ...r, nutrition: freshData.nutrition } : r));
+            }
+          });
+        }
       })
       .catch(() => setSaving(false));
   }
