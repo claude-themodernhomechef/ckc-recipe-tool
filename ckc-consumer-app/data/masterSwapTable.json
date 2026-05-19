@@ -4,6 +4,14 @@
       "type": "replace",
       "to": "fresh ricotta salata",
       "note": "use fresh ricotta salata for Italian dishes; use fresh mozzarella for pasta and pizza applications; use nutritional yeast plus salt for finishing where sharpness is needed"
+    },
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
     }
   },
   "all-purpose flour": {
@@ -268,6 +276,10 @@
     },
     "Vg": {
       "type": "keep"
+    },
+    "V": {
+      "type": "replace",
+      "to": "vegan cotija or DF feta"
     }
   },
   "couscous": {
@@ -694,6 +706,10 @@
       "type": "replace",
       "to": "fresh ricotta salata",
       "note": "use fresh ricotta salata for Italian dishes; use nutritional yeast plus salt for finishing applications where sharpness is needed"
+    },
+    "V": {
+      "type": "replace",
+      "to": "DF parmesan or nutritional yeast"
     }
   },
   "pepitas": {
@@ -1300,6 +1316,236 @@
     "GF": {
       "type": "replace",
       "to": "GF pasta"
+    }
+  },
+  "queso fresco": {
+    "V": {
+      "type": "replace",
+      "to": "vegan cotija or DF feta"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "vegan cotija or DF feta"
+    }
+  },
+  "queso blanco": {
+    "V": {
+      "type": "replace",
+      "to": "DF mozzarella"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF mozzarella"
+    }
+  },
+  "ricotta": {
+    "V": {
+      "type": "replace",
+      "to": "DF ricotta or tofu ricotta"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF ricotta or tofu ricotta"
+    }
+  },
+  "ricotta cheese": {
+    "V": {
+      "type": "replace",
+      "to": "DF ricotta or tofu ricotta"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF ricotta or tofu ricotta"
+    }
+  },
+  "goat cheese": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    }
+  },
+  "blue cheese": {
+    "V": {
+      "type": "replace",
+      "to": "DF blue cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF blue cheese alternative"
+    }
+  },
+  "gorgonzola": {
+    "V": {
+      "type": "replace",
+      "to": "DF blue cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF blue cheese alternative"
+    }
+  },
+  "brie": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    }
+  },
+  "camembert": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    }
+  },
+  "gruyere": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    }
+  },
+  "swiss": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    }
+  },
+  "monterey jack": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    }
+  },
+  "pepper jack": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    }
+  },
+  "gouda": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    }
+  },
+  "provolone": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    }
+  },
+  "asiago": {
+    "V": {
+      "type": "replace",
+      "to": "DF parmesan or nutritional yeast"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF parmesan or nutritional yeast"
+    }
+  },
+  "manchego": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    }
+  },
+  "halloumi": {
+    "V": {
+      "type": "replace",
+      "to": "pan-fried extra firm tofu"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "pan-fried extra firm tofu"
+    }
+  },
+  "burrata": {
+    "V": {
+      "type": "replace",
+      "to": "DF mozzarella"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF mozzarella"
+    }
+  },
+  "fontina": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    }
+  },
+  "havarti": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    }
+  },
+  "colby": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheddar"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheddar"
+    }
+  },
+  "mexican cheese": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
     }
   }
 }
