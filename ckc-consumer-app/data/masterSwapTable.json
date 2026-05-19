@@ -132,6 +132,10 @@
     "GF": {
       "type": "replace",
       "to": "GF Panko"
+    },
+    "K": {
+      "type": "replace",
+      "to": "almond flour"
     }
   },
   "brown sugar": {
@@ -162,6 +166,10 @@
     "AIP": {
       "type": "replace",
       "to": "olive oil"
+    },
+    "V": {
+      "type": "replace",
+      "to": "DF butter (Miyoko's)"
     }
   },
   "buttermilk": {
@@ -322,6 +330,10 @@
     "DF": {
       "type": "remove",
       "note": "remove if garnish only; replace with DF feta if feta is a core ingredient"
+    },
+    "V": {
+      "type": "replace",
+      "to": "DF feta"
     }
   },
   "fish sauce": {
@@ -398,6 +410,10 @@
       "type": "replace",
       "to": "lactose-free greek yogurt or coconut yogurt",
       "note": "use lactose-free greek yogurt for Mediterranean and Middle Eastern dishes; use coconut yogurt for Indian and Asian dishes where coconut flavor complements"
+    },
+    "V": {
+      "type": "replace",
+      "to": "plain coconut yogurt"
     }
   },
   "ground beef": {
@@ -429,6 +445,10 @@
       "type": "replace",
       "to": "coconut milk",
       "note": "use coconut milk for sweet applications and curries; use cashew cream or oat cream for coffee, pan sauces, and savory dishes where coconut flavor is wrong"
+    },
+    "V": {
+      "type": "replace",
+      "to": "oat milk + 1 tbsp coconut cream"
     }
   },
   "heavy cream": {
@@ -440,6 +460,10 @@
     },
     "Vg": {
       "type": "keep"
+    },
+    "V": {
+      "type": "replace",
+      "to": "coconut cream"
     }
   },
   "high-sugar fruit": {
@@ -548,6 +572,10 @@
     },
     "Vg": {
       "type": "keep"
+    },
+    "V": {
+      "type": "replace",
+      "to": "DF mozzarella"
     }
   },
   "mushrooms": {
@@ -627,6 +655,10 @@
     },
     "Vg": {
       "type": "keep"
+    },
+    "V": {
+      "type": "replace",
+      "to": "DF parmesan"
     }
   },
   "pasta": {
@@ -806,6 +838,10 @@
       "type": "replace",
       "to": "coconut cream with a squeeze of lime",
       "note": "use coconut cream with lime for Mexican and Asian dishes; use fresh whipped ricotta loosened with milk for European dishes where coconut flavor is wrong"
+    },
+    "V": {
+      "type": "replace",
+      "to": "plain coconut yogurt"
     }
   },
   "soy sauce": {
@@ -962,6 +998,308 @@
     "V": {
       "type": "replace",
       "to": "vegan Worcestershire sauce"
+    }
+  },
+  "naan": {
+    "GF": {
+      "type": "replace",
+      "to": "GF naan"
+    },
+    "K": {
+      "type": "replace",
+      "to": "cauliflower flatbread"
+    }
+  },
+  "pita": {
+    "GF": {
+      "type": "replace",
+      "to": "GF pita"
+    },
+    "K": {
+      "type": "replace",
+      "to": "cauliflower flatbread"
+    }
+  },
+  "flatbread": {
+    "GF": {
+      "type": "replace",
+      "to": "GF flatbread"
+    },
+    "K": {
+      "type": "replace",
+      "to": "cauliflower flatbread"
+    }
+  },
+  "roti": {
+    "GF": {
+      "type": "replace",
+      "to": "GF roti or GF flatbread"
+    },
+    "K": {
+      "type": "replace",
+      "to": "cauliflower flatbread"
+    }
+  },
+  "baguette": {
+    "GF": {
+      "type": "replace",
+      "to": "GF baguette"
+    },
+    "K": {
+      "type": "replace",
+      "to": "keto bread"
+    }
+  },
+  "sourdough": {
+    "GF": {
+      "type": "replace",
+      "to": "GF sourdough"
+    },
+    "K": {
+      "type": "replace",
+      "to": "keto bread"
+    }
+  },
+  "french bread": {
+    "GF": {
+      "type": "replace",
+      "to": "GF french bread"
+    },
+    "K": {
+      "type": "replace",
+      "to": "keto bread"
+    }
+  },
+  "bagel": {
+    "GF": {
+      "type": "replace",
+      "to": "GF bagel"
+    },
+    "K": {
+      "type": "replace",
+      "to": "keto bagel"
+    }
+  },
+  "bagels": {
+    "GF": {
+      "type": "replace",
+      "to": "GF bagels"
+    },
+    "K": {
+      "type": "replace",
+      "to": "keto bagels"
+    }
+  },
+  "bun": {
+    "GF": {
+      "type": "replace",
+      "to": "GF bun"
+    },
+    "K": {
+      "type": "replace",
+      "to": "lettuce wraps"
+    }
+  },
+  "buns": {
+    "GF": {
+      "type": "replace",
+      "to": "GF buns"
+    },
+    "K": {
+      "type": "replace",
+      "to": "lettuce wraps"
+    }
+  },
+  "rolls": {
+    "GF": {
+      "type": "replace",
+      "to": "GF rolls"
+    },
+    "K": {
+      "type": "replace",
+      "to": "keto rolls"
+    }
+  },
+  "corn tortillas": {
+    "K": {
+      "type": "replace",
+      "to": "keto wraps"
+    }
+  },
+  "flour tortilla": {
+    "GF": {
+      "type": "replace",
+      "to": "GF tortilla"
+    },
+    "K": {
+      "type": "replace",
+      "to": "keto wraps"
+    }
+  },
+  "unsalted butter": {
+    "DF": {
+      "type": "replace",
+      "to": "DF butter (Miyoko's)"
+    },
+    "V": {
+      "type": "replace",
+      "to": "DF butter (Miyoko's)"
+    }
+  },
+  "salted butter": {
+    "DF": {
+      "type": "replace",
+      "to": "DF butter (Miyoko's)"
+    },
+    "V": {
+      "type": "replace",
+      "to": "DF butter (Miyoko's)"
+    }
+  },
+  "milk": {
+    "DF": {
+      "type": "replace",
+      "to": "unsweetened oat milk"
+    },
+    "V": {
+      "type": "replace",
+      "to": "unsweetened oat milk"
+    }
+  },
+  "whole milk": {
+    "DF": {
+      "type": "replace",
+      "to": "unsweetened oat milk"
+    },
+    "V": {
+      "type": "replace",
+      "to": "unsweetened oat milk"
+    }
+  },
+  "cream": {
+    "DF": {
+      "type": "replace",
+      "to": "coconut cream"
+    },
+    "V": {
+      "type": "replace",
+      "to": "coconut cream"
+    }
+  },
+  "plain greek yogurt": {
+    "DF": {
+      "type": "replace",
+      "to": "plain coconut yogurt"
+    },
+    "V": {
+      "type": "replace",
+      "to": "plain coconut yogurt"
+    }
+  },
+  "yogurt": {
+    "DF": {
+      "type": "replace",
+      "to": "plain coconut yogurt"
+    },
+    "V": {
+      "type": "replace",
+      "to": "plain coconut yogurt"
+    }
+  },
+  "cream cheese": {
+    "DF": {
+      "type": "replace",
+      "to": "DF cream cheese"
+    },
+    "V": {
+      "type": "replace",
+      "to": "DF cream cheese"
+    }
+  },
+  "parmesan cheese": {
+    "DF": {
+      "type": "replace",
+      "to": "DF parmesan"
+    },
+    "V": {
+      "type": "replace",
+      "to": "DF parmesan"
+    }
+  },
+  "feta cheese": {
+    "DF": {
+      "type": "replace",
+      "to": "DF feta"
+    },
+    "V": {
+      "type": "replace",
+      "to": "DF feta"
+    }
+  },
+  "cheddar": {
+    "DF": {
+      "type": "replace",
+      "to": "DF cheddar"
+    },
+    "V": {
+      "type": "replace",
+      "to": "DF cheddar"
+    }
+  },
+  "cheese": {
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese"
+    },
+    "V": {
+      "type": "replace",
+      "to": "DF cheese"
+    }
+  },
+  "ghee": {
+    "DF": {
+      "type": "replace",
+      "to": "DF butter or olive oil"
+    },
+    "V": {
+      "type": "replace",
+      "to": "DF butter or olive oil"
+    }
+  },
+  "potato": {
+    "K": {
+      "type": "replace",
+      "to": "cauliflower"
+    }
+  },
+  "sweet potato": {
+    "K": {
+      "type": "replace",
+      "to": "cauliflower or daikon"
+    }
+  },
+  "noodles": {
+    "K": {
+      "type": "replace",
+      "to": "shirataki noodles or zucchini noodles"
+    }
+  },
+  "rice noodles": {
+    "K": {
+      "type": "replace",
+      "to": "shirataki noodles"
+    }
+  },
+  "maple syrup": {
+    "K": {
+      "type": "replace",
+      "to": "allulose liquid sweetener"
+    }
+  },
+  "pasta (regular)": {
+    "GF": {
+      "type": "replace",
+      "to": "GF pasta"
     }
   }
 }
