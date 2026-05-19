@@ -724,15 +724,32 @@ function buildSwapPairs(tag: DietTagData): Array<{ from: string; to: string | nu
 function fuzzyMatch(term: string, name: string): boolean {
   const clean = (x: string) =>
     x.toLowerCase()
-     // Strip spice/salt modifiers so "black pepper" → "pepper", "kosher salt" → "salt"
+     // Strip spice/salt modifiers + counts/units so chef-note "from" text
+     // ("4 pieces bone-in, skin-on dark meat chicken") still matches the
+     // parsed ingredient name ("bone-in skin-on chicken thigh") via word-overlap.
+     .replace(/[,;]/g, ' ')
+     .replace(/^\d[\d/.\s]*\s*(pieces?|cups?|tbsp|tsp|oz|lb|g\b|ml|tablespoons?|teaspoons?|pounds?|ounces?|grams?)?\b/gi, '')
+     .replace(/\b\d+\b/g, '')
      .replace(/\b(freshly\s+ground|cloves?|heads?|tbsp\s+of|tsp\s+of|cups?\s+of|\bof\b|black|white|ground|freshly|kosher|sea|fine|coarse|cracked)\b/g, '')
+     .replace(/\b(dark|light|white|meat|pieces?|parts?|cuts?)\b/g, '')
      .replace(/\s+/g, ' ').trim();
   const a = clean(term);
   const b = clean(name);
-  // Also compare without spaces to handle "cornstarch" vs "corn starch"
+  if (!a || !b) return false;
+  // Substring match (cheap path)
+  if (b.includes(a) || a.includes(b)) return true;
+  // Space-collapsed substring (handles "cornstarch" vs "corn starch")
   const aFlat = a.replace(/\s+/g, '');
   const bFlat = b.replace(/\s+/g, '');
-  return b.includes(a) || a.includes(b) || bFlat.includes(aFlat) || aFlat.includes(bFlat);
+  if (bFlat.includes(aFlat) || aFlat.includes(bFlat)) return true;
+  // Word-overlap: every significant word (>3 chars) in the shorter side must
+  // appear in the longer side. Handles cases like chef note saying
+  // "bone-in dark meat chicken" vs parsed "bone-in skin-on chicken thigh".
+  const aWords = a.split(' ').filter(w => w.length > 3);
+  const bWords = b.split(' ').filter(w => w.length > 3);
+  if (aWords.length > 0 && aWords.every(w => b.includes(w))) return true;
+  if (bWords.length > 0 && bWords.every(w => a.includes(w))) return true;
+  return false;
 }
 
 // ── Shopping list helpers ──────────────────────────────────────────────────────
