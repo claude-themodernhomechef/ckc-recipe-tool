@@ -829,9 +829,13 @@ function ShoppingList({
       const pairs = buildSwapPairs(tagData);
       for (const pair of pairs) {
         for (const item of baseItems) {
-          if (fuzzyMatch(pair.from, item.name) && !map.has(item.name)) {
-            map.set(item.name, { to: pair.to, from: pair.from, protocol: code, color });
-          }
+          if (!fuzzyMatch(pair.from, item.name) || map.has(item.name)) continue;
+          // Skip when the item is already in the swap target's form. Stops
+          // false-positives like chef-note "milk → coconut milk" matching
+          // "full-fat coconut milk" (which is already DF and shouldn't be
+          // swapped).
+          if (pair.to && item.name.toLowerCase().includes(pair.to.toLowerCase().trim())) continue;
+          map.set(item.name, { to: pair.to, from: pair.from, protocol: code, color });
         }
       }
 

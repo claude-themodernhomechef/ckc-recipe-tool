@@ -19,7 +19,9 @@ const path  = require('path');
 
 const SA_PATH   = path.join(__dirname, '../service-account.json');
 const ING_DB    = path.join(__dirname, '../data/ingredientNutrition_v2.json');
-const SWAP_PATH = path.join(__dirname, '../data/masterSwapTable.json');
+// Canonical masterSwapTable lives in the consumer-app (React Native bundle).
+// Scripts read from there so the swap table has a single source of truth.
+const SWAP_PATH = path.join(__dirname, '../ckc-consumer-app/data/masterSwapTable.json');
 
 const sa       = require(SA_PATH);
 const swapTable = JSON.parse(fs.readFileSync(SWAP_PATH, 'utf8'));
@@ -348,10 +350,15 @@ async function main() {
       for (const { from, to } of pairs) {
         // Match against ALL ingredients (main + garnish), then route adjustments
         // to the correct working total based on each match's garnish flag.
+        // Skip items already in the swap target's form (e.g. don't swap
+        // "full-fat coconut milk" via the chef's "milk → coconut milk" rule —
+        // it's already coconut milk).
+        const toLower = to ? to.toLowerCase().trim() : '';
         const origIngs = ings.filter((i, idx) =>
           !i.skip && i.matched && i.grams > 0 &&
           !swappedIngIndices.has(idx) &&
-          fuzzyMatch(from, i.name)
+          fuzzyMatch(from, i.name) &&
+          !(toLower && (i.name || '').toLowerCase().includes(toLower))
         );
         if (!origIngs.length) continue;
         origIngs.forEach(i => swappedIngIndices.add(ings.indexOf(i)));
