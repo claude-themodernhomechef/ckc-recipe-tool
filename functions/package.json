@@ -4,7 +4,8 @@
   "engines": { "node": "20" },
   "main": "index.js",
   "scripts": {
-    "deploy": "firebase deploy --only functions"
+    "sync-data": "cp ../ckc-consumer-app/data/masterSwapTable.json ./masterSwapTable.json && cp ../data/ingredientNutrition_v2.json ./ingredientNutrition_v2.json",
+    "deploy": "npm run sync-data && firebase deploy --only functions"
   },
   "dependencies": {
     "firebase-admin": "^12.0.0",

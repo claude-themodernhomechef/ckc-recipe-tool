@@ -20,10 +20,21 @@ import {
 import { db, app } from '../../lib/firebase';
 import { getFunctions, httpsCallable } from 'firebase/functions';
 
-async function triggerByDietRecompute(recipeId: string) {
+async function triggerByDietRecompute(
+  recipeId: string,
+  onUpdated?: (updated: any) => void,
+) {
   try {
     const fn = httpsCallable(getFunctions(app), 'recomputeByDiet');
     await fn({ recipeId });
+    // Re-fetch the recipe so the UI reflects the new byDiet values.
+    // Without this, the React state still holds the pre-recompute byDiet
+    // and the macro bars + garnish breakdown show stale numbers.
+    if (onUpdated) {
+      const { getDoc, doc: docFn } = await import('firebase/firestore');
+      const fresh = await getDoc(docFn(db, 'recipes', recipeId));
+      if (fresh.exists()) onUpdated(fresh.data());
+    }
   } catch (e) {
     console.warn('[recomputeByDiet] failed (non-critical):', e);
   }
@@ -1656,7 +1667,15 @@ function RecipePanel({
               if (local._id) {
                 try {
                   await updateDoc(doc(db, 'recipes', local._id), { dietTags: updatedTags });
-                  triggerByDietRecompute(local._id);
+                  // Pass an onUpdated callback so the UI refreshes after the
+                  // Cloud Function writes the new byDiet. Otherwise local
+                  // state holds the pre-recompute byDiet and macro bars
+                  // show stale numbers.
+                  triggerByDietRecompute(local._id, (freshData) => {
+                    if (freshData?.nutrition) {
+                      update({ nutrition: freshData.nutrition });
+                    }
+                  });
                 } catch (e) { console.warn('Swap note save failed:', e); }
               }
             }}

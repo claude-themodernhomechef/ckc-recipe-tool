@@ -572,11 +572,61 @@ function sleep(ms) {
 // Callable from the review queue app after swap notes are saved.
 // Re-derives nutrition.byDiet for every mod diet tag on the recipe.
 
-const ING_DB_PATH = path.join(__dirname, 'ingredientNutrition_v2.json');
-let _ingDB = null;
+const ING_DB_PATH    = path.join(__dirname, 'ingredientNutrition_v2.json');
+const SWAP_TABLE_PATH = path.join(__dirname, 'masterSwapTable.json');
+let _ingDB = null, _swapTable = null;
 function getIngDB() {
   if (!_ingDB) _ingDB = JSON.parse(fs.readFileSync(ING_DB_PATH, 'utf8'));
   return _ingDB;
+}
+function getSwapTable() {
+  if (!_swapTable) _swapTable = JSON.parse(fs.readFileSync(SWAP_TABLE_PATH, 'utf8'));
+  return _swapTable;
+}
+
+// ── Smart-pick helpers (mirror compute_bydiet_nutrition.js) ───────────────────
+
+// When chef offers multiple options ("Use A, or B"), pick the one closest to
+// the original ingredient. E.g. butter + "olive oil or DF butter" → DF butter.
+function _pickBestOption(from, optionStr) {
+  if (!/\bor\b/i.test(optionStr)) return optionStr;
+  const options = optionStr.split(/\s*,?\s+or\s+/i).map(s => s.trim()).filter(Boolean);
+  if (options.length <= 1) return optionStr;
+  const fromLower = from.toLowerCase().trim();
+  const fromWords = fromLower.split(/\s+/).filter(w => w.length > 2);
+  let best = options[0];
+  let bestScore = -Infinity;
+  for (const opt of options) {
+    const optLower = opt.toLowerCase();
+    let score = 0;
+    if (optLower.includes(fromLower)) score += 100;
+    const optWords = optLower.split(/\s+/);
+    score += fromWords.filter(w => optWords.includes(w)).length * 10;
+    score -= opt.length * 0.01;
+    if (score > bestScore) { bestScore = score; best = opt; }
+  }
+  return best;
+}
+
+// Strip cooking-purpose suffixes: "DF butter for finishing" → "DF butter"
+function _cleanSwapTarget(s) {
+  return s
+    .replace(/\s+for\s+(?:cooking|saut[eé]ing|finishing|baking|frying|searing|garnish|serving|spritzing|drizzling|sprinkling|dipping|topping|brushing)(?:\s*\/\s*\w+)*\b[\s\w/]*$/i, '')
+    .replace(/\s*\([^)]*\)/g, '')
+    .replace(/[,;]+\s*$/, '')
+    .trim();
+}
+
+// When swap target's Serving < Piece (multi-serving package like BFree GF naan),
+// rescale total grams to Serving × numServings, qty in piece units.
+function _computeSwapPortion(swapEntry, numServings) {
+  const measures = swapEntry?.measures || [];
+  const serving = measures.find(m => m.label === 'Serving');
+  const piece = measures.find(m => m.label === 'Piece') || measures.find(m => m.label === 'Whole');
+  if (!piece || !serving || serving.gramWeight >= piece.gramWeight) return null;
+  const newGrams = serving.gramWeight * numServings;
+  const newQty = newGrams / piece.gramWeight;
+  return { grams: newGrams, qty: newQty, unit: 'piece' };
 }
 
 function _fuzzyMatch(term, name) {
@@ -641,59 +691,88 @@ function _divideByServings(total, servings) {
   );
 }
 
-// Parse swap pairs from either new structured array or legacy notesText string
+function _stripLeadingQty(s) {
+  return s
+    .replace(/^[\d/.\s]+(?:tablespoons?|teaspoons?|cups?|tbsp|tsp|oz|lb|g\b|ml)\s*(of\s+)?/i, '')
+    .replace(/^\d[\d/.\s]*\s+/, '')
+    .replace(/^(the|a|an)\s+/i, '')
+    .trim();
+}
+
+// Parse swap pairs from either new structured array or legacy notesText string.
+// Handles 5 plain-text phrasings + smart "pick closest option" for "use A or B".
 function _getSwapPairs(tagData) {
-  // New format: notes is an array of { type, from, to } objects
+  // Format A: structured array
   if (Array.isArray(tagData.notes)) {
     return tagData.notes
       .filter(n => n.type === 'replace' || n.type === 'remove')
       .map(n => ({
-        from: (n.from || '')
-          .replace(/^\d[\d/.\s]*\s*(tablespoons?|teaspoons?|cups?|tbsp|tsp|oz|lb|g\b|ml)\s*(of\s+)?/i, '')
-          .replace(/^\d+\s+/, '')
-          .trim(),
-        to:   n.type === 'remove' ? null : (n.to || '')
-          .replace(/^\d[\d/.\s]*\s*(tablespoons?|teaspoons?|cups?|tbsp|tsp|oz|lb|g\b|ml)\s*(of\s+)?/i, '')
-          .trim(),
+        from: _stripLeadingQty((n.from || '')),
+        to:   n.type === 'remove' ? null : _stripLeadingQty((n.to || '')),
       }));
   }
-  // Legacy format: notesText or notes is a plain string — parse it
+  // Format B: legacy plain text — apply 5 regex phrasings + smart-pick
   const text = (typeof tagData.notes === 'string' ? tagData.notes : '') || (tagData.notesText || '');
   if (!text.trim()) return [];
 
   const result = [];
   const s = text.toLowerCase();
-  const stopStr = `(?:[,.–—]|\\s+[—–]|$)`;
   let m;
 
-  const replaceRe = new RegExp(`replace\\s+([^.]+?)\\s+with\\s+([^.]+?)${stopStr}`, 'gi');
+  const insteadRe = /use\s+(.+?)\s+instead\s+of\s+(.+?)(?:[,.]|$)/gi;
+  while ((m = insteadRe.exec(s)) !== null) {
+    const from = _stripLeadingQty(m[2].trim());
+    const to   = _cleanSwapTarget(_pickBestOption(from, m[1].trim()));
+    result.push({ from, to });
+  }
+
+  const replaceRe = /replace\s+(.+?)\s+with\s+(.+?)(?:[,.]|$)/gi;
   while ((m = replaceRe.exec(s)) !== null) {
     const rawTo = m[2].trim();
     m[1].split(/\s+and\s+/i).forEach(f => {
-      const from = f.trim().replace(/^\d[\d/.\s]*\s*(tablespoons?|teaspoons?|cups?|tbsp|tsp|oz|lb|g\b|ml)\s*(of\s+)?/i, '').replace(/^(the|a|an)\s+/i, '').trim();
-      const to   = rawTo.replace(/^\d[\d/.\s]*\s*(tablespoons?|teaspoons?|cups?|tbsp|tsp|oz|lb|g\b|ml)\s*(of\s+)?/i, '').trim();
-      if (from) result.push({ from, to });
+      const from = _stripLeadingQty(f.trim());
+      const to   = _cleanSwapTarget(_pickBestOption(from, rawTo));
+      result.push({ from, to });
     });
   }
-  const removeRe = /remove\s+([^,.\n—––—]+)/gi;
-  while ((m = removeRe.exec(s)) !== null)
-    result.push({ from: m[1].trim().replace(/^(the|a|an)\s+/i, '').trim(), to: null });
+
+  const skipRe = /(?:skip|omit)\s+([^,.\n]+)/gi;
+  while ((m = skipRe.exec(s)) !== null) {
+    result.push({ from: _stripLeadingQty(m[1].split(',')[0].trim()), to: null });
+  }
+
+  // "X: Use Y" colon-prefix swap
+  const colonUseRe = /(?:^|[.;\n])\s*([^:\n.]+?):\s*use\s+([^.;\n]+?)(?=[.;\n]|$)/gi;
+  while ((m = colonUseRe.exec(s)) !== null) {
+    const from = _stripLeadingQty(m[1].trim());
+    const to   = _cleanSwapTarget(_pickBestOption(from, m[2].trim()));
+    if (from && to) result.push({ from, to });
+  }
+
+  // "X: Remove [entirely]" colon-prefix removal
+  const colonRemoveRe = /(?:^|[.;\n])\s*([^:\n.]+?):\s*remove\b[^.;\n]*?(?=[.;\n]|$)/gi;
+  while ((m = colonRemoveRe.exec(s)) !== null) {
+    const from = _stripLeadingQty(m[1].trim());
+    if (from) result.push({ from, to: null });
+  }
 
   return result;
 }
 
-function _computeByDietForRecipe(recipeData, ingDB) {
+function _computeByDietForRecipe(recipeData, ingDB, swapTable) {
   const byDiet  = {};
   const servings = recipeData.nutrition?.servings ?? 1;
   const baseTotal = recipeData.nutrition?.total;
-  const ings      = recipeData.nutrition?.ingredients ?? [];
+  const baseGarnishTotal = recipeData.nutrition?.garnishPerServing
+    ? Object.fromEntries(Object.entries(recipeData.nutrition.garnishPerServing).map(([k,v]) => [k, (v ?? 0) * servings]))
+    : {};
+  const ings = recipeData.nutrition?.ingredients ?? [];
 
   if (!baseTotal || !ings.length) return byDiet;
 
   for (const [dietCode, tagData] of Object.entries(recipeData.dietTags || {})) {
     if (!tagData.mod) continue;
     const rawPairs = _getSwapPairs(tagData);
-    if (!rawPairs.length) continue;
     const seenPairs = new Set();
     const pairs = rawPairs.filter(p => {
       const key = `${p.from}|||${p.to ?? '__remove__'}`;
@@ -701,38 +780,54 @@ function _computeByDietForRecipe(recipeData, ingDB) {
       seenPairs.add(key); return true;
     });
 
-    const workingTotal = { ...baseTotal };
-    const swapLog = [];
+    const workingMain    = { ...baseTotal };
+    const workingGarnish = { ...baseGarnishTotal };
+    const swapLog        = [];
+    const garnishSwapLog = [];
     const swappedIngIndices = new Set();
+    const garnishOverrides = new Map();
 
+    // 1) Chef-note swaps
     for (const { from, to } of pairs) {
+      const toLower = to ? to.toLowerCase().trim() : '';
       const origIngs = ings.filter((i, idx) =>
         !i.skip && i.matched && i.grams > 0 &&
         !swappedIngIndices.has(idx) &&
-        _fuzzyMatch(from, i.name)
+        _fuzzyMatch(from, i.name) &&
+        !(toLower && (i.name || '').toLowerCase().includes(toLower))
       );
       if (!origIngs.length) continue;
-
       origIngs.forEach(i => swappedIngIndices.add(ings.indexOf(i)));
       const displayName = origIngs[0].name;
 
+      const mainMatches    = origIngs.filter(i => !i.garnish);
+      const garnishMatches = origIngs.filter(i =>  i.garnish);
+
       if (to === null) {
-        let totalRemoveCal = 0, anyInDB = false;
-        for (const origIng of origIngs) {
-          const origEntry = _lookupIngredient(origIng.name, ingDB);
-          if (origEntry) {
-            const origNutr = _calcNutrition(origIng.grams, origEntry);
-            if (origNutr) {
-              for (const [k, v] of Object.entries(origNutr))
-                workingTotal[k] = Math.round(((workingTotal[k] ?? 0) - v) * 100) / 100;
-              totalRemoveCal += origNutr.calories ?? 0;
-              anyInDB = true;
-            }
+        const applyRemove = (matches, working, log) => {
+          if (!matches.length) return;
+          let totalCal = 0, anyInDB = false;
+          for (const ing of matches) {
+            const entry = _lookupIngredient(ing.name, ingDB);
+            if (!entry) continue;
+            const nutr = _calcNutrition(ing.grams, entry);
+            if (!nutr) continue;
+            for (const [k, v] of Object.entries(nutr))
+              working[k] = Math.round(((working[k] ?? 0) - v) * 100) / 100;
+            totalCal += nutr.calories ?? 0;
+            anyInDB = true;
           }
+          log.push(anyInDB ? `Removed ${displayName} (−${Math.round(totalCal)} cal)` : `Removed ${displayName} (not in DB)`);
+        };
+        applyRemove(mainMatches,    workingMain,    swapLog);
+        applyRemove(garnishMatches, workingGarnish, garnishSwapLog);
+        for (const ing of garnishMatches) {
+          garnishOverrides.set(ings.indexOf(ing), {
+            name: ing.name, originalName: ing.name,
+            qty: ing.qty, unit: ing.unit, grams: ing.grams,
+            nutrition: null, removed: true,
+          });
         }
-        swapLog.push(anyInDB
-          ? `Removed ${displayName} (−${Math.round(totalRemoveCal)} cal)`
-          : `Removed ${displayName} (not in DB)`);
         continue;
       }
 
@@ -743,33 +838,172 @@ function _computeByDietForRecipe(recipeData, ingDB) {
         if (swapEntry) break;
       }
       if (!swapEntry) {
-        swapLog.push(`${displayName} → ${to} (not in DB, kept original)`);
+        if (mainMatches.length)    swapLog.push(`${displayName} → ${to} (not in DB, kept original)`);
+        if (garnishMatches.length) garnishSwapLog.push(`${displayName} → ${to} (not in DB, kept original)`);
+        for (const ing of garnishMatches) {
+          garnishOverrides.set(ings.indexOf(ing), {
+            name: to, originalName: ing.name,
+            qty: ing.qty, unit: ing.unit, grams: ing.grams,
+            nutrition: ing.nutrition || null, removed: false,
+          });
+        }
         continue;
       }
 
-      let totalDelta = 0;
-      for (const origIng of origIngs) {
-        const origEntry = _lookupIngredient(origIng.name, ingDB);
+      const applyReplace = (matches, working, log, useGramsPerItem) => {
+        if (!matches.length) return;
+        let totalDelta = 0;
+        for (const ing of matches) {
+          const useGrams = useGramsPerItem ?? ing.grams;
+          const origEntry = _lookupIngredient(ing.name, ingDB);
+          if (origEntry) {
+            const origNutr = _calcNutrition(ing.grams, origEntry);
+            if (origNutr) {
+              for (const [k, v] of Object.entries(origNutr))
+                working[k] = Math.round(((working[k] ?? 0) - v) * 100) / 100;
+              totalDelta -= origNutr.calories ?? 0;
+            }
+          }
+          const swapNutr = _calcNutrition(useGrams, swapEntry);
+          if (swapNutr) {
+            for (const [k, v] of Object.entries(swapNutr))
+              working[k] = Math.round(((working[k] ?? 0) + v) * 100) / 100;
+            totalDelta += swapNutr.calories ?? 0;
+          }
+        }
+        const delta = Math.round(totalDelta);
+        log.push(`${displayName} → ${to} (${delta >= 0 ? '+' : ''}${delta} cal)`);
+      };
+
+      // Portion-aware sizing for garnish swaps (e.g. BFree GF naan: 60g/serving)
+      const portion = _computeSwapPortion(swapEntry, servings);
+      const useGrams = portion ? portion.grams / Math.max(garnishMatches.length, 1) : undefined;
+      applyReplace(mainMatches,    workingMain,    swapLog);
+      applyReplace(garnishMatches, workingGarnish, garnishSwapLog, useGrams);
+
+      for (const ing of garnishMatches) {
+        const grams = portion ? portion.grams : ing.grams;
+        const qty   = portion ? portion.qty   : ing.qty;
+        const unit  = portion ? portion.unit  : ing.unit;
+        const swapNutr = _calcNutrition(grams, swapEntry);
+        garnishOverrides.set(ings.indexOf(ing), {
+          name: to, originalName: ing.name,
+          qty, unit, grams,
+          nutrition: swapNutr, removed: false,
+        });
+      }
+    }
+
+    // 2) Default-table fallback
+    for (let idx = 0; idx < ings.length; idx++) {
+      if (swappedIngIndices.has(idx)) continue;
+      const ing = ings[idx];
+      if (!ing || ing.skip || !ing.matched || !ing.grams) continue;
+      const itemKey = (ing.name || '').toLowerCase().trim();
+      const defaultEntry = swapTable[itemKey];
+      const defaultSwap = defaultEntry?.[dietCode];
+      if (!defaultSwap) continue;
+
+      swappedIngIndices.add(idx);
+      const displayName = ing.name;
+      const isGarnish = !!ing.garnish;
+      const working = isGarnish ? workingGarnish : workingMain;
+      const log = isGarnish ? garnishSwapLog : swapLog;
+
+      if (defaultSwap.type === 'remove') {
+        const entry = _lookupIngredient(ing.name, ingDB);
+        if (entry) {
+          const nutr = _calcNutrition(ing.grams, entry);
+          if (nutr) {
+            for (const [k, v] of Object.entries(nutr))
+              working[k] = Math.round(((working[k] ?? 0) - v) * 100) / 100;
+            log.push(`Removed ${displayName} (−${Math.round(nutr.calories ?? 0)} cal) [default]`);
+          }
+        }
+        if (isGarnish) {
+          garnishOverrides.set(idx, {
+            name: ing.name, originalName: ing.name,
+            qty: ing.qty, unit: ing.unit, grams: ing.grams,
+            nutrition: null, removed: true,
+          });
+        }
+        continue;
+      }
+
+      if (defaultSwap.type === 'replace' && defaultSwap.to) {
+        const toName = defaultSwap.to;
+        const toVariants = toName.split(/\s+or\s+|\s*\/\s*/);
+        let swapEntry = null;
+        for (const variant of toVariants) {
+          swapEntry = _lookupIngredient(variant.trim(), ingDB);
+          if (swapEntry) break;
+        }
+        if (!swapEntry) {
+          log.push(`${displayName} → ${toName} (not in DB, kept original) [default]`);
+          if (isGarnish) {
+            garnishOverrides.set(idx, {
+              name: toName, originalName: ing.name,
+              qty: ing.qty, unit: ing.unit, grams: ing.grams,
+              nutrition: ing.nutrition || null, removed: false,
+            });
+          }
+          continue;
+        }
+
+        const portion = isGarnish ? _computeSwapPortion(swapEntry, servings) : null;
+        const useGrams = portion ? portion.grams : ing.grams;
+
+        const origEntry = _lookupIngredient(ing.name, ingDB);
+        let totalDelta = 0;
         if (origEntry) {
-          const origNutr = _calcNutrition(origIng.grams, origEntry);
+          const origNutr = _calcNutrition(ing.grams, origEntry);
           if (origNutr) {
             for (const [k, v] of Object.entries(origNutr))
-              workingTotal[k] = Math.round(((workingTotal[k] ?? 0) - v) * 100) / 100;
+              working[k] = Math.round(((working[k] ?? 0) - v) * 100) / 100;
             totalDelta -= origNutr.calories ?? 0;
           }
         }
-        const swapNutr = _calcNutrition(origIng.grams, swapEntry);
+        const swapNutr = _calcNutrition(useGrams, swapEntry);
         if (swapNutr) {
           for (const [k, v] of Object.entries(swapNutr))
-            workingTotal[k] = Math.round(((workingTotal[k] ?? 0) + v) * 100) / 100;
+            working[k] = Math.round(((working[k] ?? 0) + v) * 100) / 100;
           totalDelta += swapNutr.calories ?? 0;
         }
+        const delta = Math.round(totalDelta);
+        log.push(`${displayName} → ${toName} (${delta >= 0 ? '+' : ''}${delta} cal) [default]`);
+        if (isGarnish) {
+          garnishOverrides.set(idx, {
+            name: toName, originalName: ing.name,
+            qty: portion ? portion.qty : ing.qty,
+            unit: portion ? portion.unit : ing.unit,
+            grams: useGrams,
+            nutrition: swapNutr, removed: false,
+          });
+        }
       }
-      const delta = Math.round(totalDelta);
-      swapLog.push(`${displayName} → ${to} (${delta >= 0 ? '+' : ''}${delta} cal)`);
     }
 
-    byDiet[dietCode] = { perServing: _divideByServings(workingTotal, servings), swapLog };
+    // Build per-garnish item list for the UI breakdown
+    const garnishItems = [];
+    for (let idx = 0; idx < ings.length; idx++) {
+      const ing = ings[idx];
+      if (!ing || !ing.garnish || ing.skip) continue;
+      const override = garnishOverrides.get(idx);
+      garnishItems.push(override || {
+        name: ing.name, originalName: ing.name,
+        qty: ing.qty, unit: ing.unit, grams: ing.grams,
+        nutrition: ing.nutrition || null, removed: false,
+      });
+    }
+
+    if (Object.keys(workingMain).length === 0) continue;
+    byDiet[dietCode] = {
+      perServing:        _divideByServings(workingMain,    servings),
+      garnishPerServing: _divideByServings(workingGarnish, servings),
+      swapLog,
+      garnishSwapLog,
+      garnishItems,
+    };
   }
 
   return byDiet;
@@ -779,12 +1013,13 @@ exports.recomputeByDiet = onCall({ timeoutSeconds: 60 }, async (request) => {
   const recipeId = request.data?.recipeId;
   if (!recipeId) throw new Error('recipeId is required');
 
-  const ingDB   = getIngDB();
-  const docRef  = admin.firestore().collection('recipes').doc(recipeId);
-  const snap    = await docRef.get();
+  const ingDB     = getIngDB();
+  const swapTable = getSwapTable();
+  const docRef    = admin.firestore().collection('recipes').doc(recipeId);
+  const snap      = await docRef.get();
   if (!snap.exists) throw new Error(`Recipe ${recipeId} not found`);
 
-  const byDiet = _computeByDietForRecipe(snap.data(), ingDB);
+  const byDiet = _computeByDietForRecipe(snap.data(), ingDB, swapTable);
 
   if (Object.keys(byDiet).length > 0) {
     await docRef.update({ 'nutrition.byDiet': byDiet });
