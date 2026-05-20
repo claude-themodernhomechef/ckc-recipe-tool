@@ -1467,6 +1467,12 @@ function RecipePanel({
   const [confirmRevert, setConfirmRevert] = useState(false);
 
   useEffect(() => { setLocal(recipe); setActiveDiet(new Set()); setConfirmRevert(false); }, [recipe._id]);
+  // Also sync local.nutrition when the parent updates it (post-recompute refresh
+  // from the Cloud Function). Without this, local.nutrition stays frozen on the
+  // pre-edit byDiet and the macro bars don't reflect the new swap calculations.
+  useEffect(() => {
+    setLocal(prev => prev.nutrition === recipe.nutrition ? prev : { ...prev, nutrition: recipe.nutrition });
+  }, [recipe.nutrition]);
 
   function update(fields: Partial<RecipeDoc>) {
     const extra: Partial<RecipeDoc> = {};
