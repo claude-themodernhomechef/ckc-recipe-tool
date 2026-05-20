@@ -43,6 +43,7 @@ import { resolveReviewItem, ReviewItem } from '../../lib/firestore';
 import { Colors, Fonts } from '../../constants/theme';
 import DietTag, { DIET_COLORS } from '../components/DietTag';
 import masterSwapTable from '../../data/masterSwapTable.json';
+import ingredientDBNames from '../../data/ingredientDBNames.json';
 
 // ── AI swap note generator (same as NeedsReviewScreen) ────────────────────────
 
@@ -1593,7 +1594,7 @@ function RecipePanel({
         </View>
 
         {/* ── Nutrition ── */}
-        <NutritionPanel nutrition={local.nutrition} servings={local.servings} dietTags={local.dietTags} />
+        <NutritionPanel nutrition={local.nutrition} servings={local.servings} dietTags={local.dietTags} recipeId={local._id} />
 
         {/* ── Diet Protocols — full edit cards with modification notes ── */}
         <View style={[pp.editSection, savedFields.has('dietTags') ? pp.sectionSaved : null]}>
@@ -1929,18 +1930,175 @@ function fmt(val: number): string {
   return val.toFixed(2).replace(/\.?0+$/, '');
 }
 
+// ── UnmatchedPanel: shows items not contributing to nutrition + autocomplete-fix
+function UnmatchedPanel({
+  ingredients, recipeId, aliasedRaws, onAliasSaved,
+}: {
+  ingredients: any[];
+  recipeId?: string;
+  aliasedRaws: Set<string>;
+  onAliasSaved: (raw: string) => void;
+}) {
+  const notInDB = ingredients.filter(
+    i => !i.matched && !i.skip && i.raw && !aliasedRaws.has(i.raw)
+  );
+  const noQty = ingredients.filter(
+    i => i.skip && (!i.grams || i.grams === 0) && i.raw
+  );
+
+  if (notInDB.length === 0 && noQty.length === 0) {
+    return (
+      <View style={up.box}>
+        <Text style={up.emptyText}>All ingredients matched — nothing to fix.</Text>
+      </View>
+    );
+  }
+
+  return (
+    <View style={up.box}>
+      {notInDB.length > 0 && (
+        <>
+          <Text style={up.sectionTitle}>Not in DB ({notInDB.length})</Text>
+          <Text style={up.sectionHint}>
+            Type to search the ingredient DB. Picking a match teaches the system for every future recipe.
+          </Text>
+          {notInDB.map((i, idx) => (
+            <UnmatchedRow
+              key={`nodb-${idx}-${i.raw}`}
+              raw={i.raw}
+              parsedName={i.name || ''}
+              recipeId={recipeId}
+              onAliasSaved={() => onAliasSaved(i.raw)}
+            />
+          ))}
+        </>
+      )}
+      {noQty.length > 0 && (
+        <>
+          <Text style={[up.sectionTitle, notInDB.length > 0 && { marginTop: 12 }]}>
+            No quantity given ({noQty.length})
+          </Text>
+          <Text style={up.sectionHint}>
+            Items like "salt to taste" — informational only, no nutrition impact.
+          </Text>
+          {noQty.map((i, idx) => (
+            <Text key={`noqty-${idx}`} style={up.noQtyRow}>• {i.raw}</Text>
+          ))}
+        </>
+      )}
+    </View>
+  );
+}
+
+function UnmatchedRow({
+  raw, parsedName, recipeId, onAliasSaved,
+}: {
+  raw: string;
+  parsedName: string;
+  recipeId?: string;
+  onAliasSaved: () => void;
+}) {
+  const [query, setQuery] = useState(parsedName);
+  const [focused, setFocused] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  const matches = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (q.length < 2) return [] as Array<{ name: string; cal: number }>;
+    const all = Object.entries(ingredientDBNames as Record<string, { cal: number }>);
+    const startsWith: Array<{ name: string; cal: number }> = [];
+    const contains:   Array<{ name: string; cal: number }> = [];
+    for (const [name, info] of all) {
+      if (name.startsWith(q)) startsWith.push({ name, cal: info.cal });
+      else if (name.includes(q)) contains.push({ name, cal: info.cal });
+      if (startsWith.length >= 20) break;
+    }
+    return [...startsWith, ...contains].slice(0, 20);
+  }, [query]);
+
+  async function commit(canonicalName: string) {
+    if (!recipeId || !raw) return;
+    setSaving(true);
+    try {
+      const { setDoc, increment, serverTimestamp } = await import('firebase/firestore');
+      const rawKey = raw.toLowerCase().trim();
+      const docId  = rawKey.replace(/\//g, '-').replace(/[^a-z0-9\-_ ']/g, '').trim().slice(0, 200);
+      if (docId) {
+        await setDoc(
+          doc(db, 'ingredientAliases', docId),
+          {
+            rawKey,
+            rawString: raw,
+            canonicalName: canonicalName.toLowerCase().trim(),
+            canonicalDisplay: canonicalName,
+            learnedFromRecipe: recipeId,
+            updatedAt: serverTimestamp(),
+            frequency: increment(1),
+          },
+          { merge: true }
+        );
+      }
+      // Also save as a per-recipe override so the next enrichment of THIS recipe picks it up
+      const recipeSnap = await getDoc(doc(db, 'recipes', recipeId));
+      const overrides = { ...(recipeSnap.data()?.ingredientNameOverrides ?? {}), [raw]: { name: canonicalName } };
+      await updateDoc(doc(db, 'recipes', recipeId), { ingredientNameOverrides: overrides });
+      onAliasSaved();
+    } catch (e) {
+      console.warn('[UnmatchedRow] save failed:', e);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return (
+    <View style={up.row}>
+      <Text style={up.rowRaw} numberOfLines={1}>{raw}</Text>
+      <View style={up.searchWrap}>
+        <TextInput
+          style={up.search}
+          value={query}
+          onChangeText={setQuery}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setTimeout(() => setFocused(false), 150)}
+          placeholder="Search ingredient DB…"
+          placeholderTextColor={Colors.textMuted}
+          editable={!saving}
+        />
+        {focused && matches.length > 0 && (
+          <View style={up.dropdown}>
+            {matches.map(m => (
+              <TouchableOpacity
+                key={m.name}
+                style={up.dropdownRow}
+                onPress={() => { setQuery(m.name); commit(m.name); }}
+                activeOpacity={0.7}
+              >
+                <Text style={up.dropdownName}>{m.name}</Text>
+                <Text style={up.dropdownCal}>{m.cal} cal/100g</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
+      </View>
+    </View>
+  );
+}
+
 function NutritionPanel({
-  nutrition, servings, dietTags,
+  nutrition, servings, dietTags, recipeId,
 }: {
   nutrition?: RecipeDoc['nutrition'];
   servings?:  string | number;
   dietTags?:  Record<string, DietTagData>;
+  recipeId?:  string;
 }) {
   const [expanded,     setExpanded]     = useState(false);
   const [showGarnish,  setShowGarnish]  = useState(false);
   const [activeDiet,   setActiveDiet]   = useState<string | null>(null);
   const [dietPs,       setDietPs]       = useState<Record<string, number> | null>(null);
   const [dietSwapLog,  setDietSwapLog]  = useState<string[]>([]);
+  const [showUnmatched, setShowUnmatched] = useState(false);
+  const [aliasedRaws,  setAliasedRaws]  = useState<Set<string>>(new Set());
 
   // Keep dietPs + dietSwapLog in sync with the latest nutrition.byDiet whenever
   // it changes. Without this, the diet's macro bars stay frozen on the value
@@ -2099,13 +2257,26 @@ function NutritionPanel({
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
           {matchRate != null && (
-            <View style={[np.matchBadge, { borderColor: matchColor + '60', backgroundColor: matchColor + '18' }]}>
+            <TouchableOpacity
+              style={[np.matchBadge, { borderColor: matchColor + '60', backgroundColor: matchColor + '18' }]}
+              onPress={(e: any) => { e.stopPropagation?.(); setShowUnmatched(s => !s); }}
+              activeOpacity={0.7}
+            >
               <Text style={[np.matchText, { color: matchColor }]}>{matchRate}% matched</Text>
-            </View>
+            </TouchableOpacity>
           )}
           <Text style={np.chevron}>{expanded ? '▲' : '▼'}</Text>
         </View>
       </TouchableOpacity>
+
+      {showUnmatched && (
+        <UnmatchedPanel
+          ingredients={nutrition?.ingredients ?? []}
+          recipeId={recipeId}
+          aliasedRaws={aliasedRaws}
+          onAliasSaved={(raw) => setAliasedRaws(prev => { const s = new Set(prev); s.add(raw); return s; })}
+        />
+      )}
 
       {!hasData ? (
         <Text style={np.noData}>No nutrition data available for this recipe yet.</Text>
@@ -2240,6 +2411,22 @@ function NutritionPanel({
     </View>
   );
 }
+
+const up = StyleSheet.create({
+  box:           { backgroundColor: 'rgba(255,255,255,0.04)', borderRadius: 8, padding: 12, gap: 6 },
+  sectionTitle:  { fontFamily: Fonts.bodyMedium, fontSize: 12, color: Colors.textPrimary, letterSpacing: 0.3 },
+  sectionHint:   { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted, marginBottom: 4 },
+  emptyText:     { fontFamily: Fonts.body, fontSize: 12, color: Colors.textMuted, fontStyle: 'italic' },
+  row:           { gap: 4, marginTop: 6 },
+  rowRaw:        { fontFamily: Fonts.body, fontSize: 12, color: Colors.textPrimary },
+  searchWrap:    { position: 'relative', zIndex: 10 },
+  search:        { fontFamily: Fonts.body, fontSize: 12, color: Colors.textPrimary, backgroundColor: Colors.surfaceElevated, borderWidth: 1, borderColor: Colors.border, borderRadius: 6, paddingHorizontal: 8, paddingVertical: 6 },
+  dropdown:      { position: 'absolute', top: '100%', left: 0, right: 0, backgroundColor: Colors.surfaceElevated, borderWidth: 1, borderColor: Colors.border, borderRadius: 6, marginTop: 2, maxHeight: 240, overflow: 'hidden', zIndex: 20 },
+  dropdownRow:   { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 8, paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: Colors.border },
+  dropdownName:  { fontFamily: Fonts.body, fontSize: 12, color: Colors.textPrimary, flex: 1 },
+  dropdownCal:   { fontFamily: Fonts.body, fontSize: 11, color: Colors.textMuted },
+  noQtyRow:      { fontFamily: Fonts.body, fontSize: 12, color: Colors.textMuted, paddingVertical: 2 },
+});
 
 const np = StyleSheet.create({
   wrap:              { backgroundColor: Colors.surfaceElevated, borderRadius: 12, padding: 16, gap: 12 },

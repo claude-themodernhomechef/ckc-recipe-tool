@@ -613,6 +613,7 @@ function _cleanSwapTarget(s) {
   return s
     .replace(/\s+for\s+(?:cooking|saut[eé]ing|finishing|baking|frying|searing|garnish|serving|spritzing|drizzling|sprinkling|dipping|topping|brushing)(?:\s*\/\s*\w+)*\b[\s\w/]*$/i, '')
     .replace(/\s*\([^)]*\)/g, '')
+    .replace(/^\s*\d+[\d/.\s]*\s*(cups?|tbsp|tsp|tablespoons?|teaspoons?|oz|ounces?|lb|pounds?|g\b|grams?|ml|cloves?|pieces?|slices?|sprigs?|cans?|jars?|bunch(?:es)?|handfuls?|pinch(?:es)?|dash(?:es)?)\s+(?:of\s+)?/i, '')
     .replace(/[,;]+\s*$/, '')
     .trim();
 }
@@ -632,8 +633,11 @@ function _computeSwapPortion(swapEntry, numServings) {
 function _fuzzyMatch(term, name) {
   const clean = x => x.toLowerCase()
     .replace(/[,;]/g, ' ')
+    .replace(/^\d[\d/.\s]*\s*(pieces?|cups?|tbsp|tsp|oz|lb|g\b|ml|tablespoons?|teaspoons?|pounds?|ounces?|grams?)?\b/gi, '')
+    .replace(/\b\d+\b/g, '')
     .replace(/\b(freshly\s+ground|cloves?|heads?|tbsp\s+of|tsp\s+of|cups?\s+of|\bof\b|black|white|ground|freshly|kosher|sea|fine|coarse|cracked)\b/g, '')
     .replace(/\b(extra\s+firm|firm|silken|soft|hard|large|small|medium|big|fat|thick|thin|fresh|dried|frozen|raw|cooked|whole|boneless|skinless|lean|ripe|young|baby)\b/g, '')
+    .replace(/\b(dark|light|white|meat|pieces?|parts?|cuts?|handful|preferably|golden)\b/g, '')
     .replace(/\b(diced|sliced|chopped|minced|grated|crushed|halved|quartered|peeled|seeded|cubed|shredded|julienned|torn)\b/g, '')
     .replace(/\s+/g, ' ').trim();
   const b = clean(name);
