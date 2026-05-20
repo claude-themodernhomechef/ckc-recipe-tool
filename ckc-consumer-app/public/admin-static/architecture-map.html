@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>CKC — Architecture Map</title>
+<style>
+  :root {
+    --bg: #0b0d10;
+    --panel: #14171c;
+    --panel-2: #1b1f26;
+    --line: #2a2f3a;
+    --text: #e7e9ee;
+    --muted: #8a93a3;
+    --green: #4ade80;
+    --cyan: #38bdf8;
+    --purple: #a78bfa;
+    --amber: #f59e0b;
+    --orange: #fb923c;
+    --pink: #f472b6;
+    --brown: #c08457;
+    --blue: #60a5fa;
+    --red-wire: #ef4444;
+    --gold-wire: #fbbf24;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; background:var(--bg); color:var(--text); font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; height:100%; overflow:hidden; }
+  .app { display:grid; grid-template-rows: auto 1fr; height:100vh; }
+
+  header.top {
+    display:flex; align-items:center; gap:14px; padding:10px 16px;
+    border-bottom:1px solid var(--line); background:var(--panel);
+  }
+  .brand { font-weight:700; letter-spacing:.2px; }
+  .brand small { color:var(--muted); font-weight:500; margin-left:6px; }
+  .tabs { display:flex; gap:6px; flex-wrap:wrap; margin-left:8px; }
+  .tab {
+    padding:6px 12px; border-radius:999px; background:transparent;
+    border:1px solid var(--line); color:var(--text); font-size:13px; cursor:pointer;
+  }
+  .tab.active { background:#2a3140; border-color:#3a4356; }
+  .legend { display:flex; gap:10px; margin-left:auto; flex-wrap:wrap; font-size:11px; color:var(--muted); }
+  .legend .dot { display:inline-block; width:10px; height:10px; border-radius:3px; vertical-align:-1px; margin-right:5px; }
+
+  .main { display:grid; grid-template-columns: 1fr 380px; min-height:0; }
+  .canvas {
+    position:relative; overflow:auto; background:
+      radial-gradient(circle at 20% 10%, rgba(96,165,250,.06), transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(167,139,250,.06), transparent 40%),
+      var(--bg);
+  }
+  .stage { position:relative; width:1900px; height:1500px; }
+  svg.wires { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+  svg.wires path { fill:none; stroke-width:1.1; opacity:.35; transition: opacity .2s, stroke-width .2s; }
+  svg.wires path.dim { opacity:.05; }
+  svg.wires path.hot { opacity:1; stroke-width:2; filter: drop-shadow(0 0 4px currentColor); }
+
+  .col-label {
+    position:absolute; font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--muted); top:14px;
+  }
+
+  .node {
+    position:absolute; padding:6px 9px; border-radius:7px; font-size:12px;
+    background:var(--panel-2); border:1px solid var(--line); color:var(--text);
+    cursor:pointer; user-select:none; line-height:1.25;
+    transition: opacity .2s, transform .12s, box-shadow .2s, border-color .2s;
+    min-width:140px; max-width:200px;
+  }
+  .node:hover { transform: translateY(-1px); }
+  .node .sub { display:block; font-size:10px; color:var(--muted); margin-top:1px; }
+  .node.dim { opacity:.18; }
+  .node.selected { box-shadow: 0 0 0 2px #fff inset, 0 0 14px rgba(255,255,255,.18); }
+
+  .node.screen   { border-left:3px solid var(--green); }
+  .node.admin    { border-left:3px solid #22c55e; background:#15201a; }
+  .node.comp     { border-left:3px solid var(--cyan); }
+  .node.lib      { border-left:3px solid var(--purple); }
+  .node.ctx      { border-left:3px solid var(--amber); }
+  .node.fn       { border-left:3px solid var(--orange); }
+  .node.data     { border-left:3px solid var(--brown); }
+  .node.coll     { border-left:3px solid var(--blue); }
+  .node.ext      { border-left:3px solid var(--pink); }
+  .node.entry    { border-left:3px solid #fff; }
+
+  aside.side {
+    background:var(--panel); border-left:1px solid var(--line); overflow:auto;
+    padding:18px 18px 80px;
+  }
+  aside h2 { margin:0 0 4px; font-size:18px; }
+  aside .kind { color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.15em; }
+  aside .path { color:var(--muted); font-size:11px; margin-top:2px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; word-break:break-all; }
+  aside section { margin-top:18px; }
+  aside h3 { font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin:0 0 6px; }
+  aside p, aside li { font-size:13.5px; line-height:1.45; }
+  aside ul { margin:0; padding-left:18px; }
+  .bug { background:#2a1414; border:1px solid #5a1f1f; border-radius:6px; padding:8px 10px; margin-bottom:8px; }
+  .bug .tag { display:inline-block; background:#b91c1c; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; margin-right:6px; font-weight:700; }
+  .bug .tag.med { background:#ca8a04; }
+  .bug code { background:#1a1a1a; padding:1px 5px; border-radius:3px; font-size:11px; }
+  .fix { background:#0f1f2a; border:1px solid #1f3a55; border-radius:6px; padding:8px 10px; margin-bottom:6px; font-size:13px; }
+  .empty { color:var(--muted); font-style:italic; font-size:13px; }
+  .hint { padding:18px; color:var(--muted); font-size:13px; line-height:1.5; }
+  code.inline { background:#1a1a1a; padding:1px 5px; border-radius:3px; font-size:12px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+</style>
+</head>
+<body>
+<!-- regenerated 2026-05-20T18:45:26.596Z by scripts/generate-architecture-map.js -->
+<div class="app">
+  <header class="top">
+    <div class="brand">CKC <small>architecture map</small></div>
+    <div class="tabs" id="tabs"></div>
+    <div class="legend">
+      <span><span class="dot" style="background:#fff"></span>Entry</span>
+      <span><span class="dot" style="background:var(--green)"></span>Consumer screens</span>
+      <span><span class="dot" style="background:#22c55e"></span>Admin screens</span>
+      <span><span class="dot" style="background:var(--cyan)"></span>Components</span>
+      <span><span class="dot" style="background:var(--purple)"></span>Lib / services</span>
+      <span><span class="dot" style="background:var(--amber)"></span>Context</span>
+      <span><span class="dot" style="background:var(--orange)"></span>Cloud functions</span>
+      <span><span class="dot" style="background:var(--brown)"></span>Data files</span>
+      <span><span class="dot" style="background:var(--blue)"></span>Firestore</span>
+      <span><span class="dot" style="background:var(--pink)"></span>External APIs</span>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="canvas" id="canvas">
+      <div class="stage" id="stage">
+        <svg class="wires" id="wires"></svg>
+      </div>
+    </div>
+    <aside class="side" id="side">
+      <div class="hint">
+        Click any node to see what feeds it, what it does, known bugs, and planned fixes.<br><br>
+        Use the tabs above to filter by subsystem (Onboarding, Catalog, Shopping, Admin, Enrichment, Data).
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   NODES  — each has: id, label, sub, type, col, row, path, tabs, doc
+   col = x column (0..7), row = y slot in that column
+   ============================================================ */
+const COL_X = [40, 230, 440, 660, 900, 1140, 1400, 1660];
+const ROW_H = 44;
+const ROW_TOP = 60;
+const W = 175;
+function pos(col, row) { return { x: COL_X[col], y: ROW_TOP + row * ROW_H }; }
+
+const NODES = [
+  {"id":"App","label":"App.tsx","sub":"","type":"entry","col":0,"path":"ckc-consumer-app/App.tsx","row":0,"tabs":["overview","onboarding","catalog","shop","admin","enrich"],"doc":{"plain":"Top of the Expo app. Loads fonts and decides which stack to show — onboarding if the user hasn't finished setup, MainTabs if they have.","does":"Bootstraps the React Native app, sets up navigation container, owns RootStackParamList."}},
+  {"id":"MainTabs","label":"MainTabs","sub":"navigator","type":"entry","col":0,"path":"ckc-consumer-app/navigation/MainTabs.tsx","row":1,"tabs":["overview","onboarding","catalog","shop","admin","enrich"],"doc":{"plain":"The bottom 5-tab bar shown after onboarding: Discover, Meal Plan, Scan, Shop, Profile.","does":"Defines TabId union and renders the main tab navigator."}},
+  {"id":"CuisineScreen","label":"CuisineScreen","sub":"","type":"screen","col":1,"path":"ckc-consumer-app/screens/CuisineScreen.tsx","row":0,"tabs":["overview","onboarding"]},
+  {"id":"DietProtocolScreen","label":"DietProtocolScreen","sub":"","type":"screen","col":1,"path":"ckc-consumer-app/screens/DietProtocolScreen.tsx","row":1,"tabs":["overview","onboarding"],"doc":{"plain":"User picks one of 8 diet protocols. This is the single most load-bearing answer in onboarding — it drives every downstream filter."}},
+  {"id":"GuestDiscoverScreen","label":"GuestDiscoverScreen","sub":"","type":"screen","col":1,"path":"ckc-consumer-app/screens/GuestDiscoverScreen.tsx","row":2,"tabs":["overview","onboarding","catalog"]},
+  {"id":"HouseholdScreen","label":"HouseholdScreen","sub":"","type":"screen","col":1,"path":"ckc-consumer-app/screens/HouseholdScreen.tsx","row":3,"tabs":["overview","onboarding"]},
+  {"id":"LoginScreen","label":"LoginScreen","sub":"","type":"screen","col":1,"path":"ckc-consumer-app/screens/LoginScreen.tsx","row":4,"tabs":["overview","onboarding"]},
+  {"id":"NameScreen","label":"NameScreen","sub":"","type":"screen","col":1,"path":"ckc-consumer-app/screens/NameScreen.tsx","row":5,"tabs":["overview","onboarding"]},
+  {"id":"ProteinScreen","label":"ProteinScreen","sub":"","type":"screen","col":1,"path":"ckc-consumer-app/screens/ProteinScreen.tsx","row":6,"tabs":["overview","onboarding"]},
+  {"id":"RecipeDetailScreen","label":"RecipeDetailScreen","sub":"","type":"screen","col":1,"path":"ckc-consumer-app/screens/RecipeDetailScreen.tsx","row":7,"tabs":["overview","onboarding","catalog"],"doc":{"plain":"Full recipe view. Shows ingredients with diet swaps applied based on user's protocol.","does":"Loads recipe, applies applyDietSwap for each non-compliant ingredient."}},
+  {"id":"SetupCompleteScreen","label":"SetupCompleteScreen","sub":"","type":"screen","col":1,"path":"ckc-consumer-app/screens/SetupCompleteScreen.tsx","row":8,"tabs":["overview","onboarding"]},
+  {"id":"ShoppingPlannerScreen","label":"ShoppingPlannerScreen","sub":"","type":"screen","col":1,"path":"ckc-consumer-app/screens/ShoppingPlannerScreen.tsx","row":9,"tabs":["overview","onboarding","shop"]},
+  {"id":"SignUpScreen","label":"SignUpScreen","sub":"","type":"screen","col":1,"path":"ckc-consumer-app/screens/SignUpScreen.tsx","row":10,"tabs":["overview","onboarding"]},
+  {"id":"SplashScreen","label":"SplashScreen","sub":"","type":"screen","col":1,"path":"ckc-consumer-app/screens/SplashScreen.tsx","row":11,"tabs":["overview","onboarding"]},
+  {"id":"WelcomeScreen","label":"WelcomeScreen","sub":"","type":"screen","col":1,"path":"ckc-consumer-app/screens/WelcomeScreen.tsx","row":12,"tabs":["overview","onboarding"]},
+  {"id":"CatalogScreen","label":"CatalogScreen","sub":"main tab","type":"screen","col":2,"path":"ckc-consumer-app/screens/main/CatalogScreen.tsx","row":0,"tabs":["overview","catalog","shop"]},
+  {"id":"DiscoverScreen","label":"DiscoverScreen","sub":"main tab","type":"screen","col":2,"path":"ckc-consumer-app/screens/main/DiscoverScreen.tsx","row":1,"tabs":["overview","catalog","shop"],"doc":{"plain":"The home tab. Shows recipe cards filtered by the user's diet and preferences.","does":"Fetches recipes, applies diet filter, renders cards."}},
+  {"id":"MealPlanScreen","label":"MealPlanScreen","sub":"main tab","type":"screen","col":2,"path":"ckc-consumer-app/screens/main/MealPlanScreen.tsx","row":2,"tabs":["overview","catalog","shop"]},
+  {"id":"ProfileScreen","label":"ProfileScreen","sub":"main tab","type":"screen","col":2,"path":"ckc-consumer-app/screens/main/ProfileScreen.tsx","row":3,"tabs":["overview","catalog","shop"]},
+  {"id":"ScanScreen","label":"ScanScreen","sub":"main tab","type":"screen","col":2,"path":"ckc-consumer-app/screens/main/ScanScreen.tsx","row":4,"tabs":["overview","catalog","shop"],"doc":{"plain":"Camera tab. Snap a recipe page or pantry photo; Gemini extracts ingredients."}},
+  {"id":"ShopScreen","label":"ShopScreen","sub":"main tab","type":"screen","col":2,"path":"ckc-consumer-app/screens/main/ShopScreen.tsx","row":5,"tabs":["overview","catalog","shop"],"doc":{"plain":"The shopping list. Consolidates ingredients from planned meals into a deduped list with categories.","does":"Reads MenuContext, parses ingredients, groups by SHOPPING_CATEGORIES."}},
+  {"id":"AdminMaybeScreen","label":"AdminMaybeScreen","sub":"admin","type":"admin","col":3,"path":"ckc-consumer-app/screens/admin/AdminMaybeScreen.tsx","row":0,"tabs":["overview","admin"]},
+  {"id":"AdminScreen","label":"AdminScreen","sub":"admin","type":"admin","col":3,"path":"ckc-consumer-app/screens/admin/AdminScreen.tsx","row":1,"tabs":["overview","admin"]},
+  {"id":"AdminShoppingScreen","label":"AdminShoppingScreen","sub":"admin","type":"admin","col":3,"path":"ckc-consumer-app/screens/admin/AdminShoppingScreen.tsx","row":2,"tabs":["overview","admin"]},
+  {"id":"AdminSwipeScreen","label":"AdminSwipeScreen","sub":"admin","type":"admin","col":3,"path":"ckc-consumer-app/screens/admin/AdminSwipeScreen.tsx","row":3,"tabs":["overview","admin"]},
+  {"id":"DecisionsCatalogScreen","label":"DecisionsCatalogScreen","sub":"admin","type":"admin","col":3,"path":"ckc-consumer-app/screens/admin/DecisionsCatalogScreen.tsx","row":4,"tabs":["overview","admin"],"doc":{"plain":"Audit log of every diet-tag override Rafi has made. The 'decisions' collection is the source of truth when human and rule disagree."}},
+  {"id":"NeedsReviewScreen","label":"NeedsReviewScreen","sub":"admin","type":"admin","col":3,"path":"ckc-consumer-app/screens/admin/NeedsReviewScreen.tsx","row":5,"tabs":["overview","admin"],"doc":{"plain":"Shows recipes the enrichment pipeline flagged as uncertain — usually diet-tag conflicts or unmatched ingredients."}},
+  {"id":"ReviewQueueScreen","label":"ReviewQueueScreen","sub":"admin","type":"admin","col":3,"path":"ckc-consumer-app/screens/admin/ReviewQueueScreen.tsx","row":6,"tabs":["overview","admin"],"doc":{"plain":"Where Rafi swipes through scraped recipes and approves/rejects them. Approval triggers onRecipeApproved cloud fn.","does":"Lists pending recipes, calls resolveReviewItem on swipe."}},
+  {"id":"RoadmapScreen","label":"RoadmapScreen","sub":"admin","type":"admin","col":3,"path":"ckc-consumer-app/screens/admin/RoadmapScreen.tsx","row":7,"tabs":["overview","admin"]},
+  {"id":"SiteArchitectureScreen","label":"SiteArchitectureScreen","sub":"admin","type":"admin","col":3,"path":"ckc-consumer-app/screens/admin/SiteArchitectureScreen.tsx","row":8,"tabs":["overview","admin"]},
+  {"id":"DietTag","label":"DietTag","sub":"component","type":"comp","col":4,"path":"ckc-consumer-app/screens/components/DietTag.tsx","row":0,"tabs":["overview","onboarding","catalog","shop","admin","enrich"],"doc":{"plain":"The circular diet badge. Solid fill = native to the recipe, dashed border = modified via swap. Never pill-shaped."}},
+  {"id":"EmptyState","label":"EmptyState","sub":"component","type":"comp","col":4,"path":"ckc-consumer-app/screens/components/EmptyState.tsx","row":1,"tabs":["overview","onboarding","catalog","shop","admin","enrich"]},
+  {"id":"OnboardingHeader","label":"OnboardingHeader","sub":"component","type":"comp","col":4,"path":"ckc-consumer-app/screens/components/OnboardingHeader.tsx","row":2,"tabs":["overview","onboarding","catalog","shop","admin","enrich"]},
+  {"id":"PremiumGate","label":"PremiumGate","sub":"component","type":"comp","col":4,"path":"ckc-consumer-app/screens/components/PremiumGate.tsx","row":3,"tabs":["overview","onboarding","catalog","shop","admin","enrich"],"doc":{"plain":"Wraps premium-tier features. Shows upgrade CTA if user is on the free plan."}},
+  {"id":"PrimaryButton","label":"PrimaryButton","sub":"component","type":"comp","col":4,"path":"ckc-consumer-app/screens/components/PrimaryButton.tsx","row":4,"tabs":["overview","onboarding","catalog","shop","admin","enrich"]},
+  {"id":"ProgressDots","label":"ProgressDots","sub":"component","type":"comp","col":4,"path":"ckc-consumer-app/screens/components/ProgressDots.tsx","row":5,"tabs":["overview","onboarding","catalog","shop","admin","enrich"]},
+  {"id":"SectionLabel","label":"SectionLabel","sub":"component","type":"comp","col":4,"path":"ckc-consumer-app/screens/components/SectionLabel.tsx","row":6,"tabs":["overview","onboarding","catalog","shop","admin","enrich"]},
+  {"id":"SelectableChip","label":"SelectableChip","sub":"component","type":"comp","col":4,"path":"ckc-consumer-app/screens/components/SelectableChip.tsx","row":7,"tabs":["overview","onboarding","catalog","shop","admin","enrich"]},
+  {"id":"auth","label":"auth","sub":"service","type":"lib","col":5,"path":"ckc-consumer-app/lib/auth.ts","row":0,"tabs":["overview","onboarding","catalog","shop","admin","enrich"]},
+  {"id":"claudeScoring","label":"claudeScoring","sub":"service","type":"lib","col":5,"path":"ckc-consumer-app/lib/claudeScoring.ts","row":1,"tabs":["overview","onboarding","catalog","shop","admin","enrich"],"doc":{"plain":"Asks Claude to score whether an ingredient is compliant with a given diet protocol. Fallback when the rules engine is unsure.","does":"Exports scoreIngredientsWithClaude."}},
+  {"id":"dietSwaps","label":"dietSwaps","sub":"service","type":"lib","col":5,"path":"ckc-consumer-app/lib/dietSwaps.ts","row":2,"tabs":["overview","onboarding","catalog","shop","admin","enrich"],"doc":{"plain":"Looks up the right substitution for a non-compliant ingredient given the user's diet. Backed by masterSwapTable.json.","does":"Exports applyDietSwap."},"bugs":[{"sev":"MED","ref":"DS-1","txt":"Generic 'herbs' substituted for warm spices (cinnamon, clove) — per Rafi's rules, swaps must match by function."}],"fixes":["Add functional-category metadata to masterSwapTable rows and bias swap selection toward same category."]},
+  {"id":"firebase","label":"firebase","sub":"service","type":"lib","col":5,"path":"ckc-consumer-app/lib/firebase.ts","row":3,"tabs":["overview","onboarding","catalog","shop","admin","enrich"],"doc":{"plain":"Initializes the Firebase app + Firestore + Auth instances. Web vs native config split happens here."}},
+  {"id":"firestore","label":"firestore","sub":"service","type":"lib","col":5,"path":"ckc-consumer-app/lib/firestore.ts","row":4,"tabs":["overview","onboarding","catalog","shop","admin","enrich"],"doc":{"plain":"Every read/write to Firestore goes through this file. Exports fetchCatalogRecipes, fetchRecipesByIds, subscribeCatalogRecipes, updateRecipeStatus, etc.","does":"Wraps Firestore SDK calls; converts docs → typed Recipe objects."}},
+  {"id":"gemini","label":"gemini","sub":"service","type":"lib","col":5,"path":"ckc-consumer-app/lib/gemini.ts","row":5,"tabs":["overview","onboarding","catalog","shop","admin","enrich"],"doc":{"plain":"Sends photos to Google Gemini for ingredient extraction. Used by Scan tab.","does":"Exports scanRecipePhoto, scanPantryPhoto."}},
+  {"id":"ingredientParser","label":"ingredientParser","sub":"service","type":"lib","col":5,"path":"ckc-consumer-app/lib/ingredientParser.ts","row":6,"tabs":["overview","onboarding","catalog","shop","admin","enrich"],"doc":{"plain":"The workhorse for shopping list. Parses '2 tbsp olive oil, divided' into { name, qty, unit, raw, category }.","does":"Exports parseIngredient, normalizeIngredient, fmtQty, SHOPPING_CATEGORIES, categorizeIngredientWithMatch."},"bugs":[{"sev":"HIGH","ref":"IP-1","txt":"Fuzzy matcher occasionally returns false positives for short ingredient names (e.g. 'salt' matches 'sea salt')."},{"sev":"MED","ref":"IP-2","txt":"Unicode whitespace in chef notes was joining sentences without spaces — fixed in classifyDietTags (commit 43104ab). Verify parser handles same chars on input."}],"fixes":["Tighten fuzzyMatch threshold for tokens ≤ 4 chars","Add a unit test fixture covering 50 known-problem ingredients"]},
+  {"id":"MenuContext","label":"MenuContext","sub":"context","type":"ctx","col":6,"path":"ckc-consumer-app/context/MenuContext.tsx","row":0,"tabs":["overview","onboarding","catalog","shop","admin","enrich"],"doc":{"plain":"Holds the user's current meal plan — which recipes they've added, servings, organic preference. The shopping list reads from here.","does":"Exports useMenu hook, AddMenuItemInput, OrganicPreference."}},
+  {"id":"UserContext","label":"UserContext","sub":"context","type":"ctx","col":6,"path":"ckc-consumer-app/context/UserContext.tsx","row":1,"tabs":["overview","onboarding","catalog","shop","admin","enrich"],"doc":{"plain":"Holds the logged-in user, their diet protocol, household size, protein/cuisine prefs, and subscription tier. Read by almost every screen.","does":"Exports useUser hook."}},
+  {"id":"classifyDietTags","label":"classifyDietTags","sub":"enrichment","type":"fn","col":6,"path":"functions/src/enrichment/classifyDietTags.ts","row":2,"tabs":["overview","enrich"],"doc":{"plain":"Applies the 8-protocol rule set + Claude fallback to a recipe's ingredients and writes dietTags (short codes: DF, GF, LF, K…) with notes-array + notesText.","does":"Returns { dietTags, dietTagsNotes, dietTagsNotesText }."},"bugs":[{"sev":"MED","ref":"CDT-1","txt":"Joined chef notes were missing spaces between sentences when unicode whitespace appeared — fixed in commit 43104ab (dedupe joinSentences + normalize unicode whitespace)."}],"fixes":["Add regression test for unicode-whitespace inputs."]},
+  {"id":"classifyProtein","label":"classifyProtein","sub":"enrichment","type":"fn","col":6,"path":"functions/src/enrichment/classifyProtein.ts","row":3,"tabs":["overview","enrich"]},
+  {"id":"fetchDescription","label":"fetchDescription","sub":"enrichment","type":"fn","col":6,"path":"functions/src/enrichment/fetchDescription.ts","row":4,"tabs":["overview","enrich"]},
+  {"id":"firebaseAdmin","label":"firebaseAdmin","sub":"cloud fn","type":"fn","col":6,"path":"functions/src/firebaseAdmin.ts","row":5,"tabs":["overview","enrich"]},
+  {"id":"fn_index","label":"functions/index","sub":"cloud fn","type":"fn","col":6,"path":"functions/src/index.ts","row":6,"tabs":["overview","enrich"]},
+  {"id":"scrapeImages","label":"scrapeImages","sub":"cloud fn","type":"fn","col":6,"path":"functions/src/scrapeImages.ts","row":7,"tabs":["overview","enrich"]},
+  {"id":"decisions_collection","label":"decisions","sub":"Firestore coll","type":"coll","col":7,"path":"collection: decisions","row":0,"tabs":["overview","onboarding","catalog","shop","admin","enrich"],"doc":{"plain":"Per-recipe override doc. When Rafi disagrees with the rule engine, the override lives here. Wins over computed tags."}},
+  {"id":"ingredientCategories_collection","label":"ingredientCategories","sub":"Firestore coll","type":"coll","col":7,"path":"collection: ingredientCategories","row":1,"tabs":["overview","onboarding","catalog","shop","admin","enrich"]},
+  {"id":"recipes_collection","label":"recipes","sub":"Firestore coll","type":"coll","col":7,"path":"collection: recipes","row":2,"tabs":["overview","onboarding","catalog","shop","admin","enrich"],"doc":{"plain":"~1078 enriched recipes, the heart of the product. Each doc has ingredients, dietTags, dietTagsNotes, nutrition.byDiet, status, etc."}},
+  {"id":"dietRules","label":"diet-rules","sub":"json","type":"data","col":7,"path":"functions/diet-rules.json","row":3,"tabs":["overview","onboarding","catalog","shop","admin","enrich"]},
+  {"id":"ingredientMasterList","label":"ingredient_master_list","sub":"json","type":"data","col":7,"path":"ingredient_master_list.json","row":4,"tabs":["overview","onboarding","catalog","shop","admin","enrich"]},
+  {"id":"masterSwapTable","label":"masterSwapTable","sub":"json","type":"data","col":7,"path":"data/masterSwapTable.json","row":5,"tabs":["overview","onboarding","catalog","shop","admin","enrich"]},
+  {"id":"sampleRecipes","label":"sampleRecipes","sub":"dev seed","type":"data","col":7,"path":"ckc-consumer-app/data/sampleRecipes.ts","row":6,"tabs":["overview","onboarding","catalog","shop","admin","enrich"]},
+  {"id":"ext_claude","label":"Claude API","sub":"classification","type":"ext","col":7,"path":"external service","row":7,"tabs":["overview","onboarding","catalog","shop","admin","enrich"]},
+  {"id":"ext_firebase","label":"Firebase","sub":"auth+db","type":"ext","col":7,"path":"external service","row":8,"tabs":["overview","onboarding","catalog","shop","admin","enrich"]},
+  {"id":"ext_gemini","label":"Gemini API","sub":"photo OCR","type":"ext","col":7,"path":"external service","row":9,"tabs":["overview","onboarding","catalog","shop","admin","enrich"]}
+];
+
+/* ============================================================
+   EDGES  — from → to (which way data/imports flow)
+   wire: 'red' = chat-/scan-turn hot path, 'gold' = enrichment, default = grey
+   ============================================================ */
+const EDGES = [
+  ["App","UserContext"],
+  ["App","MenuContext"],
+  ["App","ingredientParser"],
+  ["App","SplashScreen"],
+  ["App","WelcomeScreen"],
+  ["App","SignUpScreen"],
+  ["App","LoginScreen"],
+  ["App","DietProtocolScreen"],
+  ["App","HouseholdScreen"],
+  ["App","ProteinScreen"],
+  ["App","CuisineScreen"],
+  ["App","SetupCompleteScreen"],
+  ["App","ShoppingPlannerScreen"],
+  ["App","NameScreen"],
+  ["App","GuestDiscoverScreen"],
+  ["App","MainTabs"],
+  ["App","RecipeDetailScreen"],
+  ["App","AdminScreen"],
+  ["App","DecisionsCatalogScreen"],
+  ["CuisineScreen","App"],
+  ["CuisineScreen","OnboardingHeader"],
+  ["CuisineScreen","PrimaryButton"],
+  ["CuisineScreen","SelectableChip"],
+  ["DietProtocolScreen","App"],
+  ["DietProtocolScreen","OnboardingHeader"],
+  ["DietProtocolScreen","PrimaryButton"],
+  ["GuestDiscoverScreen","App"],
+  ["GuestDiscoverScreen","firestore"],
+  ["GuestDiscoverScreen","sampleRecipes"],
+  ["HouseholdScreen","App"],
+  ["HouseholdScreen","OnboardingHeader"],
+  ["HouseholdScreen","PrimaryButton"],
+  ["LoginScreen","App"],
+  ["LoginScreen","auth"],
+  ["NameScreen","App"],
+  ["NameScreen","UserContext"],
+  ["NameScreen","OnboardingHeader"],
+  ["NameScreen","PrimaryButton"],
+  ["ProteinScreen","App"],
+  ["ProteinScreen","OnboardingHeader"],
+  ["ProteinScreen","PrimaryButton"],
+  ["ProteinScreen","SelectableChip"],
+  ["RecipeDetailScreen","App"],
+  ["SetupCompleteScreen","App"],
+  ["SetupCompleteScreen","DietTag"],
+  ["ShoppingPlannerScreen","firestore"],
+  ["ShoppingPlannerScreen","ingredientParser"],
+  ["ShoppingPlannerScreen","dietSwaps"],
+  ["SignUpScreen","App"],
+  ["SignUpScreen","UserContext"],
+  ["SplashScreen","App"],
+  ["WelcomeScreen","App"],
+  ["AdminMaybeScreen","firestore"],
+  ["AdminMaybeScreen","DietTag"],
+  ["AdminMaybeScreen","sampleRecipes"],
+  ["AdminScreen","AdminSwipeScreen"],
+  ["AdminScreen","DecisionsCatalogScreen"],
+  ["AdminScreen","ReviewQueueScreen"],
+  ["AdminScreen","RoadmapScreen"],
+  ["AdminScreen","SiteArchitectureScreen"],
+  ["AdminSwipeScreen","firestore"],
+  ["AdminSwipeScreen","DietTag"],
+  ["AdminSwipeScreen","sampleRecipes"],
+  ["DecisionsCatalogScreen","firestore"],
+  ["DecisionsCatalogScreen","DietTag"],
+  ["DecisionsCatalogScreen","ingredientParser"],
+  ["DecisionsCatalogScreen","ext_claude"],
+  ["DecisionsCatalogScreen","sampleRecipes"],
+  ["NeedsReviewScreen","firestore"],
+  ["NeedsReviewScreen","ext_claude"],
+  ["ReviewQueueScreen","ingredientParser"],
+  ["ReviewQueueScreen","firebase"],
+  ["ReviewQueueScreen","firestore"],
+  ["ReviewQueueScreen","DietTag"],
+  ["ReviewQueueScreen","recipes_collection"],
+  ["ReviewQueueScreen","ext_firebase"],
+  ["ReviewQueueScreen","ext_claude"],
+  ["ReviewQueueScreen","masterSwapTable"],
+  ["OnboardingHeader","ProgressDots"],
+  ["CatalogScreen","firestore"],
+  ["CatalogScreen","DietTag"],
+  ["CatalogScreen","ingredientParser"],
+  ["CatalogScreen","MenuContext"],
+  ["CatalogScreen","sampleRecipes"],
+  ["DiscoverScreen","App"],
+  ["DiscoverScreen","UserContext"],
+  ["DiscoverScreen","MenuContext"],
+  ["DiscoverScreen","DietTag"],
+  ["DiscoverScreen","firestore","red"],
+  ["DiscoverScreen","ingredientParser"],
+  ["DiscoverScreen","sampleRecipes"],
+  ["MealPlanScreen","PremiumGate"],
+  ["MealPlanScreen","UserContext"],
+  ["MealPlanScreen","MenuContext"],
+  ["MealPlanScreen","firestore"],
+  ["MealPlanScreen","sampleRecipes"],
+  ["ProfileScreen","MainTabs"],
+  ["ProfileScreen","UserContext"],
+  ["ProfileScreen","DietTag"],
+  ["ProfileScreen","PremiumGate"],
+  ["ProfileScreen","SectionLabel"],
+  ["ProfileScreen","sampleRecipes"],
+  ["ScanScreen","gemini","red"],
+  ["ScanScreen","claudeScoring"],
+  ["ScanScreen","UserContext"],
+  ["ScanScreen","ext_gemini"],
+  ["ShopScreen","EmptyState"],
+  ["ShopScreen","PremiumGate"],
+  ["ShopScreen","DietTag"],
+  ["ShopScreen","MenuContext"],
+  ["ShopScreen","UserContext"],
+  ["ShopScreen","firestore"],
+  ["ShopScreen","ingredientParser","red"],
+  ["ShopScreen","sampleRecipes"],
+  ["MainTabs","MenuContext"],
+  ["MainTabs","DiscoverScreen"],
+  ["MainTabs","MealPlanScreen"],
+  ["MainTabs","ScanScreen"],
+  ["MainTabs","ShopScreen"],
+  ["MainTabs","ProfileScreen"],
+  ["auth","firebase"],
+  ["auth","ext_firebase"],
+  ["dietSwaps","masterSwapTable"],
+  ["firebase","ext_firebase","red"],
+  ["firestore","firebase","red"],
+  ["firestore","recipes_collection","red"],
+  ["firestore","decisions_collection"],
+  ["firestore","ext_firebase"],
+  ["firestore","sampleRecipes"],
+  ["gemini","ext_gemini","red"],
+  ["ingredientParser","ingredientCategories_collection"],
+  ["ingredientParser","ext_firebase"],
+  ["firebaseAdmin","ext_firebase"],
+  ["fn_index","classifyProtein","gold"],
+  ["fn_index","classifyDietTags","gold"],
+  ["fn_index","fetchDescription","gold"],
+  ["fn_index","firebaseAdmin"],
+  ["fn_index","recipes_collection"],
+  ["scrapeImages","firebaseAdmin"],
+  ["scrapeImages","recipes_collection"]
+];
+
+/* ============================================================
+   TABS
+   ============================================================ */
+const TABS = [
+  { id:'overview',   label:'Overview' },
+  { id:'onboarding', label:'Onboarding' },
+  { id:'catalog',    label:'Discover / Catalog' },
+  { id:'shop',       label:'Meal plan & Shopping' },
+  { id:'admin',      label:'Admin / Review' },
+  { id:'enrich',     label:'Enrichment pipeline' },
+];
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+const stage = document.getElementById('stage');
+const wires = document.getElementById('wires');
+const side  = document.getElementById('side');
+const tabsEl= document.getElementById('tabs');
+
+let activeTab = 'overview';
+let selectedId = null;
+
+// column headers
+const COL_TITLES = ['Entry','Onboarding','Main tabs','Admin','Components','Lib / services','Context + Cloud fn','Data + external'];
+COL_TITLES.forEach((t,i)=>{
+  const el = document.createElement('div');
+  el.className = 'col-label';
+  el.style.left = (COL_X[i]) + 'px';
+  el.textContent = t;
+  stage.appendChild(el);
+});
+
+// nodes
+const nodeEls = {};
+NODES.forEach(n => {
+  const el = document.createElement('div');
+  el.className = `node ${n.type}`;
+  el.style.left = COL_X[n.col] + 'px';
+  el.style.top  = (ROW_TOP + n.row * ROW_H) + 'px';
+  el.style.width = W + 'px';
+  el.dataset.id = n.id;
+  el.innerHTML = `${escapeHtml(n.label)}${n.sub ? `<span class="sub">${escapeHtml(n.sub)}</span>` : ''}`;
+  el.addEventListener('click', () => select(n.id));
+  stage.appendChild(el);
+  nodeEls[n.id] = el;
+});
+
+// wires
+const wireEls = [];
+function nodeAnchor(id, side='right') {
+  const n = NODES.find(x=>x.id===id);
+  const x0 = COL_X[n.col];
+  const y0 = ROW_TOP + n.row * ROW_H + 16; // mid-height
+  return side === 'right' ? { x: x0 + W, y: y0 } : { x: x0, y: y0 };
+}
+EDGES.forEach((e,i) => {
+  const [a,b,kind] = e;
+  const A = NODES.find(n=>n.id===a), B = NODES.find(n=>n.id===b);
+  if (!A || !B) return;
+  // direction: from lower-col to higher-col (right). If reversed, swap anchor sides.
+  const aRight = A.col <= B.col;
+  const p1 = nodeAnchor(a, aRight ? 'right':'left');
+  const p2 = nodeAnchor(b, aRight ? 'left':'right');
+  const dx = (p2.x - p1.x) * 0.5;
+  const d = `M ${p1.x},${p1.y} C ${p1.x+dx},${p1.y} ${p2.x-dx},${p2.y} ${p2.x},${p2.y}`;
+  const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+  path.setAttribute('d', d);
+  const color = kind === 'red' ? 'var(--red-wire)' : kind === 'gold' ? 'var(--gold-wire)' : '#6b7280';
+  path.setAttribute('stroke', color);
+  path.dataset.a = a; path.dataset.b = b; path.dataset.kind = kind || '';
+  wires.appendChild(path);
+  wireEls.push(path);
+});
+
+// stage sizing
+const maxRow = Math.max(...NODES.map(n=>n.row));
+stage.style.height = (ROW_TOP + (maxRow+2) * ROW_H) + 'px';
+
+// tabs
+TABS.forEach(t => {
+  const b = document.createElement('button');
+  b.className = 'tab' + (t.id===activeTab ? ' active':'');
+  b.textContent = t.label;
+  b.addEventListener('click', () => setTab(t.id));
+  tabsEl.appendChild(b);
+});
+
+function setTab(id) {
+  activeTab = id;
+  [...tabsEl.children].forEach((b,i)=>b.classList.toggle('active', TABS[i].id===id));
+  applyVisibility();
+}
+
+function applyVisibility() {
+  NODES.forEach(n => {
+    const visible = n.tabs && n.tabs.includes(activeTab);
+    nodeEls[n.id].style.display = visible ? '' : 'none';
+  });
+  wireEls.forEach(p => {
+    const a = NODES.find(n=>n.id===p.dataset.a);
+    const b = NODES.find(n=>n.id===p.dataset.b);
+    const va = a && a.tabs && a.tabs.includes(activeTab);
+    const vb = b && b.tabs && b.tabs.includes(activeTab);
+    p.style.display = (va && vb) ? '' : 'none';
+  });
+  if (selectedId && nodeEls[selectedId] && nodeEls[selectedId].style.display === 'none') {
+    clearSelection();
+  } else if (selectedId) {
+    highlight(selectedId);
+  }
+}
+
+function select(id) {
+  if (selectedId === id) { clearSelection(); return; }
+  selectedId = id;
+  highlight(id);
+  renderSide(id);
+}
+
+function clearSelection() {
+  selectedId = null;
+  Object.values(nodeEls).forEach(el => { el.classList.remove('dim','selected'); });
+  wireEls.forEach(p => p.classList.remove('dim','hot'));
+  side.innerHTML = `<div class="hint">Click any node to see what feeds it, what it does, known bugs, and planned fixes.<br><br>Use the tabs above to filter by subsystem.</div>`;
+}
+
+function highlight(id) {
+  // find connected node ids
+  const connected = new Set([id]);
+  wireEls.forEach(p => {
+    if (p.dataset.a === id) connected.add(p.dataset.b);
+    if (p.dataset.b === id) connected.add(p.dataset.a);
+  });
+  Object.entries(nodeEls).forEach(([nid, el]) => {
+    if (el.style.display === 'none') return;
+    el.classList.toggle('selected', nid === id);
+    el.classList.toggle('dim', !connected.has(nid));
+  });
+  wireEls.forEach(p => {
+    if (p.style.display === 'none') return;
+    const touches = p.dataset.a === id || p.dataset.b === id;
+    p.classList.toggle('hot', touches);
+    p.classList.toggle('dim', !touches);
+  });
+}
+
+function renderSide(id) {
+  const n = NODES.find(x=>x.id===id);
+  if (!n) return;
+  const incoming = EDGES.filter(e => e[1] === id).map(e => labelFor(e[0]));
+  const outgoing = EDGES.filter(e => e[0] === id).map(e => labelFor(e[1]));
+  const doc = n.doc || {};
+  const bugs = n.bugs || [];
+  const fixes = n.fixes || [];
+  side.innerHTML = `
+    <div class="kind">${typeLabel(n.type)}</div>
+    <h2>${escapeHtml(n.label)}${n.sub ? ` <span style="color:var(--muted);font-weight:400;font-size:14px">— ${escapeHtml(n.sub)}</span>`:''}</h2>
+    <div class="path">${escapeHtml(n.path||'')}</div>
+
+    ${doc.plain ? `<section><h3>In plain English</h3><p>${escapeHtml(doc.plain)}</p></section>`:''}
+    ${doc.does  ? `<section><h3>What it does</h3><p>${escapeHtml(doc.does)}</p></section>`:''}
+
+    <section>
+      <h3>What feeds it</h3>
+      ${incoming.length ? `<ul>${incoming.map(t=>`<li>${escapeHtml(t)}</li>`).join('')}</ul>` : `<div class="empty">Nothing in this map points here.</div>`}
+    </section>
+    <section>
+      <h3>What it feeds</h3>
+      ${outgoing.length ? `<ul>${outgoing.map(t=>`<li>${escapeHtml(t)}</li>`).join('')}</ul>` : `<div class="empty">Nothing downstream in this map.</div>`}
+    </section>
+
+    ${bugs.length ? `<section><h3>Known bugs (${bugs.length})</h3>
+      ${bugs.map(b => `<div class="bug"><span class="tag ${b.sev==='MED'?'med':''}">${b.sev}</span><code>REF ${escapeHtml(b.ref)}</code><br>${escapeHtml(b.txt)}</div>`).join('')}
+    </section>`:''}
+
+    ${fixes.length ? `<section><h3>Planned fixes</h3>
+      ${fixes.map(f => `<div class="fix">→ ${escapeHtml(f)}</div>`).join('')}
+    </section>`:''}
+  `;
+}
+
+function labelFor(id) {
+  const n = NODES.find(x=>x.id===id);
+  return n ? `${n.label}${n.sub?` — ${n.sub}`:''}` : id;
+}
+function typeLabel(t) {
+  return ({entry:'Entry',screen:'Consumer screen',admin:'Admin screen',comp:'Component',lib:'Lib / service',ctx:'Context',fn:'Cloud function',data:'Data file',coll:'Firestore collection',ext:'External service'})[t]||t;
+}
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+}
+
+applyVisibility();
+</script>
+</body>
+</html>

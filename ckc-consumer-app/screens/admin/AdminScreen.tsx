@@ -25,17 +25,19 @@ import AdminSwipeScreen      from './AdminSwipeScreen';
 import DecisionsCatalogScreen from './DecisionsCatalogScreen';
 import ReviewQueueScreen     from './ReviewQueueScreen';
 import RoadmapScreen         from './RoadmapScreen';
+import SiteArchitectureScreen from './SiteArchitectureScreen';
 
 const ADMIN_PASSWORD =
   (typeof process !== 'undefined' && process.env.EXPO_PUBLIC_ADMIN_PASSWORD) || 'ckc-admin';
 
-type TabId = 'swipe' | 'catalog' | 'queue' | 'roadmap';
+type TabId = 'swipe' | 'catalog' | 'queue' | 'roadmap' | 'architecture';
 
 const TABS: { id: TabId; label: string; icon: string }[] = [
-  { id: 'swipe',   label: 'Swipe',        icon: '⇄' },
-  { id: 'catalog', label: 'Catalog',      icon: '▤' },
-  { id: 'queue',   label: 'Review Queue', icon: '✓' },
-  { id: 'roadmap', label: 'Roadmap',      icon: '◎' },
+  { id: 'swipe',        label: 'Swipe',             icon: '⇄' },
+  { id: 'catalog',      label: 'Catalog',           icon: '▤' },
+  { id: 'queue',        label: 'Review Queue',      icon: '✓' },
+  { id: 'roadmap',      label: 'Roadmap',           icon: '◎' },
+  { id: 'architecture', label: 'Site Architecture', icon: '◇' },
 ];
 
 // ── Password gate ─────────────────────────────────────────────────────────────
@@ -266,10 +268,11 @@ export default function AdminScreen() {
 
   const content = (() => {
     switch (tab) {
-      case 'swipe':   return <AdminSwipeScreen />;
-      case 'catalog': return <DecisionsCatalogScreen />;
-      case 'queue':   return <ReviewQueueScreen />;
-      case 'roadmap': return <RoadmapScreen />;
+      case 'swipe':        return <AdminSwipeScreen />;
+      case 'catalog':      return <DecisionsCatalogScreen />;
+      case 'queue':        return <ReviewQueueScreen />;
+      case 'roadmap':      return <RoadmapScreen />;
+      case 'architecture': return <SiteArchitectureScreen />;
     }
   })();
 

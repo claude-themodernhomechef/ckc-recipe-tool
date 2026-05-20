@@ -1,0 +1,110 @@
+{
+  "_comment": "Hand-written narrative for nodes in the architecture map. Keyed by node id (typically the file's basename without extension). Merged in by generate-architecture-map.js on every build.",
+
+  "App": {
+    "plain": "Top of the Expo app. Loads fonts and decides which stack to show — onboarding if the user hasn't finished setup, MainTabs if they have.",
+    "does": "Bootstraps the React Native app, sets up navigation container, owns RootStackParamList."
+  },
+  "MainTabs": {
+    "plain": "The bottom 5-tab bar shown after onboarding: Discover, Meal Plan, Scan, Shop, Profile.",
+    "does": "Defines TabId union and renders the main tab navigator."
+  },
+  "DietProtocolScreen": {
+    "plain": "User picks one of 8 diet protocols. This is the single most load-bearing answer in onboarding — it drives every downstream filter."
+  },
+  "DiscoverScreen": {
+    "plain": "The home tab. Shows recipe cards filtered by the user's diet and preferences.",
+    "does": "Fetches recipes, applies diet filter, renders cards."
+  },
+  "ScanScreen": {
+    "plain": "Camera tab. Snap a recipe page or pantry photo; Gemini extracts ingredients."
+  },
+  "ShopScreen": {
+    "plain": "The shopping list. Consolidates ingredients from planned meals into a deduped list with categories.",
+    "does": "Reads MenuContext, parses ingredients, groups by SHOPPING_CATEGORIES."
+  },
+  "RecipeDetailScreen": {
+    "plain": "Full recipe view. Shows ingredients with diet swaps applied based on user's protocol.",
+    "does": "Loads recipe, applies applyDietSwap for each non-compliant ingredient."
+  },
+  "ReviewQueueScreen": {
+    "plain": "Where Rafi swipes through scraped recipes and approves/rejects them. Approval triggers onRecipeApproved cloud fn.",
+    "does": "Lists pending recipes, calls resolveReviewItem on swipe."
+  },
+  "NeedsReviewScreen": {
+    "plain": "Shows recipes the enrichment pipeline flagged as uncertain — usually diet-tag conflicts or unmatched ingredients."
+  },
+  "DecisionsCatalogScreen": {
+    "plain": "Audit log of every diet-tag override Rafi has made. The 'decisions' collection is the source of truth when human and rule disagree."
+  },
+  "DietTag": {
+    "plain": "The circular diet badge. Solid fill = native to the recipe, dashed border = modified via swap. Never pill-shaped."
+  },
+  "PremiumGate": {
+    "plain": "Wraps premium-tier features. Shows upgrade CTA if user is on the free plan."
+  },
+  "firestore": {
+    "plain": "Every read/write to Firestore goes through this file. Exports fetchCatalogRecipes, fetchRecipesByIds, subscribeCatalogRecipes, updateRecipeStatus, etc.",
+    "does": "Wraps Firestore SDK calls; converts docs → typed Recipe objects."
+  },
+  "firebase": {
+    "plain": "Initializes the Firebase app + Firestore + Auth instances. Web vs native config split happens here."
+  },
+  "gemini": {
+    "plain": "Sends photos to Google Gemini for ingredient extraction. Used by Scan tab.",
+    "does": "Exports scanRecipePhoto, scanPantryPhoto."
+  },
+  "claudeScoring": {
+    "plain": "Asks Claude to score whether an ingredient is compliant with a given diet protocol. Fallback when the rules engine is unsure.",
+    "does": "Exports scoreIngredientsWithClaude."
+  },
+  "ingredientParser": {
+    "plain": "The workhorse for shopping list. Parses '2 tbsp olive oil, divided' into { name, qty, unit, raw, category }.",
+    "does": "Exports parseIngredient, normalizeIngredient, fmtQty, SHOPPING_CATEGORIES, categorizeIngredientWithMatch.",
+    "bugs": [
+      { "sev": "HIGH", "ref": "IP-1", "txt": "Fuzzy matcher occasionally returns false positives for short ingredient names (e.g. 'salt' matches 'sea salt')." },
+      { "sev": "MED",  "ref": "IP-2", "txt": "Unicode whitespace in chef notes was joining sentences without spaces — fixed in classifyDietTags (commit 43104ab). Verify parser handles same chars on input." }
+    ],
+    "fixes": [
+      "Tighten fuzzyMatch threshold for tokens ≤ 4 chars",
+      "Add a unit test fixture covering 50 known-problem ingredients"
+    ]
+  },
+  "dietSwaps": {
+    "plain": "Looks up the right substitution for a non-compliant ingredient given the user's diet. Backed by masterSwapTable.json.",
+    "does": "Exports applyDietSwap.",
+    "bugs": [
+      { "sev": "MED", "ref": "DS-1", "txt": "Generic 'herbs' substituted for warm spices (cinnamon, clove) — per Rafi's rules, swaps must match by function." }
+    ],
+    "fixes": [
+      "Add functional-category metadata to masterSwapTable rows and bias swap selection toward same category."
+    ]
+  },
+  "UserContext": {
+    "plain": "Holds the logged-in user, their diet protocol, household size, protein/cuisine prefs, and subscription tier. Read by almost every screen.",
+    "does": "Exports useUser hook."
+  },
+  "MenuContext": {
+    "plain": "Holds the user's current meal plan — which recipes they've added, servings, organic preference. The shopping list reads from here.",
+    "does": "Exports useMenu hook, AddMenuItemInput, OrganicPreference."
+  },
+  "classifyDietTags": {
+    "plain": "Applies the 8-protocol rule set + Claude fallback to a recipe's ingredients and writes dietTags (short codes: DF, GF, LF, K…) with notes-array + notesText.",
+    "does": "Returns { dietTags, dietTagsNotes, dietTagsNotesText }.",
+    "bugs": [
+      { "sev": "MED", "ref": "CDT-1", "txt": "Joined chef notes were missing spaces between sentences when unicode whitespace appeared — fixed in commit 43104ab (dedupe joinSentences + normalize unicode whitespace)." }
+    ],
+    "fixes": [
+      "Add regression test for unicode-whitespace inputs."
+    ]
+  },
+  "onRecipeApproved": {
+    "plain": "Fires whenever a recipe is approved in the review queue. Kicks off enrichment: diet classification, protein classification, description fetch."
+  },
+  "recipes_collection": {
+    "plain": "~1078 enriched recipes, the heart of the product. Each doc has ingredients, dietTags, dietTagsNotes, nutrition.byDiet, status, etc."
+  },
+  "decisions_collection": {
+    "plain": "Per-recipe override doc. When Rafi disagrees with the rule engine, the override lives here. Wins over computed tags."
+  }
+}
