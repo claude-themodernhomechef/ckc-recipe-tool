@@ -49,9 +49,7 @@ import ingredientDBNames from '../../data/ingredientDBNames.json';
 
 const ANTHROPIC_KEY = (typeof process !== 'undefined' && process.env.EXPO_PUBLIC_ANTHROPIC_API_KEY) ?? '';
 
-const SWAP_SYSTEM_PROMPT = `You write diet compliance modification notes for recipes.
-
-Style rules:
+const SWAP_STYLE_RULES = `Style rules:
 - Imperative sentences only: "Replace X with Y.", "Remove X entirely.", "Use X instead of Y."
 - Specific quantities when known (e.g., "Replace 2 garlic cloves with 1 tbsp garlic-infused oil")
 - Only describe the swap or removal — nothing else
@@ -63,6 +61,81 @@ Style rules:
 - No bullet points, no headers, no markdown
 - No mention of diet protocol names within the note text
 - End with a period`;
+
+// Per-protocol swap rules. Concatenated into the system prompt so the model
+// never recommends a non-compliant ingredient (e.g. garlic on LF). Mirrors
+// docs/CKC_Diet_Compliance_Rules.md.
+const PROTOCOL_RULES: Record<string, string> = {
+  LF: `LOW-FODMAP (LF) rules — CRITICAL:
+- Garlic is NEVER LF-compliant. Never recommend "1 tbsp garlic" or any amount of garlic.
+- Garlic-infused oil IS compliant (FODMAPs are water-soluble, not fat-soluble).
+- Garlic swap formulas (always quantify the oil):
+    Recipe has garlic + olive oil: "Replace garlic and [X] tbsp of the oil with garlic-infused oil."
+    Recipe has garlic + onion + oil: "Remove garlic and onion and replace [X] tbsp of the oil with garlic-infused oil."
+    Recipe has garlic only (no oil in recipe): "Replace garlic with 1 tbsp garlic-infused oil."
+    Recipe has shallots: "Replace shallots and garlic with [X] tbsp garlic-infused oil."
+- Onion/shallots/leeks (white & light green parts): replace with "green tops of [X] scallions" OR include in the garlic-infused-oil swap. Never recommend regular onion.
+- Other swaps: soy sauce → tamari; heavy cream → coconut milk; sour cream → lactose-free sour cream; wine → matching broth (chicken broth for white wine, beef broth for red); balsamic vinegar → tamari + matching broth; honey in excess → reduce to 1 tbsp or maple syrup; flour gravies → arrowroot or GF 1:1 flour; mushrooms → remove entirely; corn → remove; fennel → remove; beans → remove (when supporting, not starring).`,
+
+  DF: `DAIRY-FREE (DF) rules:
+- Heavy cream / half-and-half → full-fat canned coconut milk (default) or unsweetened oat/soy milk (lighter dishes).
+- Greek yogurt / sour cream → plain unsweetened coconut yogurt.
+- Hard cheese (parmesan, pecorino) → nutritional yeast + miso, OR Follow Your Heart vegan parmesan.
+- Melting cheese → Kite Hill vegan mozzarella/ricotta.
+- Garnish cheese (feta, cotija, blue) → simply remove. Do not replace garnishes.
+- Butter for sauteing/browning → olive oil. Butter for finishing/baking → DF butter (Miyoko's).
+- Butter when recipe already has coconut milk → simply remove the butter.`,
+
+  GF: `GLUTEN-FREE (GF) rules:
+- Thickeners: arrowroot powder for thin sauces/gravies (1/4 c flour → 1 tbsp arrowroot). 1:1 GF flour blend for coating/binding/dumplings.
+- Pasta: brown rice pasta (Italian, texture-critical); cassava flour orzo; cauliflower rice or GF couscous; brown rice noodles for ramen/lo mein; GF tortellini.
+- Bread: GF bread/buns, corn or GF tortillas, GF pita, GF cornbread mix.
+- Soy sauce → tamari (or coconut aminos if soy-sensitive). Oyster/Worcestershire/hoisin → GF versions.
+- Breadcrumbs/panko in meatballs or breading → GF panko. Croutons (topping only) → remove.`,
+
+  K: `KETO (K) rules:
+- White rice / couscous / orzo → cauliflower rice. Mashed potatoes / sweet potatoes → cauliflower mash. Quinoa → cooked vegetables. Gnocchi → cauliflower gnocchi.
+- Potatoes in stews → remove, or add 1 tbsp arrowroot to compensate.
+- Asian noodles (bold sauce) → shirataki. Light-sauced pasta → spiralized zucchini. Heavy pasta dishes → keto pasta.
+- Tacos/enchiladas → keto wraps. Burgers → iceberg or butter lettuce wraps. Burritos → GF wraps. Tortilla chips → keto tortilla chips or remove.
+- Sweeteners: honey/brown/white sugar → allulose (liquid for honey, granular for sugar). BBQ caramelization → trehalose.
+- Fruit: high-sugar toppings → double avocado. Moderate fruit → halve it ("Consume 1/2 the amount"). Juice as cooking liquid → replace half with matching broth.
+- Breading: panko in meatballs → equal parts cauliflower rice. Schnitzel → cauliflower panko. Binder breadcrumbs → almond flour. Decorative panko → remove.`,
+
+  AIP: `AUTOIMMUNE PROTOCOL (AIP) rules:
+- Always remove (seed-based): black pepper, mustard/Dijon, cumin, sesame seeds, sesame oil, sunflower seeds, pepitas, fennel seeds.
+- Always remove (nightshades): chili flakes, paprika (regular + smoked), jalapeno/serrano/poblano, bell peppers, chili crisp, gochujang, hot sauce. Curry powder → replace with turmeric.
+- Soy sauce / miso / fish sauce → coconut aminos. Vinegar (all types) → fresh citrus (lime or lemon). Wine/alcohol → matching broth. Brown sugar → agave. Flour/cornstarch → arrowroot. Almond milk → rice milk.
+- Olives, vinegar, wine, beer → remove or replace per above (fermented foods not allowed).
+- If 4+ core ingredients would need removal, the AIP modification should be skipped.`,
+
+  V: `VEGAN (V) rules:
+- Always include the broth swap when applicable: "Replace chicken/beef broth with vegetable broth." Never assume this is obvious.
+- Tofu: always specify "extra firm" with the cut matched to the original protein (cubed 1-inch, crumbled, rectangles, etc.). Always quantify (e.g. "2 lbs extra firm tofu cut into 1 inch cubes").
+- Impossible Beef / meat alternatives for spice-forward dishes (Moroccan meatballs, enchiladas, lasagna).
+- Mushrooms for ground-meat texture (pies, pulled sandwiches): "Replace beef with 1 lb mushrooms finely chopped."
+- Beans culturally authentic for Latin dishes: pinto (tamales), black (enchiladas), cannellini (soups).
+- Egg as binder → flax egg (2 tbsp ground flax + 1 tbsp water). Non-structural egg → remove.
+- Anchovy paste → 1 tbsp tamari + 1 tbsp capers with juice. Fish sauce → extra soy sauce. Honey → agave. Buttermilk → 1 tbsp vinegar + 1/3 c soy milk rested 10 min.`,
+
+  Vg: `VEGETARIAN (Vg) rules:
+- Same as Vegan but dairy and eggs are allowed. Focus on protein replacement only.
+- Tofu, beans, mushrooms, or eggs (where structurally appropriate) for meat.
+- Broth swap to vegetable broth still required.`,
+
+  LH: `LOW-HISTAMINE (LH) rules:
+- Always remove (high-histamine): vinegar (all types) → fresh citrus (lime/lemon); wine → matching broth; pickled items; aged cheese (parmesan, pecorino); soy sauce/miso → coconut aminos or remove; smoked paprika; sour cream.
+- Specific triggers: avocado → cucumber; concentrated tomato → remove; black pepper → remove; chili/sriracha/chipotle → remove; mustard/Dijon → remove; sumac → remove; fennel seeds → remove; excessive lemon → reduce.
+- Canola oil → olive oil.`,
+};
+
+function buildSwapSystemPrompt(protocol: string): string {
+  const protoBlock = PROTOCOL_RULES[protocol];
+  const intro = `You write diet compliance modification notes for recipes.`;
+  return protoBlock
+    ? `${intro}\n\n${protoBlock}\n\n${SWAP_STYLE_RULES}`
+    : `${intro}\n\n${SWAP_STYLE_RULES}`;
+}
 
 async function generateSwapNote(
   recipeName: string,
@@ -92,7 +165,7 @@ async function generateSwapNote(
     body: JSON.stringify({
       model:      'claude-sonnet-4-6',
       max_tokens: 400,
-      system:     SWAP_SYSTEM_PROMPT,
+      system:     buildSwapSystemPrompt(protocol),
       messages:   [{ role: 'user', content: body }],
     }),
   });
