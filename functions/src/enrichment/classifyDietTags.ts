@@ -158,14 +158,43 @@ function hitsOf(text: string, keywords: string[]): string[] {
 }
 
 function joinSentences(parts: string[]): string {
-  return parts
-    .filter(Boolean)
-    .map(p => {
-      p = p.trim();
-      p = p.charAt(0).toUpperCase() + p.slice(1);
-      return p.endsWith('.') ? p : p + '.';
-    })
-    .join(' ');
+  const seenSentences = new Set<string>();
+  const seenReplaceFroms = new Set<string>();
+  const seenRemoveFroms = new Set<string>();
+  const cleaned: string[] = [];
+
+  for (let p of parts) {
+    if (!p) continue;
+    // Normalize unicode whitespace (NBSP/zero-width/etc → regular space) — this
+    // was the root cause of "duplicate" entries silently passing through dedup.
+    p = p.replace(/[  ᠎ -‍  　﻿]/g, ' ');
+    // Strip instructional parentheticals — keep ingredient-describing ones only.
+    p = p.replace(/\s*\((?:use|see|reduce|add|note|keep|optional|to\b|or\s+use|or\s+see|or\s+more|but\s+|do\s+not|this\s+|adjust)[^)]*\)/gi, '');
+    p = p.replace(/\s+/g, ' ').trim();
+    if (!p) continue;
+    p = p.charAt(0).toUpperCase() + p.slice(1);
+    if (!p.endsWith('.')) p += '.';
+
+    const lc = p.toLowerCase();
+    if (seenSentences.has(lc)) continue;
+
+    const replM = p.match(/^replace\s+(.+?)\s+with\s+/i);
+    if (replM) {
+      const fromKey = replM[1].trim().toLowerCase().slice(0, 80);
+      if (seenReplaceFroms.has(fromKey)) continue;
+      seenReplaceFroms.add(fromKey);
+    }
+    const remM = p.match(/^remove\s+(.+?)\s+entirely\.?$|^remove\s+(.+?)\.?$/i);
+    if (remM) {
+      const fromKey = ((remM[1] || remM[2]) ?? '').trim().toLowerCase().slice(0, 80);
+      if (seenRemoveFroms.has(fromKey)) continue;
+      seenRemoveFroms.add(fromKey);
+    }
+
+    seenSentences.add(lc);
+    cleaned.push(p);
+  }
+  return cleaned.join(' ');
 }
 
 // ── Main classifier ───────────────────────────────────────────────────────────

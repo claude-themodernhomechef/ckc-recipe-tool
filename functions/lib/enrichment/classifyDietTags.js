@@ -140,14 +140,37 @@ function hitsOf(text, keywords) {
     return keywords.filter(kw => text.includes(kw));
 }
 function joinSentences(parts) {
-    return parts
-        .filter(Boolean)
-        .map(p => {
-        p = p.trim();
+    const seenSentences = new Set();
+    const seenReplaceFroms = new Set();
+    const seenRemoveFroms = new Set();
+    const cleaned = [];
+    for (let p of parts) {
+        if (!p) continue;
+        // Normalize unicode whitespace (NBSP/zero-width/etc → regular space).
+        p = p.replace(/[  ᠎ -‍  　﻿]/g, ' ');
+        p = p.replace(/\s*\((?:use|see|reduce|add|note|keep|optional|to\b|or\s+use|or\s+see|or\s+more|but\s+|do\s+not|this\s+|adjust)[^)]*\)/gi, '');
+        p = p.replace(/\s+/g, ' ').trim();
+        if (!p) continue;
         p = p.charAt(0).toUpperCase() + p.slice(1);
-        return p.endsWith('.') ? p : p + '.';
-    })
-        .join(' ');
+        if (!p.endsWith('.')) p += '.';
+        const lc = p.toLowerCase();
+        if (seenSentences.has(lc)) continue;
+        const replM = p.match(/^replace\s+(.+?)\s+with\s+/i);
+        if (replM) {
+            const fromKey = replM[1].trim().toLowerCase().slice(0, 80);
+            if (seenReplaceFroms.has(fromKey)) continue;
+            seenReplaceFroms.add(fromKey);
+        }
+        const remM = p.match(/^remove\s+(.+?)\s+entirely\.?$|^remove\s+(.+?)\.?$/i);
+        if (remM) {
+            const fromKey = ((remM[1] || remM[2]) ?? '').trim().toLowerCase().slice(0, 80);
+            if (seenRemoveFroms.has(fromKey)) continue;
+            seenRemoveFroms.add(fromKey);
+        }
+        seenSentences.add(lc);
+        cleaned.push(p);
+    }
+    return cleaned.join(' ');
 }
 // ── Main classifier ───────────────────────────────────────────────────────────
 function classifyDietTags(ingredients, recipeTitle = '', bloggerName = '') {
