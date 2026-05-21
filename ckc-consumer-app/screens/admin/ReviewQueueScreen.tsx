@@ -1673,8 +1673,70 @@ const ph = StyleSheet.create({
   overlayText: { fontFamily: Fonts.bodyMedium, fontSize: 10, color: '#fff', letterSpacing: 0.3 },
 });
 
+// Generic typeahead input — shows suggestions from `options` once the user
+// has typed at least one char. Picking a suggestion commits via onChangeText.
+function AutocompleteInput({
+  value, onChangeText, options, style, placeholder,
+}: {
+  value:        string;
+  onChangeText: (v: string) => void;
+  options:      string[];
+  style?:       any;
+  placeholder?: string;
+}) {
+  const [focused, setFocused] = useState(false);
+  const q = (value ?? '').trim().toLowerCase();
+  const matches = useMemo(() => {
+    if (!focused) return [];
+    if (q.length === 0) return options.slice(0, 10);
+    const starts:   string[] = [];
+    const contains: string[] = [];
+    for (const o of options) {
+      const l = o.toLowerCase();
+      if (l.startsWith(q)) starts.push(o);
+      else if (l.includes(q)) contains.push(o);
+      if (starts.length >= 10) break;
+    }
+    return [...starts, ...contains].slice(0, 10);
+  }, [q, focused, options]);
+
+  return (
+    <View style={{ position: 'relative', zIndex: focused ? 50 : 1 }}>
+      <TextInput
+        style={style}
+        value={value}
+        onChangeText={onChangeText}
+        placeholder={placeholder}
+        placeholderTextColor={Colors.textMuted}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setTimeout(() => setFocused(false), 150)}
+      />
+      {focused && matches.length > 0 && (matches.length > 1 || matches[0].toLowerCase() !== q) && (
+        <View style={ac.dropdown}>
+          {matches.map(m => (
+            <TouchableOpacity
+              key={m}
+              style={ac.row}
+              onPress={() => { onChangeText(m); setFocused(false); }}
+              activeOpacity={0.7}
+            >
+              <Text style={ac.rowText}>{m}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      )}
+    </View>
+  );
+}
+
+const ac = StyleSheet.create({
+  dropdown: { position: 'absolute', top: '100%', left: 0, right: 0, backgroundColor: Colors.surfaceElevated, borderWidth: 1, borderColor: Colors.border, borderRadius: 6, marginTop: 2, maxHeight: 200, overflow: 'hidden', zIndex: 60 },
+  row:      { paddingHorizontal: 8, paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: Colors.border },
+  rowText:  { fontFamily: Fonts.body, fontSize: 12, color: Colors.textPrimary },
+});
+
 function RecipePanel({
-  recipe, saving, savedFields, onChange, onApprove, onReject, onSkip,
+  recipe, saving, savedFields, onChange, onApprove, onReject, onSkip, metaSuggestions,
 }: {
   recipe:      RecipeDoc;
   saving:      boolean;
@@ -1683,6 +1745,7 @@ function RecipePanel({
   onApprove:   () => void;
   onReject:    () => void;
   onSkip:      () => void;
+  metaSuggestions?: Record<string, string[]>;
 }) {
   const [local, setLocal]           = useState<RecipeDoc>(recipe);
   const [activeDiet, setActiveDiet] = useState<Set<string>>(new Set());
@@ -1801,17 +1864,29 @@ function RecipePanel({
                 { label: 'PROTEIN',  key: 'protein'  as const },
                 { label: 'RATING',   key: 'rating'   as const },
                 { label: 'SERVINGS', key: 'servings' as const },
-              ] as { label: string; key: keyof RecipeDoc }[]).map(({ label, key }) => (
-                <View key={key as string} style={pp.metaItem}>
-                  <Text style={pp.metaLabel}>{label}</Text>
-                  <TextInput
-                    style={[pp.metaInput, fieldBorder(key)]}
-                    value={String(local[key] ?? '')}
-                    onChangeText={v => update({ [key]: v })}
-                    placeholderTextColor={Colors.textMuted}
-                  />
-                </View>
-              ))}
+              ] as { label: string; key: keyof RecipeDoc }[]).map(({ label, key }) => {
+                const opts = metaSuggestions?.[key as string];
+                return (
+                  <View key={key as string} style={pp.metaItem}>
+                    <Text style={pp.metaLabel}>{label}</Text>
+                    {opts && opts.length > 0 ? (
+                      <AutocompleteInput
+                        style={[pp.metaInput, fieldBorder(key)]}
+                        value={String(local[key] ?? '')}
+                        onChangeText={v => update({ [key]: v })}
+                        options={opts}
+                      />
+                    ) : (
+                      <TextInput
+                        style={[pp.metaInput, fieldBorder(key)]}
+                        value={String(local[key] ?? '')}
+                        onChangeText={v => update({ [key]: v })}
+                        placeholderTextColor={Colors.textMuted}
+                      />
+                    )}
+                  </View>
+                );
+              })}
             </View>
           </View>
         </View>
@@ -2733,6 +2808,26 @@ export default function ReviewQueueScreen() {
 
   useEffect(() => { loadQueue(); }, []);
 
+  // Derive unique values across the loaded recipes so the meta-row inputs
+  // get autocomplete suggestions (blogger especially — freeform but should
+  // converge on a stable set).
+  const metaSuggestions = useMemo<Record<string, string[]>>(() => {
+    const collect = (key: keyof RecipeDoc): string[] => {
+      const set = new Set<string>();
+      for (const r of recipes) {
+        const v = (r as any)[key];
+        if (typeof v === 'string' && v.trim()) set.add(v.trim());
+      }
+      return Array.from(set).sort((a, b) => a.localeCompare(b));
+    };
+    return {
+      blogger:  collect('blogger'),
+      cuisine:  collect('cuisine'),
+      course:   collect('course'),
+      protein:  PROTEINS,
+    };
+  }, [recipes]);
+
   async function loadQueue() {
     setLoading(true);
     try {
@@ -3018,6 +3113,7 @@ export default function ReviewQueueScreen() {
             onApprove={handleApprove}
             onReject={handleReject}
             onSkip={handleSkip}
+            metaSuggestions={metaSuggestions}
           />
         ) : (
           <View style={s.emptyPanel}>
