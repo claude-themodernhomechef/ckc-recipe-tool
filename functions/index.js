@@ -94,7 +94,15 @@ function fromAppearsInIngredients(from, ingredients) {
   if (!from) return false;
   const f = String(from).toLowerCase().trim();
   if (!f) return false;
-  const norm = (s) => String(s).toLowerCase().replace(/[,;()]/g, ' ').replace(/\s+/g, ' ').trim();
+  // Normalize Unicode quotes/dashes so "chicken flavor "Better Than Bouillon""
+  // matches "chicken flavor \"Better Than Bouillon\"" — curly vs straight chars
+  // were causing false drops on real ingredients.
+  const norm = (s) => String(s).toLowerCase()
+    .replace(/[‘’‚‛]/g, "'")
+    .replace(/[“”„‟]/g, '"')
+    .replace(/[–—]/g, '-')
+    .replace(/[,;()'"]/g, ' ')
+    .replace(/\s+/g, ' ').trim();
   const ingsNorm = ingredients.map(norm);
   const fNorm = norm(f);
   if (ingsNorm.some(i => i.includes(fNorm))) return true;
@@ -104,13 +112,36 @@ function fromAppearsInIngredients(from, ingredients) {
   return ingsNorm.some(i => fWords.every(w => i.includes(w)));
 }
 
+// Look up a canonical swap for a given `from` ingredient + protocol.
+// Returns { to, type } or null. Tries the full normalized name, then
+// the trailing word (e.g. "salted butter" → "butter"), then leading word.
+function lookupCanonicalSwap(from, protocol) {
+  if (!from) return null;
+  const lower = String(from).toLowerCase()
+    .replace(/^[\d\s/.½¼¾⅓⅔⅛⅜⅝⅞]+\s*(cups?|tbsp|tsp|tablespoons?|teaspoons?|oz|ounces?|lb|pounds?|g|grams?|ml|cloves?|pieces?|slices?|sprigs?|cans?|jars?)?\s+(?:of\s+)?/i, '')
+    .replace(/[,()]/g, ' ').replace(/\s+/g, ' ').trim();
+  const words = lower.split(/\s+/);
+  const candidates = [lower, words.slice(-2).join(' '), words[words.length - 1], words[0]]
+    .filter((v, i, a) => v && a.indexOf(v) === i);
+  for (const c of candidates) {
+    const e = MASTER_SWAP_TABLE[c];
+    if (e && e[protocol]) return e[protocol];
+  }
+  return null;
+}
+
 /**
  * Validate Claude's structured notes array for one protocol.
- * Returns { keptNotes, dropped: [{ pair, reason }] }.
+ * Strategy:
+ *   - `from` not in recipe → drop
+ *   - `to` is junk → try masterSwapTable[from][protocol] for the canonical answer.
+ *       If found, REPLACE `to` (don't drop). If not, drop and mark uncertain.
+ * Returns { keptNotes, dropped: [{ pair, reason }], replaced: [{ from, oldTo, newTo }] }.
  */
-function validateNotes(notes, ingredients) {
+function validateNotes(notes, ingredients, protocol) {
   const keptNotes = [];
   const dropped   = [];
+  const replaced  = [];
   for (const pair of (Array.isArray(notes) ? notes : [])) {
     if (!pair || !pair.from) { dropped.push({ pair, reason: 'no_from' }); continue; }
     if (!fromAppearsInIngredients(pair.from, ingredients)) {
@@ -122,12 +153,26 @@ function validateNotes(notes, ingredients) {
       continue;
     }
     if (!isValidSwapTo(pair.to)) {
-      dropped.push({ pair, reason: 'junk_to' });
+      // Try the canonical table before dropping
+      const canonical = lookupCanonicalSwap(pair.from, protocol);
+      if (canonical) {
+        const oldTo = pair.to;
+        if (canonical.type === 'remove') {
+          keptNotes.push({ type: 'remove', from: pair.from });
+        } else if (canonical.type === 'note') {
+          keptNotes.push({ type: 'note', from: pair.from, note: canonical.note });
+        } else if (canonical.to) {
+          keptNotes.push({ type: 'replace', from: pair.from, to: canonical.to });
+        }
+        replaced.push({ from: pair.from, oldTo, newTo: canonical.to ?? canonical.note ?? '(remove)' });
+        continue;
+      }
+      dropped.push({ pair, reason: 'junk_to_no_canonical' });
       continue;
     }
     keptNotes.push(pair);
   }
-  return { keptNotes, dropped };
+  return { keptNotes, dropped, replaced };
 }
 
 // ── Protocol → Supabase column ────────────────────────────────────────────────
@@ -456,12 +501,16 @@ async function verifyDietTags(anthropic, name, cuisine, course, ingredients) {
         // Drop pairs whose `from` isn't in the recipe, or whose `to` is junk
         // (e.g. "dairy", "lactose"). If anything got dropped, flag uncertain
         // so FIG product search runs as a backstop.
-        const { keptNotes, dropped } = validateNotes(result.notes, ingredients);
+        const { keptNotes, dropped, replaced } = validateNotes(result.notes, ingredients, proto);
+        if (replaced.length > 0) {
+          console.log(`[validator] ${proto}: replaced ${replaced.length} junk \`to\` with canonical:`,
+            replaced.map(r => `${r.from}: "${r.oldTo}" → "${r.newTo}"`).join(' | '));
+        }
         if (dropped.length > 0) {
           console.log(`[validator] ${proto}: dropped ${dropped.length} pair(s):`,
             dropped.map(d => `${d.reason}: ${JSON.stringify(d.pair)}`).join(' | '));
           result.uncertain = true;
-          if (!result.reason) result.reason = `Validator dropped ${dropped.length} pair(s) with bad from/to`;
+          if (!result.reason) result.reason = `Validator dropped ${dropped.length} pair(s) with no canonical answer`;
         }
         result.notes = keptNotes;
 

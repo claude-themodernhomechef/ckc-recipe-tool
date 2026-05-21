@@ -1,4 +1,22 @@
 {
+  "1% milk": {
+    "DF": {
+      "type": "replace",
+      "to": "unsweetened oat milk"
+    }
+  },
+  "2% milk": {
+    "DF": {
+      "type": "replace",
+      "to": "unsweetened oat milk"
+    }
+  },
+  "aged balsamic": {
+    "LF": {
+      "type": "replace",
+      "to": "tamari + matching broth"
+    }
+  },
   "aged cheese": {
     "LH": {
       "type": "replace",
@@ -18,6 +36,10 @@
     "GF": {
       "type": "replace",
       "to": "GF 1:1 AP FLour"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "arrowroot powder or GF 1:1 flour"
     }
   },
   "almond milk": {
@@ -25,6 +47,26 @@
       "type": "replace",
       "to": "Coconut milk",
       "note": "No gums or additives"
+    }
+  },
+  "anchovies": {
+    "V": {
+      "type": "replace",
+      "to": "1 tbsp tamari + 1 tbsp capers with juice"
+    },
+    "Vg": {
+      "type": "replace",
+      "to": "1 tbsp tamari + 1 tbsp capers with juice"
+    }
+  },
+  "anchovy": {
+    "V": {
+      "type": "replace",
+      "to": "1 tbsp tamari + 1 tbsp capers with juice"
+    },
+    "Vg": {
+      "type": "replace",
+      "to": "1 tbsp tamari + 1 tbsp capers with juice"
     }
   },
   "anchovy paste": {
@@ -43,6 +85,16 @@
     "GF": {
       "type": "replace",
       "to": "GF 1:1 AP FLour"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "arrowroot powder or GF 1:1 flour"
+    }
+  },
+  "apple": {
+    "K": {
+      "type": "replace",
+      "to": "fennel (matching texture)"
     }
   },
   "apple cider vinegar": {
@@ -57,10 +109,89 @@
       "nutritionKey": "lime juice"
     }
   },
+  "apples": {
+    "K": {
+      "type": "replace",
+      "to": "fennel (matching texture)"
+    }
+  },
+  "apricot preserves": {
+    "K": {
+      "type": "replace",
+      "to": "sugar-free preserves or allulose-sweetened equivalent"
+    }
+  },
+  "asiago": {
+    "V": {
+      "type": "replace",
+      "to": "DF parmesan or nutritional yeast"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF parmesan or nutritional yeast"
+    }
+  },
   "avocado": {
     "LH": {
       "type": "replace",
       "to": "cucumber"
+    }
+  },
+  "avocados": {
+    "LH": {
+      "type": "replace",
+      "to": "cucumber"
+    }
+  },
+  "baby bella mushrooms": {
+    "LF": {
+      "type": "remove"
+    }
+  },
+  "baby potatoes": {
+    "K": {
+      "type": "replace",
+      "to": "roasted cauliflower florets (or remove from stews + 1 tbsp arrowroot)"
+    }
+  },
+  "bacon": {
+    "V": {
+      "type": "replace",
+      "to": "tempeh bacon or smoked tofu"
+    },
+    "Vg": {
+      "type": "replace",
+      "to": "tempeh bacon"
+    }
+  },
+  "bagel": {
+    "GF": {
+      "type": "replace",
+      "to": "GF bagel"
+    },
+    "K": {
+      "type": "replace",
+      "to": "keto bagel"
+    }
+  },
+  "bagels": {
+    "GF": {
+      "type": "replace",
+      "to": "GF bagels"
+    },
+    "K": {
+      "type": "replace",
+      "to": "keto bagels"
+    }
+  },
+  "baguette": {
+    "GF": {
+      "type": "replace",
+      "to": "GF baguette"
+    },
+    "K": {
+      "type": "replace",
+      "to": "keto bread"
     }
   },
   "balsamic vinegar": {
@@ -77,6 +208,18 @@
       "type": "replace",
       "to": "fresh citrus juice (lime or lemon)",
       "nutritionKey": "lime juice"
+    }
+  },
+  "banana": {
+    "K": {
+      "type": "note",
+      "note": "reduce quantity by half"
+    }
+  },
+  "basmati rice": {
+    "K": {
+      "type": "replace",
+      "to": "cauliflower rice"
     }
   },
   "beans": {
@@ -97,12 +240,28 @@
       "note": "use extra firm tofu for Asian dishes; use Impossible Beef for American or Mexican dishes with bold spice profiles; use seitan for European braises and stews"
     }
   },
+  "beef bouillon": {
+    "V": {
+      "type": "replace",
+      "to": "vegetable broth"
+    }
+  },
   "beef broth": {
     "Vg": {
       "type": "replace",
       "to": "vegetable broth"
     },
     "V": {
+      "type": "replace",
+      "to": "vegetable broth"
+    }
+  },
+  "beef stock": {
+    "V": {
+      "type": "replace",
+      "to": "vegetable broth"
+    },
+    "Vg": {
       "type": "replace",
       "to": "vegetable broth"
     }
@@ -119,12 +278,38 @@
       "nutritionKey": "chicken broth"
     }
   },
+  "bell pepper": {
+    "AIP": {
+      "type": "remove"
+    }
+  },
   "bell peppers": {
     "AIP": {
       "type": "replace",
       "to": "diced zucchini, summer squash, or roasted carrot",
       "note": "Use carrots when you are replacing the bell peppers for the sweetness; use diced zucchini or summer squash when you need it for bulk in fajitas, sauces, or stuffed peppers",
       "nutritionKey": "zucchini"
+    }
+  },
+  "better than bouillon": {
+    "V": {
+      "type": "replace",
+      "to": "vegetable Better Than Bouillon"
+    },
+    "Vg": {
+      "type": "replace",
+      "to": "vegetable Better Than Bouillon"
+    }
+  },
+  "black beans": {
+    "LF": {
+      "type": "remove",
+      "note": "remove only when supporting, not starring"
+    }
+  },
+  "black olives": {
+    "AIP": {
+      "type": "remove"
     }
   },
   "black pepper": {
@@ -134,6 +319,50 @@
     "LH": {
       "type": "replace",
       "to": "White pepper"
+    }
+  },
+  "blue cheese": {
+    "V": {
+      "type": "replace",
+      "to": "DF blue cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF blue cheese alternative"
+    }
+  },
+  "bone broth": {
+    "V": {
+      "type": "replace",
+      "to": "vegetable broth"
+    },
+    "Vg": {
+      "type": "replace",
+      "to": "vegetable broth"
+    }
+  },
+  "bone-in chicken thighs": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1-inch blocks"
+    }
+  },
+  "boneless chicken thighs": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1-inch blocks"
+    }
+  },
+  "boneless skinless chicken breast": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1-inch blocks"
+    }
+  },
+  "bread": {
+    "GF": {
+      "type": "replace",
+      "to": "GF bread"
     }
   },
   "breadcrumbs": {
@@ -146,6 +375,28 @@
       "to": "almond flour"
     }
   },
+  "brie": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    }
+  },
+  "brioche buns": {
+    "GF": {
+      "type": "replace",
+      "to": "GF buns"
+    }
+  },
+  "brown rice": {
+    "K": {
+      "type": "replace",
+      "to": "cauliflower rice"
+    }
+  },
   "brown sugar": {
     "K": {
       "type": "replace",
@@ -156,10 +407,50 @@
       "to": "agave"
     }
   },
+  "bun": {
+    "GF": {
+      "type": "replace",
+      "to": "GF bun"
+    },
+    "K": {
+      "type": "replace",
+      "to": "lettuce wraps"
+    }
+  },
+  "buns": {
+    "GF": {
+      "type": "replace",
+      "to": "GF buns"
+    },
+    "K": {
+      "type": "replace",
+      "to": "lettuce wraps"
+    }
+  },
   "burger buns": {
     "K": {
       "type": "replace",
       "to": "butter lettuce or iceberg lettuce wraps"
+    },
+    "GF": {
+      "type": "replace",
+      "to": "GF buns"
+    }
+  },
+  "burrata": {
+    "V": {
+      "type": "replace",
+      "to": "DF mozzarella"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF mozzarella"
+    }
+  },
+  "burrito wraps": {
+    "K": {
+      "type": "replace",
+      "to": "GF wraps"
     }
   },
   "butter": {
@@ -183,12 +474,80 @@
   "buttermilk": {
     "Vg": {
       "type": "keep"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "1 tbsp vinegar + 1/3 cup soy milk (rest 10 min)"
+    },
+    "V": {
+      "type": "replace",
+      "to": "1 tbsp vinegar + 1/3 cup soy milk (rest 10 min)"
+    }
+  },
+  "button mushrooms": {
+    "LF": {
+      "type": "remove"
+    }
+  },
+  "camembert": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    }
+  },
+  "cannellini beans": {
+    "LF": {
+      "type": "remove",
+      "note": "remove only when supporting, not starring"
     }
   },
   "canola oil": {
     "LH": {
       "type": "replace",
       "to": "olive oil"
+    }
+  },
+  "cayenne": {
+    "AIP": {
+      "type": "remove"
+    }
+  },
+  "cayenne pepper": {
+    "AIP": {
+      "type": "remove"
+    },
+    "LH": {
+      "type": "remove"
+    }
+  },
+  "cheddar": {
+    "DF": {
+      "type": "replace",
+      "to": "DF cheddar"
+    },
+    "V": {
+      "type": "replace",
+      "to": "DF cheddar"
+    }
+  },
+  "cheddar cheese": {
+    "DF": {
+      "type": "replace",
+      "to": "DF cheddar alternative"
+    }
+  },
+  "cheese": {
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese"
+    },
+    "V": {
+      "type": "replace",
+      "to": "DF cheese"
     }
   },
   "chicken": {
@@ -205,6 +564,42 @@
       "nutritionKey": "extra firm tofu"
     }
   },
+  "chicken better than bouillon": {
+    "V": {
+      "type": "replace",
+      "to": "vegetable Better Than Bouillon"
+    },
+    "Vg": {
+      "type": "replace",
+      "to": "vegetable Better Than Bouillon"
+    }
+  },
+  "chicken bouillon": {
+    "V": {
+      "type": "replace",
+      "to": "vegetable bouillon"
+    },
+    "Vg": {
+      "type": "replace",
+      "to": "vegetable bouillon"
+    }
+  },
+  "chicken breast": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1-inch blocks"
+    },
+    "Vg": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1-inch blocks"
+    }
+  },
+  "chicken breasts": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1-inch blocks"
+    }
+  },
   "chicken broth": {
     "Vg": {
       "type": "replace",
@@ -213,6 +608,57 @@
     "V": {
       "type": "replace",
       "to": "vegetable broth"
+    }
+  },
+  "chicken flavor better than bouillon": {
+    "V": {
+      "type": "replace",
+      "to": "vegetable Better Than Bouillon"
+    },
+    "Vg": {
+      "type": "replace",
+      "to": "vegetable Better Than Bouillon"
+    }
+  },
+  "chicken stock": {
+    "V": {
+      "type": "replace",
+      "to": "vegetable broth"
+    },
+    "Vg": {
+      "type": "replace",
+      "to": "vegetable broth"
+    }
+  },
+  "chicken thigh": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1-inch blocks"
+    },
+    "Vg": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1-inch blocks"
+    }
+  },
+  "chicken thighs": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1-inch blocks"
+    },
+    "Vg": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1-inch blocks"
+    }
+  },
+  "chickpeas": {
+    "LF": {
+      "type": "remove",
+      "note": "remove only when supporting, not starring"
+    }
+  },
+  "chili": {
+    "LH": {
+      "type": "remove"
     }
   },
   "chili crisp": {
@@ -234,6 +680,9 @@
       "type": "remove",
       "to": "fresh ginger or grated horseradish",
       "note": "use fresh ginger for Asian dishes; use grated horseradish for European and Mediterranean dishes; skip when chili flakes are a finishing garnish"
+    },
+    "LH": {
+      "type": "remove"
     }
   },
   "chipotle": {
@@ -248,6 +697,50 @@
       "note": "use for Mexican BBQ-style dishes (verify clean liquid smoke label); skip entirely when chipotle is the dish identity"
     }
   },
+  "chives": {
+    "LF": {
+      "type": "replace",
+      "to": "green tops of scallions"
+    }
+  },
+  "chopped chives": {
+    "LF": {
+      "type": "replace",
+      "to": "green tops of scallions"
+    }
+  },
+  "chopped onion": {
+    "LF": {
+      "type": "replace",
+      "to": "green tops of scallions only"
+    }
+  },
+  "chorizo": {
+    "V": {
+      "type": "replace",
+      "to": "vegan sausage"
+    }
+  },
+  "cod": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu rectangles"
+    },
+    "Vg": {
+      "type": "replace",
+      "to": "extra firm tofu rectangles"
+    }
+  },
+  "colby": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheddar"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheddar"
+    }
+  },
   "commercial sauce mixes": {
     "LF": {
       "type": "replace",
@@ -257,11 +750,32 @@
   "condensed milk": {
     "Vg": {
       "type": "keep"
+    },
+    "V": {
+      "type": "replace",
+      "to": "2 tbsp agave"
     }
   },
   "corn": {
     "LF": {
       "type": "remove"
+    }
+  },
+  "corn kernels": {
+    "LF": {
+      "type": "remove"
+    }
+  },
+  "corn tortillas": {
+    "K": {
+      "type": "replace",
+      "to": "keto wraps"
+    }
+  },
+  "cornbread mix": {
+    "GF": {
+      "type": "replace",
+      "to": "GF cornbread mix"
     }
   },
   "cornstarch": {
@@ -282,6 +796,11 @@
       "to": "vegan cotija or DF feta"
     }
   },
+  "cotija cheese": {
+    "DF": {
+      "type": "remove"
+    }
+  },
   "couscous": {
     "GF": {
       "type": "replace",
@@ -294,6 +813,71 @@
       "note": "use cauliflower rice for Mediterranean and Moroccan dishes; rice it finer for couscous-style texture in pilaf applications"
     }
   },
+  "cracked black pepper": {
+    "AIP": {
+      "type": "remove"
+    },
+    "LH": {
+      "type": "remove"
+    }
+  },
+  "cream": {
+    "DF": {
+      "type": "replace",
+      "to": "coconut cream"
+    },
+    "V": {
+      "type": "replace",
+      "to": "coconut cream"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "full-fat coconut milk"
+    }
+  },
+  "cream cheese": {
+    "DF": {
+      "type": "replace",
+      "to": "DF cream cheese"
+    },
+    "V": {
+      "type": "replace",
+      "to": "DF cream cheese"
+    }
+  },
+  "cremini mushrooms": {
+    "LF": {
+      "type": "remove"
+    }
+  },
+  "croutons": {
+    "GF": {
+      "type": "remove"
+    }
+  },
+  "crumbled feta": {
+    "DF": {
+      "type": "remove",
+      "note": "remove if garnish; use DF feta if core ingredient"
+    }
+  },
+  "crushed garlic": {
+    "LF": {
+      "type": "replace",
+      "to": "garlic-infused oil"
+    }
+  },
+  "crushed red pepper": {
+    "AIP": {
+      "type": "remove"
+    }
+  },
+  "crusty bread": {
+    "GF": {
+      "type": "replace",
+      "to": "GF bread"
+    }
+  },
   "cumin": {
     "AIP": {
       "type": "replace",
@@ -301,10 +885,40 @@
       "note": "Cinnamon only for Moroccan or tagine- sweet applications, mace for all other applications"
     }
   },
+  "cumin seeds": {
+    "AIP": {
+      "type": "replace",
+      "to": "cinnamon or remove"
+    }
+  },
   "curry powder": {
     "AIP": {
       "type": "replace",
       "to": "turmeric"
+    }
+  },
+  "dark soy sauce": {
+    "GF": {
+      "type": "replace",
+      "to": "tamari"
+    },
+    "AIP": {
+      "type": "replace",
+      "to": "coconut aminos"
+    }
+  },
+  "diced onion": {
+    "LF": {
+      "type": "replace",
+      "to": "green tops of scallions only"
+    }
+  },
+  "dijon": {
+    "AIP": {
+      "type": "remove"
+    },
+    "LH": {
+      "type": "remove"
     }
   },
   "dijon mustard": {
@@ -317,15 +931,112 @@
       "type": "remove"
     }
   },
+  "double cream": {
+    "DF": {
+      "type": "replace",
+      "to": "full-fat canned coconut milk"
+    }
+  },
+  "dry red wine": {
+    "AIP": {
+      "type": "replace",
+      "to": "beef broth",
+      "nutritionKey": "beef broth"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "beef broth",
+      "nutritionKey": "beef broth"
+    },
+    "LH": {
+      "type": "replace",
+      "to": "beef broth",
+      "nutritionKey": "beef broth"
+    },
+    "K": {
+      "type": "replace",
+      "to": "beef broth"
+    }
+  },
+  "dry sherry": {
+    "K": {
+      "type": "replace",
+      "to": "chicken broth"
+    },
+    "AIP": {
+      "type": "replace",
+      "to": "chicken broth"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "chicken broth"
+    },
+    "LH": {
+      "type": "replace",
+      "to": "chicken broth"
+    }
+  },
+  "dry white wine": {
+    "AIP": {
+      "type": "replace",
+      "to": "chicken broth",
+      "nutritionKey": "chicken broth"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "chicken broth",
+      "nutritionKey": "chicken broth"
+    },
+    "LH": {
+      "type": "replace",
+      "to": "chicken broth",
+      "nutritionKey": "chicken broth"
+    },
+    "K": {
+      "type": "replace",
+      "to": "chicken broth"
+    }
+  },
+  "egg": {
+    "V": {
+      "type": "replace",
+      "to": "flax egg (2 tbsp ground flax + 1 tbsp water per egg)"
+    }
+  },
+  "egg noodles": {
+    "GF": {
+      "type": "replace",
+      "to": "brown rice noodles"
+    }
+  },
+  "egg white": {
+    "V": {
+      "type": "remove"
+    }
+  },
+  "egg whites": {
+    "V": {
+      "type": "remove"
+    }
+  },
   "eggs": {
     "Vg": {
       "type": "keep"
+    },
+    "V": {
+      "type": "replace",
+      "to": "flax egg (2 tbsp ground flax + 1 tbsp water per egg)"
     }
   },
   "fennel": {
     "LF": {
       "type": "replace",
       "to": "Fresh fennel bulb"
+    }
+  },
+  "fennel bulb": {
+    "LF": {
+      "type": "remove"
     }
   },
   "fennel seeds": {
@@ -348,6 +1059,26 @@
       "to": "DF feta"
     }
   },
+  "feta cheese": {
+    "DF": {
+      "type": "replace",
+      "to": "DF feta"
+    },
+    "V": {
+      "type": "replace",
+      "to": "DF feta"
+    }
+  },
+  "fettuccine": {
+    "GF": {
+      "type": "replace",
+      "to": "brown rice pasta"
+    },
+    "K": {
+      "type": "replace",
+      "to": "spiralized zucchini (light sauce) or keto pasta (heavy)"
+    }
+  },
   "fish sauce": {
     "Vg": {
       "type": "replace",
@@ -356,6 +1087,26 @@
     "AIP": {
       "type": "replace",
       "to": "coconut aminos"
+    },
+    "V": {
+      "type": "replace",
+      "to": "extra soy sauce"
+    }
+  },
+  "flank steak": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1-inch blocks"
+    }
+  },
+  "flatbread": {
+    "GF": {
+      "type": "replace",
+      "to": "GF flatbread"
+    },
+    "K": {
+      "type": "replace",
+      "to": "cauliflower flatbread"
     }
   },
   "flour": {
@@ -373,6 +1124,16 @@
       "note": "use arrowroot powder for thickening sauces and gravies; use GF 1:1 flour for baking and dredging applications"
     }
   },
+  "flour tortilla": {
+    "GF": {
+      "type": "replace",
+      "to": "GF tortilla"
+    },
+    "K": {
+      "type": "replace",
+      "to": "keto wraps"
+    }
+  },
   "flour tortillas": {
     "GF": {
       "type": "replace",
@@ -386,6 +1147,75 @@
       "nutritionKey": "keto wraps"
     }
   },
+  "fontina": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    }
+  },
+  "french bread": {
+    "GF": {
+      "type": "replace",
+      "to": "GF french bread"
+    },
+    "K": {
+      "type": "replace",
+      "to": "keto bread"
+    }
+  },
+  "french lentils": {
+    "LF": {
+      "type": "remove",
+      "note": "remove only when supporting, not starring"
+    }
+  },
+  "fresh chives": {
+    "LF": {
+      "type": "replace",
+      "to": "green tops of scallions"
+    }
+  },
+  "fresh corn": {
+    "LF": {
+      "type": "remove"
+    }
+  },
+  "fresh garlic": {
+    "LF": {
+      "type": "replace",
+      "to": "garlic-infused oil"
+    }
+  },
+  "fresh lemon": {
+    "K": {
+      "type": "note",
+      "note": "citrus is K-compliant in small amounts; reduce quantity by half if used as cooking liquid"
+    }
+  },
+  "fresh mozzarella": {
+    "DF": {
+      "type": "replace",
+      "to": "Kite Hill vegan mozzarella"
+    }
+  },
+  "freshly cracked black pepper": {
+    "AIP": {
+      "type": "remove"
+    },
+    "LH": {
+      "type": "remove"
+    }
+  },
+  "garbanzo beans": {
+    "LF": {
+      "type": "remove",
+      "note": "remove only when supporting, not starring"
+    }
+  },
   "garlic": {
     "LF": {
       "type": "replace",
@@ -393,10 +1223,52 @@
       "note": "quantify based on recipe oil amount"
     }
   },
+  "garlic clove": {
+    "LF": {
+      "type": "replace",
+      "to": "garlic-infused oil"
+    }
+  },
+  "garlic cloves": {
+    "LF": {
+      "type": "replace",
+      "to": "garlic-infused oil"
+    }
+  },
+  "gelatin": {
+    "V": {
+      "type": "replace",
+      "to": "agar agar"
+    },
+    "Vg": {
+      "type": "replace",
+      "to": "agar agar"
+    }
+  },
+  "ghee": {
+    "DF": {
+      "type": "replace",
+      "to": "DF butter or olive oil"
+    },
+    "V": {
+      "type": "replace",
+      "to": "DF butter or olive oil"
+    }
+  },
   "gnocchi": {
     "K": {
       "type": "replace",
       "to": "cauliflower gnocchi"
+    }
+  },
+  "goat cheese": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
     }
   },
   "gochujang": {
@@ -407,6 +1279,37 @@
     },
     "LH": {
       "type": "remove"
+    }
+  },
+  "gorgonzola": {
+    "V": {
+      "type": "replace",
+      "to": "DF blue cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF blue cheese alternative"
+    }
+  },
+  "gouda": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    }
+  },
+  "grainy mustard": {
+    "AIP": {
+      "type": "remove"
+    }
+  },
+  "granulated sugar": {
+    "K": {
+      "type": "replace",
+      "to": "allulose sweetener"
     }
   },
   "greek yogurt": {
@@ -428,6 +1331,16 @@
       "to": "plain coconut yogurt"
     }
   },
+  "green bell pepper": {
+    "AIP": {
+      "type": "remove"
+    }
+  },
+  "green olives": {
+    "AIP": {
+      "type": "remove"
+    }
+  },
   "ground beef": {
     "Vg": {
       "type": "replace",
@@ -438,6 +1351,29 @@
       "type": "replace",
       "to": "pinto or red beans for Mexican dishes; 1 lb mushrooms finely chopped for pies and pulled dishes; Impossible beef or crumpled tofu",
       "nutritionKey": "pinto beans"
+    }
+  },
+  "ground black pepper": {
+    "AIP": {
+      "type": "remove"
+    }
+  },
+  "ground chicken": {
+    "V": {
+      "type": "replace",
+      "to": "Impossible Beef or 1 lb mushrooms finely chopped"
+    }
+  },
+  "ground cumin": {
+    "AIP": {
+      "type": "replace",
+      "to": "cinnamon or remove"
+    }
+  },
+  "ground lamb": {
+    "V": {
+      "type": "replace",
+      "to": "Impossible Beef or 1 lb mushrooms finely chopped"
     }
   },
   "ground meat": {
@@ -452,6 +1388,39 @@
       "nutritionKey": "pinto beans"
     }
   },
+  "ground pork": {
+    "V": {
+      "type": "replace",
+      "to": "Impossible Beef or 1 lb mushrooms finely chopped"
+    }
+  },
+  "ground turkey": {
+    "V": {
+      "type": "replace",
+      "to": "Impossible Beef or 1 lb mushrooms finely chopped"
+    }
+  },
+  "gruyere": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    }
+  },
+  "habanero": {
+    "AIP": {
+      "type": "remove"
+    }
+  },
+  "half and half": {
+    "DF": {
+      "type": "replace",
+      "to": "coconut milk"
+    }
+  },
   "half-and-half": {
     "DF": {
       "type": "replace",
@@ -461,6 +1430,46 @@
     "V": {
       "type": "replace",
       "to": "oat milk + 1 tbsp coconut cream"
+    }
+  },
+  "halibut": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu rectangles"
+    },
+    "Vg": {
+      "type": "replace",
+      "to": "extra firm tofu rectangles"
+    }
+  },
+  "halloumi": {
+    "V": {
+      "type": "replace",
+      "to": "pan-fried extra firm tofu"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "pan-fried extra firm tofu"
+    }
+  },
+  "hamburger buns": {
+    "GF": {
+      "type": "replace",
+      "to": "GF buns"
+    },
+    "K": {
+      "type": "replace",
+      "to": "iceberg or butter lettuce wraps"
+    }
+  },
+  "havarti": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
     }
   },
   "heavy cream": {
@@ -476,6 +1485,16 @@
     "V": {
       "type": "replace",
       "to": "coconut cream"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "full-fat coconut milk"
+    }
+  },
+  "heavy whipping cream": {
+    "DF": {
+      "type": "replace",
+      "to": "full-fat canned coconut milk"
     }
   },
   "high-sugar fruit": {
@@ -483,6 +1502,12 @@
       "type": "replace",
       "to": "double avocado or reduce by half",
       "nutritionKey": "avocado"
+    }
+  },
+  "hoisin": {
+    "GF": {
+      "type": "replace",
+      "to": "GF hoisin sauce"
     }
   },
   "hoisin sauce": {
@@ -504,6 +1529,15 @@
       "type": "replace",
       "to": "maple syrup",
       "note": "limit honey to 1 tbsp or replace with maple syrup"
+    },
+    "V": {
+      "type": "replace",
+      "to": "agave"
+    }
+  },
+  "hot paprika": {
+    "AIP": {
+      "type": "remove"
     }
   },
   "hot sauce": {
@@ -518,11 +1552,41 @@
       "note": "use for general applications where heat is part of the flavor base; skip when hot sauce is a finishing condiment"
     }
   },
+  "italian breadcrumbs": {
+    "GF": {
+      "type": "replace",
+      "to": "GF panko"
+    }
+  },
+  "italian sausage": {
+    "V": {
+      "type": "replace",
+      "to": "vegan sausage"
+    }
+  },
   "jalapeno": {
     "AIP": {
       "type": "remove",
       "to": "fresh ginger or grated horseradish",
       "note": "use for Mexican dishes where heat is part of the flavor base; skip entirely when jalapeno is a garnish"
+    }
+  },
+  "jam": {
+    "K": {
+      "type": "replace",
+      "to": "sugar-free preserves or allulose-sweetened equivalent"
+    }
+  },
+  "jasmine rice": {
+    "K": {
+      "type": "replace",
+      "to": "cauliflower rice"
+    }
+  },
+  "jelly": {
+    "K": {
+      "type": "replace",
+      "to": "sugar-free preserves or allulose-sweetened equivalent"
     }
   },
   "juice": {
@@ -533,10 +1597,72 @@
       "nutritionKey": "chicken broth"
     }
   },
+  "jumbo shrimp": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1-inch blocks"
+    }
+  },
+  "kalamata olives": {
+    "AIP": {
+      "type": "remove"
+    }
+  },
+  "ketchup": {
+    "AIP": {
+      "type": "remove"
+    }
+  },
+  "kidney beans": {
+    "LF": {
+      "type": "remove",
+      "note": "remove only when supporting, not starring"
+    }
+  },
+  "lamb": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1-inch blocks"
+    },
+    "Vg": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1-inch blocks"
+    }
+  },
+  "lamb chops": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1-inch blocks"
+    }
+  },
+  "large egg": {
+    "V": {
+      "type": "replace",
+      "to": "flax egg (2 tbsp ground flax + 1 tbsp water per egg)"
+    }
+  },
+  "large eggs": {
+    "V": {
+      "type": "replace",
+      "to": "flax egg (2 tbsp ground flax + 1 tbsp water per egg)"
+    }
+  },
+  "leek": {
+    "LF": {
+      "type": "replace",
+      "to": "green tops of leeks only"
+    }
+  },
   "leeks": {
     "LF": {
       "type": "replace",
       "to": "green tops of leeks only"
+    }
+  },
+  "leg of lamb": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1-inch blocks"
     }
   },
   "legumes": {
@@ -550,6 +1676,60 @@
       "type": "replace",
       "to": "Fresh lime juice",
       "note": "reduce or remove in large amounts; some LH protocols flag excess citrus"
+    },
+    "K": {
+      "type": "note",
+      "note": "citrus is K-compliant in small amounts; reduce quantity by half if used as cooking liquid"
+    }
+  },
+  "lemon juice": {
+    "K": {
+      "type": "note",
+      "note": "reduce quantity by half"
+    }
+  },
+  "lemons": {
+    "K": {
+      "type": "note",
+      "note": "citrus is K-compliant in small amounts; reduce quantity by half if used as cooking liquid"
+    }
+  },
+  "lentils": {
+    "LF": {
+      "type": "remove",
+      "note": "remove only when supporting, not starring"
+    }
+  },
+  "light cream": {
+    "DF": {
+      "type": "replace",
+      "to": "full-fat canned coconut milk"
+    }
+  },
+  "light miso": {
+    "AIP": {
+      "type": "replace",
+      "to": "coconut aminos"
+    }
+  },
+  "light soy sauce": {
+    "GF": {
+      "type": "replace",
+      "to": "tamari"
+    },
+    "AIP": {
+      "type": "replace",
+      "to": "coconut aminos"
+    }
+  },
+  "linguine": {
+    "GF": {
+      "type": "replace",
+      "to": "brown rice pasta"
+    },
+    "K": {
+      "type": "replace",
+      "to": "spiralized zucchini (light sauce) or keto pasta (heavy)"
     }
   },
   "lo mein noodles": {
@@ -557,6 +1737,48 @@
       "type": "replace",
       "to": "shirataki noodles",
       "note": "Asian dishes only where sauce is bold"
+    },
+    "GF": {
+      "type": "replace",
+      "to": "brown rice noodles"
+    }
+  },
+  "long grain rice": {
+    "K": {
+      "type": "replace",
+      "to": "cauliflower rice"
+    }
+  },
+  "low-sodium soy sauce": {
+    "GF": {
+      "type": "replace",
+      "to": "tamari"
+    },
+    "AIP": {
+      "type": "replace",
+      "to": "coconut aminos"
+    }
+  },
+  "manchego": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    }
+  },
+  "mango": {
+    "K": {
+      "type": "note",
+      "note": "reduce quantity by half"
+    }
+  },
+  "maple syrup": {
+    "K": {
+      "type": "replace",
+      "to": "allulose liquid sweetener"
     }
   },
   "mashed potatoes": {
@@ -564,6 +1786,48 @@
       "type": "replace",
       "to": "cauliflower mash",
       "note": "use cauliflower mash for traditional applications; use celery root mash for European and French dishes where flavor depth matters"
+    }
+  },
+  "mexican cheese": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    }
+  },
+  "milk": {
+    "DF": {
+      "type": "replace",
+      "to": "unsweetened oat milk"
+    },
+    "V": {
+      "type": "replace",
+      "to": "unsweetened oat milk"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "lactose-free milk"
+    }
+  },
+  "minced chives": {
+    "LF": {
+      "type": "replace",
+      "to": "green tops of scallions"
+    }
+  },
+  "minced garlic": {
+    "LF": {
+      "type": "replace",
+      "to": "garlic-infused oil"
+    }
+  },
+  "minced shallot": {
+    "LF": {
+      "type": "replace",
+      "to": "green tops of scallions + garlic-infused oil"
     }
   },
   "miso": {
@@ -574,6 +1838,22 @@
     "LH": {
       "type": "replace",
       "to": "Coconut aminos"
+    }
+  },
+  "miso paste": {
+    "AIP": {
+      "type": "replace",
+      "to": "coconut aminos"
+    }
+  },
+  "monterey jack": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
     }
   },
   "mozzarella": {
@@ -588,6 +1868,17 @@
     "V": {
       "type": "replace",
       "to": "DF mozzarella"
+    }
+  },
+  "mozzarella cheese": {
+    "DF": {
+      "type": "replace",
+      "to": "Kite Hill vegan mozzarella"
+    }
+  },
+  "mushroom": {
+    "LF": {
+      "type": "remove"
     }
   },
   "mushrooms": {
@@ -606,6 +1897,37 @@
       "type": "remove"
     }
   },
+  "mustard seeds": {
+    "AIP": {
+      "type": "remove"
+    }
+  },
+  "naan": {
+    "GF": {
+      "type": "replace",
+      "to": "GF naan"
+    },
+    "K": {
+      "type": "replace",
+      "to": "cauliflower flatbread"
+    }
+  },
+  "naan bread": {
+    "GF": {
+      "type": "replace",
+      "to": "GF naan"
+    },
+    "K": {
+      "type": "replace",
+      "to": "cauliflower flatbread"
+    }
+  },
+  "noodles": {
+    "K": {
+      "type": "replace",
+      "to": "shirataki noodles or zucchini noodles"
+    }
+  },
   "olives": {
     "AIP": {
       "type": "replace",
@@ -621,10 +1943,32 @@
       "nutritionKey": "green tops of scallions"
     }
   },
+  "orange": {
+    "K": {
+      "type": "note",
+      "note": "reduce quantity by half if used as cooking liquid"
+    }
+  },
+  "orange juice": {
+    "K": {
+      "type": "note",
+      "note": "reduce quantity by half"
+    }
+  },
+  "oranges": {
+    "K": {
+      "type": "note",
+      "note": "reduce quantity by half if used as cooking liquid"
+    }
+  },
   "orzo": {
     "GF": {
       "type": "replace",
       "to": "GF Orzo"
+    },
+    "K": {
+      "type": "replace",
+      "to": "sauteed cauliflower rice"
     }
   },
   "oyster sauce": {
@@ -641,6 +1985,16 @@
       "to": "vegan oyster sauce"
     }
   },
+  "pancetta": {
+    "V": {
+      "type": "replace",
+      "to": "tempeh bacon or smoked tofu"
+    },
+    "Vg": {
+      "type": "replace",
+      "to": "tempeh bacon"
+    }
+  },
   "panko": {
     "GF": {
       "type": "replace",
@@ -649,6 +2003,18 @@
     "K": {
       "type": "replace",
       "to": "cauliflower-based panko or almond flour"
+    }
+  },
+  "panko breadcrumbs": {
+    "GF": {
+      "type": "replace",
+      "to": "GF panko"
+    }
+  },
+  "pappardelle": {
+    "GF": {
+      "type": "replace",
+      "to": "brown rice pasta"
     }
   },
   "paprika": {
@@ -671,6 +2037,25 @@
     "V": {
       "type": "replace",
       "to": "DF parmesan"
+    },
+    "LH": {
+      "type": "remove"
+    }
+  },
+  "parmesan cheese": {
+    "DF": {
+      "type": "replace",
+      "to": "DF parmesan"
+    },
+    "V": {
+      "type": "replace",
+      "to": "DF parmesan"
+    }
+  },
+  "parmigiano": {
+    "DF": {
+      "type": "replace",
+      "to": "nutritional yeast + miso (or Follow Your Heart vegan parmesan)"
     }
   },
   "pasta": {
@@ -686,10 +2071,21 @@
       "nutritionKey": "spiralized zucchini"
     }
   },
+  "pasta (regular)": {
+    "GF": {
+      "type": "replace",
+      "to": "GF pasta"
+    }
+  },
   "peanut butter": {
     "LF": {
       "type": "note",
       "note": "Reduce amount to 2tbsp or 32 g per serving"
+    }
+  },
+  "peanuts": {
+    "LF": {
+      "type": "remove"
     }
   },
   "pecorino": {
@@ -712,6 +2108,22 @@
       "to": "DF parmesan or nutritional yeast"
     }
   },
+  "pecorino romano": {
+    "DF": {
+      "type": "replace",
+      "to": "nutritional yeast + miso (or Follow Your Heart vegan parmesan)"
+    }
+  },
+  "penne": {
+    "GF": {
+      "type": "replace",
+      "to": "brown rice pasta"
+    },
+    "K": {
+      "type": "replace",
+      "to": "spiralized zucchini (light sauce) or keto pasta (heavy)"
+    }
+  },
   "pepitas": {
     "AIP": {
       "type": "remove",
@@ -720,9 +2132,72 @@
       "nutritionKey": "coconut flakes"
     }
   },
+  "pepper": {
+    "AIP": {
+      "type": "remove"
+    }
+  },
+  "pepper jack": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    }
+  },
   "pickled items": {
     "LH": {
       "type": "remove"
+    }
+  },
+  "pineapple": {
+    "K": {
+      "type": "note",
+      "note": "reduce quantity by half"
+    }
+  },
+  "pinto beans": {
+    "LF": {
+      "type": "remove",
+      "note": "remove only when supporting, not starring"
+    }
+  },
+  "pita": {
+    "GF": {
+      "type": "replace",
+      "to": "GF pita"
+    },
+    "K": {
+      "type": "replace",
+      "to": "cauliflower flatbread"
+    }
+  },
+  "pita bread": {
+    "GF": {
+      "type": "replace",
+      "to": "GF pita"
+    }
+  },
+  "plain greek yogurt": {
+    "DF": {
+      "type": "replace",
+      "to": "plain coconut yogurt"
+    },
+    "V": {
+      "type": "replace",
+      "to": "plain coconut yogurt"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "lactose-free greek yogurt"
+    }
+  },
+  "plain yogurt": {
+    "DF": {
+      "type": "replace",
+      "to": "plain unsweetened coconut yogurt"
     }
   },
   "poblano": {
@@ -730,6 +2205,55 @@
       "type": "remove",
       "to": "roasted carrot or diced zucchini",
       "note": "use roasted carrot for sweetness in Mexican dishes; use diced zucchini for bulk in stuffed and rajas-style applications"
+    }
+  },
+  "pork": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1-inch blocks"
+    },
+    "Vg": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1-inch blocks"
+    }
+  },
+  "pork chops": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1-inch blocks"
+    },
+    "Vg": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1-inch blocks"
+    }
+  },
+  "pork shoulder": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1-inch blocks"
+    }
+  },
+  "pork tenderloin": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1-inch blocks"
+    }
+  },
+  "portobello mushrooms": {
+    "LF": {
+      "type": "remove"
+    }
+  },
+  "potato": {
+    "K": {
+      "type": "replace",
+      "to": "cauliflower"
+    }
+  },
+  "potato puree": {
+    "K": {
+      "type": "replace",
+      "to": "cauliflower mash"
     }
   },
   "potatoes": {
@@ -753,11 +2277,93 @@
       "nutritionKey": "extra firm tofu"
     }
   },
+  "preserves": {
+    "K": {
+      "type": "replace",
+      "to": "sugar-free preserves or allulose-sweetened equivalent"
+    }
+  },
+  "provolone": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    }
+  },
+  "pumpkin seeds": {
+    "AIP": {
+      "type": "remove"
+    }
+  },
+  "queso blanco": {
+    "V": {
+      "type": "replace",
+      "to": "DF mozzarella"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF mozzarella"
+    }
+  },
+  "queso fresco": {
+    "V": {
+      "type": "replace",
+      "to": "vegan cotija or DF feta"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "vegan cotija or DF feta"
+    }
+  },
+  "quinoa": {
+    "K": {
+      "type": "replace",
+      "to": "cooked vegetables"
+    }
+  },
   "ramen noodles": {
     "K": {
       "type": "replace",
       "to": "shirataki noodles",
       "note": "Asian dishes only where sauce is bold"
+    },
+    "GF": {
+      "type": "replace",
+      "to": "brown rice noodles"
+    }
+  },
+  "raw honey": {
+    "LF": {
+      "type": "note",
+      "note": "reduce to 1 tbsp or replace with maple syrup"
+    },
+    "K": {
+      "type": "replace",
+      "to": "allulose liquid sweetener"
+    },
+    "V": {
+      "type": "replace",
+      "to": "agave"
+    }
+  },
+  "red bell pepper": {
+    "AIP": {
+      "type": "remove"
+    }
+  },
+  "red miso": {
+    "AIP": {
+      "type": "replace",
+      "to": "coconut aminos"
+    }
+  },
+  "red onion": {
+    "LF": {
+      "type": "replace",
+      "to": "green tops of scallions only"
     }
   },
   "red pepper flakes": {
@@ -765,6 +2371,9 @@
       "type": "remove",
       "to": "fresh ginger or grated horseradish",
       "note": "use fresh ginger for Asian and Mediterranean dishes; use grated horseradish for Italian dishes; skip when flakes are a finishing garnish"
+    },
+    "LH": {
+      "type": "remove"
     }
   },
   "red wine": {
@@ -782,6 +2391,156 @@
       "type": "replace",
       "to": "beef broth",
       "nutritionKey": "beef broth"
+    },
+    "K": {
+      "type": "replace",
+      "to": "beef broth"
+    }
+  },
+  "red wine vinegar": {
+    "AIP": {
+      "type": "replace",
+      "to": "fresh citrus juice (lime or lemon)"
+    },
+    "LH": {
+      "type": "replace",
+      "to": "fresh citrus juice (lime or lemon)"
+    }
+  },
+  "ribeye": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1-inch blocks"
+    }
+  },
+  "rice": {
+    "K": {
+      "type": "replace",
+      "to": "cauliflower rice"
+    }
+  },
+  "rice noodles": {
+    "K": {
+      "type": "replace",
+      "to": "shirataki noodles"
+    }
+  },
+  "rice vinegar": {
+    "AIP": {
+      "type": "replace",
+      "to": "fresh citrus juice (lime or lemon)"
+    },
+    "LH": {
+      "type": "replace",
+      "to": "fresh citrus juice (lime or lemon)"
+    }
+  },
+  "ricotta": {
+    "V": {
+      "type": "replace",
+      "to": "DF ricotta or tofu ricotta"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF ricotta or tofu ricotta"
+    }
+  },
+  "ricotta cheese": {
+    "V": {
+      "type": "replace",
+      "to": "DF ricotta or tofu ricotta"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF ricotta or tofu ricotta"
+    }
+  },
+  "rigatoni": {
+    "GF": {
+      "type": "replace",
+      "to": "brown rice pasta"
+    }
+  },
+  "rolls": {
+    "GF": {
+      "type": "replace",
+      "to": "GF rolls"
+    },
+    "K": {
+      "type": "replace",
+      "to": "keto rolls"
+    }
+  },
+  "roti": {
+    "GF": {
+      "type": "replace",
+      "to": "GF roti or GF flatbread"
+    },
+    "K": {
+      "type": "replace",
+      "to": "cauliflower flatbread"
+    }
+  },
+  "russet potatoes": {
+    "K": {
+      "type": "replace",
+      "to": "roasted cauliflower florets (or remove from stews + 1 tbsp arrowroot)"
+    }
+  },
+  "salmon": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu rectangles (1 lb block cut into 4 thin pieces)"
+    },
+    "Vg": {
+      "type": "replace",
+      "to": "extra firm tofu rectangles"
+    }
+  },
+  "salmon fillet": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu rectangles (1 lb block cut into 4 thin pieces)"
+    }
+  },
+  "salmon fillets": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu rectangles (1 lb block cut into 4 thin pieces)"
+    }
+  },
+  "salted butter": {
+    "DF": {
+      "type": "replace",
+      "to": "DF butter (Miyoko's)"
+    },
+    "V": {
+      "type": "replace",
+      "to": "DF butter (Miyoko's)"
+    }
+  },
+  "sandwich bread": {
+    "GF": {
+      "type": "replace",
+      "to": "GF bread"
+    }
+  },
+  "sausage": {
+    "V": {
+      "type": "replace",
+      "to": "vegan sausage"
+    }
+  },
+  "scallops": {
+    "V": {
+      "type": "replace",
+      "to": "king oyster mushroom slices"
+    }
+  },
+  "sea bass": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu rectangles"
     }
   },
   "serrano": {
@@ -807,11 +2566,77 @@
       "nutritionKey": "coconut flakes"
     }
   },
+  "shallot": {
+    "LF": {
+      "type": "replace",
+      "to": "green tops of scallions + garlic-infused oil"
+    }
+  },
   "shallots": {
     "LF": {
       "type": "replace",
       "to": "green tops of scallions and garlic-infused oil",
       "nutritionKey": "green tops of scallions"
+    }
+  },
+  "sharp cheddar": {
+    "DF": {
+      "type": "replace",
+      "to": "DF cheddar alternative"
+    }
+  },
+  "sherry": {
+    "K": {
+      "type": "replace",
+      "to": "chicken broth"
+    },
+    "AIP": {
+      "type": "replace",
+      "to": "chicken broth"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "chicken broth"
+    },
+    "LH": {
+      "type": "replace",
+      "to": "chicken broth"
+    }
+  },
+  "sherry vinegar": {
+    "AIP": {
+      "type": "replace",
+      "to": "fresh citrus juice (lime or lemon)"
+    },
+    "LH": {
+      "type": "replace",
+      "to": "fresh citrus juice (lime or lemon)"
+    }
+  },
+  "shiitake mushrooms": {
+    "LF": {
+      "type": "remove"
+    }
+  },
+  "shirataki noodles": {
+    "K": {
+      "type": "keep"
+    }
+  },
+  "short grain rice": {
+    "K": {
+      "type": "replace",
+      "to": "cauliflower rice"
+    }
+  },
+  "shoyu": {
+    "GF": {
+      "type": "replace",
+      "to": "tamari"
+    },
+    "AIP": {
+      "type": "replace",
+      "to": "coconut aminos"
     }
   },
   "shrimp": {
@@ -828,6 +2653,47 @@
       "nutritionKey": "extra firm tofu"
     }
   },
+  "sirloin": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1-inch blocks"
+    }
+  },
+  "skim milk": {
+    "DF": {
+      "type": "replace",
+      "to": "unsweetened oat milk"
+    }
+  },
+  "skirt steak": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu cubed into 1-inch blocks"
+    }
+  },
+  "sliced fennel": {
+    "LF": {
+      "type": "remove"
+    }
+  },
+  "sliced leek": {
+    "LF": {
+      "type": "replace",
+      "to": "green tops of leeks only"
+    }
+  },
+  "sliced onion": {
+    "LF": {
+      "type": "replace",
+      "to": "green tops of scallions only"
+    }
+  },
+  "sliced shallot": {
+    "LF": {
+      "type": "replace",
+      "to": "green tops of scallions + garlic-infused oil"
+    }
+  },
   "smoked paprika": {
     "AIP": {
       "type": "remove",
@@ -838,6 +2704,12 @@
       "type": "replace",
       "to": "sweet paprika",
       "note": "use sweet paprika alone for Spanish and Mediterranean dishes where color matters; add a few drops of liquid smoke when smoke flavor is essential (verify clean label)"
+    }
+  },
+  "snapper": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu rectangles"
     }
   },
   "sour cream": {
@@ -860,6 +2732,16 @@
       "to": "plain coconut yogurt"
     }
   },
+  "sourdough": {
+    "GF": {
+      "type": "replace",
+      "to": "GF sourdough"
+    },
+    "K": {
+      "type": "replace",
+      "to": "keto bread"
+    }
+  },
   "soy sauce": {
     "GF": {
       "type": "replace",
@@ -876,6 +2758,22 @@
     "LH": {
       "type": "replace",
       "to": "Coconut aminos"
+    }
+  },
+  "spaghetti": {
+    "GF": {
+      "type": "replace",
+      "to": "brown rice pasta"
+    },
+    "K": {
+      "type": "replace",
+      "to": "spiralized zucchini (light sauce) or keto pasta (heavy)"
+    }
+  },
+  "spanish onion": {
+    "LF": {
+      "type": "replace",
+      "to": "green tops of scallions only"
     }
   },
   "sriracha": {
@@ -924,11 +2822,89 @@
       "nutritionKey": "coconut flakes"
     }
   },
+  "sweet corn": {
+    "LF": {
+      "type": "remove"
+    }
+  },
+  "sweet onion": {
+    "LF": {
+      "type": "replace",
+      "to": "green tops of scallions only"
+    }
+  },
+  "sweet paprika": {
+    "AIP": {
+      "type": "remove"
+    }
+  },
+  "sweet potato": {
+    "K": {
+      "type": "replace",
+      "to": "cauliflower or daikon"
+    }
+  },
   "sweet potatoes": {
     "K": {
       "type": "replace",
       "to": "cauliflower mash",
       "note": "when used mashed; for roasted applications reduce portion"
+    }
+  },
+  "sweetened condensed milk": {
+    "V": {
+      "type": "replace",
+      "to": "2 tbsp agave"
+    }
+  },
+  "swiss": {
+    "V": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    },
+    "DF": {
+      "type": "replace",
+      "to": "DF cheese alternative"
+    }
+  },
+  "tagliatelle": {
+    "GF": {
+      "type": "replace",
+      "to": "brown rice pasta"
+    }
+  },
+  "tamari": {
+    "AIP": {
+      "type": "replace",
+      "to": "coconut aminos"
+    }
+  },
+  "tilapia": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu rectangles"
+    }
+  },
+  "toasted sesame oil": {
+    "AIP": {
+      "type": "remove"
+    }
+  },
+  "toasted sesame seeds": {
+    "AIP": {
+      "type": "remove"
+    }
+  },
+  "tomato paste": {
+    "LH": {
+      "type": "note",
+      "note": "remove when in large amounts; OK in small quantities"
+    }
+  },
+  "tomato sauce": {
+    "LH": {
+      "type": "note",
+      "note": "remove when in large amounts; OK in small quantities"
     }
   },
   "tomatoes": {
@@ -937,11 +2913,49 @@
       "note": "remove when used in large/concentrated amounts"
     }
   },
+  "tortellini": {
+    "GF": {
+      "type": "replace",
+      "to": "GF tortellini"
+    }
+  },
+  "tortilla chips": {
+    "K": {
+      "type": "replace",
+      "to": "keto tortilla chips or remove"
+    }
+  },
   "tortillas": {
     "K": {
       "type": "replace",
       "to": "keto wraps",
       "nutritionKey": "keto wraps"
+    }
+  },
+  "tuna": {
+    "V": {
+      "type": "replace",
+      "to": "extra firm tofu"
+    },
+    "Vg": {
+      "type": "replace",
+      "to": "extra firm tofu rectangles"
+    }
+  },
+  "unsalted butter": {
+    "DF": {
+      "type": "replace",
+      "to": "DF butter (Miyoko's)"
+    },
+    "V": {
+      "type": "replace",
+      "to": "DF butter (Miyoko's)"
+    }
+  },
+  "vegetable oil": {
+    "LH": {
+      "type": "replace",
+      "to": "olive oil"
     }
   },
   "vinegar": {
@@ -956,6 +2970,35 @@
       "nutritionKey": "lime juice"
     }
   },
+  "wheat flour": {
+    "GF": {
+      "type": "replace",
+      "to": "1:1 GF flour blend (arrowroot for thin sauces — reduce qty)"
+    }
+  },
+  "whipping cream": {
+    "DF": {
+      "type": "replace",
+      "to": "full-fat canned coconut milk"
+    }
+  },
+  "white miso": {
+    "AIP": {
+      "type": "replace",
+      "to": "coconut aminos"
+    }
+  },
+  "white onion": {
+    "LF": {
+      "type": "replace",
+      "to": "green tops of scallions only"
+    }
+  },
+  "white pepper": {
+    "AIP": {
+      "type": "remove"
+    }
+  },
   "white rice": {
     "K": {
       "type": "replace",
@@ -966,6 +3009,16 @@
     "K": {
       "type": "replace",
       "to": "allulose sweetener"
+    }
+  },
+  "white vinegar": {
+    "AIP": {
+      "type": "replace",
+      "to": "fresh citrus juice (lime or lemon)"
+    },
+    "LH": {
+      "type": "replace",
+      "to": "fresh citrus juice (lime or lemon)"
     }
   },
   "white wine": {
@@ -983,6 +3036,45 @@
       "type": "replace",
       "to": "chicken broth",
       "nutritionKey": "chicken broth"
+    },
+    "K": {
+      "type": "replace",
+      "to": "chicken broth"
+    }
+  },
+  "white wine vinegar": {
+    "AIP": {
+      "type": "replace",
+      "to": "fresh citrus juice (lime or lemon)"
+    },
+    "LH": {
+      "type": "replace",
+      "to": "fresh citrus juice (lime or lemon)"
+    }
+  },
+  "whole garlic": {
+    "LF": {
+      "type": "replace",
+      "to": "garlic-infused oil"
+    }
+  },
+  "whole grain mustard": {
+    "AIP": {
+      "type": "remove"
+    }
+  },
+  "whole milk": {
+    "DF": {
+      "type": "replace",
+      "to": "unsweetened oat milk"
+    },
+    "V": {
+      "type": "replace",
+      "to": "unsweetened oat milk"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "lactose-free milk"
     }
   },
   "wine": {
@@ -1002,6 +3094,12 @@
       "nutritionKey": "chicken broth"
     }
   },
+  "worcestershire": {
+    "GF": {
+      "type": "replace",
+      "to": "GF Worcestershire sauce"
+    }
+  },
   "worcestershire sauce": {
     "GF": {
       "type": "replace",
@@ -1016,200 +3114,20 @@
       "to": "vegan Worcestershire sauce"
     }
   },
-  "naan": {
-    "GF": {
-      "type": "replace",
-      "to": "GF naan"
-    },
-    "K": {
-      "type": "replace",
-      "to": "cauliflower flatbread"
+  "yellow bell pepper": {
+    "AIP": {
+      "type": "remove"
     }
   },
-  "pita": {
-    "GF": {
-      "type": "replace",
-      "to": "GF pita"
-    },
-    "K": {
-      "type": "replace",
-      "to": "cauliflower flatbread"
+  "yellow mustard": {
+    "AIP": {
+      "type": "remove"
     }
   },
-  "flatbread": {
-    "GF": {
+  "yellow onion": {
+    "LF": {
       "type": "replace",
-      "to": "GF flatbread"
-    },
-    "K": {
-      "type": "replace",
-      "to": "cauliflower flatbread"
-    }
-  },
-  "roti": {
-    "GF": {
-      "type": "replace",
-      "to": "GF roti or GF flatbread"
-    },
-    "K": {
-      "type": "replace",
-      "to": "cauliflower flatbread"
-    }
-  },
-  "baguette": {
-    "GF": {
-      "type": "replace",
-      "to": "GF baguette"
-    },
-    "K": {
-      "type": "replace",
-      "to": "keto bread"
-    }
-  },
-  "sourdough": {
-    "GF": {
-      "type": "replace",
-      "to": "GF sourdough"
-    },
-    "K": {
-      "type": "replace",
-      "to": "keto bread"
-    }
-  },
-  "french bread": {
-    "GF": {
-      "type": "replace",
-      "to": "GF french bread"
-    },
-    "K": {
-      "type": "replace",
-      "to": "keto bread"
-    }
-  },
-  "bagel": {
-    "GF": {
-      "type": "replace",
-      "to": "GF bagel"
-    },
-    "K": {
-      "type": "replace",
-      "to": "keto bagel"
-    }
-  },
-  "bagels": {
-    "GF": {
-      "type": "replace",
-      "to": "GF bagels"
-    },
-    "K": {
-      "type": "replace",
-      "to": "keto bagels"
-    }
-  },
-  "bun": {
-    "GF": {
-      "type": "replace",
-      "to": "GF bun"
-    },
-    "K": {
-      "type": "replace",
-      "to": "lettuce wraps"
-    }
-  },
-  "buns": {
-    "GF": {
-      "type": "replace",
-      "to": "GF buns"
-    },
-    "K": {
-      "type": "replace",
-      "to": "lettuce wraps"
-    }
-  },
-  "rolls": {
-    "GF": {
-      "type": "replace",
-      "to": "GF rolls"
-    },
-    "K": {
-      "type": "replace",
-      "to": "keto rolls"
-    }
-  },
-  "corn tortillas": {
-    "K": {
-      "type": "replace",
-      "to": "keto wraps"
-    }
-  },
-  "flour tortilla": {
-    "GF": {
-      "type": "replace",
-      "to": "GF tortilla"
-    },
-    "K": {
-      "type": "replace",
-      "to": "keto wraps"
-    }
-  },
-  "unsalted butter": {
-    "DF": {
-      "type": "replace",
-      "to": "DF butter (Miyoko's)"
-    },
-    "V": {
-      "type": "replace",
-      "to": "DF butter (Miyoko's)"
-    }
-  },
-  "salted butter": {
-    "DF": {
-      "type": "replace",
-      "to": "DF butter (Miyoko's)"
-    },
-    "V": {
-      "type": "replace",
-      "to": "DF butter (Miyoko's)"
-    }
-  },
-  "milk": {
-    "DF": {
-      "type": "replace",
-      "to": "unsweetened oat milk"
-    },
-    "V": {
-      "type": "replace",
-      "to": "unsweetened oat milk"
-    }
-  },
-  "whole milk": {
-    "DF": {
-      "type": "replace",
-      "to": "unsweetened oat milk"
-    },
-    "V": {
-      "type": "replace",
-      "to": "unsweetened oat milk"
-    }
-  },
-  "cream": {
-    "DF": {
-      "type": "replace",
-      "to": "coconut cream"
-    },
-    "V": {
-      "type": "replace",
-      "to": "coconut cream"
-    }
-  },
-  "plain greek yogurt": {
-    "DF": {
-      "type": "replace",
-      "to": "plain coconut yogurt"
-    },
-    "V": {
-      "type": "replace",
-      "to": "plain coconut yogurt"
+      "to": "green tops of scallions only"
     }
   },
   "yogurt": {
@@ -1222,330 +3140,10 @@
       "to": "plain coconut yogurt"
     }
   },
-  "cream cheese": {
-    "DF": {
-      "type": "replace",
-      "to": "DF cream cheese"
-    },
-    "V": {
-      "type": "replace",
-      "to": "DF cream cheese"
-    }
-  },
-  "parmesan cheese": {
-    "DF": {
-      "type": "replace",
-      "to": "DF parmesan"
-    },
-    "V": {
-      "type": "replace",
-      "to": "DF parmesan"
-    }
-  },
-  "feta cheese": {
-    "DF": {
-      "type": "replace",
-      "to": "DF feta"
-    },
-    "V": {
-      "type": "replace",
-      "to": "DF feta"
-    }
-  },
-  "cheddar": {
-    "DF": {
-      "type": "replace",
-      "to": "DF cheddar"
-    },
-    "V": {
-      "type": "replace",
-      "to": "DF cheddar"
-    }
-  },
-  "cheese": {
-    "DF": {
-      "type": "replace",
-      "to": "DF cheese"
-    },
-    "V": {
-      "type": "replace",
-      "to": "DF cheese"
-    }
-  },
-  "ghee": {
-    "DF": {
-      "type": "replace",
-      "to": "DF butter or olive oil"
-    },
-    "V": {
-      "type": "replace",
-      "to": "DF butter or olive oil"
-    }
-  },
-  "potato": {
+  "yukon potatoes": {
     "K": {
       "type": "replace",
-      "to": "cauliflower"
-    }
-  },
-  "sweet potato": {
-    "K": {
-      "type": "replace",
-      "to": "cauliflower or daikon"
-    }
-  },
-  "noodles": {
-    "K": {
-      "type": "replace",
-      "to": "shirataki noodles or zucchini noodles"
-    }
-  },
-  "rice noodles": {
-    "K": {
-      "type": "replace",
-      "to": "shirataki noodles"
-    }
-  },
-  "maple syrup": {
-    "K": {
-      "type": "replace",
-      "to": "allulose liquid sweetener"
-    }
-  },
-  "pasta (regular)": {
-    "GF": {
-      "type": "replace",
-      "to": "GF pasta"
-    }
-  },
-  "queso fresco": {
-    "V": {
-      "type": "replace",
-      "to": "vegan cotija or DF feta"
-    },
-    "DF": {
-      "type": "replace",
-      "to": "vegan cotija or DF feta"
-    }
-  },
-  "queso blanco": {
-    "V": {
-      "type": "replace",
-      "to": "DF mozzarella"
-    },
-    "DF": {
-      "type": "replace",
-      "to": "DF mozzarella"
-    }
-  },
-  "ricotta": {
-    "V": {
-      "type": "replace",
-      "to": "DF ricotta or tofu ricotta"
-    },
-    "DF": {
-      "type": "replace",
-      "to": "DF ricotta or tofu ricotta"
-    }
-  },
-  "ricotta cheese": {
-    "V": {
-      "type": "replace",
-      "to": "DF ricotta or tofu ricotta"
-    },
-    "DF": {
-      "type": "replace",
-      "to": "DF ricotta or tofu ricotta"
-    }
-  },
-  "goat cheese": {
-    "V": {
-      "type": "replace",
-      "to": "DF cheese alternative"
-    },
-    "DF": {
-      "type": "replace",
-      "to": "DF cheese alternative"
-    }
-  },
-  "blue cheese": {
-    "V": {
-      "type": "replace",
-      "to": "DF blue cheese alternative"
-    },
-    "DF": {
-      "type": "replace",
-      "to": "DF blue cheese alternative"
-    }
-  },
-  "gorgonzola": {
-    "V": {
-      "type": "replace",
-      "to": "DF blue cheese alternative"
-    },
-    "DF": {
-      "type": "replace",
-      "to": "DF blue cheese alternative"
-    }
-  },
-  "brie": {
-    "V": {
-      "type": "replace",
-      "to": "DF cheese alternative"
-    },
-    "DF": {
-      "type": "replace",
-      "to": "DF cheese alternative"
-    }
-  },
-  "camembert": {
-    "V": {
-      "type": "replace",
-      "to": "DF cheese alternative"
-    },
-    "DF": {
-      "type": "replace",
-      "to": "DF cheese alternative"
-    }
-  },
-  "gruyere": {
-    "V": {
-      "type": "replace",
-      "to": "DF cheese alternative"
-    },
-    "DF": {
-      "type": "replace",
-      "to": "DF cheese alternative"
-    }
-  },
-  "swiss": {
-    "V": {
-      "type": "replace",
-      "to": "DF cheese alternative"
-    },
-    "DF": {
-      "type": "replace",
-      "to": "DF cheese alternative"
-    }
-  },
-  "monterey jack": {
-    "V": {
-      "type": "replace",
-      "to": "DF cheese alternative"
-    },
-    "DF": {
-      "type": "replace",
-      "to": "DF cheese alternative"
-    }
-  },
-  "pepper jack": {
-    "V": {
-      "type": "replace",
-      "to": "DF cheese alternative"
-    },
-    "DF": {
-      "type": "replace",
-      "to": "DF cheese alternative"
-    }
-  },
-  "gouda": {
-    "V": {
-      "type": "replace",
-      "to": "DF cheese alternative"
-    },
-    "DF": {
-      "type": "replace",
-      "to": "DF cheese alternative"
-    }
-  },
-  "provolone": {
-    "V": {
-      "type": "replace",
-      "to": "DF cheese alternative"
-    },
-    "DF": {
-      "type": "replace",
-      "to": "DF cheese alternative"
-    }
-  },
-  "asiago": {
-    "V": {
-      "type": "replace",
-      "to": "DF parmesan or nutritional yeast"
-    },
-    "DF": {
-      "type": "replace",
-      "to": "DF parmesan or nutritional yeast"
-    }
-  },
-  "manchego": {
-    "V": {
-      "type": "replace",
-      "to": "DF cheese alternative"
-    },
-    "DF": {
-      "type": "replace",
-      "to": "DF cheese alternative"
-    }
-  },
-  "halloumi": {
-    "V": {
-      "type": "replace",
-      "to": "pan-fried extra firm tofu"
-    },
-    "DF": {
-      "type": "replace",
-      "to": "pan-fried extra firm tofu"
-    }
-  },
-  "burrata": {
-    "V": {
-      "type": "replace",
-      "to": "DF mozzarella"
-    },
-    "DF": {
-      "type": "replace",
-      "to": "DF mozzarella"
-    }
-  },
-  "fontina": {
-    "V": {
-      "type": "replace",
-      "to": "DF cheese alternative"
-    },
-    "DF": {
-      "type": "replace",
-      "to": "DF cheese alternative"
-    }
-  },
-  "havarti": {
-    "V": {
-      "type": "replace",
-      "to": "DF cheese alternative"
-    },
-    "DF": {
-      "type": "replace",
-      "to": "DF cheese alternative"
-    }
-  },
-  "colby": {
-    "V": {
-      "type": "replace",
-      "to": "DF cheddar"
-    },
-    "DF": {
-      "type": "replace",
-      "to": "DF cheddar"
-    }
-  },
-  "mexican cheese": {
-    "V": {
-      "type": "replace",
-      "to": "DF cheese alternative"
-    },
-    "DF": {
-      "type": "replace",
-      "to": "DF cheese alternative"
+      "to": "roasted cauliflower florets (or remove from stews + 1 tbsp arrowroot)"
     }
   }
 }
