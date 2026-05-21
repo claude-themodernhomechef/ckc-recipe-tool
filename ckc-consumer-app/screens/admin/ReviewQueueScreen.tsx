@@ -609,8 +609,8 @@ function DietCard({
                     {pairs.map((p, i) => (
                       <Text key={i} style={dc.previewItem}>
                         {p.to === null
-                          ? `✕  remove ${p.from}`
-                          : `⇄  ${p.from}  →  ${p.to}`}
+                          ? `✕  remove ${cleanForDisplay(p.from)}`
+                          : `⇄  ${cleanForDisplay(p.from)}  →  ${cleanForDisplay(p.to)}`}
                       </Text>
                     ))}
                   </View>
@@ -834,6 +834,26 @@ function cleanSwapTarget(s: string): string {
  * When a chef offers multiple options ("Use A, or B"), we pick the one closest
  * in form to the original ingredient (e.g. butter → DF butter, not olive oil).
  */
+// Display-clean an ingredient string: strip leading qty/unit, parentheticals,
+// and trailing prep terms after commas. Used by the structured swap preview
+// so "1 sweet onion, (diced)" reads as "sweet onion" not the raw text.
+function cleanForDisplay(s: string): string {
+  if (!s) return '';
+  let out = String(s)
+    // strip parentheticals: "(diced)", "(for topping)", "(minced)"
+    .replace(/\s*\([^)]*\)/g, '')
+    // strip leading qty + unit
+    .replace(/^[\s\d/.½¼¾⅓⅔⅛⅜⅝⅞]+\s*(cups?|tbsp|tsp|tablespoons?|teaspoons?|oz|ounces?|lb|pounds?|g\b|grams?|ml|cloves?|pieces?|slices?|sprigs?|cans?|jars?|bunch(?:es)?|sticks?)?\s*(?:of\s+)?/i, '')
+    // strip trailing punctuation
+    .replace(/[,;:.]+\s*$/, '')
+    .trim();
+  // Iteratively strip trailing prep clauses after a comma (e.g.
+  // "salted butter, softened" / "garlic cloves, smashed and crushed" / "onion, thinly sliced for garnish")
+  const PREP_RE = /,\s*(diced|minced|chopped|sliced|grated|shredded|crushed|peeled|halved|quartered|cubed|julienned|torn|softened|melted|toasted|cooked|raw|fresh|dried|frozen|smashed|smashed|seeded|deveined|trimmed|drained|rinsed|cleaned|finely|roughly|coarsely|thinly|thickly|lightly|optional|(?:for|to)\s+[\w\s]+)\b[\s\w-]*$/i;
+  while (PREP_RE.test(out)) out = out.replace(PREP_RE, '').replace(/[,;:.]+\s*$/, '').trim();
+  return out.replace(/\s+/g, ' ').trim();
+}
+
 function buildSwapPairs(tag: DietTagData): Array<{ from: string; to: string | null }> {
   // Format A: structured array
   if (Array.isArray((tag as any).notes)) {
