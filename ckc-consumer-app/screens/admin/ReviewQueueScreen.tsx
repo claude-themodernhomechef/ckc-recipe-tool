@@ -852,15 +852,18 @@ function cleanForDisplay(s: string): string {
     .replace(/^[\d/.½¼¾⅓⅔⅛⅜⅝⅞]+(?:[\s-][\d/.½¼¾⅓⅔⅛⅜⅝⅞]+)*\s+/i, '')
     // Pass 2: strip leading measurement/packaging unit + optional "of"
     .replace(/^(cups?|tbsp|tsp|tablespoons?|teaspoons?|oz|ounces?|lb|pounds?|g|grams?|kg|ml|liters?|pieces?|slices?|sprigs?|pinch(?:es)?|dash(?:es)?|jars?|bottles?|box(?:es)?|packages?|packets?|cartons?|tubes?|bags?|sticks?|bunch(?:es)?)\s+(?:of\s+)?/i, '')
+    // Pass 3: strip egg sizing — "large egg" → "egg" (assume large for nutrition)
+    .replace(/^(jumbo|extra\s+large|extra-large|large|medium|small)\s+(?=eggs?\b)/i, '')
     // strip trailing punctuation
     .replace(/[,;:.]+\s*$/, '')
     .trim();
   // Iteratively strip trailing prep clauses after a comma (e.g.
   // "salted butter, softened" / "garlic cloves, smashed and crushed" / "onion, thinly sliced for garnish")
-  // Trailing-comma prep clauses to strip. DELIBERATELY excluded:
-  //   frozen, fresh, dried, raw, cooked, canned, smoked
-  // — these are product-form distinctions (frozen peas vs fresh peas).
-  const PREP_RE = /,\s*(diced|minced|chopped|sliced|grated|shredded|crushed|peeled|halved|quartered|cubed|julienned|torn|softened|melted|toasted|smashed|seeded|deveined|trimmed|drained|rinsed|cleaned|finely|roughly|coarsely|thinly|thickly|lightly|optional|(?:for|to)\s+[\w\s]+)\b[\s\w-]*$/i;
+  // Trailing-comma prep clauses to strip. DELIBERATELY excluded (product-form
+  // distinctions, not pure prep):
+  //   frozen, fresh, dried, raw, cooked, canned, smoked, toasted, roasted
+  //   (toasted sesame oil ≠ regular; roasted almonds ≠ raw)
+  const PREP_RE = /,\s*(diced|minced|chopped|sliced|grated|shredded|crushed|peeled|halved|quartered|cubed|julienned|torn|softened|melted|smashed|seeded|deveined|trimmed|drained|rinsed|cleaned|finely|roughly|coarsely|thinly|thickly|lightly|optional|(?:for|to)\s+[\w\s]+)\b[\s\w-]*$/i;
   while (PREP_RE.test(out)) out = out.replace(PREP_RE, '').replace(/[,;:.]+\s*$/, '').trim();
   return out.replace(/\s+/g, ' ').trim();
 }
