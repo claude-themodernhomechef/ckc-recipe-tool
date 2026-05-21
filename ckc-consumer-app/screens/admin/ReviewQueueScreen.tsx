@@ -586,7 +586,16 @@ function DietCard({
               <TextInput
                 style={dc.notes}
                 value={notesDisplay}
-                onChangeText={v => onChange(code, { native: tag?.native ?? false, mod: tag?.mod ?? false, notes: v })}
+                onChangeText={v => {
+                  // Preserve the structured `notes` array when it exists — only
+                  // update the human-readable `notesText` so the textbox doesn't
+                  // destroy the structured pairs that drive byDiet recompute.
+                  if (Array.isArray(tag?.notes)) {
+                    onChange(code, { ...tag, native: tag?.native ?? false, mod: tag?.mod ?? false, notesText: v });
+                  } else {
+                    onChange(code, { native: tag?.native ?? false, mod: tag?.mod ?? false, notes: v });
+                  }
+                }}
                 placeholder="Modification note…"
                 placeholderTextColor={Colors.textMuted}
                 multiline

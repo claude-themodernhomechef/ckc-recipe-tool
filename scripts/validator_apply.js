@@ -61,6 +61,20 @@ function fromInRecipe(from, ingredients) {
   const fWords = fNorm.split(' ').filter(w => w.length > 3);
   return fWords.length > 0 && ings.some(i => fWords.every(w => i.includes(w)));
 }
+// Display-clean an ingredient string (mirror of app's cleanForDisplay).
+function cleanForDisplay(s) {
+  if (!s) return '';
+  let out = String(s)
+    .replace(/\s*\([^)]*\)/g, '')
+    .replace(/^[\d/.½¼¾⅓⅔⅛⅜⅝⅞]+(?:[\s-][\d/.½¼¾⅓⅔⅛⅜⅝⅞]+)*\s+/i, '')
+    .replace(/^(cups?|tbsp|tsp|tablespoons?|teaspoons?|oz|ounces?|lb|pounds?|g|grams?|kg|ml|liters?|pieces?|slices?|sprigs?|pinch(?:es)?|dash(?:es)?|jars?|bottles?|box(?:es)?|packages?|packets?|cartons?|tubes?|bags?|sticks?|bunch(?:es)?)\s+(?:of\s+)?/i, '')
+    .replace(/^(jumbo|extra\s+large|extra-large|large|medium|small)\s+(?=eggs?\b)/i, '')
+    .replace(/[,;:.]+\s*$/, '').trim();
+  const PREP_RE = /,\s*(diced|minced|chopped|sliced|grated|shredded|crushed|peeled|halved|quartered|cubed|julienned|torn|softened|melted|smashed|seeded|deveined|trimmed|drained|rinsed|cleaned|finely|roughly|coarsely|thinly|thickly|lightly|optional|(?:for|to)\s+[\w\s]+)\b[\s\w-]*$/i;
+  while (PREP_RE.test(out)) out = out.replace(PREP_RE, '').replace(/[,;:.]+\s*$/, '').trim();
+  return out.replace(/\s+/g, ' ').trim();
+}
+
 function lookupCanonical(from, protocol) {
   if (!from) return null;
   const lower = String(from).toLowerCase()
@@ -97,35 +111,100 @@ function lookupCanonical(from, protocol) {
     const ings = data.ingredients || [];
     console.log(`━━━ ${data.name} ━━━`);
 
+    // Parse a legacy notes string into structured pairs (mirrors the app's
+    // buildSwapPairs Format B). Used when notes is a string instead of array.
+    function parseLegacyNotes(s) {
+      const result = [];
+      const lower = String(s).toLowerCase();
+      const replaceRe = /replace\s+(.+?)\s+with\s+(.+?)(?:[,.]|$)/gi;
+      let m;
+      while ((m = replaceRe.exec(lower)) !== null) {
+        const to = m[2].trim();
+        // Split on " and " ONLY when both fragments look like distinct ingredients
+        // (≥ 6 chars, contain a non-stopword noun). Avoids bad splits in
+        // "half and half", "salt and pepper" treated as one phrase per fragment.
+        const STOP_WORDS = new Set(['half', 'the', 'a', 'an', 'or']);
+        const fragments = m[1].split(/\s+and\s+/i);
+        const valid = fragments.every(f => {
+          const t = f.trim();
+          if (t.length < 6) return false;
+          const firstWord = t.split(/\s+/)[0];
+          if (STOP_WORDS.has(firstWord)) return false;
+          return true;
+        });
+        const froms = (valid && fragments.length > 1) ? fragments : [m[1]];
+        for (const f of froms) result.push({ type: 'replace', from: f.trim(), to });
+      }
+      const removeRe = /(?:^|[.;\n])\s*remove\s+([^.;\n]+?)(?:\s+entirely)?(?:[,.]|$)/gi;
+      while ((m = removeRe.exec(lower)) !== null) {
+        const targets = m[1].split(/\s*(?:,|\sand\s)\s*/i)
+          .map(t => t.trim()).filter(t => t.length > 2);
+        for (const from of targets) result.push({ type: 'remove', from });
+      }
+      return result;
+    }
+
     const updates = {};
     for (const [code, t] of Object.entries(data.dietTags || {})) {
-      if (!Array.isArray(t.notes) || t.notes.length === 0) continue;
+      // Convert legacy string notes to structured pairs first
+      let workingNotes = t.notes;
+      if (typeof workingNotes === 'string' && workingNotes.trim()) {
+        workingNotes = parseLegacyNotes(workingNotes);
+        if (workingNotes.length === 0) continue;
+      } else if (!Array.isArray(workingNotes) || workingNotes.length === 0) {
+        continue;
+      }
       const kept = [], drops = [], swaps = [];
-      for (const pair of t.notes) {
+      for (const pair of workingNotes) {
         if (!pair?.from) { drops.push({ pair, reason: 'no_from' }); continue; }
         if (!fromInRecipe(pair.from, ings)) { drops.push({ pair, reason: 'from_not_in_recipe' }); continue; }
         if (pair.type === 'remove' || pair.type === 'note') { kept.push(pair); continue; }
-        if (!isValidTo(pair.to)) {
-          const canon = lookupCanonical(pair.from, code);
-          if (canon) {
-            const oldTo = pair.to;
-            const newPair = canon.type === 'remove'
-              ? { type: 'remove', from: pair.from }
-              : canon.type === 'note'
-                ? { type: 'note', from: pair.from, note: canon.note }
-                : { type: 'replace', from: pair.from, to: canon.to };
-            kept.push(newPair);
-            swaps.push({ from: pair.from, oldTo, newTo: canon.to ?? canon.note ?? '(remove)', kind: canon.type });
-          } else {
-            drops.push({ pair, reason: 'junk_to_no_canonical' });
+        // Always prefer the canonical answer if one exists — even if the
+        // AI's `to` is technically valid text, the canonical is authoritative.
+        // Catches "garlic cloves LF → 1 tablespoon garlic" (wrong) → garlic-infused oil.
+        const canon = lookupCanonical(pair.from, code);
+        if (canon) {
+          const oldTo = pair.to;
+          const newPair = canon.type === 'remove'
+            ? { type: 'remove', from: pair.from }
+            : canon.type === 'note'
+              ? { type: 'note', from: pair.from, note: canon.note }
+              : { type: 'replace', from: pair.from, to: canon.to };
+          // Only count as a "swap" if it actually changed
+          const newToValue = canon.to ?? canon.note ?? '(remove)';
+          if (String(oldTo).toLowerCase().trim() !== String(newToValue).toLowerCase().trim()) {
+            swaps.push({ from: pair.from, oldTo, newTo: newToValue, kind: canon.type });
           }
+          kept.push(newPair);
+          continue;
+        }
+        if (!isValidTo(pair.to)) {
+          drops.push({ pair, reason: 'junk_to_no_canonical' });
           continue;
         }
         kept.push(pair);
       }
-      if (drops.length === 0 && swaps.length === 0) continue;
+      // Merge consecutive replace pairs that share the same `to` — fixes
+      // the legacy parser's bad " and " splits ("cream, half" + "half or
+      // coconut cream/milk" both pointing to "full-fat coconut milk" → one
+      // entry).
+      const merged = [];
+      for (const p of kept) {
+        const last = merged[merged.length - 1];
+        if (p.type === 'replace' && last?.type === 'replace' && last.to === p.to) {
+          last.from = last.from + ' and ' + p.from;
+        } else {
+          merged.push({ ...p });
+        }
+      }
+      const finalKept = merged;
 
-      console.log(`\n  ${code}:`);
+      const wasLegacyString = typeof t.notes === 'string';
+      const hadMerges = finalKept.length < kept.length;
+      const hasChanges = drops.length > 0 || swaps.length > 0 || wasLegacyString || hadMerges;
+      if (!hasChanges) continue;
+
+      console.log(`\n  ${code}:${wasLegacyString ? '  (converting legacy string → structured)' : ''}`);
       for (const s of swaps) {
         console.log(`    ✏️  REPLACE  "${s.from}"`);
         console.log(`        was→ ${s.oldTo}`);
@@ -137,12 +216,19 @@ function lookupCanonical(from, protocol) {
       }
 
       if (WRITE) {
-        const newTag = { ...t, notes: kept };
-        newTag.notesText = kept.map(p =>
-          p.type === 'remove' ? `Remove ${p.from} entirely.` :
-          p.type === 'note'   ? `Reduce or modify ${p.from}: ${p.note}.` :
-                                 `Replace ${p.from} with ${p.to}.`
-        ).join(' ');
+        // Strip undefined fields from each pair — Firestore rejects them
+        const cleanedPairs = finalKept.map(p => {
+          const o = {};
+          for (const [k, v] of Object.entries(p)) if (v !== undefined) o[k] = v;
+          return o;
+        });
+        const newTag = { ...t, notes: cleanedPairs };
+        newTag.notesText = cleanedPairs.map(p => {
+          const cleanFrom = cleanForDisplay(p.from);
+          if (p.type === 'remove') return `Remove ${cleanFrom} entirely.`;
+          if (p.type === 'note')   return `Reduce or modify ${cleanFrom}: ${p.note}.`;
+          return `Replace ${cleanFrom} with ${cleanForDisplay(p.to)}.`;
+        }).join(' ');
         if (drops.length > 0) newTag.uncertain = true;
         updates[`dietTags.${code}`] = newTag;
       }
