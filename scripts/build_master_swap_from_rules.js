@@ -31,10 +31,11 @@ function assign(aliases, protocol, rule) {
 const garlicInfusedOil = { type: 'replace', to: 'garlic-infused oil' };
 assign(['garlic', 'garlic cloves', 'minced garlic', 'crushed garlic', 'fresh garlic', 'whole garlic', 'garlic clove'], 'LF', garlicInfusedOil);
 
-const onionScallionGreen = { type: 'replace', to: 'green tops of scallions only' };
-assign(['onion', 'yellow onion', 'white onion', 'sweet onion', 'red onion', 'spanish onion', 'sliced onion', 'diced onion', 'chopped onion'], 'LF', onionScallionGreen);
-
-assign(['shallot', 'shallots', 'sliced shallot', 'minced shallot'], 'LF', { type: 'replace', to: 'green tops of scallions + garlic-infused oil' });
+// LF: every onion/shallot variant becomes the same swap — green parts of
+// scallions only. Color/form doesn't change the rule.
+const scallionGreens = { type: 'replace', to: 'green parts of scallions only' };
+assign(['onion', 'yellow onion', 'white onion', 'sweet onion', 'red onion', 'spanish onion', 'vidalia onion', 'pearl onion', 'sliced onion', 'diced onion', 'chopped onion', 'minced onion'], 'LF', scallionGreens);
+assign(['shallot', 'shallots', 'sliced shallot', 'minced shallot', 'chopped shallot'], 'LF', scallionGreens);
 assign(['leek', 'leeks', 'sliced leek'], 'LF', { type: 'replace', to: 'green tops of leeks only' });
 assign(['chives', 'minced chives', 'fresh chives', 'chopped chives'], 'LF', { type: 'replace', to: 'green tops of scallions' });
 
@@ -124,11 +125,11 @@ assign(['white sugar', 'granulated sugar', 'sugar'], 'K', { type: 'replace', to:
 assign(['brown sugar'], 'K', { type: 'replace', to: 'allulose sweetener (or trehalose for BBQ caramelization)' });
 assign(['apricot preserves', 'jam', 'jelly', 'preserves'], 'K', { type: 'replace', to: 'sugar-free preserves or allulose-sweetened equivalent' });
 
-assign(['lemon', 'lemons', 'fresh lemon'], 'K', { type: 'note', note: 'citrus is K-compliant in small amounts; reduce quantity by half if used as cooking liquid' });
-assign(['orange', 'oranges'], 'K', { type: 'note', note: 'reduce quantity by half if used as cooking liquid' });
-assign(['orange juice'], 'K', { type: 'note', note: 'reduce quantity by half' });
+// Citrus (lemon, lime, orange juice) is K-compliant; no rule needed. The
+// validator will drop Claude's bad "replace with broth" outputs since no
+// canonical exists, and the protocol gets flagged uncertain for review.
 assign(['apple', 'apples'], 'K', { type: 'replace', to: 'fennel (matching texture)' });
-assign(['pineapple', 'mango', 'banana'], 'K', { type: 'note', note: 'reduce quantity by half' });
+assign(['pineapple', 'mango', 'banana'], 'K', { type: 'note', note: 'high-sugar fruit; reduce quantity by half' });
 
 assign(['breadcrumbs', 'panko'], 'K', { type: 'replace', to: 'cauliflower-based panko (breading) or almond flour (binder)' });
 

@@ -712,7 +712,13 @@
   "chopped onion": {
     "LF": {
       "type": "replace",
-      "to": "green tops of scallions only"
+      "to": "green parts of scallions only"
+    }
+  },
+  "chopped shallot": {
+    "LF": {
+      "type": "replace",
+      "to": "green parts of scallions only"
     }
   },
   "chorizo": {
@@ -910,7 +916,7 @@
   "diced onion": {
     "LF": {
       "type": "replace",
-      "to": "green tops of scallions only"
+      "to": "green parts of scallions only"
     }
   },
   "dijon": {
@@ -1188,12 +1194,6 @@
     "LF": {
       "type": "replace",
       "to": "garlic-infused oil"
-    }
-  },
-  "fresh lemon": {
-    "K": {
-      "type": "note",
-      "note": "citrus is K-compliant in small amounts; reduce quantity by half if used as cooking liquid"
     }
   },
   "fresh mozzarella": {
@@ -1589,14 +1589,6 @@
       "to": "sugar-free preserves or allulose-sweetened equivalent"
     }
   },
-  "juice": {
-    "K": {
-      "type": "replace",
-      "to": "replace half with matching broth",
-      "note": "when used as a cooking liquid",
-      "nutritionKey": "chicken broth"
-    }
-  },
   "jumbo shrimp": {
     "V": {
       "type": "replace",
@@ -1676,22 +1668,6 @@
       "type": "replace",
       "to": "Fresh lime juice",
       "note": "reduce or remove in large amounts; some LH protocols flag excess citrus"
-    },
-    "K": {
-      "type": "note",
-      "note": "citrus is K-compliant in small amounts; reduce quantity by half if used as cooking liquid"
-    }
-  },
-  "lemon juice": {
-    "K": {
-      "type": "note",
-      "note": "reduce quantity by half"
-    }
-  },
-  "lemons": {
-    "K": {
-      "type": "note",
-      "note": "citrus is K-compliant in small amounts; reduce quantity by half if used as cooking liquid"
     }
   },
   "lentils": {
@@ -1824,10 +1800,16 @@
       "to": "garlic-infused oil"
     }
   },
+  "minced onion": {
+    "LF": {
+      "type": "replace",
+      "to": "green parts of scallions only"
+    }
+  },
   "minced shallot": {
     "LF": {
       "type": "replace",
-      "to": "green tops of scallions + garlic-infused oil"
+      "to": "green parts of scallions only"
     }
   },
   "miso": {
@@ -1939,26 +1921,7 @@
   "onion": {
     "LF": {
       "type": "replace",
-      "to": "green parts of scallions only",
-      "nutritionKey": "green tops of scallions"
-    }
-  },
-  "orange": {
-    "K": {
-      "type": "note",
-      "note": "reduce quantity by half if used as cooking liquid"
-    }
-  },
-  "orange juice": {
-    "K": {
-      "type": "note",
-      "note": "reduce quantity by half"
-    }
-  },
-  "oranges": {
-    "K": {
-      "type": "note",
-      "note": "reduce quantity by half if used as cooking liquid"
+      "to": "green parts of scallions only"
     }
   },
   "orzo": {
@@ -2086,6 +2049,12 @@
   "peanuts": {
     "LF": {
       "type": "remove"
+    }
+  },
+  "pearl onion": {
+    "LF": {
+      "type": "replace",
+      "to": "green parts of scallions only"
     }
   },
   "pecorino": {
@@ -2363,7 +2332,7 @@
   "red onion": {
     "LF": {
       "type": "replace",
-      "to": "green tops of scallions only"
+      "to": "green parts of scallions only"
     }
   },
   "red pepper flakes": {
@@ -2569,14 +2538,13 @@
   "shallot": {
     "LF": {
       "type": "replace",
-      "to": "green tops of scallions + garlic-infused oil"
+      "to": "green parts of scallions only"
     }
   },
   "shallots": {
     "LF": {
       "type": "replace",
-      "to": "green tops of scallions and garlic-infused oil",
-      "nutritionKey": "green tops of scallions"
+      "to": "green parts of scallions only"
     }
   },
   "sharp cheddar": {
@@ -2685,13 +2653,13 @@
   "sliced onion": {
     "LF": {
       "type": "replace",
-      "to": "green tops of scallions only"
+      "to": "green parts of scallions only"
     }
   },
   "sliced shallot": {
     "LF": {
       "type": "replace",
-      "to": "green tops of scallions + garlic-infused oil"
+      "to": "green parts of scallions only"
     }
   },
   "smoked paprika": {
@@ -2773,7 +2741,7 @@
   "spanish onion": {
     "LF": {
       "type": "replace",
-      "to": "green tops of scallions only"
+      "to": "green parts of scallions only"
     }
   },
   "sriracha": {
@@ -2830,7 +2798,7 @@
   "sweet onion": {
     "LF": {
       "type": "replace",
-      "to": "green tops of scallions only"
+      "to": "green parts of scallions only"
     }
   },
   "sweet paprika": {
@@ -2958,6 +2926,12 @@
       "to": "olive oil"
     }
   },
+  "vidalia onion": {
+    "LF": {
+      "type": "replace",
+      "to": "green parts of scallions only"
+    }
+  },
   "vinegar": {
     "AIP": {
       "type": "replace",
@@ -2991,7 +2965,7 @@
   "white onion": {
     "LF": {
       "type": "replace",
-      "to": "green tops of scallions only"
+      "to": "green parts of scallions only"
     }
   },
   "white pepper": {
@@ -3127,7 +3101,7 @@
   "yellow onion": {
     "LF": {
       "type": "replace",
-      "to": "green tops of scallions only"
+      "to": "green parts of scallions only"
     }
   },
   "yogurt": {
