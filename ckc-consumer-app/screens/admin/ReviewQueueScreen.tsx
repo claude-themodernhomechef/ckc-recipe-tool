@@ -155,6 +155,9 @@ async function regenerateSwapNote(
     existingNote ? `Existing note (rewrite using current rules): ${existingNote}` : '',
     '',
     `Write the complete modification note for ${protocol} compliance. Cover every non-compliant ingredient in the list above. Follow the protocol rules exactly.`,
+    '',
+    `CRITICAL: If NONE of the ingredients above are non-compliant for ${protocol} (i.e. the recipe is already naturally ${protocol}-compliant), return exactly this literal string and nothing else: NO_CHANGES_NEEDED`,
+    `Do not invent swaps. Do not use the word "dairy" as a replacement, or any nonsensical placeholder. If unsure whether an ingredient is non-compliant, leave it alone.`,
   ].filter(Boolean).join('\n');
 
   const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -466,7 +469,14 @@ function DietCard({
     setRegenerating(true);
     try {
       const note = await regenerateSwapNote(recipeName ?? '', code, ingredients, notesDisplay);
-      if (note) onChange(code, { native: false, mod: true, notes: note });
+      const trimmed = note.trim();
+      if (!trimmed) return;
+      // Sentinel from the prompt — recipe is already compliant, flip to Native.
+      if (/^NO_CHANGES_NEEDED\b/i.test(trimmed)) {
+        onChange(code, { native: true, mod: false, notes: '' });
+        return;
+      }
+      onChange(code, { native: false, mod: true, notes: trimmed });
     } catch (e) {
       console.warn('regenerateSwapNote failed', e);
     } finally {
