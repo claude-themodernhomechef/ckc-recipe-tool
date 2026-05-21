@@ -137,6 +137,46 @@ function buildSwapSystemPrompt(protocol: string): string {
     : `${intro}\n\n${SWAP_STYLE_RULES}`;
 }
 
+// Regenerate the modification note for a protocol from the full ingredients list.
+// Used by the "Regenerate" button on each diet card — applies the latest protocol
+// rules from buildSwapSystemPrompt to an existing recipe's notes.
+async function regenerateSwapNote(
+  recipeName: string,
+  protocol: string,
+  ingredients: string[],
+  existingNote?: string,
+): Promise<string> {
+  const body = [
+    `Recipe: ${recipeName}`,
+    `Protocol: ${protocol}`,
+    `Ingredients:`,
+    ...ingredients.map(i => `- ${i}`),
+    '',
+    existingNote ? `Existing note (rewrite using current rules): ${existingNote}` : '',
+    '',
+    `Write the complete modification note for ${protocol} compliance. Cover every non-compliant ingredient in the list above. Follow the protocol rules exactly.`,
+  ].filter(Boolean).join('\n');
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type':         'application/json',
+      'x-api-key':            ANTHROPIC_KEY,
+      'anthropic-version':    '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true',
+    },
+    body: JSON.stringify({
+      model:      'claude-sonnet-4-6',
+      max_tokens: 600,
+      system:     buildSwapSystemPrompt(protocol),
+      messages:   [{ role: 'user', content: body }],
+    }),
+  });
+  if (!res.ok) throw new Error(`Claude API ${res.status}`);
+  const data = await res.json();
+  return (data.content?.[0]?.text ?? '').trim();
+}
+
 async function generateSwapNote(
   recipeName: string,
   protocol: string,
@@ -408,16 +448,31 @@ const rr = StyleSheet.create({
 // ── Diet tag edit card ────────────────────────────────────────────────────────
 
 function DietCard({
-  code, tag, originalTag, onChange, recipeName, reviewFlags, onFlagResolved,
+  code, tag, originalTag, onChange, recipeName, ingredients, reviewFlags, onFlagResolved,
 }: {
   code:            string;
   tag?:            DietTagData;
   originalTag?:    DietTagData;
   onChange:        (code: string, updated: DietTagData) => void;
   recipeName?:     string;
+  ingredients?:    string[];
   reviewFlags?:    ReviewItem[];
   onFlagResolved?: (ingredient: string, decision: 'compliant' | 'replace' | 'remove' | 'skip', note?: string) => void;
 }) {
+  const [regenerating, setRegenerating] = useState(false);
+
+  async function handleRegenerate() {
+    if (!ingredients?.length || regenerating) return;
+    setRegenerating(true);
+    try {
+      const note = await regenerateSwapNote(recipeName ?? '', code, ingredients, notesDisplay);
+      if (note) onChange(code, { native: false, mod: true, notes: note });
+    } catch (e) {
+      console.warn('regenerateSwapNote failed', e);
+    } finally {
+      setRegenerating(false);
+    }
+  }
   const state = getDietState(tag);
   const color = (DIET_COLORS as Record<string, string>)[code] ?? Colors.textMuted;
 
@@ -532,19 +587,33 @@ function DietCard({
                   </View>
                 );
               })() : null}
-              {originalTag && (
-                originalTag.notes !== tag?.notes ||
-                originalTag.native !== tag?.native ||
-                originalTag.mod !== tag?.mod
-              ) && (
-                <TouchableOpacity
-                  style={dc.revertTagBtn}
-                  onPress={() => onChange(code, originalTag)}
-                  activeOpacity={0.7}
-                >
-                  <Text style={dc.revertTagText}>↺ Revert</Text>
-                </TouchableOpacity>
-              )}
+              <View style={{ flexDirection: 'row', gap: 6, marginTop: 6 }}>
+                {ingredients && ingredients.length > 0 && (
+                  <TouchableOpacity
+                    style={dc.revertTagBtn}
+                    onPress={handleRegenerate}
+                    activeOpacity={0.7}
+                    disabled={regenerating}
+                  >
+                    <Text style={dc.revertTagText}>
+                      {regenerating ? '⟳ Regenerating…' : '✨ Regenerate'}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+                {originalTag && (
+                  originalTag.notes !== tag?.notes ||
+                  originalTag.native !== tag?.native ||
+                  originalTag.mod !== tag?.mod
+                ) && (
+                  <TouchableOpacity
+                    style={dc.revertTagBtn}
+                    onPress={() => onChange(code, originalTag)}
+                    activeOpacity={0.7}
+                  >
+                    <Text style={dc.revertTagText}>↺ Revert</Text>
+                  </TouchableOpacity>
+                )}
+              </View>
             </View>
           ) : (
             <Text style={dc.noNotes}>—</Text>
@@ -1680,6 +1749,7 @@ function RecipePanel({
               originalTag={local.dietTagsOriginal?.[code]}
               onChange={updateDietTag}
               recipeName={local.name}
+              ingredients={local.ingredients}
               reviewFlags={(local.reviewItems ?? []).filter(f => f.protocol === code)}
               onFlagResolved={(ingredient, decision, note) => handleFlagResolved(code, ingredient, decision, note)}
             />
