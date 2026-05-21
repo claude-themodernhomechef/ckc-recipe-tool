@@ -845,6 +845,18 @@ function buildSwapPairs(tag: DietTagData): Array<{ from: string; to: string | nu
     result.push({ from: stripLeadingQty(m[1].split(',')[0].trim()), to: null });
   }
 
+  // Plain "Remove X" / "Remove X and Y" sentences. Anchored to sentence start
+  // so it doesn't grab "remove" mid-sentence inside a replace clause.
+  const removeRe = /(?:^|[.;\n])\s*remove\s+([^.;\n]+)/gi;
+  while ((m = removeRe.exec(s)) !== null) {
+    const targets = m[1]
+      .replace(/\bentirely\b/gi, '')
+      .split(/\s*(?:,|\sand\s)\s*/i)
+      .map(t => stripLeadingQty(t.trim()))
+      .filter(Boolean);
+    for (const from of targets) result.push({ from, to: null });
+  }
+
   // "X: Use Y" — colon-prefix swap (e.g. "Naan: Use GF naan.")
   const colonUseRe = /(?:^|[.;\n])\s*([^:\n.]+?):\s*use\s+([^.;\n]+?)(?=[.;\n]|$)/gi;
   while ((m = colonUseRe.exec(s)) !== null) {
