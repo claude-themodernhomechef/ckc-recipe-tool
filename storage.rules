@@ -3,7 +3,9 @@ service firebase.storage {
   match /b/{bucket}/o {
     match /images/{allPaths=**} {
       allow read: if true;
-      allow write: if false;
+      // Admin upload from Review Queue. Same security model as firestore.rules:
+      // open writes protected by obscurity (no auth wired up yet).
+      allow write: if true;
     }
   }
 }

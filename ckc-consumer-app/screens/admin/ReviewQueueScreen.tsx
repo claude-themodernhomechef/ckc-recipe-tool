@@ -1606,6 +1606,73 @@ const sl = StyleSheet.create({
 
 // ── Right panel ───────────────────────────────────────────────────────────────
 
+function RecipePhotoUpload({
+  image, recipeId, onUploaded,
+}: {
+  image?: string;
+  recipeId?: string;
+  onUploaded: (url: string) => void;
+}) {
+  const [uploading, setUploading] = useState(false);
+  const inputRef = useRef<any>(null);
+
+  async function handleFile(file: File) {
+    if (!recipeId || !file) return;
+    setUploading(true);
+    try {
+      const { getStorage, ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
+      const storage = getStorage(app);
+      const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+      const path = `images/${recipeId}.${ext === 'jpeg' ? 'jpg' : ext}`;
+      const storageRef = ref(storage, path);
+      await uploadBytes(storageRef, file, { contentType: file.type || 'image/jpeg', cacheControl: 'public, max-age=31536000' });
+      const url = await getDownloadURL(storageRef);
+      await updateDoc(doc(db, 'recipes', recipeId), { image: url });
+      onUploaded(url);
+    } catch (e) {
+      console.warn('[RecipePhotoUpload] failed:', e);
+      Alert.alert('Upload failed', String((e as any)?.message ?? e));
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  return (
+    <TouchableOpacity
+      style={[pp.photo, !image && pp.photoPlaceholder]}
+      onPress={() => inputRef.current?.click?.()}
+      activeOpacity={0.7}
+      disabled={uploading}
+    >
+      {image ? (
+        <Image source={{ uri: image }} style={pp.photo} />
+      ) : null}
+      <View style={ph.overlay} pointerEvents="none">
+        <Text style={ph.overlayText}>
+          {uploading ? 'Uploading…' : image ? '↑ Replace' : '↑ Upload image'}
+        </Text>
+      </View>
+      {/* Hidden file input — web only */}
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        style={{ display: 'none' } as any}
+        onChange={(e: any) => {
+          const f = e.target.files?.[0];
+          if (f) handleFile(f);
+          e.target.value = ''; // allow re-selecting same file
+        }}
+      />
+    </TouchableOpacity>
+  );
+}
+
+const ph = StyleSheet.create({
+  overlay:     { position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.55)', paddingVertical: 4, alignItems: 'center' },
+  overlayText: { fontFamily: Fonts.bodyMedium, fontSize: 10, color: '#fff', letterSpacing: 0.3 },
+});
+
 function RecipePanel({
   recipe, saving, savedFields, onChange, onApprove, onReject, onSkip,
 }: {
@@ -1708,9 +1775,11 @@ function RecipePanel({
 
         {/* ── Recipe card ── */}
         <View style={pp.card}>
-          {local.image
-            ? <Image source={{ uri: local.image }} style={pp.photo} />
-            : <View style={[pp.photo, pp.photoPlaceholder]} />}
+          <RecipePhotoUpload
+            image={local.image}
+            recipeId={local._id}
+            onUploaded={(url) => update({ image: url })}
+          />
           <View style={pp.cardBody}>
             <TextInput
               style={[pp.nameInput, fieldBorder('name')]}
