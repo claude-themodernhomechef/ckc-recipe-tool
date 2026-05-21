@@ -842,10 +842,12 @@ function cleanForDisplay(s: string): string {
   let out = String(s)
     // strip parentheticals: "(diced)", "(for topping)", "(minced)"
     .replace(/\s*\([^)]*\)/g, '')
-    // Strip leading qty + measurement unit. Deliberately excluded: cloves,
-    // head, stick, bunch — those are product-form distinctions (garlic clove
-    // vs garlic head, etc.) that the user needs to see for shopping.
-    .replace(/^[\s\d/.½¼¾⅓⅔⅛⅜⅝⅞]+\s*(cups?|tbsp|tsp|tablespoons?|teaspoons?|oz|ounces?|lb|pounds?|g\b|grams?|ml|pieces?|slices?|sprigs?|cans?|jars?|packages?|packets?)?\s*(?:of\s+)?/i, '')
+    // Strip leading qty + measurement unit only. Deliberately excluded
+    // (these denote product form/packaging — they matter at the store):
+    //   cloves, head, stick, bunch  (e.g. garlic clove vs garlic head)
+    //   can, jar, bottle, box, package, packet, carton, tube
+    //     (e.g. canned tomatoes vs fresh tomatoes)
+    .replace(/^[\s\d/.½¼¾⅓⅔⅛⅜⅝⅞]+\s*(cups?|tbsp|tsp|tablespoons?|teaspoons?|oz|ounces?|lb|pounds?|g\b|grams?|ml|pieces?|slices?|sprigs?)?\s*(?:of\s+)?/i, '')
     // strip trailing punctuation
     .replace(/[,;:.]+\s*$/, '')
     .trim();
