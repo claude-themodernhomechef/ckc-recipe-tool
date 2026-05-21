@@ -1,0 +1,792 @@
+{
+  "3 garlic cloves peeled": {
+    "LF": [
+      {
+        "to": "3 tbsp garlic-infused oil",
+        "count": 1
+      }
+    ]
+  },
+  "feta cheese crumbled": {
+    "DF": [
+      {
+        "to": "df feta (feta is a core ingredient, not a garnish)",
+        "count": 1
+      }
+    ]
+  },
+  "tzatziki": {
+    "DF": [
+      {
+        "to": "df tzatziki made with coconut yogurt",
+        "count": 1
+      }
+    ]
+  },
+  "feta cheese crumbled*": {
+    "DF": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ]
+  },
+  "light brown sugar": {
+    "K": [
+      {
+        "to": "allulose sweetener",
+        "count": 1
+      }
+    ],
+    "AIP": [
+      {
+        "to": "agave",
+        "count": 1
+      }
+    ]
+  },
+  "fresh orange juice": {
+    "K": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ]
+  },
+  "1 whole orange cut in half crosswise seeds removed plus 3/4 cup fresh orange juice": {
+    "K": [
+      {
+        "to": "replace half with matching broth",
+        "count": 1
+      }
+    ]
+  },
+  "kosher salt & black pepper": {
+    "AIP": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ],
+    "LH": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ]
+  },
+  "rice vinegar": {
+    "AIP": [
+      {
+        "to": "fresh lime or lemon juice",
+        "count": 1
+      }
+    ],
+    "LF": [
+      {
+        "to": "1 tbsp tamari + 1 tbsp chicken broth",
+        "count": 1
+      }
+    ],
+    "LH": [
+      {
+        "to": "fresh lemon juice",
+        "count": 1
+      }
+    ]
+  },
+  "oil": {
+    "AIP": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ],
+    "LH": [
+      {
+        "to": "olive oil",
+        "count": 1
+      }
+    ]
+  },
+  "4 shallots peeled and quartered": {
+    "LF": [
+      {
+        "to": "green tops of 4 scallions",
+        "count": 1
+      }
+    ]
+  },
+  "4 garlic cloves": {
+    "LF": [
+      {
+        "to": "1 tbsp garlic-infused oil",
+        "count": 1
+      }
+    ]
+  },
+  "milk": {
+    "DF": [
+      {
+        "to": "unsweetened oat or soy milk",
+        "count": 1
+      }
+    ],
+    "V": [
+      {
+        "to": "unsweetened oat or soy milk",
+        "count": 1
+      }
+    ],
+    "AIP": [
+      {
+        "to": "rice milk",
+        "count": 1
+      }
+    ]
+  },
+  "butter": {
+    "DF": [
+      {
+        "to": "df butter",
+        "count": 1
+      }
+    ],
+    "V": [
+      {
+        "to": "df butter",
+        "count": 1
+      }
+    ],
+    "AIP": [
+      {
+        "to": "df butter",
+        "count": 1
+      }
+    ]
+  },
+  "yukon gold potatoes": {
+    "K": [
+      {
+        "to": "cauliflower mash",
+        "count": 1
+      }
+    ]
+  },
+  "bocconcini halved (or use mozzarella cut into 3/4-inch pieces)": {
+    "DF": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ],
+    "AIP": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ]
+  },
+  "black pepper": {
+    "AIP": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ]
+  },
+  "red pepper flakes": {
+    "AIP": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ]
+  },
+  "1 (28-ounce) can whole plum tomatoes": {
+    "AIP": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ]
+  },
+  "2 anchovy fillets": {
+    "AIP": [
+      {
+        "to": "coconut aminos",
+        "count": 1
+      }
+    ]
+  },
+  "3 garlic cloves thinly sliced": {
+    "LF": [
+      {
+        "to": "1 tbsp garlic-infused oil",
+        "count": 1
+      }
+    ]
+  },
+  "unsalted butter": {
+    "DF": [
+      {
+        "to": "1/4 cup df butter",
+        "count": 1
+      }
+    ],
+    "AIP": [
+      {
+        "to": "1/4 cup df butter or coconut oil",
+        "count": 1
+      }
+    ]
+  },
+  "unsalted butter (at room temperature)": {
+    "DF": [
+      {
+        "to": "olive oil",
+        "count": 1
+      }
+    ],
+    "AIP": [
+      {
+        "to": "olive oil",
+        "count": 1
+      }
+    ]
+  },
+  "freshly ground pepper": {
+    "AIP": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ]
+  },
+  "minced garlic": {
+    "LF": [
+      {
+        "to": "1 tbsp garlic-infused oil",
+        "count": 1
+      }
+    ]
+  },
+  "acorn squash": {
+    "LF": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ]
+  },
+  "3-4 tablespoons flour": {
+    "GF": [
+      {
+        "to": "1 tbsp arrowroot powder",
+        "count": 1
+      }
+    ],
+    "K": [
+      {
+        "to": "1 tbsp arrowroot powder",
+        "count": 1
+      }
+    ],
+    "AIP": [
+      {
+        "to": "1 tbsp arrowroot powder",
+        "count": 1
+      }
+    ]
+  },
+  "butter (melted)": {
+    "DF": [
+      {
+        "to": "1 tablespoon olive oil",
+        "count": 1
+      }
+    ],
+    "AIP": [
+      {
+        "to": "1 tablespoon olive oil",
+        "count": 1
+      }
+    ]
+  },
+  "3-4 tablespoons butter": {
+    "DF": [
+      {
+        "to": "3-4 tablespoons df butter",
+        "count": 1
+      }
+    ],
+    "AIP": [
+      {
+        "to": "3-4 tablespoons df butter",
+        "count": 1
+      }
+    ]
+  },
+  "½ cup dry white wine": {
+    "K": [
+      {
+        "to": "½ cup chicken broth",
+        "count": 1
+      }
+    ],
+    "AIP": [
+      {
+        "to": "½ cup chicken broth",
+        "count": 1
+      }
+    ],
+    "LH": [
+      {
+        "to": "½ cup chicken broth",
+        "count": 1
+      }
+    ]
+  },
+  "lemon juice": {
+    "K": [
+      {
+        "to": "replace half with matching broth",
+        "count": 1
+      }
+    ],
+    "LH": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ]
+  },
+  "pepper": {
+    "AIP": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ],
+    "LH": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ]
+  },
+  "paprika": {
+    "AIP": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ]
+  },
+  "onion powder": {
+    "AIP": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ]
+  },
+  "each: paprika onion powder rosemary oregano thyme": {
+    "AIP": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ]
+  },
+  "½ cup dry white wine (see notes)": {
+    "AIP": [
+      {
+        "to": "chicken broth",
+        "count": 1
+      }
+    ],
+    "LH": [
+      {
+        "to": "chicken broth",
+        "count": 1
+      }
+    ]
+  },
+  "whole milk": {
+    "DF": [
+      {
+        "to": "full-fat canned coconut milk",
+        "count": 1
+      }
+    ],
+    "V": [
+      {
+        "to": "full-fat canned coconut milk",
+        "count": 1
+      }
+    ],
+    "AIP": [
+      {
+        "to": "full-fat canned coconut milk",
+        "count": 1
+      }
+    ]
+  },
+  "salted butter": {
+    "DF": [
+      {
+        "to": "df butter",
+        "count": 1
+      }
+    ],
+    "V": [
+      {
+        "to": "df butter",
+        "count": 1
+      }
+    ],
+    "AIP": [
+      {
+        "to": "df butter",
+        "count": 1
+      }
+    ]
+  },
+  "salted butter (more to taste)": {
+    "DF": [
+      {
+        "to": "olive oil",
+        "count": 1
+      }
+    ],
+    "V": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ],
+    "AIP": [
+      {
+        "to": "olive oil",
+        "count": 1
+      }
+    ]
+  },
+  "freshly ground black pepper": {
+    "AIP": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ]
+  },
+  "freshly ground black pepper (to taste)": {
+    "AIP": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ]
+  },
+  "garlic & herb flatbread": {
+    "GF": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ]
+  },
+  "spelt dinner rolls": {
+    "GF": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ]
+  },
+  "grated parmesan cheese (plus more for topping if desired.)": {
+    "DF": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ]
+  },
+  "can garbanzo beans (drained and rinsed)": {
+    "K": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ]
+  },
+  "fresh ground black pepper": {
+    "AIP": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ],
+    "LH": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ]
+  },
+  "dry white wine": {
+    "AIP": [
+      {
+        "to": "1/2 cup chicken broth",
+        "count": 1
+      }
+    ],
+    "LH": [
+      {
+        "to": "1/2 cup chicken broth",
+        "count": 1
+      }
+    ]
+  },
+  "salt and fresh ground black pepper": {
+    "AIP": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ],
+    "LH": [
+      {
+        "to": "white pepper",
+        "count": 1
+      }
+    ]
+  },
+  "dry white wine or water": {
+    "AIP": [
+      {
+        "to": "chicken broth",
+        "count": 1
+      }
+    ],
+    "LH": [
+      {
+        "to": "chicken broth",
+        "count": 1
+      }
+    ]
+  },
+  "1 lemon cut into slices": {
+    "LH": [
+      {
+        "to": "fresh lime juice",
+        "count": 1
+      }
+    ]
+  },
+  "chicken breast tofu or prawns": {
+    "V": [
+      {
+        "to": "8 ounces extra firm tofu",
+        "count": 1
+      }
+    ],
+    "Vg": [
+      {
+        "to": "8 ounces extra firm tofu",
+        "count": 1
+      }
+    ]
+  },
+  "fish sauce": {
+    "V": [
+      {
+        "to": "vegan fish sauce (as noted in recipe)",
+        "count": 1
+      }
+    ],
+    "Vg": [
+      {
+        "to": "vegan fish sauce (as noted in recipe)",
+        "count": 1
+      }
+    ]
+  },
+  "brown sugar": {
+    "V": [
+      {
+        "to": "agave",
+        "count": 1
+      }
+    ]
+  },
+  "chicken breast tofu or prawns (peeled and deveined)": {
+    "V": [
+      {
+        "to": "extra firm tofu cut to match protein shape",
+        "count": 1
+      }
+    ],
+    "Vg": [
+      {
+        "to": "extra firm tofu cut to match protein shape",
+        "count": 1
+      }
+    ]
+  },
+  "fish sauce (see notes- or use vegan fish sauce)": {
+    "V": [
+      {
+        "to": "vegan fish sauce",
+        "count": 1
+      }
+    ]
+  },
+  "½ cup buttermilk": {
+    "DF": [
+      {
+        "to": "1 tbsp vinegar + 1/3 cup soy milk (let rest 10 minutes)",
+        "count": 1
+      }
+    ]
+  },
+  "fresh breadcrumbs": {
+    "GF": [
+      {
+        "to": "2 cups gf panko",
+        "count": 1
+      }
+    ]
+  },
+  "bone-in skin-on dark meat chicken": {
+    "V": [
+      {
+        "to": "2 lbs extra firm tofu cut into 1 inch cubes",
+        "count": 1
+      }
+    ],
+    "Vg": [
+      {
+        "to": "2 lbs extra firm tofu cut into 1 inch cubes",
+        "count": 1
+      }
+    ]
+  },
+  "salt + pepper to taste": {
+    "AIP": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ]
+  },
+  "white wine": {
+    "LH": [
+      {
+        "to": "2 cups chicken broth",
+        "count": 1
+      }
+    ],
+    "K": [
+      {
+        "to": "2 cups chicken broth",
+        "count": 1
+      }
+    ]
+  },
+  "dijon mustard": {
+    "LH": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ]
+  },
+  "fresh-cracked black pepper": {
+    "LH": [
+      {
+        "to": "white pepper",
+        "count": 1
+      }
+    ]
+  },
+  "low-sodium soy sauce": {
+    "GF": [
+      {
+        "to": "1/4 cup tamari",
+        "count": 1
+      }
+    ],
+    "AIP": [
+      {
+        "to": "1/4 cup coconut aminos",
+        "count": 1
+      }
+    ]
+  },
+  "honey": {
+    "K": [
+      {
+        "to": "allulose liquid sweetener",
+        "count": 1
+      }
+    ],
+    "AIP": [
+      {
+        "to": "agave",
+        "count": 1
+      }
+    ]
+  },
+  "freshly cracked black pepper": {
+    "AIP": [
+      {
+        "to": null,
+        "count": 1
+      }
+    ]
+  },
+  "whole fat milk": {
+    "DF": [
+      {
+        "to": "full-fat canned coconut milk",
+        "count": 1
+      }
+    ],
+    "V": [
+      {
+        "to": "full-fat canned coconut milk",
+        "count": 1
+      }
+    ]
+  },
+  "1/4-1/3 cup cream cheese": {
+    "DF": [
+      {
+        "to": "df cream cheese alternative",
+        "count": 1
+      }
+    ],
+    "V": [
+      {
+        "to": "df cream cheese alternative",
+        "count": 1
+      }
+    ]
+  },
+  "smoked salmon roughly chopped": {
+    "Vg": [
+      {
+        "to": "extra firm tofu rectangles (1 lb block cut into thin pieces)",
+        "count": 1
+      }
+    ],
+    "V": [
+      {
+        "to": "extra firm tofu rectangles (1 lb block cut into thin pieces)",
+        "count": 1
+      }
+    ]
+  }
+}
