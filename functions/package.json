@@ -4,7 +4,7 @@
   "engines": { "node": "20" },
   "main": "index.js",
   "scripts": {
-    "sync-data": "cp ../ckc-consumer-app/data/masterSwapTable.json ./masterSwapTable.json && cp ../data/ingredientNutrition_v2.json ./ingredientNutrition_v2.json",
+    "sync-data": "cp ../ckc-consumer-app/data/masterSwapTable.json ./masterSwapTable.json && cp ../data/ingredientNutrition_v2.json ./ingredientNutrition_v2.json && cp ../ckc-consumer-app/data/ingredientDBNames.json ./ingredientDBNames.json && cp ../ckc-consumer-app/data/learnedSwapTable.json ./learnedSwapTable.json",
     "deploy": "npm run sync-data && firebase deploy --only functions"
   },
   "dependencies": {

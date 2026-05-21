@@ -53,9 +53,82 @@ const CHEF_GUIDE = fs.readFileSync(path.join(__dirname, 'CKC_Chef_Notes_Guide.md
 // Structured lookup of known ingredient → protocol swaps derived from Part 11 of
 // CKC_Diet_Compliance_Rules.md. Used to auto-populate swap arrays when Claude
 // marks a protocol as mod:true, before falling back to the FIG product search.
+const INGREDIENT_DB_NAMES = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(__dirname, 'ingredientDBNames.json'), 'utf8')); }
+  catch { return {}; }
+})();
+const LEARNED_SWAP_TABLE = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(__dirname, 'learnedSwapTable.json'), 'utf8')); }
+  catch { return {}; }
+})();
 const MASTER_SWAP_TABLE = JSON.parse(
   fs.readFileSync(path.join(__dirname, 'masterSwapTable.json'), 'utf8')
 );
+
+// ── Diet-tag output validator ─────────────────────────────────────────────────
+// Gates each {from, to} pair Claude returns against real data before we save
+// it. Junk targets like "with dairy", "lactose", "already dairy" never reach
+// Firestore — they get dropped and the protocol flagged uncertain so FIG
+// kicks in. Bad `from` values (not in recipe ingredients) also dropped.
+const VALIDATOR_KNOWN_WORDS = new Set();
+for (const k of Object.keys(INGREDIENT_DB_NAMES)) {
+  for (const w of k.split(/\s+/)) if (w.length > 2) VALIDATOR_KNOWN_WORDS.add(w);
+}
+for (const entry of Object.values(MASTER_SWAP_TABLE)) {
+  for (const v of Object.values(entry)) {
+    if (v && v.to) for (const w of String(v.to).toLowerCase().split(/\s+/)) if (w.length > 2) VALIDATOR_KNOWN_WORDS.add(w);
+  }
+}
+// Single-word `to` values that look like truncated/hallucinated outputs.
+const JUNK_TO_RE = /^(dairy|lactose|already|gf|df|the same|none|n\/a|tbd|see notes?|same|other|maple syrup|vegan|vegetarian)$/i;
+function isValidSwapTo(to) {
+  if (!to) return false;
+  const t = String(to).toLowerCase().trim();
+  if (!t) return false;
+  if (JUNK_TO_RE.test(t)) return false;
+  if (/^(replace|remove|skip|omit)\b/.test(t)) return false; // instruction text
+  const words = t.split(/\s+/).filter(w => w.length > 2);
+  return words.some(w => VALIDATOR_KNOWN_WORDS.has(w));
+}
+function fromAppearsInIngredients(from, ingredients) {
+  if (!from) return false;
+  const f = String(from).toLowerCase().trim();
+  if (!f) return false;
+  const norm = (s) => String(s).toLowerCase().replace(/[,;()]/g, ' ').replace(/\s+/g, ' ').trim();
+  const ingsNorm = ingredients.map(norm);
+  const fNorm = norm(f);
+  if (ingsNorm.some(i => i.includes(fNorm))) return true;
+  // Word-overlap: every >3-char word in `from` appears in some ingredient
+  const fWords = fNorm.split(' ').filter(w => w.length > 3);
+  if (!fWords.length) return false;
+  return ingsNorm.some(i => fWords.every(w => i.includes(w)));
+}
+
+/**
+ * Validate Claude's structured notes array for one protocol.
+ * Returns { keptNotes, dropped: [{ pair, reason }] }.
+ */
+function validateNotes(notes, ingredients) {
+  const keptNotes = [];
+  const dropped   = [];
+  for (const pair of (Array.isArray(notes) ? notes : [])) {
+    if (!pair || !pair.from) { dropped.push({ pair, reason: 'no_from' }); continue; }
+    if (!fromAppearsInIngredients(pair.from, ingredients)) {
+      dropped.push({ pair, reason: 'from_not_in_recipe' });
+      continue;
+    }
+    if (pair.type === 'remove' || pair.type === 'note') {
+      keptNotes.push(pair);
+      continue;
+    }
+    if (!isValidSwapTo(pair.to)) {
+      dropped.push({ pair, reason: 'junk_to' });
+      continue;
+    }
+    keptNotes.push(pair);
+  }
+  return { keptNotes, dropped };
+}
 
 // ── Protocol → Supabase column ────────────────────────────────────────────────
 const PROTO_FIELD = {
@@ -377,6 +450,31 @@ async function verifyDietTags(anthropic, name, cuisine, course, ingredients) {
         // Normalise notes to array (guard against Claude returning a string)
         if (!Array.isArray(result.notes)) {
           result.notes = result.notes ? [] : [];
+        }
+
+        // ── Validate Claude's pairs ─────────────────────────────────────────
+        // Drop pairs whose `from` isn't in the recipe, or whose `to` is junk
+        // (e.g. "dairy", "lactose"). If anything got dropped, flag uncertain
+        // so FIG product search runs as a backstop.
+        const { keptNotes, dropped } = validateNotes(result.notes, ingredients);
+        if (dropped.length > 0) {
+          console.log(`[validator] ${proto}: dropped ${dropped.length} pair(s):`,
+            dropped.map(d => `${d.reason}: ${JSON.stringify(d.pair)}`).join(' | '));
+          result.uncertain = true;
+          if (!result.reason) result.reason = `Validator dropped ${dropped.length} pair(s) with bad from/to`;
+        }
+        result.notes = keptNotes;
+
+        // ── Prefer learned-swap-table `to` when available ──────────────────
+        // Human-validated approved-recipe swaps win over AI guesses
+        // (frequency >= 2 only — single-occurrence might be noise).
+        for (const pair of result.notes) {
+          if (pair.type !== 'replace' || !pair.from) continue;
+          const key = String(pair.from).toLowerCase().trim();
+          const learned = LEARNED_SWAP_TABLE[key]?.[proto];
+          if (learned && learned.length > 0 && learned[0].count >= 2 && learned[0].to) {
+            pair.to = learned[0].to;
+          }
         }
 
         // Merge any Master Swap Table matches not already covered by Claude's output
