@@ -148,7 +148,16 @@ function validateNotes(notes, ingredients, protocol) {
       dropped.push({ pair, reason: 'from_not_in_recipe' });
       continue;
     }
-    if (pair.type === 'remove' || pair.type === 'note') {
+    // `remove` pairs are only valid if the ingredient is non-compliant
+    // for the protocol (i.e. has a masterSwap entry). Drops AI
+    // hallucinations like "remove pepitas for LF" when pepitas are fine.
+    if (pair.type === 'remove') {
+      const canonical = lookupCanonicalSwap(pair.from, protocol);
+      if (canonical) keptNotes.push(pair);
+      else           dropped.push({ pair, reason: 'remove_compliant_ingredient' });
+      continue;
+    }
+    if (pair.type === 'note') {
       keptNotes.push(pair);
       continue;
     }

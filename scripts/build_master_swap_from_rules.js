@@ -117,6 +117,8 @@ assign(['burger buns', 'hamburger buns', 'buns'], 'K', { type: 'replace', to: 'i
 assign(['burrito wraps'], 'K', { type: 'replace', to: 'GF wraps' });
 assign(['tortilla chips'], 'K', { type: 'replace', to: 'keto tortilla chips or remove' });
 assign(['naan', 'naan bread'], 'K', { type: 'replace', to: 'cauliflower flatbread' });
+assign(['bread', 'crusty bread', 'sandwich bread', 'sourdough', 'baguette', 'toasted bread', 'toasted crusty bread'], 'K', { type: 'remove' });
+assign(['bread', 'crusty bread', 'sandwich bread', 'sourdough', 'baguette', 'toasted bread', 'toasted crusty bread'], 'LF', { type: 'replace', to: 'GF or sourdough bread' });
 
 const allulose = { type: 'replace', to: 'allulose liquid sweetener' };
 assign(['honey', 'raw honey'], 'K', allulose);

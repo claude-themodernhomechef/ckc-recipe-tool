@@ -192,6 +192,10 @@
     "K": {
       "type": "replace",
       "to": "keto bread"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "GF or sourdough bread"
     }
   },
   "balsamic vinegar": {
@@ -363,6 +367,13 @@
     "GF": {
       "type": "replace",
       "to": "GF bread"
+    },
+    "K": {
+      "type": "remove"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "GF or sourdough bread"
     }
   },
   "breadcrumbs": {
@@ -882,6 +893,13 @@
     "GF": {
       "type": "replace",
       "to": "GF bread"
+    },
+    "K": {
+      "type": "remove"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "GF or sourdough bread"
     }
   },
   "cumin": {
@@ -2492,6 +2510,13 @@
     "GF": {
       "type": "replace",
       "to": "GF bread"
+    },
+    "K": {
+      "type": "remove"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "GF or sourdough bread"
     }
   },
   "sausage": {
@@ -2708,6 +2733,10 @@
     "K": {
       "type": "replace",
       "to": "keto bread"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "GF or sourdough bread"
     }
   },
   "soy sauce": {
@@ -2851,6 +2880,24 @@
     "V": {
       "type": "replace",
       "to": "extra firm tofu rectangles"
+    }
+  },
+  "toasted bread": {
+    "K": {
+      "type": "remove"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "GF or sourdough bread"
+    }
+  },
+  "toasted crusty bread": {
+    "K": {
+      "type": "remove"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "GF or sourdough bread"
     }
   },
   "toasted sesame oil": {

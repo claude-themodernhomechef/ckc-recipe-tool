@@ -158,19 +158,34 @@ function lookupCanonical(from, protocol) {
       for (const pair of workingNotes) {
         if (!pair?.from) { drops.push({ pair, reason: 'no_from' }); continue; }
         if (!fromInRecipe(pair.from, ings)) { drops.push({ pair, reason: 'from_not_in_recipe' }); continue; }
-        if (pair.type === 'remove' || pair.type === 'note') { kept.push(pair); continue; }
-        // Always prefer the canonical answer if one exists — even if the
-        // AI's `to` is technically valid text, the canonical is authoritative.
-        // Catches "garlic cloves LF → 1 tablespoon garlic" (wrong) → garlic-infused oil.
+        // For `remove` pairs: only keep if the ingredient is on the
+        // non-compliant list for this protocol (i.e. has a masterSwap entry).
+        // Catches AI hallucinations like "remove pepitas for LF" when pepitas
+        // are actually LF-compliant.
+        if (pair.type === 'remove') {
+          const canon = lookupCanonical(pair.from, code);
+          if (canon) {
+            kept.push(pair);
+          } else {
+            drops.push({ pair, reason: 'remove_compliant_ingredient' });
+          }
+          continue;
+        }
+        if (pair.type === 'note') { kept.push(pair); continue; }
         const canon = lookupCanonical(pair.from, code);
         if (canon) {
+          // `keep` means the ingredient is compliant for this protocol —
+          // the AI shouldn't have swapped it. Drop the pair entirely.
+          if (canon.type === 'keep') {
+            drops.push({ pair, reason: 'canonical_says_keep' });
+            continue;
+          }
           const oldTo = pair.to;
           const newPair = canon.type === 'remove'
             ? { type: 'remove', from: pair.from }
             : canon.type === 'note'
               ? { type: 'note', from: pair.from, note: canon.note }
               : { type: 'replace', from: pair.from, to: canon.to };
-          // Only count as a "swap" if it actually changed
           const newToValue = canon.to ?? canon.note ?? '(remove)';
           if (String(oldTo).toLowerCase().trim() !== String(newToValue).toLowerCase().trim()) {
             swaps.push({ from: pair.from, oldTo, newTo: newToValue, kind: canon.type });
