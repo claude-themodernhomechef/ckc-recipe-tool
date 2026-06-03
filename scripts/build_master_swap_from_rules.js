@@ -173,6 +173,10 @@ assign(['vinegar', 'white vinegar', 'apple cider vinegar', 'rice vinegar', 'red 
 assign(['red wine', 'dry red wine'], 'AIP', { type: 'replace', to: 'beef broth' });
 assign(['white wine', 'dry white wine'], 'AIP', { type: 'replace', to: 'chicken broth' });
 
+// LF wine swaps must point to LF broth versions (regular broth contains onion/garlic)
+assign(['red wine', 'dry red wine'], 'LF', { type: 'replace', to: 'LF beef bone broth' });
+assign(['white wine', 'dry white wine'], 'LF', { type: 'replace', to: 'LF chicken bone broth' });
+
 assign(['brown sugar'], 'AIP', { type: 'replace', to: 'agave' });
 assign(['flour', 'cornstarch'], 'AIP', { type: 'replace', to: 'arrowroot powder' });
 assign(['almond milk'], 'AIP', { type: 'replace', to: 'rice milk' });

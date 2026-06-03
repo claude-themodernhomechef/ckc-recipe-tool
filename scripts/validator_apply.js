@@ -122,7 +122,11 @@ function lookupCanonical(from, protocol) {
   }
 
   let recipesChanged = 0;
-  for (const doc of docs) {
+  let processed = 0;
+  // Process recipes in chunks of 25 with Promise.all for parallelism.
+  // Each doc.update is independent so this is safe.
+  const CHUNK = 25;
+  async function processDoc(doc) {
     const data = doc.data();
     const ings = data.ingredients || [];
     // In --all mode, suppress per-recipe headers unless there are changes (we
@@ -274,11 +278,21 @@ function lookupCanonical(from, protocol) {
       await doc.ref.update(updates);
       recipesChanged++;
       if (verbose) console.log(`  → wrote ${Object.keys(updates).length} protocol update(s)`);
-      else process.stdout.write('.');
     } else if (!WRITE && Object.keys(updates).length === 0 && verbose) {
       // No-op pass — keep output clean
     }
     if (verbose) console.log('');
   }
-  if (ALL) console.log(`\n\n━━━ Done. ${recipesChanged} recipe(s) changed. ━━━`);
+  // Run chunks in parallel for --all mode, sequential otherwise
+  if (ALL) {
+    for (let i = 0; i < docs.length; i += CHUNK) {
+      const slice = docs.slice(i, i + CHUNK);
+      await Promise.all(slice.map(processDoc));
+      processed += slice.length;
+      process.stdout.write(`\r${processed}/${docs.length} processed, ${recipesChanged} changed`);
+    }
+    console.log(`\n\n━━━ Done. ${recipesChanged}/${docs.length} recipe(s) changed. ━━━`);
+  } else {
+    for (const doc of docs) await processDoc(doc);
+  }
 })().catch(e => { console.error(e); process.exit(1); });
