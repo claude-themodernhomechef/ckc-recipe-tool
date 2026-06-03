@@ -22,9 +22,13 @@ const ingDBNames = JSON.parse(fs.readFileSync(path.join(__dirname, '../ckc-consu
 const masterSwap = JSON.parse(fs.readFileSync(path.join(__dirname, '../ckc-consumer-app/data/masterSwapTable.json'), 'utf8'));
 
 const WRITE = process.argv.includes('--write');
-const urlsFile = process.argv.find((a, i) => i > 1 && !a.startsWith('--'));
-if (!urlsFile) { console.error('Usage: validator_apply.js <urls.txt> [--write]'); process.exit(1); }
-const urls = fs.readFileSync(urlsFile, 'utf8').split('\n').map(s => s.trim()).filter(Boolean);
+const ALL = process.argv.includes('--all');
+let urls = [];
+if (!ALL) {
+  const urlsFile = process.argv.find((a, i) => i > 1 && !a.startsWith('--'));
+  if (!urlsFile) { console.error('Usage: validator_apply.js <urls.txt> [--write]  OR  validator_apply.js --all [--write]'); process.exit(1); }
+  urls = fs.readFileSync(urlsFile, 'utf8').split('\n').map(s => s.trim()).filter(Boolean);
+}
 
 const KNOWN = new Set();
 for (const k of Object.keys(ingDBNames)) for (const w of k.split(/\s+/)) if (w.length > 2) KNOWN.add(w);
@@ -91,25 +95,40 @@ function lookupCanonical(from, protocol) {
 }
 
 (async () => {
-  console.log(`Mode: ${WRITE ? 'WRITE' : 'DRY-RUN'}\n`);
-  for (const url of urls) {
-    // Match Firestore url field (handles trailing slash mismatch)
-    const variants = [url, url.replace(/\/$/, ''), url + '/'];
-    let doc = null;
-    for (const u of variants) {
-      const s = await db.collection('recipes').where('url', '==', u).limit(1).get();
-      if (!s.empty) { doc = s.docs[0]; break; }
+  console.log(`Mode: ${WRITE ? 'WRITE' : 'DRY-RUN'}${ALL ? ' (ALL RECIPES)' : ''}\n`);
+
+  // Build the doc list — either from URL file or the entire recipes collection.
+  let docs = [];
+  if (ALL) {
+    const snap = await db.collection('recipes').get();
+    docs = snap.docs;
+    console.log(`Scanning ${docs.length} recipes…\n`);
+  } else {
+    for (const url of urls) {
+      const variants = [url, url.replace(/\/$/, ''), url + '/'];
+      let doc = null;
+      for (const u of variants) {
+        const s = await db.collection('recipes').where('url', '==', u).limit(1).get();
+        if (!s.empty) { doc = s.docs[0]; break; }
+      }
+      if (!doc) {
+        const slug = url.replace(/\/$/, '').split('/').pop();
+        const all = await db.collection('recipes').get();
+        all.forEach(d => { if (!doc && d.data().url?.includes(slug)) doc = d; });
+      }
+      if (!doc) { console.log(`✗ NOT FOUND: ${url}\n`); continue; }
+      docs.push(doc);
     }
-    // Fallback: extract slug from URL and search by URL contains slug
-    if (!doc) {
-      const slug = url.replace(/\/$/, '').split('/').pop();
-      const all = await db.collection('recipes').get();
-      all.forEach(d => { if (!doc && d.data().url?.includes(slug)) doc = d; });
-    }
-    if (!doc) { console.log(`✗ NOT FOUND: ${url}\n`); continue; }
+  }
+
+  let recipesChanged = 0;
+  for (const doc of docs) {
     const data = doc.data();
     const ings = data.ingredients || [];
-    console.log(`━━━ ${data.name} ━━━`);
+    // In --all mode, suppress per-recipe headers unless there are changes (we
+    // log inside the protocol loop, so just track totals).
+    const verbose = !ALL;
+    if (verbose) console.log(`━━━ ${data.name} ━━━`);
 
     // Parse a legacy notes string into structured pairs (mirrors the app's
     // buildSwapPairs Format B). Used when notes is a string instead of array.
@@ -219,15 +238,17 @@ function lookupCanonical(from, protocol) {
       const hasChanges = drops.length > 0 || swaps.length > 0 || wasLegacyString || hadMerges;
       if (!hasChanges) continue;
 
-      console.log(`\n  ${code}:${wasLegacyString ? '  (converting legacy string → structured)' : ''}`);
-      for (const s of swaps) {
-        console.log(`    ✏️  REPLACE  "${s.from}"`);
-        console.log(`        was→ ${s.oldTo}`);
-        console.log(`        now→ ${s.newTo}  [${s.kind}]`);
-      }
-      for (const d of drops) {
-        const desc = d.pair.type === 'remove' ? `remove ${d.pair.from}` : `${d.pair.from} → ${d.pair.to}`;
-        console.log(`    ❌ DROP [${d.reason}]: ${desc}`);
+      if (verbose) {
+        console.log(`\n  ${code}:${wasLegacyString ? '  (converting legacy string → structured)' : ''}`);
+        for (const s of swaps) {
+          console.log(`    ✏️  REPLACE  "${s.from}"`);
+          console.log(`        was→ ${s.oldTo}`);
+          console.log(`        now→ ${s.newTo}  [${s.kind}]`);
+        }
+        for (const d of drops) {
+          const desc = d.pair.type === 'remove' ? `remove ${d.pair.from}` : `${d.pair.from} → ${d.pair.to}`;
+          console.log(`    ❌ DROP [${d.reason}]: ${desc}`);
+        }
       }
 
       if (WRITE) {
@@ -251,8 +272,13 @@ function lookupCanonical(from, protocol) {
 
     if (WRITE && Object.keys(updates).length > 0) {
       await doc.ref.update(updates);
-      console.log(`  → wrote ${Object.keys(updates).length} protocol update(s)`);
+      recipesChanged++;
+      if (verbose) console.log(`  → wrote ${Object.keys(updates).length} protocol update(s)`);
+      else process.stdout.write('.');
+    } else if (!WRITE && Object.keys(updates).length === 0 && verbose) {
+      // No-op pass — keep output clean
     }
-    console.log('');
+    if (verbose) console.log('');
   }
+  if (ALL) console.log(`\n\n━━━ Done. ${recipesChanged} recipe(s) changed. ━━━`);
 })().catch(e => { console.error(e); process.exit(1); });

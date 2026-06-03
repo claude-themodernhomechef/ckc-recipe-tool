@@ -244,10 +244,20 @@
       "note": "use extra firm tofu for Asian dishes; use Impossible Beef for American or Mexican dishes with bold spice profiles; use seitan for European braises and stews"
     }
   },
+  "beef bone broth": {
+    "LF": {
+      "type": "replace",
+      "to": "LF beef bone broth"
+    }
+  },
   "beef bouillon": {
     "V": {
       "type": "replace",
       "to": "vegetable broth"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "LF beef bone broth"
     }
   },
   "beef broth": {
@@ -258,6 +268,10 @@
     "V": {
       "type": "replace",
       "to": "vegetable broth"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "LF beef bone broth"
     }
   },
   "beef stock": {
@@ -268,6 +282,10 @@
     "Vg": {
       "type": "replace",
       "to": "vegetable broth"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "LF beef bone broth"
     }
   },
   "beer": {
@@ -303,6 +321,10 @@
     "Vg": {
       "type": "replace",
       "to": "vegetable Better Than Bouillon"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "LF chicken bone broth"
     }
   },
   "black beans": {
@@ -343,6 +365,10 @@
     "Vg": {
       "type": "replace",
       "to": "vegetable broth"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "LF chicken bone broth"
     }
   },
   "bone-in chicken thighs": {
@@ -585,6 +611,12 @@
       "to": "vegetable Better Than Bouillon"
     }
   },
+  "chicken bone broth": {
+    "LF": {
+      "type": "replace",
+      "to": "LF chicken bone broth"
+    }
+  },
   "chicken bouillon": {
     "V": {
       "type": "replace",
@@ -593,6 +625,10 @@
     "Vg": {
       "type": "replace",
       "to": "vegetable bouillon"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "LF chicken bone broth"
     }
   },
   "chicken breast": {
@@ -619,6 +655,10 @@
     "V": {
       "type": "replace",
       "to": "vegetable broth"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "LF chicken bone broth"
     }
   },
   "chicken flavor better than bouillon": {
@@ -629,6 +669,10 @@
     "Vg": {
       "type": "replace",
       "to": "vegetable Better Than Bouillon"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "LF chicken bone broth"
     }
   },
   "chicken stock": {
@@ -639,6 +683,10 @@
     "Vg": {
       "type": "replace",
       "to": "vegetable broth"
+    },
+    "LF": {
+      "type": "replace",
+      "to": "LF chicken bone broth"
     }
   },
   "chicken thigh": {
@@ -1743,6 +1791,18 @@
       "to": "cauliflower rice"
     }
   },
+  "low-sodium beef broth": {
+    "LF": {
+      "type": "replace",
+      "to": "LF beef bone broth"
+    }
+  },
+  "low-sodium chicken broth": {
+    "LF": {
+      "type": "replace",
+      "to": "LF chicken bone broth"
+    }
+  },
   "low-sodium soy sauce": {
     "GF": {
       "type": "replace",
@@ -1751,6 +1811,12 @@
     "AIP": {
       "type": "replace",
       "to": "coconut aminos"
+    }
+  },
+  "low-sodium vegetable broth": {
+    "LF": {
+      "type": "replace",
+      "to": "LF vegetable broth (or miso with water)"
     }
   },
   "manchego": {
@@ -1881,6 +1947,18 @@
       "type": "remove"
     }
   },
+  "mushroom broth": {
+    "LF": {
+      "type": "replace",
+      "to": "LF mushroom broth (or miso with water)"
+    }
+  },
+  "mushroom stock": {
+    "LF": {
+      "type": "replace",
+      "to": "LF mushroom broth (or miso with water)"
+    }
+  },
   "mushrooms": {
     "LF": {
       "type": "remove"
@@ -1920,6 +1998,12 @@
     "K": {
       "type": "replace",
       "to": "cauliflower flatbread"
+    }
+  },
+  "no-salt-added chicken broth": {
+    "LF": {
+      "type": "replace",
+      "to": "LF chicken bone broth"
     }
   },
   "noodles": {
@@ -2392,6 +2476,18 @@
     "LH": {
       "type": "replace",
       "to": "fresh citrus juice (lime or lemon)"
+    }
+  },
+  "reduced-sodium beef broth": {
+    "LF": {
+      "type": "replace",
+      "to": "LF beef bone broth"
+    }
+  },
+  "reduced-sodium chicken broth": {
+    "LF": {
+      "type": "replace",
+      "to": "LF chicken bone broth"
     }
   },
   "ribeye": {
@@ -2967,10 +3063,28 @@
       "to": "DF butter (Miyoko's)"
     }
   },
+  "vegetable bouillon": {
+    "LF": {
+      "type": "replace",
+      "to": "LF vegetable broth (or miso with water)"
+    }
+  },
+  "vegetable broth": {
+    "LF": {
+      "type": "replace",
+      "to": "LF vegetable broth (or miso with water)"
+    }
+  },
   "vegetable oil": {
     "LH": {
       "type": "replace",
       "to": "olive oil"
+    }
+  },
+  "vegetable stock": {
+    "LF": {
+      "type": "replace",
+      "to": "LF vegetable broth (or miso with water)"
     }
   },
   "vidalia onion": {

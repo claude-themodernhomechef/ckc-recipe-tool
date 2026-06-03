@@ -48,6 +48,15 @@ assign(['black beans', 'kidney beans', 'cannellini beans', 'chickpeas', 'garbanz
 assign(['greek yogurt', 'plain greek yogurt'], 'LF', { type: 'replace', to: 'lactose-free greek yogurt' });
 assign(['sour cream'], 'LF', { type: 'replace', to: 'lactose-free sour cream' });
 assign(['balsamic vinegar', 'aged balsamic'], 'LF', { type: 'replace', to: 'tamari + matching broth' });
+
+// LF broth rule: all standard broths/stocks contain onion + garlic (high-FODMAP)
+// and must be replaced with explicitly LF-certified or homemade bone-broth versions.
+assign(['chicken broth', 'chicken stock', 'chicken bouillon', 'low-sodium chicken broth', 'reduced-sodium chicken broth', 'no-salt-added chicken broth', 'chicken bone broth'], 'LF', { type: 'replace', to: 'LF chicken bone broth' });
+assign(['beef broth', 'beef stock', 'beef bouillon', 'low-sodium beef broth', 'reduced-sodium beef broth', 'beef bone broth'], 'LF', { type: 'replace', to: 'LF beef bone broth' });
+assign(['vegetable broth', 'vegetable stock', 'vegetable bouillon', 'low-sodium vegetable broth'], 'LF', { type: 'replace', to: 'LF vegetable broth (or miso with water)' });
+assign(['mushroom broth', 'mushroom stock'], 'LF', { type: 'replace', to: 'LF mushroom broth (or miso with water)' });
+assign(['bone broth'], 'LF', { type: 'replace', to: 'LF chicken bone broth' });
+assign(['better than bouillon', 'chicken flavor better than bouillon'], 'LF', { type: 'replace', to: 'LF chicken bone broth' });
 assign(['honey', 'raw honey'], 'LF', { type: 'note', note: 'reduce to 1 tbsp or replace with maple syrup' });
 assign(['flour', 'all-purpose flour', 'ap flour'], 'LF', { type: 'replace', to: 'arrowroot powder or GF 1:1 flour' });
 
